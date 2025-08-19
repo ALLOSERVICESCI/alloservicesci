@@ -33,7 +33,7 @@ app.add_middleware(
 )
 
 # Helpers
-from pydantic import field_validator
+from pydantic import field_validator, ConfigDict
 from typing_extensions import Annotated
 from pydantic.functional_validators import BeforeValidator
 
