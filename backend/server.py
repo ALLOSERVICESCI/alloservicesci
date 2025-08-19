@@ -529,15 +529,16 @@ async def list_categories():
     return cats
 
 # Users
-@api.post("/auth/register", response_model=User)
+@api.post("/auth/register")
 async def register_user(payload: UserCreate):
     doc = payload.model_dump()
     doc['created_at'] = datetime.utcnow()
     doc['is_premium'] = False
     res = await db.users.insert_one(doc)
     saved = await db.users.find_one({'_id': res.inserted_id})
-    saved['id'] = saved['_id']
-    return User(**saved)
+    saved['id'] = str(saved['_id'])
+    del saved['_id']
+    return saved
 
 @api.get("/subscriptions/check")
 async def check_subscription(user_id: str):
