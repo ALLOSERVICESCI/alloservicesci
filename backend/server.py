@@ -57,10 +57,16 @@ class I18nText(BaseModel):
 
 # ---------- MODELS ----------
 class Category(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     slug: str
     name: I18nText
     icon: str
+    
+    @field_serializer('id')
+    def serialize_id(self, value):
+        return str(value)
 
 class UserCreate(BaseModel):
     first_name: str
