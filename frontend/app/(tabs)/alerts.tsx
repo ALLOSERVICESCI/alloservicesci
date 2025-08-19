@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
+import { Link } from 'expo-router';
 
 const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
 
@@ -26,6 +27,11 @@ export default function Alerts() {
 
   return (
     <View style={styles.container}>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: 16 }}>
+        <Link href="/alerts/new" asChild>
+          <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Nouvelle alerte</Text></TouchableOpacity>
+        </Link>
+      </View>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
@@ -51,4 +57,6 @@ const styles = StyleSheet.create({
   title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A' },
   desc: { fontSize: 14, color: '#333', marginTop: 6 },
   meta: { fontSize: 12, color: '#666', marginTop: 8 },
+  btn: { backgroundColor: '#0F5132', padding: 10, borderRadius: 10 },
+  btnText: { color: '#fff', fontWeight: '700' },
 });

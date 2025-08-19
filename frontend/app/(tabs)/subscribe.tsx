@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking } from 'react-native';
+import { useAuth } from '../../src/context/AuthContext';
+
 const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
 
 export default function Subscribe() {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [url, setUrl] = useState<string | null>(null);
-  const [transactionId, setTransactionId] = useState<string | null>(null);
-  const userId = null; // brancher après auth
 
   const startPayment = async () => {
-    if (!userId) { alert('Connectez-vous d\'abord'); return; }
+    if (!user?.id) { alert('Connectez-vous d\'abord'); return; }
     setLoading(true);
     try {
       const res = await fetch(`${API}/payments/cinetpay/initiate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, amount_fcfa: 1200 })
+        body: JSON.stringify({ user_id: user.id, amount_fcfa: 1200 })
       });
       const json = await res.json();
-      if (res.ok) {
-        setTransactionId(json.transaction_id);
-        setUrl(json.payment_url);
+      if (res.ok && json.payment_url) {
+        Linking.openURL(json.payment_url);
       } else {
         alert(json.detail || 'Erreur paiement');
       }
@@ -34,12 +33,9 @@ export default function Subscribe() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Premium 1200 FCFA / an</Text>
-      <Text style={styles.text}>Accédez aux services Santé, Éducation, Examens & Concours, Services publics, Emplois, Agriculture, Loisirs & Tourisme, Transport.</Text>
-      {loading && <ActivityIndicator />}
-      {!url ? (
+      {!user?.id && <Text style={styles.text}>Veuillez créer un compte (Profil) pour activer le paiement.</Text>}
+      {loading ? <ActivityIndicator /> : (
         <TouchableOpacity onPress={startPayment} style={styles.btn}><Text style={styles.btnText}>Payer avec CinetPay</Text></TouchableOpacity>
-      ) : (
-        <Text style={styles.text}>Lien de paiement prêt. Intégration WebView à venir.</Text>
       )}
     </View>
   );
