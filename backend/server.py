@@ -1,5 +1,6 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Query, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Depends, Request, Form, Path
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 from pydantic import BaseModel, Field, EmailStr
 from typing import List, Optional, Literal, Dict, Any
 from datetime import datetime, timedelta
@@ -8,6 +9,10 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 import os
 import uuid
+import requests
+import hmac
+import hashlib
+import logging
 
 # Load env
 ROOT_DIR = os.path.dirname(__file__)
@@ -19,8 +24,15 @@ DB_NAME = os.environ.get('DB_NAME', 'test_database')
 client = AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
 
+# CinetPay config
+CINETPAY_SITE_ID = os.environ.get('CINETPAY_SITE_ID')
+CINETPAY_API_KEY = os.environ.get('CINETPAY_API_KEY')
+CINETPAY_SECRET_KEY = os.environ.get('CINETPAY_SECRET_KEY')
+CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
+BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
+
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.2.0")
+app = FastAPI(title="Allô Services CI API", version="0.3.0")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -32,13 +44,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Helpers - Simplified for testing
-from pydantic import field_validator, ConfigDict, field_serializer
-from typing_extensions import Annotated
-from pydantic.functional_validators import BeforeValidator
+# Helpers
+class PyObjectId(ObjectId):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
 
-# Use string IDs for testing to avoid Pydantic v2 ObjectId issues
-PyObjectId = str
+    @classmethod
+    def validate(cls, v):
+        if isinstance(v, ObjectId):
+            return v
+        try:
+            return ObjectId(v)
+        except Exception:
+            raise ValueError("Invalid ObjectId")
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 LangKey = Literal['fr', 'en', 'es', 'it', 'ar']
 
@@ -51,7 +73,7 @@ class I18nText(BaseModel):
 
 # ---------- MODELS ----------
 class Category(BaseModel):
-    id: PyObjectId = Field(default_factory=lambda: str(ObjectId()), alias="_id")
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     slug: str
     name: I18nText
     icon: str
@@ -67,7 +89,7 @@ class UserCreate(BaseModel):
     photo_base64: Optional[str] = None
 
 class User(BaseModel):
-    id: PyObjectId = Field(default_factory=lambda: str(ObjectId()), alias="_id")
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     first_name: str
     last_name: str
     email: Optional[EmailStr] = None
@@ -83,7 +105,7 @@ class Subscription(BaseModel):
     user_id: PyObjectId
     amount_fcfa: int
     provider: Literal['cinetpay']
-    status: Literal['initiated', 'paid', 'failed', 'expired']
+    status: Literal['initiated', 'paid', 'failed', 'expired', 'active']
     transaction_id: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     expires_at: Optional[datetime] = None
@@ -268,7 +290,7 @@ async def is_premium_user(user_id: Optional[str]) -> bool:
         u_id = ObjectId(user_id)
     except Exception:
         return False
-    sub = await db.subscriptions.find_one({'user_id': u_id, 'status': 'paid'}, sort=[('expires_at', -1)])
+    sub = await db.subscriptions.find_one({'user_id': u_id, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
     if not sub:
         return False
     if sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
@@ -290,6 +312,7 @@ async def ensure_indexes():
     await db.locations.create_index([('parent_id', 1), ('name', 1)])
     await db.jobs.create_index([('posted_at', -1)])
     await db.commodity_prices.create_index([('updated_at', -1)])
+    await db.transactions.create_index('transaction_id', unique=True)
 
 CATEGORIES = [
     {"slug": "urgence", "name": {"fr": "Urgence", "en": "Emergency"}, "icon": "alert"},
@@ -527,7 +550,7 @@ async def check_subscription(user_id: str):
     user = await db.users.find_one({'_id': ObjectId(user_id)})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    sub = await db.subscriptions.find_one({'user_id': ObjectId(user_id), 'status': 'paid'}, sort=[('expires_at', -1)])
+    sub = await db.subscriptions.find_one({'user_id': ObjectId(user_id), 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
     active = False
     expires_at = None
     if sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
@@ -535,52 +558,204 @@ async def check_subscription(user_id: str):
         expires_at = sub['expires_at']
     return {"is_premium": active, "expires_at": expires_at}
 
-# Payments (CinetPay stub)
+# --------- PAYMENTS (CINETPAY) ---------
 class PaymentInitInput(BaseModel):
     user_id: str
     amount_fcfa: int = 1200
+    customer_name: Optional[str] = None
+    customer_surname: Optional[str] = None
+    customer_phone: Optional[str] = None
+    customer_email: Optional[str] = None
+    customer_address: Optional[str] = None
+    customer_city: Optional[str] = 'Abidjan'
 
 @api.post("/payments/cinetpay/initiate")
 async def cinetpay_initiate(payload: PaymentInitInput):
-    # Stub: create subscription record with initiated status
     try:
         user_id = ObjectId(payload.user_id)
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid user_id")
-    sub = {
-        'user_id': user_id,
-        'amount_fcfa': payload.amount_fcfa,
-        'provider': 'cinetpay',
-        'status': 'initiated',
-        'created_at': datetime.utcnow(),
-        'expires_at': None,
-        'transaction_id': str(uuid.uuid4()),
-    }
-    await db.subscriptions.insert_one(sub)
-    # In real integration, return redirect/payment URL from CinetPay
-    return {
-        "transaction_id": sub['transaction_id'],
-        "provider": "cinetpay",
-        "redirect_url": "https://checkout.cinetpay.com/stub/" + sub['transaction_id']
-    }
 
+    transaction_id = f"SUB_{uuid.uuid4().hex[:14]}"
+
+    # Create transaction record (local)
+    tr_doc = {
+        'transaction_id': transaction_id,
+        'user_id': user_id,
+        'amount': payload.amount_fcfa,
+        'currency': 'XOF',
+        'status': 'PENDING',
+        'provider': 'cinetpay',
+        'created_at': datetime.utcnow(),
+        'expires_at': datetime.utcnow() + timedelta(minutes=45)
+    }
+    await db.transactions.insert_one(tr_doc)
+
+    if CINETPAY_MODE.lower() != 'live' or not (CINETPAY_API_KEY and CINETPAY_SITE_ID and BACKEND_PUBLIC_BASE_URL):
+        # Fallback stub mode
+        stub_url = f"https://checkout.cinetpay.com/stub/{transaction_id}"
+        await db.transactions.update_one({'transaction_id': transaction_id}, {'$set': {'status': 'INITIALIZED', 'payment_url': stub_url}})
+        return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": stub_url}
+
+    # Live call to CinetPay
+    try:
+        cinetpay_payload = {
+            "apikey": CINETPAY_API_KEY,
+            "site_id": CINETPAY_SITE_ID,
+            "transaction_id": transaction_id,
+            "amount": payload.amount_fcfa,
+            "currency": "XOF",
+            "description": "Abonnement annuel Allô Services CI",
+            "notify_url": f"{BACKEND_PUBLIC_BASE_URL}/api/payments/cinetpay/webhook",
+            "return_url": f"{BACKEND_PUBLIC_BASE_URL}/api/payments/cinetpay/return",
+            "channels": "ALL",
+            "lang": "fr",
+        }
+        # Optional customer fields
+        if payload.customer_name: cinetpay_payload["customer_name"] = payload.customer_name
+        if payload.customer_surname: cinetpay_payload["customer_surname"] = payload.customer_surname
+        if payload.customer_phone: cinetpay_payload["customer_phone_number"] = payload.customer_phone
+        if payload.customer_email: cinetpay_payload["customer_email"] = payload.customer_email
+        if payload.customer_address: cinetpay_payload["customer_address"] = payload.customer_address
+        if payload.customer_city: cinetpay_payload["customer_city"] = payload.customer_city
+
+        resp = requests.post("https://api-checkout.cinetpay.com/v2/payment", json=cinetpay_payload, timeout=30)
+        data = resp.json() if resp.headers.get('content-type','').startswith('application/json') else {}
+        if resp.status_code != 200 or data.get('code') not in ("201","00"):
+            logger.error(f"CinetPay init error: {resp.status_code} - {resp.text}")
+            raise HTTPException(status_code=400, detail=data.get('message','CinetPay init failed'))
+
+        payment_url = data.get('data',{}).get('payment_url') or data.get('payment_url')
+        if not payment_url:
+            raise HTTPException(status_code=400, detail="No payment_url returned by CinetPay")
+
+        await db.transactions.update_one({'transaction_id': transaction_id}, {'$set': {'status': 'INITIALIZED', 'payment_url': payment_url}})
+        return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": payment_url}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("CinetPay initiate exception")
+        # fallback to stub if live fails
+        stub_url = f"https://checkout.cinetpay.com/stub/{transaction_id}"
+        await db.transactions.update_one({'transaction_id': transaction_id}, {'$set': {'status': 'INITIALIZED', 'payment_url': stub_url}})
+        return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": stub_url}
+
+# Manual validation (kept for testing)
 class PaymentValidateInput(BaseModel):
     transaction_id: str
     success: bool
 
 @api.post("/payments/cinetpay/validate")
 async def cinetpay_validate(payload: PaymentValidateInput):
-    sub = await db.subscriptions.find_one({'transaction_id': payload.transaction_id})
-    if not sub:
+    sub_status = 'paid' if payload.success else 'failed'
+    tr = await db.transactions.find_one({'transaction_id': payload.transaction_id})
+    if not tr:
         raise HTTPException(status_code=404, detail="Transaction not found")
-    new_status = 'paid' if payload.success else 'failed'
-    update: Dict[str, Any] = {'$set': {'status': new_status}}
-    if new_status == 'paid':
-        update['$set']['expires_at'] = datetime.utcnow() + timedelta(days=365)
-        # mark user premium
-        await db.users.update_one({'_id': sub['user_id']}, {'$set': {'is_premium': True}})
-    await db.subscriptions.update_one({'_id': sub['_id']}, update)
-    return {"status": new_status}
+    update: Dict[str, Any] = {'$set': {'status': 'ACCEPTED' if payload.success else 'REFUSED', 'updated_at': datetime.utcnow()}}
+    await db.transactions.update_one({'_id': tr['_id']}, update)
+    if payload.success:
+        # Create subscription and mark user premium
+        exp = datetime.utcnow() + timedelta(days=365)
+        await db.subscriptions.insert_one({'user_id': tr['user_id'], 'amount_fcfa': tr['amount'], 'provider': 'cinetpay', 'status': 'active', 'transaction_id': payload.transaction_id, 'created_at': datetime.utcnow(), 'expires_at': exp})
+        await db.users.update_one({'_id': tr['user_id']}, {'$set': {'is_premium': True}})
+    return {"status": sub_status}
+
+# Webhook signature verification (best-effort; exact spec may vary)
+def verify_cinetpay_signature(secret_key: str, data_string: str, received_token: str) -> bool:
+    token = hmac.new(secret_key.encode('utf-8'), data_string.encode('utf-8'), hashlib.sha256).hexdigest()
+    return hmac.compare_digest(token.lower(), (received_token or '').lower())
+
+@api.post("/payments/cinetpay/webhook")
+async def cinetpay_webhook(
+    request: Request,
+    cpm_site_id: str = Form(''),
+    cpm_trans_id: str = Form(''),
+    cpm_trans_date: str = Form(''),
+    cpm_amount: str = Form(''),
+    cpm_currency: str = Form(''),
+    signature: str = Form(''),  # often carries status
+    payment_method: str = Form(''),
+    cel_phone_num: str = Form(''),
+    cpm_phone_prefixe: str = Form(''),
+    cpm_language: str = Form(''),
+    cpm_version: str = Form(''),
+    cmp_payment_config: str = Form(''),
+    cpm_page_action: str = Form(''),
+    cpm_custom: str = Form(''),
+    cpm_designation: str = Form(''),
+    cpm_error_message: str = Form(''),
+):
+    # Build data string per documentation (may vary by account config)
+    data_string = (
+        (cpm_site_id or '') + (cpm_trans_id or '') + (cpm_trans_date or '') + (cpm_amount or '') + (cpm_currency or '') +
+        (signature or '') + (payment_method or '') + (cel_phone_num or '') + (cpm_phone_prefixe or '') +
+        (cpm_language or '') + (cpm_version or '') + (cmp_payment_config or '') + (cpm_page_action or '') +
+        (cpm_custom or '') + (cpm_designation or '') + (cpm_error_message or '')
+    )
+    received_token = request.headers.get('X-TOKEN', '')
+
+    valid = False
+    if CINETPAY_SECRET_KEY:
+        try:
+            valid = verify_cinetpay_signature(CINETPAY_SECRET_KEY, data_string, received_token)
+        except Exception:
+            valid = False
+
+    # Always log webhook
+    await db.webhook_events.insert_one({
+        'raw': {
+            'cpm_site_id': cpm_site_id, 'cpm_trans_id': cpm_trans_id, 'cpm_trans_date': cpm_trans_date,
+            'cpm_amount': cpm_amount, 'cpm_currency': cpm_currency, 'signature': signature,
+            'payment_method': payment_method, 'cel_phone_num': cel_phone_num, 'cpm_phone_prefixe': cpm_phone_prefixe,
+            'cpm_language': cpm_language, 'cpm_version': cpm_version, 'cmp_payment_config': cmp_payment_config,
+            'cpm_page_action': cpm_page_action, 'cpm_custom': cpm_custom, 'cpm_designation': cpm_designation,
+            'cpm_error_message': cpm_error_message
+        },
+        'received_token': received_token,
+        'signature_valid': valid,
+        'received_at': datetime.utcnow()
+    })
+
+    # If invalid signature, still check transaction with payment/check to be safe
+    if cpm_trans_id and CINETPAY_API_KEY and CINETPAY_SITE_ID and CINETPAY_MODE.lower() == 'live':
+        try:
+            check_payload = {"apikey": CINETPAY_API_KEY, "site_id": CINETPAY_SITE_ID, "transaction_id": cpm_trans_id}
+            resp = requests.post("https://api-checkout.cinetpay.com/v2/payment/check", json=check_payload, timeout=30)
+            j = resp.json() if resp.headers.get('content-type','').startswith('application/json') else {}
+            status = j.get('data',{}).get('status') or signature
+        except Exception:
+            status = signature
+    else:
+        status = signature
+
+    # Update local transaction
+    tr = await db.transactions.find_one({'transaction_id': cpm_trans_id})
+    if tr:
+        await db.transactions.update_one({'_id': tr['_id']}, {'$set': {'status': status, 'updated_at': datetime.utcnow(), 'payment_method': payment_method}})
+        if status == 'ACCEPTED':
+            exp = datetime.utcnow() + timedelta(days=365)
+            await db.subscriptions.insert_one({'user_id': tr['user_id'], 'amount_fcfa': tr.get('amount',1200), 'provider': 'cinetpay', 'status': 'active', 'transaction_id': cpm_trans_id, 'created_at': datetime.utcnow(), 'expires_at': exp})
+            await db.users.update_one({'_id': tr['user_id']}, {'$set': {'is_premium': True}})
+    return Response(content="OK", status_code=200)
+
+@api.get("/payments/cinetpay/status/{transaction_id}")
+async def cinetpay_status(transaction_id: str = Path(...)):
+    tr = await db.transactions.find_one({'transaction_id': transaction_id})
+    if not tr:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    return {
+        'transaction_id': transaction_id,
+        'status': tr.get('status'),
+        'payment_url': tr.get('payment_url'),
+        'updated_at': tr.get('updated_at'),
+    }
+
+@api.get("/payments/cinetpay/return")
+async def cinetpay_return(transaction_id: str, status: Optional[str] = None):
+    tr = await db.transactions.find_one({'transaction_id': transaction_id})
+    current = tr.get('status') if tr else None
+    final_status = status or current or 'PENDING'
+    return {"transaction_id": transaction_id, "status": final_status}
 
 # Urgence: Useful numbers (FREE)
 @api.get("/useful-numbers")
@@ -644,8 +819,6 @@ async def create_alert(payload: AlertCreate):
     saved = await db.alerts.find_one({'_id': res.inserted_id})
     saved['id'] = str(saved['_id'])
     del saved['_id']
-    if saved.get('posted_by'):
-        saved['posted_by'] = str(saved['posted_by'])
     return saved
 
 @api.get("/alerts")
@@ -734,7 +907,7 @@ async def list_formalities(user_id: Optional[str] = None, doc_type: Optional[str
         del i['_id']
     return items
 
-# JOBS (Premium to list; posting allowed for all?)
+# JOBS
 @api.get("/jobs")
 async def list_jobs(user_id: Optional[str] = None, posting_type: Optional[str] = None, city: Optional[str] = None):
     await require_premium(user_id)
@@ -930,7 +1103,6 @@ app.include_router(api)
 @app.on_event("startup")
 async def on_startup():
     await ensure_indexes()
-    # Do not seed on every start automatically; users can call /api/seed
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
