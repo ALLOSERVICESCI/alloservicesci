@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-
-const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
+import { apiFetch } from '../../src/utils/api';
 
 export default function NewAlert() {
   const [title, setTitle] = useState('');
@@ -14,7 +13,7 @@ export default function NewAlert() {
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') { Alert.alert('Permission', 'Autorisez l\'accès à vos photos'); return; }
+    if (status !== 'granted') { Alert.alert('Permission', "Autorisez l'accès à vos photos"); return; }
     const result = await ImagePicker.launchImageLibraryAsync({ base64: true, quality: 0.6, allowsMultipleSelection: false });
     if (!result.canceled && result.assets && result.assets[0]?.base64) {
       setImagesBase64(prev => [...prev, `data:${result.assets[0].mimeType || 'image/jpeg'};base64,${result.assets[0].base64}`].slice(0, 3));
@@ -25,7 +24,7 @@ export default function NewAlert() {
     if (!title || !description) { Alert.alert('Champs requis', 'Titre et description sont requis'); return; }
     setLoading(true);
     try {
-      const res = await fetch(`${API}/alerts`, {
+      const res = await apiFetch('/api/alerts', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, type, city, images_base64: imagesBase64 })
       });

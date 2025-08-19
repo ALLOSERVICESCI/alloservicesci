@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-
-const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
+import { apiFetch } from '../../src/utils/api';
 
 export default function Subscribe() {
   const { user } = useAuth();
@@ -14,19 +13,18 @@ export default function Subscribe() {
     if (!user?.id) { router.push('/auth/register'); return; }
     setLoading(true);
     try {
-      const res = await fetch(`${API}/payments/cinetpay/initiate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await apiFetch('/api/payments/cinetpay/initiate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.id, amount_fcfa: 1200 })
       });
-      const json = await res.json();
-      if (res.ok && json.payment_url) {
-        Linking.openURL(json.payment_url);
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && (json as any).payment_url) {
+        Linking.openURL((json as any).payment_url);
       } else {
-        alert(json.detail || 'Erreur paiement');
+        Alert.alert('Paiement', ((json as any).detail || `Erreur HTTP ${res.status}`));
       }
-    } catch (e) {
-      alert('Erreur réseau');
+    } catch (e: any) {
+      Alert.alert('Réseau', e?.message || 'Erreur réseau');
     } finally {
       setLoading(false);
     }
