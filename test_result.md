@@ -110,33 +110,75 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented models, indexes, seed endpoint, categories, users, subscriptions, payments stub, urgency (useful numbers, pharmacies), alerts, health, education, exams, services publics, emplois, utilities, agriculture, loisirs, transport, locations, tutoring, CV templates. Added premium gating except Urgence, Alerts (read/post), Locations, Job create."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Seed endpoint working correctly, returns {status: ok}. Categories endpoint returns 11 categories with proper slugs. Fixed Pydantic v2 compatibility issues with ObjectId serialization."
   - task: "Geo query for pharmacies"
     implemented: true
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Created 2dsphere index and /pharmacies/nearby with duty_only filter by weekday and radius."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Pharmacies nearby endpoint working correctly. Found 2 pharmacies with lat=5.35&lng=-3.99&max_km=20 query parameters."
   - task: "Payments CinetPay stub"
     implemented: true
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Initiate returns a redirect_url stub, validate marks paid and sets 365 days expiry, toggles user premium."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Complete payment flow working. Initiate returns redirect_url and transaction_id. Validate with success=true marks payment as paid and user becomes premium. Subscription check confirms premium status."
+  - task: "User registration and authentication"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: User registration working correctly. Creates user with proper ID, initial premium status is false. Fixed Pydantic serialization issues."
+  - task: "Free endpoints (Urgence, Alerts, Locations)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: All free endpoints working correctly. Useful numbers (4 items), Locations (15 items), Pharmacies nearby (2 items), Alerts POST/GET (5 alerts total including test alert)."
+  - task: "Premium gating system"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Premium gating working correctly. Non-premium users get 402 error for /exams. Premium users can access /exams (2 items), /utilities (3 items). Premium status correctly updated after payment validation."
 frontend:
   - task: "Initial Expo screen"
     implemented: true
@@ -152,16 +194,11 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Hit /api/seed and verify 200"
-    - "List /api/categories"
-    - "Register user, initiate payment, validate success, check /subscriptions/check"
-    - "Test free endpoints: /useful-numbers, /pharmacies/nearby, /alerts (POST+GET), /locations"
-    - "Test premium gating: e.g., /exams without user_id (expect 402), then with user_id after premium (expect 200)"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -169,3 +206,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Please test backend endpoints per test_plan. No auth headers required; pass user_id query where indicated."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING COMPLETE: All 15 tests passed (100% success rate). Complete API flow tested: seed → categories → user registration → subscription check → payment initiate → payment validate → premium subscription → free endpoints → alerts → premium gating → utilities. Fixed Pydantic v2 ObjectId serialization issues during testing. Backend is fully functional and ready for frontend integration."
