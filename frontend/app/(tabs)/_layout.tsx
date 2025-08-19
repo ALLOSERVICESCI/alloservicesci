@@ -12,8 +12,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
-
 export default function Layout() {
   useEffect(() => {
     (async () => {
@@ -24,14 +22,7 @@ export default function Layout() {
             importance: Notifications.AndroidImportance.MAX,
           });
         }
-        const { status } = await Notifications.requestPermissionsAsync();
-        if (status !== 'granted') return;
-        const token = (await Notifications.getExpoPushTokenAsync()).data;
-        // Register token to backend (user_id can be added later)
-        await fetch(`${API}/notifications/register`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token, platform: Platform.OS })
-        });
+        // Permissions + token handled in AuthProvider
       } catch (e) {
         console.log('Notifications setup error', e);
       }
@@ -44,6 +35,7 @@ export default function Layout() {
       <Tabs.Screen name="alerts" options={{ title: 'Alertes', tabBarIcon: ({ color, size }) => <Ionicons name="megaphone" color={color} size={size} /> }} />
       <Tabs.Screen name="pharmacies" options={{ title: 'Pharmacies', tabBarIcon: ({ color, size }) => <Ionicons name="medkit" color={color} size={size} /> }} />
       <Tabs.Screen name="subscribe" options={{ title: 'Premium', tabBarIcon: ({ color, size }) => <Ionicons name="card" color={color} size={size} /> }} />
+      <Tabs.Screen name="profile" options={{ title: 'Profil', tabBarIcon: ({ color, size }) => <Ionicons name="person" color={color} size={size} /> }} />
     </Tabs>
   );
 }

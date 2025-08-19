@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking } from 'react-native';
+import { Link, useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 
 const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
@@ -7,18 +8,28 @@ const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
 export default function Subscribe() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const startPayment = async () => {
-    if (!user?.id) { alert('Connectez-vous d\'abord'); return; }
+    if (!user?.id) { router.push('/auth/register'); return; }
     setLoading(true);
     try {
       const res = await fetch(`${API}/payments/cinetpay/initiate`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.id, amount_fcfa: 1200 })
       });
       const json = await res.json();
-      if (res.ok && json.payment_url) { Linking.openURL(json.payment_url); } else { alert(json.detail || 'Erreur paiement'); }
-    } catch (e) { alert('Erreur réseau'); } finally { setLoading(false); }
+      if (res.ok && json.payment_url) {
+        Linking.openURL(json.payment_url);
+      } else {
+        alert(json.detail || 'Erreur paiement');
+      }
+    } catch (e) {
+      alert('Erreur réseau');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,10 +37,17 @@ export default function Subscribe() {
       <View style={styles.brandBar}>
         <Text style={styles.brand}>Allô Services CI</Text>
         <Text style={styles.slogan}>Tous les services essentiels en un clic</Text>
-        {!!user?.first_name && <Text style={styles.greeting}>{`Bonjour M. ${user.first_name}`}</Text>}
+        {!!user?.first_name && <Text style={styles.greeting}>{`Bonjour Mr ${user.first_name}`}</Text>}
       </View>
       <Text style={styles.title}>Premium 1200 FCFA / an</Text>
-      {!user?.id && <Text style={styles.text}>Veuillez créer un compte (Profil) pour activer le paiement.</Text>}
+      {!user?.id && (
+        <View style={{ marginTop: 8 }}>
+          <Text style={styles.text}>Veuillez créer un compte pour activer le paiement.</Text>
+          <Link href="/auth/register" asChild>
+            <TouchableOpacity style={[styles.btn, { backgroundColor: '#0A7C3A' }]}><Text style={styles.btnText}>Créer un compte</Text></TouchableOpacity>
+          </Link>
+        </View>
+      )}
       {loading ? <ActivityIndicator /> : (
         <TouchableOpacity onPress={startPayment} style={styles.btn}><Text style={styles.btnText}>Payer avec CinetPay</Text></TouchableOpacity>
       )}
