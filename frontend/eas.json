@@ -1,11 +1,15 @@
 {
   "cli": {
-    "version": ">= 13.0.0"
+    "version": ">= 13.0.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://61899db0-eabf-44da-b893-074694d585ec.preview.emergentagent.com"
+      }
     },
     "preview": {
       "channel": "preview"
@@ -13,8 +17,5 @@
     "production": {
       "channel": "production"
     }
-  },
-  "submit": {
-    "production": {}
   }
 }
