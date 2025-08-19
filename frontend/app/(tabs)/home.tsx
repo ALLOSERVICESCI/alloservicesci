@@ -21,7 +21,7 @@ const CARD_BG = '#F6F8F6';
 
 export default function Home() {
   const { user } = useAuth();
-  const greeting = user?.first_name ? `Bonjour M. ${user.first_name}` : 'Bienvenue';
+  const greeting = user?.first_name ? `Bonjour Mr ${user.first_name}` : 'Bienvenue';
   const slogan = 'Tous les services essentiels en un clic';
 
   const categories = useMemo(() => [
