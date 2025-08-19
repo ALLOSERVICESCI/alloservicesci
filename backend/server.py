@@ -33,19 +33,18 @@ app.add_middleware(
 )
 
 # Helpers
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+from pydantic import field_validator
+from typing_extensions import Annotated
+from pydantic.functional_validators import BeforeValidator
 
-    @classmethod
-    def validate(cls, v, handler=None):
-        if isinstance(v, ObjectId):
-            return v
-        try:
-            return ObjectId(v)
-        except Exception:
-            raise ValueError("Invalid ObjectId")
+def validate_object_id(v):
+    if isinstance(v, ObjectId):
+        return v
+    if isinstance(v, str) and ObjectId.is_valid(v):
+        return ObjectId(v)
+    raise ValueError("Invalid ObjectId")
+
+PyObjectId = Annotated[ObjectId, BeforeValidator(validate_object_id)]
 
 LangKey = Literal['fr', 'en', 'es', 'it', 'ar']
 
