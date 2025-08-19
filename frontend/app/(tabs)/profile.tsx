@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-
-const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
+import { apiFetch } from '../../src/utils/api';
 
 export default function Profile() {
   const { user, logout } = useAuth();
   const [premium, setPremium] = useState<{ is_premium: boolean; expires_at?: string } | null>(null);
+  const router = useRouter();
 
   const loadPremium = async () => {
     try {
       if (!user?.id) { setPremium(null); return; }
-      const res = await fetch(`${API}/subscriptions/check?user_id=${user.id}`);
+      const res = await apiFetch(`/api/subscriptions/check?user_id=${user.id}`);
       const json = await res.json();
       setPremium(json);
     } catch (e) { setPremium(null); }
   };
 
   useEffect(() => { loadPremium(); }, [user?.id]);
+
+  const goRegister = () => router.push('/auth/register');
 
   return (
     <View style={styles.container}>
@@ -27,9 +29,7 @@ export default function Profile() {
       {!user ? (
         <View style={{ marginTop: 16 }}>
           <Text style={styles.text}>Créez un compte pour accéder au Premium.</Text>
-          <Link href="/auth/register" asChild>
-            <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Créer un compte</Text></TouchableOpacity>
-          </Link>
+          <TouchableOpacity style={styles.btn} onPress={goRegister}><Text style={styles.btnText}>Créer un compte</Text></TouchableOpacity>
         </View>
       ) : (
         <View style={{ marginTop: 16 }}>
@@ -39,8 +39,7 @@ export default function Profile() {
             <Text style={styles.info}>Premium: {premium.is_premium ? `Actif jusqu'au ${premium.expires_at ? new Date(premium.expires_at).toLocaleDateString() : ''}` : 'Inactif'}</Text>
           )}
           <TouchableOpacity style={[styles.btn, { backgroundColor: '#B00020' }]} onPress={logout}>
-            <Text style={styles.btnText}>Se déconnecter</Text>
-          </TouchableOpacity>
+            <Text style={styles.btnText}>Se déconnecter</Text></TouchableOpacity>
         </View>
       )}
     </View>
