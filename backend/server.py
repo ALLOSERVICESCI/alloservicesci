@@ -67,9 +67,7 @@ class UserCreate(BaseModel):
     photo_base64: Optional[str] = None
 
 class User(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-    
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    id: PyObjectId = Field(default_factory=lambda: str(ObjectId()), alias="_id")
     first_name: str
     last_name: str
     email: Optional[EmailStr] = None
@@ -79,10 +77,6 @@ class User(BaseModel):
     photo_base64: Optional[str] = None
     is_premium: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    
-    @field_serializer('id')
-    def serialize_id(self, value):
-        return str(value)
 
 class Subscription(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
