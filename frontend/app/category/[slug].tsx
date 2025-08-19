@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ImageBackground, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { useAuth } from '../../src/context/AuthContext';
 
 const HEADERS: any = {
   urgence: require('../../assets/headers/headers/urgence_bg.png'),
@@ -18,6 +19,7 @@ const HEADERS: any = {
 
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
+  const { user } = useAuth();
   const bg = HEADERS[slug as string] || HEADERS.urgence;
 
   return (
@@ -26,6 +28,8 @@ export default function CategoryPage() {
         <View style={styles.overlay} />
         <View style={styles.headerContent}>
           <Text style={styles.brand}>Allô Services CI</Text>
+          <Text style={styles.slogan}>Tous les services essentiels en un clic</Text>
+          {!!user?.first_name && <Text style={styles.greeting}>{`Bonjour M. ${user.first_name}`}</Text>}
           <Text style={styles.headerTitle}>{slug}</Text>
         </View>
       </ImageBackground>
@@ -37,9 +41,11 @@ export default function CategoryPage() {
 }
 
 const styles = StyleSheet.create({
-  header: { height: 180, justifyContent: 'flex-end' },
+  header: { height: 200, justifyContent: 'flex-end' },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
   headerContent: { padding: 16 },
-  brand: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  headerTitle: { color: '#fff', fontSize: 22, fontWeight: '800', marginTop: 6 },
+  brand: { color: '#fff', fontSize: 16, fontWeight: '800' },
+  slogan: { color: '#E8F0E8', fontSize: 12, marginTop: 2 },
+  greeting: { color: '#D6F5E2', fontSize: 12, marginTop: 4, fontWeight: '700' },
+  headerTitle: { color: '#fff', fontSize: 22, fontWeight: '800', marginTop: 8 },
 });

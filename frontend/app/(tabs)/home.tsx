@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Link } from 'expo-router';
+import { useAuth } from '../../src/context/AuthContext';
 
 const ICONS = {
   urgence: require('../../assets/icons/icons/urgence.png'),
@@ -19,6 +20,10 @@ const ICONS = {
 const CARD_BG = '#F6F8F6';
 
 export default function Home() {
+  const { user } = useAuth();
+  const greeting = user?.first_name ? `Bonjour M. ${user.first_name}` : 'Bienvenue';
+  const slogan = 'Tous les services essentiels en un clic';
+
   const categories = useMemo(() => [
     { slug: 'urgence', label: 'Urgence' },
     { slug: 'sante', label: 'Santé' },
@@ -36,8 +41,9 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Allô Services CI</Text>
-        <Text style={styles.subtitle}>Bienvenue</Text>
+        <Text style={styles.brand}>Allô Services CI</Text>
+        <Text style={styles.slogan}>{slogan}</Text>
+        <Text style={styles.greeting}>{greeting}</Text>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
         {categories.map((c) => (
@@ -56,8 +62,9 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFFFFF' },
   header: { paddingHorizontal: 16, paddingTop: 24, paddingBottom: 12 },
-  title: { fontSize: 24, fontWeight: '700', color: '#0A7C3A' },
-  subtitle: { fontSize: 14, color: '#666' },
+  brand: { fontSize: 24, fontWeight: '800', color: '#0A7C3A' },
+  slogan: { fontSize: 14, color: '#666', marginTop: 2 },
+  greeting: { fontSize: 14, color: '#0F5132', marginTop: 6, fontWeight: '700' },
   carousel: { paddingHorizontal: 12, paddingVertical: 8 },
   card: { width: 140, height: 160, backgroundColor: CARD_BG, borderRadius: 16, marginRight: 12, alignItems: 'center', justifyContent: 'center', padding: 12 },
   icon: { width: 64, height: 64, resizeMode: 'contain', marginBottom: 10 },
