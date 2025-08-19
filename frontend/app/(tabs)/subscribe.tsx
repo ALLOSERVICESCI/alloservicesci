@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 
 const API = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
@@ -32,6 +32,8 @@ export default function Subscribe() {
     }
   };
 
+  const goRegister = () => router.push('/auth/register');
+
   return (
     <View style={styles.container}>
       <View style={styles.brandBar}>
@@ -43,9 +45,7 @@ export default function Subscribe() {
       {!user?.id && (
         <View style={{ marginTop: 8 }}>
           <Text style={styles.text}>Veuillez créer un compte pour activer le paiement.</Text>
-          <Link href="/auth/register" asChild>
-            <TouchableOpacity style={[styles.btn, { backgroundColor: '#0A7C3A' }]}><Text style={styles.btnText}>Créer un compte</Text></TouchableOpacity>
-          </Link>
+          <TouchableOpacity onPress={goRegister} style={styles.btnAlt}><Text style={styles.btnText}>Créer un compte</Text></TouchableOpacity>
         </View>
       )}
       {loading ? <ActivityIndicator /> : (
@@ -64,5 +64,6 @@ const styles = StyleSheet.create({
   title: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   text: { marginTop: 10, color: '#333' },
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 16 },
+  btnAlt: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },
   btnText: { color: '#fff', fontWeight: '700' },
 });
