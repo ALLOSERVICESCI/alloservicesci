@@ -640,7 +640,7 @@ class AlertCreate(BaseModel):
     images_base64: List[str] = Field(default_factory=list)
     posted_by: Optional[str] = None
 
-@api.post("/alerts", response_model=Alert)
+@api.post("/alerts")
 async def create_alert(payload: AlertCreate):
     doc: Dict[str, Any] = {
         'title': payload.title,
@@ -660,8 +660,11 @@ async def create_alert(payload: AlertCreate):
             pass
     res = await db.alerts.insert_one(doc)
     saved = await db.alerts.find_one({'_id': res.inserted_id})
-    saved['id'] = saved['_id']
-    return Alert(**saved)
+    saved['id'] = str(saved['_id'])
+    del saved['_id']
+    if saved.get('posted_by'):
+        saved['posted_by'] = str(saved['posted_by'])
+    return saved
 
 @api.get("/alerts")
 async def list_alerts(status: Optional[str] = None, type: Optional[str] = None):
