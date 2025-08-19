@@ -25,6 +25,8 @@
       "edgeToEdgeEnabled": true,
       "permissions": [
         "POST_NOTIFICATIONS",
+        "SCHEDULE_EXACT_ALARM",
+        "POST_NOTIFICATIONS",
         "SCHEDULE_EXACT_ALARM"
       ]
     },
@@ -54,6 +56,12 @@
       "eas": {
         "projectId": "4c033a1c-647d-45c9-b9bf-c790e3adcf1e"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/4c033a1c-647d-45c9-b9bf-c790e3adcf1e"
     }
   }
 }
