@@ -1,7 +1,7 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Query
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, EmailStr
-from typing import List, Optional, Literal, Dict, Any, Union
+from typing import List, Optional, Literal, Dict, Any
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -20,7 +20,7 @@ client = AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.1.0")
+app = FastAPI(title="Allô Services CI API", version="0.2.0")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -47,7 +47,6 @@ class PyObjectId(ObjectId):
         except Exception:
             raise ValueError("Invalid ObjectId")
 
-# ---------- MODELS ----------
 LangKey = Literal['fr', 'en', 'es', 'it', 'ar']
 
 class I18nText(BaseModel):
@@ -57,6 +56,7 @@ class I18nText(BaseModel):
     it: Optional[str] = None
     ar: Optional[str] = None
 
+# ---------- MODELS ----------
 class Category(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     slug: str
@@ -109,6 +109,13 @@ class Pharmacy(BaseModel):
     duty_days: List[int] = Field(default_factory=list)  # 0=Mon ... 6=Sun
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
+class UsefulNumber(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    name: str
+    number: str
+    category: Literal['police','gendarmerie','pompiers','samu','violence','urgent_autre']
+    description: Optional[str] = None
+
 class Alert(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     title: str
@@ -156,6 +163,22 @@ class LawAnnouncement(BaseModel):
     summary: str
     link: Optional[str] = None
 
+class PublicCampaign(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    title: str
+    org: str
+    category: Literal['municipale','sensibilisation_admin','autre']
+    content: str
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+
+class PublicFormality(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    name: str
+    doc_type: Literal['acte_naissance','casier_judiciaire','autre']
+    steps: List[str] = Field(default_factory=list)
+    link: Optional[str] = None
+
 class Job(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     posting_type: Literal['offer', 'seeker']
@@ -166,6 +189,12 @@ class Job(BaseModel):
     contact_phone: Optional[str] = None
     contact_email: Optional[str] = None
     posted_at: datetime = Field(default_factory=datetime.utcnow)
+
+class CvTemplate(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    title: str
+    file_base64: str
+    tips: Optional[str] = None
 
 class CommodityPrice(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
@@ -180,12 +209,12 @@ class AgriTip(BaseModel):
     title: str
     content: str
 
-class UtilityService(BaseModel):
+class Cooperative(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     name: str
-    shortcode: Optional[str] = None
-    phone: Optional[str] = None
-    website: Optional[str] = None
+    sector: Literal['cacao','cafe','anacarde','hevea','autre']
+    city: Optional[str] = None
+    contact_phone: Optional[str] = None
 
 class Place(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
@@ -204,13 +233,70 @@ class TransportInfo(BaseModel):
     content: str
     link: Optional[str] = None
 
+class LocationNode(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    name: str
+    type: Literal['city','commune','subprefecture']
+    parent_id: Optional[PyObjectId] = None
+
+class School(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    name: str
+    type: Literal['public','private']
+    level: Literal['primaire','secondaire','superieur','formation_pro']
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    website: Optional[str] = None
+
+class EducationEvent(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    title: str
+    type: Literal['rentree','inscription','resultat','orientation','activity']
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    content: Optional[str] = None
+
+class TutoringPost(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    posted_by: Optional[PyObjectId] = None
+    subjects: List[str]
+    level: Literal['primaire','college','lycee','universite']
+    mode: Literal['domicile','enligne']
+    city: Optional[str] = None
+    contact: Optional[str] = None
+    posted_at: datetime = Field(default_factory=datetime.utcnow)
+
+# ---------- PREMIUM GUARD ----------
+async def is_premium_user(user_id: Optional[str]) -> bool:
+    if not user_id:
+        return False
+    try:
+        u_id = ObjectId(user_id)
+    except Exception:
+        return False
+    sub = await db.subscriptions.find_one({'user_id': u_id, 'status': 'paid'}, sort=[('expires_at', -1)])
+    if not sub:
+        return False
+    if sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
+        return True
+    return False
+
+async def require_premium(user_id: Optional[str] = None):
+    if not await is_premium_user(user_id):
+        raise HTTPException(status_code=402, detail="Premium required. Please subscribe.")
+
 # ---------- STARTUP: Indexes & Seed ----------
 async def ensure_indexes():
-    # 2dsphere index must be declared as a list of tuples
+    # Pharmacies geo
     await db.pharmacies.create_index([('location', '2dsphere')])
     await db.pharmacies.create_index('name')
+    # Generic indexes
     await db.alerts.create_index([('status', 1), ('created_at', -1)])
     await db.categories.create_index('slug', unique=True)
+    await db.locations.create_index([('parent_id', 1), ('name', 1)])
+    await db.jobs.create_index([('posted_at', -1)])
+    await db.commodity_prices.create_index([('updated_at', -1)])
 
 CATEGORIES = [
     {"slug": "urgence", "name": {"fr": "Urgence", "en": "Emergency"}, "icon": "alert"},
@@ -219,12 +305,14 @@ CATEGORIES = [
     {"slug": "examens_concours", "name": {"fr": "Examens & Concours", "en": "Exams & Contests"}, "icon": "clipboard-list"},
     {"slug": "services_publics", "name": {"fr": "Services publics", "en": "Public Services"}, "icon": "government"},
     {"slug": "emplois", "name": {"fr": "Emplois", "en": "Jobs"}, "icon": "briefcase"},
-    {"slug": "alertes", "name": {"fr": "Alerte", "en": "Alerts"}, "icon": "bullhorn"},
+    {"slug": "alertes", "name": {"fr": "Alertes", "en": "Alerts"}, "icon": "bullhorn"},
     {"slug": "services_utiles", "name": {"fr": "Services utiles", "en": "Utilities"}, "icon": "headset"},
     {"slug": "agriculture", "name": {"fr": "Agriculture", "en": "Agriculture"}, "icon": "leaf"},
     {"slug": "loisirs_tourisme", "name": {"fr": "Loisirs & Tourisme", "en": "Leisure & Tourism"}, "icon": "map"},
     {"slug": "transport", "name": {"fr": "Transport", "en": "Transport"}, "icon": "car"},
 ]
+
+ABIDJAN_COMMUNES = ["Plateau","Cocody","Yopougon","Abobo","Adjame","Koumassi","Marcory","Treichville","Port-Bouët","Attécoubé","Songon","Anyama"]
 
 async def seed_data():
     # Categories
@@ -232,7 +320,24 @@ async def seed_data():
         for c in CATEGORIES:
             await db.categories.insert_one({**c, 'name': {**c['name'], 'es': c['name'].get('en'), 'it': c['name'].get('en'), 'ar': c['name'].get('en')}})
 
-    # Pharmacies (sample Abidjan)
+    # Locations (Abidjan + communes)
+    if await db.locations.count_documents({}) == 0:
+        city = await db.locations.insert_one({'name': 'Abidjan', 'type': 'city'})
+        for com in ABIDJAN_COMMUNES:
+            await db.locations.insert_one({'name': com, 'type': 'commune', 'parent_id': city.inserted_id})
+        await db.locations.insert_one({'name': 'Bouaké', 'type': 'city'})
+        await db.locations.insert_one({'name': 'San-Pédro', 'type': 'city'})
+
+    # Useful numbers
+    if await db.useful_numbers.count_documents({}) == 0:
+        await db.useful_numbers.insert_many([
+            {'name': 'Police Secours', 'number': '170', 'category': 'police', 'description': 'Urgences policières'},
+            {'name': 'Gendarmerie', 'number': '145', 'category': 'gendarmerie'},
+            {'name': 'Sapeurs-pompiers', 'number': '180', 'category': 'pompiers'},
+            {'name': 'SAMU', 'number': '185', 'category': 'samu'}
+        ])
+
+    # Pharmacies (sample)
     if await db.pharmacies.count_documents({}) == 0:
         pharmacies = [
             {
@@ -309,30 +414,41 @@ async def seed_data():
             }
         ])
 
-    # Public Services & Laws
+    # Public Services & Laws & Campaigns & Formalities
     if await db.public_services.count_documents({}) == 0:
         await db.public_services.insert_many([
             {'name': 'Mairie de Cocody', 'type': 'mairie', 'phone': '+225 27 22 44 00 00', 'city': 'Abidjan', 'website': 'https://mairiecocody.ci'},
-            {'name': 'Palais de Justice d\'Abidjan', 'type': 'palais_justice', 'city': 'Abidjan', 'website': 'http://www.justice.gouv.ci/'}
+            {'name': "Palais de Justice d'Abidjan", 'type': 'palais_justice', 'city': 'Abidjan', 'website': 'http://www.justice.gouv.ci/'}
         ])
     if await db.law_announcements.count_documents({}) == 0:
         await db.law_announcements.insert_many([
-            {'title': 'Nouvelle réforme fiscale 2025', 'effective_date': datetime.utcnow() + timedelta(days=15), 'summary': 'Réforme sur la TVA', 'link': 'http://www.dgi.gouv.ci/'},
+            {'title': 'Nouvelle réforme fiscale 2025', 'effective_date': datetime.utcnow() + timedelta(days=15), 'summary': 'Réforme sur la TVA', 'link': 'http://www.dgi.gouv.ci/'}
+        ])
+    if await db.public_campaigns.count_documents({}) == 0:
+        await db.public_campaigns.insert_many([
+            {'title': 'Opération grand ménage', 'org': 'Mairie de Cocody', 'category': 'municipale', 'content': 'Nettoyage des quartiers ce samedi 9h.'}
+        ])
+    if await db.public_formalities.count_documents({}) == 0:
+        await db.public_formalities.insert_many([
+            {'name': 'Demande d\'acte de naissance', 'doc_type': 'acte_naissance', 'steps': ['Faire une demande en ligne', 'Se présenter à la mairie'], 'link': 'https://services.etatcivil.ci/'},
+            {'name': 'Demande de casier judiciaire', 'doc_type': 'casier_judiciaire', 'steps': ['Remplir le formulaire', 'Payer les frais'], 'link': 'https://casier-judiciaire.justice.gouv.ci/'}
         ])
 
-    # Jobs
+    # Jobs & CV templates
     if await db.jobs.count_documents({}) == 0:
         await db.jobs.insert_many([
             {'posting_type': 'offer', 'title': 'Assistant administratif', 'company_or_name': 'Société ABC', 'description': 'Gestion des dossiers', 'city': 'Abidjan', 'contact_phone': '+225 01 23 45 67 89'},
-            {'posting_type': 'seeker', 'title': 'Développeur mobile React Native', 'company_or_name': 'Kouassi Jean', 'description': '2 ans d\'expérience', 'city': 'Abidjan'}
+            {'posting_type': 'seeker', 'title': 'Développeur mobile React Native', 'company_or_name': 'Kouassi Jean', 'description': "2 ans d'expérience", 'city': 'Abidjan'}
         ])
+    if await db.cv_templates.count_documents({}) == 0:
+        await db.cv_templates.insert_one({'title': 'Modèle de CV simple', 'file_base64': 'JVBERi0xLjQKJcTl8uXrp/Og0MTGCg==', 'tips': 'Mettez en avant vos expériences pertinentes.'})
 
     # Utilities
     if await db.utility_services.count_documents({}) == 0:
         await db.utility_services.insert_many([
             {'name': 'CIE - Electricité', 'shortcode': '179', 'phone': '+225 27 20 25 60 60', 'website': 'https://www.cie.ci'},
             {'name': 'SODECI - Eau', 'shortcode': '175', 'phone': '+225 27 21 23 24 25', 'website': 'https://www.sodeci.ci'},
-            {'name': 'Orange Côte d\'Ivoire', 'shortcode': 'Orange 144', 'website': 'https://www.orange.ci'}
+            {'name': "Orange Côte d'Ivoire", 'shortcode': '144', 'website': 'https://www.orange.ci'}
         ])
 
     # Agriculture
@@ -345,6 +461,10 @@ async def seed_data():
     if await db.agri_tips.count_documents({}) == 0:
         await db.agri_tips.insert_many([
             {'title': 'Conseils sur la fermentation du cacao', 'content': 'Retourner les fèves tous les 2 jours.'}
+        ])
+    if await db.cooperatives.count_documents({}) == 0:
+        await db.cooperatives.insert_many([
+            {'name': 'Coopérative Cacao Plateau', 'sector': 'cacao', 'city': 'Abidjan', 'contact_phone': '+225 01 11 22 33 44'}
         ])
 
     # Leisure & Tourism
@@ -362,6 +482,18 @@ async def seed_data():
             {'topic': 'permis_conduire', 'title': 'Renouvellement du permis', 'content': 'Démarches à suivre', 'link': 'https://www.transports.gouv.ci/'}
         ])
 
+    # Schools & Education
+    if await db.schools.count_documents({}) == 0:
+        await db.schools.insert_many([
+            {'name': 'Lycée Classique d\'Abidjan', 'type': 'public', 'level': 'secondaire', 'city': 'Abidjan'},
+            {'name': 'Université Félix Houphouët-Boigny', 'type': 'public', 'level': 'superieur', 'city': 'Abidjan'},
+            {'name': 'Institut de Formation Professionnelle de Yopougon', 'type': 'public', 'level': 'formation_pro', 'city': 'Abidjan'}
+        ])
+    if await db.education_events.count_documents({}) == 0:
+        await db.education_events.insert_many([
+            {'title': 'Rentrée scolaire 2025-2026', 'type': 'rentree', 'start_date': datetime.utcnow() + timedelta(days=60), 'content': 'Date officielle de reprise des cours.'},
+            {'title': 'Inscriptions en ligne', 'type': 'inscription', 'content': 'Plateforme ouverte pour les inscriptions.'}
+        ])
 
 # ---------- ROUTES ----------
 
@@ -456,7 +588,16 @@ async def cinetpay_validate(payload: PaymentValidateInput):
     await db.subscriptions.update_one({'_id': sub['_id']}, update)
     return {"status": new_status}
 
-# Pharmacies
+# Urgence: Useful numbers (FREE)
+@api.get("/useful-numbers")
+async def get_useful_numbers():
+    items = await db.useful_numbers.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+# Pharmacies (FREE)
 @api.get("/pharmacies/nearby")
 async def pharmacies_nearby(lat: float = Query(...), lng: float = Query(...), max_km: float = 10.0, duty_only: bool = False):
     query: Dict[str, Any] = {
@@ -476,7 +617,7 @@ async def pharmacies_nearby(lat: float = Query(...), lng: float = Query(...), ma
         del r['_id']
     return results
 
-# Alerts
+# Alerts (FREE to read/post)
 class AlertCreate(BaseModel):
     title: str
     type: Literal['flood', 'missing_person', 'wanted_notice', 'fire', 'accident', 'other']
@@ -532,9 +673,10 @@ async def resolve_alert(alert_id: str):
     await db.alerts.update_one({'_id': _id}, {'$set': {'status': 'resolved'}})
     return {"status": "resolved"}
 
-# Health: hospitals
+# HEALTH (Premium)
 @api.get("/hospitals")
-async def list_hospitals(city: Optional[str] = None, type: Optional[str] = None):
+async def list_hospitals(user_id: Optional[str] = None, city: Optional[str] = None, type: Optional[str] = None):
+    await require_premium(user_id)
     query: Dict[str, Any] = {}
     if city: query['city'] = city
     if type: query['type'] = type
@@ -544,18 +686,20 @@ async def list_hospitals(city: Optional[str] = None, type: Optional[str] = None)
         del i['_id']
     return items
 
-# Exams & Concours
+# EXAMS & CONCOURS (Premium)
 @api.get("/exams")
-async def list_exams():
+async def list_exams(user_id: Optional[str] = None):
+    await require_premium(user_id)
     items = await db.exams.find().to_list(200)
     for i in items:
         i['id'] = str(i['_id'])
         del i['_id']
     return items
 
-# Services publics
+# SERVICES PUBLICS (Premium)
 @api.get("/public-services")
-async def list_public_services(type: Optional[str] = None):
+async def list_public_services(user_id: Optional[str] = None, type: Optional[str] = None):
+    await require_premium(user_id)
     query: Dict[str, Any] = {}
     if type: query['type'] = type
     items = await db.public_services.find(query).to_list(200)
@@ -565,16 +709,38 @@ async def list_public_services(type: Optional[str] = None):
     return items
 
 @api.get("/laws")
-async def list_laws():
+async def list_laws(user_id: Optional[str] = None):
+    await require_premium(user_id)
     items = await db.law_announcements.find().sort('effective_date', 1).to_list(200)
     for i in items:
         i['id'] = str(i['_id'])
         del i['_id']
     return items
 
-# Jobs
+@api.get("/public/campaigns")
+async def list_campaigns(user_id: Optional[str] = None):
+    await require_premium(user_id)
+    items = await db.public_campaigns.find().to_list(200)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.get("/public/formalities")
+async def list_formalities(user_id: Optional[str] = None, doc_type: Optional[str] = None):
+    await require_premium(user_id)
+    query: Dict[str, Any] = {}
+    if doc_type: query['doc_type'] = doc_type
+    items = await db.public_formalities.find(query).to_list(200)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+# JOBS (Premium to list; posting allowed for all?)
 @api.get("/jobs")
-async def list_jobs(posting_type: Optional[str] = None, city: Optional[str] = None):
+async def list_jobs(user_id: Optional[str] = None, posting_type: Optional[str] = None, city: Optional[str] = None):
+    await require_premium(user_id)
     query: Dict[str, Any] = {}
     if posting_type: query['posting_type'] = posting_type
     if city: query['city'] = city
@@ -602,18 +768,29 @@ async def create_job(payload: JobCreate):
     saved['id'] = saved['_id']
     return Job(**saved)
 
-# Utilities
+@api.get("/jobs/cv-templates")
+async def cv_templates(user_id: Optional[str] = None):
+    await require_premium(user_id)
+    items = await db.cv_templates.find().to_list(20)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+# UTILITIES (Premium)
 @api.get("/utilities")
-async def list_utilities():
+async def list_utilities(user_id: Optional[str] = None):
+    await require_premium(user_id)
     items = await db.utility_services.find().to_list(200)
     for i in items:
         i['id'] = str(i['_id'])
         del i['_id']
     return items
 
-# Agriculture
+# AGRICULTURE (Premium)
 @api.get("/agri/prices")
-async def list_prices():
+async def list_prices(user_id: Optional[str] = None):
+    await require_premium(user_id)
     items = await db.commodity_prices.find().sort('updated_at', -1).to_list(100)
     for i in items:
         i['id'] = str(i['_id'])
@@ -621,16 +798,29 @@ async def list_prices():
     return items
 
 @api.get("/agri/tips")
-async def list_agri_tips():
+async def list_agri_tips(user_id: Optional[str] = None):
+    await require_premium(user_id)
     items = await db.agri_tips.find().to_list(100)
     for i in items:
         i['id'] = str(i['_id'])
         del i['_id']
     return items
 
-# Leisure & Tourism
+@api.get("/agri/coops")
+async def list_coops(user_id: Optional[str] = None, sector: Optional[str] = None):
+    await require_premium(user_id)
+    query: Dict[str, Any] = {}
+    if sector: query['sector'] = sector
+    items = await db.cooperatives.find(query).to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+# LEISURE & TOURISM (Premium)
 @api.get("/places")
-async def list_places(type: Optional[str] = None, city: Optional[str] = None):
+async def list_places(user_id: Optional[str] = None, type: Optional[str] = None, city: Optional[str] = None):
+    await require_premium(user_id)
     query: Dict[str, Any] = {}
     if type: query['type'] = type
     if city: query['city'] = city
@@ -640,12 +830,98 @@ async def list_places(type: Optional[str] = None, city: Optional[str] = None):
         del i['_id']
     return items
 
-# Transport
+# TRANSPORT (Premium)
 @api.get("/transport")
-async def list_transport(topic: Optional[str] = None):
+async def list_transport(user_id: Optional[str] = None, topic: Optional[str] = None):
+    await require_premium(user_id)
     query: Dict[str, Any] = {}
     if topic: query['topic'] = topic
     items = await db.transport_info.find(query).to_list(200)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+# LOCATIONS (FREE)
+@api.get("/locations")
+async def list_locations(parent_id: Optional[str] = None, type: Optional[str] = None):
+    query: Dict[str, Any] = {}
+    if parent_id:
+        try:
+            query['parent_id'] = ObjectId(parent_id)
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid parent_id")
+    if type:
+        query['type'] = type
+    items = await db.locations.find(query).sort('name', 1).to_list(300)
+    for i in items:
+        i['id'] = str(i['_id'])
+        if i.get('parent_id'):
+            i['parent_id'] = str(i['parent_id'])
+        del i['_id']
+    return items
+
+# SCHOOLS (Premium)
+@api.get("/schools")
+async def list_schools(user_id: Optional[str] = None, city: Optional[str] = None, level: Optional[str] = None):
+    await require_premium(user_id)
+    query: Dict[str, Any] = {}
+    if city: query['city'] = city
+    if level: query['level'] = level
+    items = await db.schools.find(query).to_list(200)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+# EDUCATION EVENTS (Premium)
+@api.get("/education/events")
+async def list_edu_events(user_id: Optional[str] = None, type: Optional[str] = None):
+    await require_premium(user_id)
+    query: Dict[str, Any] = {}
+    if type: query['type'] = type
+    items = await db.education_events.find(query).to_list(200)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+# TUTORING (post free, list premium)
+class TutoringPostCreate(BaseModel):
+    posted_by: Optional[str] = None
+    subjects: List[str]
+    level: Literal['primaire','college','lycee','universite']
+    mode: Literal['domicile','enligne']
+    city: Optional[str] = None
+    contact: Optional[str] = None
+
+@api.post("/education/tutoring", response_model=TutoringPost)
+async def create_tutoring(payload: TutoringPostCreate):
+    doc: Dict[str, Any] = {
+        'subjects': payload.subjects,
+        'level': payload.level,
+        'mode': payload.mode,
+        'city': payload.city,
+        'contact': payload.contact,
+        'posted_at': datetime.utcnow()
+    }
+    if payload.posted_by:
+        try:
+            doc['posted_by'] = ObjectId(payload.posted_by)
+        except Exception:
+            pass
+    res = await db.tutoring_posts.insert_one(doc)
+    saved = await db.tutoring_posts.find_one({'_id': res.inserted_id})
+    saved['id'] = saved['_id']
+    return TutoringPost(**saved)
+
+@api.get("/education/tutoring")
+async def list_tutoring(user_id: Optional[str] = None, city: Optional[str] = None, level: Optional[str] = None):
+    await require_premium(user_id)
+    query: Dict[str, Any] = {}
+    if city: query['city'] = city
+    if level: query['level'] = level
+    items = await db.tutoring_posts.find(query).sort('posted_at', -1).to_list(200)
     for i in items:
         i['id'] = str(i['_id'])
         del i['_id']

@@ -101,3 +101,71 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Build Allô Services CI mobile app backend with MongoDB: multi-category info, alerts with images, GPS pharmacies, premium subscription via CinetPay stub, 5 languages, free Urgence and premium for others."
+backend:
+  - task: "Core API + Mongo models + seed"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Implemented models, indexes, seed endpoint, categories, users, subscriptions, payments stub, urgency (useful numbers, pharmacies), alerts, health, education, exams, services publics, emplois, utilities, agriculture, loisirs, transport, locations, tutoring, CV templates. Added premium gating except Urgence, Alerts (read/post), Locations, Job create."
+  - task: "Geo query for pharmacies"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Created 2dsphere index and /pharmacies/nearby with duty_only filter by weekday and radius."
+  - task: "Payments CinetPay stub"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Initiate returns a redirect_url stub, validate marks paid and sets 365 days expiry, toggles user premium."
+frontend:
+  - task: "Initial Expo screen"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/index.tsx"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Placeholder splash image. Full UI to be implemented next."
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Hit /api/seed and verify 200"
+    - "List /api/categories"
+    - "Register user, initiate payment, validate success, check /subscriptions/check"
+    - "Test free endpoints: /useful-numbers, /pharmacies/nearby, /alerts (POST+GET), /locations"
+    - "Test premium gating: e.g., /exams without user_id (expect 402), then with user_id after premium (expect 200)"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Please test backend endpoints per test_plan. No auth headers required; pass user_id query where indicated."
