@@ -29,6 +29,7 @@ export default function Register() {
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <Text style={styles.brand}>Allô Services CI</Text>
         <Text style={styles.title}>Créer un compte</Text>
         <TextInput placeholder="Prénom" value={first_name} onChangeText={setFirst} style={styles.input} />
         <TextInput placeholder="Nom" value={last_name} onChangeText={setLast} style={styles.input} />
@@ -42,6 +43,7 @@ export default function Register() {
 
 const styles = StyleSheet.create({
   container: { flexGrow: 1, padding: 16, backgroundColor: '#fff', justifyContent: 'center' },
+  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', marginBottom: 8, textAlign: 'center' },
   title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', marginBottom: 16, textAlign: 'center' },
   input: { borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, padding: 12, marginBottom: 12, backgroundColor: '#FAFAF8' },
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },

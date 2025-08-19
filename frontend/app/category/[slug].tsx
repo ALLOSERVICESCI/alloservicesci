@@ -24,7 +24,10 @@ export default function CategoryPage() {
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground source={bg} style={styles.header} resizeMode="cover">
         <View style={styles.overlay} />
-        <Text style={styles.headerTitle}>{slug}</Text>
+        <View style={styles.headerContent}>
+          <Text style={styles.brand}>Allô Services CI</Text>
+          <Text style={styles.headerTitle}>{slug}</Text>
+        </View>
       </ImageBackground>
       <View style={{ padding: 16 }}>
         <Text>Contenu à venir pour {slug}</Text>
@@ -36,5 +39,7 @@ export default function CategoryPage() {
 const styles = StyleSheet.create({
   header: { height: 180, justifyContent: 'flex-end' },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
-  headerTitle: { color: '#fff', fontSize: 22, fontWeight: '800', padding: 16 },
+  headerContent: { padding: 16 },
+  brand: { color: '#fff', fontSize: 14, fontWeight: '700' },
+  headerTitle: { color: '#fff', fontSize: 22, fontWeight: '800', marginTop: 6 },
 });

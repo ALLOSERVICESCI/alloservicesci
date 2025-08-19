@@ -32,6 +32,7 @@ export default function Subscribe() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.brandBar}><Text style={styles.brand}>Allô Services CI</Text></View>
       <Text style={styles.title}>Premium 1200 FCFA / an</Text>
       {!user?.id && <Text style={styles.text}>Veuillez créer un compte (Profil) pour activer le paiement.</Text>}
       {loading ? <ActivityIndicator /> : (
@@ -43,6 +44,8 @@ export default function Subscribe() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16 },
+  brandBar: { paddingTop: 4, paddingBottom: 8 },
+  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   title: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   text: { marginTop: 10, color: '#333' },
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 16 },

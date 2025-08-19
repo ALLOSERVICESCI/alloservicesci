@@ -27,7 +27,8 @@ export default function Alerts() {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: 16 }}>
+      <View style={styles.brandBar}><Text style={styles.brand}>Allô Services CI</Text></View>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 16, paddingBottom: 8 }}>
         <Link href="/alerts/new" asChild>
           <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Nouvelle alerte</Text></TouchableOpacity>
         </Link>
@@ -44,7 +45,7 @@ export default function Alerts() {
         )}
         onRefresh={fetchAlerts}
         refreshing={loading}
-        contentContainerStyle={{ padding: 16 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
       />
     </View>
   );
@@ -52,8 +53,10 @@ export default function Alerts() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
+  brandBar: { paddingTop: 20, paddingHorizontal: 16, paddingBottom: 8 },
+  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E8F0E8' },
+  card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginTop: 12, borderWidth: 1, borderColor: '#E8F0E8' },
   title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A' },
   desc: { fontSize: 14, color: '#333', marginTop: 6 },
   meta: { fontSize: 12, color: '#666', marginTop: 8 },

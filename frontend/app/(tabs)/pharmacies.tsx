@@ -37,6 +37,7 @@ export default function Pharmacies() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.brandBar}><Text style={styles.brand}>Allô Services CI</Text></View>
       {error && <Text style={styles.error}>{error}</Text>}
       {loading && <ActivityIndicator />}
       {data.map((p) => (
@@ -53,6 +54,8 @@ export default function Pharmacies() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16 },
+  brandBar: { paddingTop: 4, paddingBottom: 8 },
+  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   error: { color: '#B00020', marginBottom: 8 },
   card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E8F0E8' },
   title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A' },
