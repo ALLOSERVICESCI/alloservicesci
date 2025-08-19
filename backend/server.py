@@ -206,7 +206,8 @@ class TransportInfo(BaseModel):
 
 # ---------- STARTUP: Indexes & Seed ----------
 async def ensure_indexes():
-    await db.pharmacies.create_index({'location': '2dsphere'})
+    # 2dsphere index must be declared as a list of tuples
+    await db.pharmacies.create_index([('location', '2dsphere')])
     await db.pharmacies.create_index('name')
     await db.alerts.create_index([('status', 1), ('created_at', -1)])
     await db.categories.create_index('slug', unique=True)
