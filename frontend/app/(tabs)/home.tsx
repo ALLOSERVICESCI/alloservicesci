@@ -125,33 +125,37 @@ export default function Home() {
       <View style={styles.quickActionsSection}>
         <Text style={styles.sectionTitle}>{t('quickAccess')}</Text>
         <View style={styles.quickActionsGrid}>
-          <Link href="/alerts" asChild>
-            <TouchableOpacity style={styles.quickActionCard}>
-              <Text style={styles.quickActionEmoji}>📢</Text>
-              <Text style={styles.quickActionLabel}>{t('cat_alertes')}</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity 
+            style={styles.quickActionCard}
+            onPress={() => router.push('/alerts')}
+          >
+            <Text style={styles.quickActionEmoji}>📢</Text>
+            <Text style={styles.quickActionLabel}>{t('cat_alertes')}</Text>
+          </TouchableOpacity>
           
-          <Link href="/pharmacies" asChild>
-            <TouchableOpacity style={styles.quickActionCard}>
-              <Text style={styles.quickActionEmoji}>🏥</Text>
-              <Text style={styles.quickActionLabel}>{t('cat_sante')}</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity 
+            style={styles.quickActionCard}
+            onPress={() => router.push('/pharmacies')}
+          >
+            <Text style={styles.quickActionEmoji}>🏥</Text>
+            <Text style={styles.quickActionLabel}>{t('cat_sante')}</Text>
+          </TouchableOpacity>
           
-          <Link href="/subscribe" asChild>
-            <TouchableOpacity style={styles.quickActionCard}>
-              <Text style={styles.quickActionEmoji}>⭐</Text>
-              <Text style={styles.quickActionLabel}>Premium</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity 
+            style={styles.quickActionCard}
+            onPress={() => router.push('/subscribe')}
+          >
+            <Text style={styles.quickActionEmoji}>⭐</Text>
+            <Text style={styles.quickActionLabel}>Premium</Text>
+          </TouchableOpacity>
           
-          <Link href="/profile" asChild>
-            <TouchableOpacity style={styles.quickActionCard}>
-              <Text style={styles.quickActionEmoji}>👤</Text>
-              <Text style={styles.quickActionLabel}>{t('tabProfile')}</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity 
+            style={styles.quickActionCard}
+            onPress={() => router.push('/profile')}
+          >
+            <Text style={styles.quickActionEmoji}>👤</Text>
+            <Text style={styles.quickActionLabel}>{t('tabProfile')}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
