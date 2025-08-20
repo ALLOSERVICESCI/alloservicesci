@@ -32,7 +32,7 @@ CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
 BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.4.1")
+app = FastAPI(title="Allô Services CI API", version="0.4.2")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -64,14 +64,6 @@ logging.basicConfig(level=logging.INFO)
 
 LangKey = Literal['fr', 'en', 'es', 'it', 'ar']
 
-class I18nText(BaseModel):
-    fr: str
-    en: Optional[str] = None
-    es: Optional[str] = None
-    it: Optional[str] = None
-    ar: Optional[str] = None
-
-# ---------- MODELS (simplified for patch) ----------
 class UserCreate(BaseModel):
     first_name: str
     last_name: str
@@ -82,11 +74,10 @@ class UserCreate(BaseModel):
     preferred_lang: LangKey = 'fr'
     photo_base64: Optional[str] = None
 
-# New models: Push notifications
 class PushTokenRegister(BaseModel):
     token: str
     user_id: Optional[str] = None
-    platform: Optional[str] = None  # ios | android | web
+    platform: Optional[str] = None
     city: Optional[str] = None
     device_info: Optional[Dict[str, Any]] = None
 
@@ -94,11 +85,7 @@ class PushSendInput(BaseModel):
     title: str
     body: str
     data: Optional[Dict[str, Any]] = None
-    city: Optional[str] = None  # optional filter
-
-class GeoPoint(BaseModel):
-    type: Literal['Point'] = 'Point'
-    coordinates: List[float]
+    city: Optional[str] = None
 
 class AlertCreate(BaseModel):
     title: str
@@ -122,18 +109,18 @@ async def ensure_indexes():
     await db.transactions.create_index('transaction_id', unique=True)
     await db.push_tokens.create_index('token', unique=True)
 
-# ---------- BASIC ROUTES (health, seed placeholder) ----------
+# ---------- BASIC ROUTES ----------
 @api.get('/health')
 async def health():
     return {"status": "ok"}
 
-@api.post('/seed')
-async def seed():
-    await ensure_indexes()
-    return {"status": "ok"}
+@api.get('/')
+async def api_root():
+    return {"message": "Allô Services CI API", "paths": [r.path for r in app.router.routes]}
 
 # ---------- AUTH ----------
 @api.post("/auth/register")
+@api.post("/auth/register/")
 async def register_user(payload: UserCreate):
     doc = payload.model_dump()
     doc['created_at'] = datetime.utcnow()
@@ -165,10 +152,6 @@ async def check_subscription(user_id: str):
 class PaymentInitInput(BaseModel):
     user_id: str
     amount_fcfa: int = 1200
-    customer_name: Optional[str] = None
-    customer_surname: Optional[str] = None
-    customer_phone: Optional[str] = None
-    customer_email: Optional[str] = None
 
 @api.post("/payments/cinetpay/initiate")
 async def cinetpay_initiate(payload: PaymentInitInput):
@@ -250,6 +233,7 @@ async def cinetpay_return(transaction_id: str, status: Optional[str] = None):
 
 # ---------- ALERTS ----------
 @api.get("/alerts")
+@api.get("/alerts/")
 async def list_alerts(status: Optional[str] = None, type: Optional[str] = None):
     query: Dict[str, Any] = {}
     if status:
@@ -271,6 +255,31 @@ async def resolve_alert(alert_id: str):
     await db.alerts.update_one({'_id': _id}, {'$set': {'status': 'resolved'}})
     return {"status": "resolved"}
 
+@api.post("/alerts")
+@api.post("/alerts/")
+async def create_alert(payload: AlertCreate):
+    doc: Dict[str, Any] = {
+        'title': payload.title,
+        'type': payload.type,
+        'description': payload.description,
+        'city': payload.city,
+        'images_base64': payload.images_base64,
+        'status': 'active',
+        'created_at': datetime.utcnow()
+    }
+    if payload.lat is not None and payload.lng is not None:
+        doc['location'] = {'type': 'Point', 'coordinates': [payload.lng, payload.lat]}
+    if payload.posted_by:
+        try:
+            doc['posted_by'] = ObjectId(payload.posted_by)
+        except Exception:
+            pass
+    res = await db.alerts.insert_one(doc)
+    saved = await db.alerts.find_one({'_id': res.inserted_id})
+    saved['id'] = str(saved['_id'])
+    del saved['_id']
+    return saved
+
 # ---------- PUSH NOTIFICATIONS ----------
 
 def _chunk_list(items: List[str], size: int = 100) -> List[List[str]]:
@@ -281,13 +290,7 @@ async def _send_expo_push(tokens: List[str], payload: Dict[str, Any]) -> List[Di
         return []
     messages = []
     for t in tokens:
-        messages.append({
-            'to': t,
-            'sound': 'default',
-            'title': payload.get('title'),
-            'body': payload.get('body'),
-            'data': payload.get('data') or {}
-        })
+        messages.append({'to': t,'sound': 'default','title': payload.get('title'),'body': payload.get('body'),'data': payload.get('data') or {}})
     results: List[Dict[str, Any]] = []
     for batch in _chunk_list(messages, 100):
         try:
@@ -331,51 +334,18 @@ async def send_push(payload: PushSendInput):
     results = await _send_expo_push(tokens, {'title': payload.title, 'body': payload.body, 'data': payload.data})
     return {'count': len(tokens), 'results': results}
 
-# ---------- CREATE ALERT (with push) ----------
-@api.post("/alerts")
-async def create_alert(payload: AlertCreate):
-    doc: Dict[str, Any] = {
-        'title': payload.title,
-        'type': payload.type,
-        'description': payload.description,
-        'city': payload.city,
-        'images_base64': payload.images_base64,
-        'status': 'active',
-        'created_at': datetime.utcnow()
-    }
-    if payload.lat is not None and payload.lng is not None:
-        doc['location'] = {'type': 'Point', 'coordinates': [payload.lng, payload.lat]}
-    if payload.posted_by:
-        try:
-            doc['posted_by'] = ObjectId(payload.posted_by)
-        except Exception:
-            pass
-    res = await db.alerts.insert_one(doc)
-    saved = await db.alerts.find_one({'_id': res.inserted_id})
-    saved['id'] = str(saved['_id'])
-    del saved['_id']
-
-    try:
-        query: Dict[str, Any] = {}
-        if payload.city:
-            query['city'] = payload.city
-        tokens = [pt['token'] async for pt in db.push_tokens.find(query, {'token': 1}).limit(500)]
-        await _send_expo_push(tokens, {
-            'title': f"Alerte: {payload.type}",
-            'body': payload.title,
-            'data': {'alert_id': saved['id'], 'city': payload.city or ''}
-        })
-    except Exception as e:
-        logger.warning(f"Push broadcast failed: {e}")
-
-    return saved
-
-# ---------- INCLUDE ROUTER & LIFECYCLE ----------
+# ---------- INCLUDE ROUTER ----------
 app.include_router(api)
 
 @app.on_event("startup")
 async def on_startup():
     await ensure_indexes()
+    # Log registered routes for debugging
+    try:
+        paths = [r.path for r in app.router.routes]
+        logger.info(f"Registered routes: {paths}")
+    except Exception:
+        pass
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
