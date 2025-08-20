@@ -375,6 +375,183 @@ async def get_useful():
         del i['_id']
     return items
 
+# ---------- SEED DATA ----------
+@api.post('/seed')
+async def seed_data():
+    # Categories
+    categories = [
+        {'slug': 'urgence', 'name_fr': 'Urgence', 'name_en': 'Emergency', 'name_es': 'Emergencia', 'name_it': 'Emergenza', 'name_ar': 'طوارئ', 'is_premium': False},
+        {'slug': 'sante', 'name_fr': 'Santé', 'name_en': 'Health', 'name_es': 'Salud', 'name_it': 'Salute', 'name_ar': 'صحة', 'is_premium': False},
+        {'slug': 'education', 'name_fr': 'Éducation', 'name_en': 'Education', 'name_es': 'Educación', 'name_it': 'Educazione', 'name_ar': 'تعليم', 'is_premium': True},
+        {'slug': 'examens_concours', 'name_fr': 'Examens & Concours', 'name_en': 'Exams & Competitions', 'name_es': 'Exámenes y Concursos', 'name_it': 'Esami e Concorsi', 'name_ar': 'امتحانات ومسابقات', 'is_premium': True},
+        {'slug': 'services_publics', 'name_fr': 'Services Publics', 'name_en': 'Public Services', 'name_es': 'Servicios Públicos', 'name_it': 'Servizi Pubblici', 'name_ar': 'خدمات عامة', 'is_premium': True},
+        {'slug': 'emplois', 'name_fr': 'Emplois', 'name_en': 'Jobs', 'name_es': 'Empleos', 'name_it': 'Lavori', 'name_ar': 'وظائف', 'is_premium': True},
+        {'slug': 'services_utiles', 'name_fr': 'Services Utiles', 'name_en': 'Useful Services', 'name_es': 'Servicios Útiles', 'name_it': 'Servizi Utili', 'name_ar': 'خدمات مفيدة', 'is_premium': True},
+        {'slug': 'agriculture', 'name_fr': 'Agriculture', 'name_en': 'Agriculture', 'name_es': 'Agricultura', 'name_it': 'Agricoltura', 'name_ar': 'زراعة', 'is_premium': True},
+        {'slug': 'loisirs_tourisme', 'name_fr': 'Loisirs & Tourisme', 'name_en': 'Leisure & Tourism', 'name_es': 'Ocio y Turismo', 'name_it': 'Tempo libero e Turismo', 'name_ar': 'ترفيه وسياحة', 'is_premium': True},
+        {'slug': 'transport', 'name_fr': 'Transport', 'name_en': 'Transport', 'name_es': 'Transporte', 'name_it': 'Trasporti', 'name_ar': 'نقل', 'is_premium': True},
+    ]
+    
+    for cat in categories:
+        await db.categories.update_one({'slug': cat['slug']}, {'$set': cat}, upsert=True)
+    
+    # Sample useful numbers (free access)
+    useful_numbers = [
+        {'category': 'urgence', 'name': 'SAMU', 'number': '15', 'description': 'Services d\'urgence médicale'},
+        {'category': 'urgence', 'name': 'Pompiers', 'number': '18', 'description': 'Services d\'incendie et secours'},
+        {'category': 'urgence', 'name': 'Police', 'number': '17', 'description': 'Police nationale'},
+        {'category': 'urgence', 'name': 'Gendarmerie', 'number': '177', 'description': 'Gendarmerie nationale'},
+    ]
+    for un in useful_numbers:
+        await db.useful_numbers.update_one({'number': un['number']}, {'$set': un}, upsert=True)
+    
+    # Sample pharmacies (free access)
+    pharmacies = [
+        {
+            'name': 'Pharmacie Plateau',
+            'address': 'Avenue Chardy, Plateau',
+            'city': 'Abidjan',
+            'phone': '27-20-32-15-47',
+            'location': {'type': 'Point', 'coordinates': [-4.0167, 5.3167]},
+            'duty_days': [0, 1, 2, 3, 4, 5, 6]
+        },
+        {
+            'name': 'Pharmacie Cocody',
+            'address': 'Boulevard de la Paix, Cocody',
+            'city': 'Abidjan',
+            'phone': '27-22-44-33-21',
+            'location': {'type': 'Point', 'coordinates': [-3.9833, 5.3500]},
+            'duty_days': [0, 1, 2, 3, 4]
+        }
+    ]
+    for ph in pharmacies:
+        await db.pharmacies.update_one({'name': ph['name']}, {'$set': ph}, upsert=True)
+    
+    # Sample premium content
+    exams_data = [
+        {'title': 'BEPC 2025', 'date': '2025-06-15', 'type': 'national', 'description': 'Brevet d\'Études du Premier Cycle'},
+        {'title': 'BAC 2025', 'date': '2025-06-20', 'type': 'national', 'description': 'Baccalauréat général et technique'},
+    ]
+    for exam in exams_data:
+        await db.exams.update_one({'title': exam['title']}, {'$set': exam}, upsert=True)
+    
+    utilities_data = [
+        {'name': 'CIE (Électricité)', 'phone': '179', 'service': 'Électricité', 'description': 'Compagnie Ivoirienne d\'Électricité'},
+        {'name': 'SODECI (Eau)', 'phone': '175', 'service': 'Eau', 'description': 'Société de Distribution d\'Eau de Côte d\'Ivoire'},
+        {'name': 'Orange CI', 'phone': '111', 'service': 'Télécom', 'description': 'Services client Orange'},
+    ]
+    for util in utilities_data:
+        await db.utilities.update_one({'name': util['name']}, {'$set': util}, upsert=True)
+    
+    return {'status': 'ok', 'message': 'Database seeded successfully'}
+
+# ---------- CATEGORIES ----------
+@api.get('/categories')
+async def get_categories():
+    items = await db.categories.find().to_list(20)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+# ---------- PREMIUM GATED ENDPOINTS ----------
+
+async def check_user_premium(user_id: str) -> bool:
+    """Helper function to check if user is premium"""
+    try:
+        uid = ObjectId(user_id)
+        return await _is_user_premium(uid)
+    except:
+        return False
+
+@api.get('/exams')
+async def get_exams(user_id: Optional[str] = None):
+    if not user_id or not await check_user_premium(user_id):
+        raise HTTPException(status_code=402, detail="Premium subscription required")
+    
+    items = await db.exams.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.get('/utilities')
+async def get_utilities(user_id: Optional[str] = None):
+    if not user_id or not await check_user_premium(user_id):
+        raise HTTPException(status_code=402, detail="Premium subscription required")
+    
+    items = await db.utilities.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.get('/education')
+async def get_education(user_id: Optional[str] = None):
+    if not user_id or not await check_user_premium(user_id):
+        raise HTTPException(status_code=402, detail="Premium subscription required")
+    
+    items = await db.education.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.get('/services-publics')
+async def get_services_publics(user_id: Optional[str] = None):
+    if not user_id or not await check_user_premium(user_id):
+        raise HTTPException(status_code=402, detail="Premium subscription required")
+    
+    items = await db.services_publics.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.get('/emplois')
+async def get_emplois(user_id: Optional[str] = None):
+    if not user_id or not await check_user_premium(user_id):
+        raise HTTPException(status_code=402, detail="Premium subscription required")
+    
+    items = await db.emplois.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.get('/agriculture')
+async def get_agriculture(user_id: Optional[str] = None):
+    if not user_id or not await check_user_premium(user_id):
+        raise HTTPException(status_code=402, detail="Premium subscription required")
+    
+    items = await db.agriculture.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.get('/loisirs')
+async def get_loisirs(user_id: Optional[str] = None):
+    if not user_id or not await check_user_premium(user_id):
+        raise HTTPException(status_code=402, detail="Premium subscription required")
+    
+    items = await db.loisirs.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.get('/transport')
+async def get_transport(user_id: Optional[str] = None):
+    if not user_id or not await check_user_premium(user_id):
+        raise HTTPException(status_code=402, detail="Premium subscription required")
+    
+    items = await db.transport.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
 # ---------- PUSH NOTIFICATIONS ----------
 
 def _chunk_list(items: List[str], size: int = 100) -> List[List[str]]:
