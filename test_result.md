@@ -418,6 +418,17 @@ metadata:
       - working: "NA"
         agent: "testing"
         comment: "⚠️ CANNOT TEST: i18n regression testing requires completing profile edit language change flow. Code review confirms tab titles use proper t() translation function and should update correctly when language changes. Spanish translations verified in i18n.tsx: Inicio, Alertas, Farmacias, Premium, Perfil. Brand text 'Allô Services CI' preserved across all languages."
+  - task: "Font preloading startup fix"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/_layout.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Font preloading fix successful! Smoke test completed successfully. Root URL (/) redirects correctly to /(tabs)/home without '6000ms timeout exceeded' errors. No font loading errors detected in console. Tab icons render properly (5 tabs detected). Brand text 'Allô Services CI' displays correctly. Home screen shows category cards with proper icons (Urgence, Santé, Education visible). Navigation to Profile tab works. Only minor deprecation warnings found (shadow props, resizeMode, pointerEvents) - no critical issues. Startup crash resolved completely."
 
 test_plan:
   current_focus:
