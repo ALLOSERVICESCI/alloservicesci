@@ -119,8 +119,6 @@ export default function Subscribe() {
           </View>
         ) : (
           <View style={styles.subscriptionInfo}>
-            <Text style={styles.price}>1 200 FCFA</Text>
-            <Text style={styles.period}>/ {t('year')}</Text>
             <Text style={styles.description}>{t('premiumDescription')}</Text>
           </View>
         )}
