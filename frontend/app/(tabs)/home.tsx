@@ -80,43 +80,41 @@ export default function Home() {
           style={styles.carouselContainer}
         >
           {categories.map((category) => (
-            <Link 
-              key={category.slug} 
-              href={{ pathname: '/category/[slug]', params: { slug: category.slug } }} 
-              asChild
-            >
-              <TouchableOpacity style={[
+            <TouchableOpacity 
+              key={category.slug}
+              style={[
                 styles.categoryCard,
                 category.isPremium && styles.categoryCardPremium
-              ]}>
-                {category.isPremium && (
-                  <View style={styles.premiumBadge}>
-                    <Text style={styles.premiumBadgeText}>✨</Text>
-                  </View>
-                )}
-                
-                <View style={styles.categoryIconContainer}>
-                  <Text style={styles.categoryEmoji}>{category.emoji}</Text>
-                  <Image 
-                    source={ICONS[category.slug as keyof typeof ICONS]} 
-                    style={styles.categoryIcon} 
-                  />
+              ]}
+              onPress={() => router.push(`/category/${category.slug}`)}
+            >
+              {category.isPremium && (
+                <View style={styles.premiumBadge}>
+                  <Text style={styles.premiumBadgeText}>✨</Text>
                 </View>
-                
-                <Text style={[
-                  styles.categoryLabel,
-                  category.isPremium && styles.categoryLabelPremium
-                ]}>
-                  {category.label}
-                </Text>
-                
-                {category.isPremium && (
-                  <View style={styles.premiumIndicator}>
-                    <Text style={styles.premiumIndicatorText}>Premium</Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-            </Link>
+              )}
+              
+              <View style={styles.categoryIconContainer}>
+                <Text style={styles.categoryEmoji}>{category.emoji}</Text>
+                <Image 
+                  source={ICONS[category.slug as keyof typeof ICONS]} 
+                  style={styles.categoryIcon} 
+                />
+              </View>
+              
+              <Text style={[
+                styles.categoryLabel,
+                category.isPremium && styles.categoryLabelPremium
+              ]}>
+                {category.label}
+              </Text>
+              
+              {category.isPremium && (
+                <View style={styles.premiumIndicator}>
+                  <Text style={styles.premiumIndicatorText}>Premium</Text>
+                </View>
+              )}
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
