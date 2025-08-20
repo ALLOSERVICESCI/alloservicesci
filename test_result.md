@@ -106,15 +106,18 @@ user_problem_statement: "Build Allô Services CI mobile app backend with MongoDB
 backend:
   - task: "Trigger targeted notification (Bouaké, fr)"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Send push: city=Bouaké, lang=fr, title=Information officielle, custom message as provided by user." 
+        comment: "Send push: city=Bouaké, lang=fr, title=Information officielle, custom message as provided by user."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Targeted notification endpoint working correctly. POST /api/notifications/send with payload {title: 'Information officielle', body: 'la ville de bouaké organise les independances du 7 août 2025, vous êtes tous conviés pour une belle réussite.', city: 'Bouaké', lang: 'fr'} returned HTTP 200 with JSON {count: 1, results: [1 batch]}. Segmentation logic correctly identified 1 matching push token for city=Bouaké and lang=fr. Push notification targeting and filtering functionality confirmed working." 
   - task: "Core API + Mongo models + seed"
     implemented: true
     working: true
