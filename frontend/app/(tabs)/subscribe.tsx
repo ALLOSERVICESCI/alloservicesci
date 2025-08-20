@@ -77,21 +77,21 @@ export default function Subscribe() {
       <View style={styles.header}>
         <Text style={styles.brand}>{t('brand')}</Text>
         <Text style={styles.slogan}>{t('slogan')}</Text>
-      
+      </View>
 
       {/* Logo & Status */}
       <View style={styles.logoSection}>
         <View style={styles.logoWrapper}>
-          
+          <View style={styles.logoOuterBorder}>
             <Image source={APP_ICON} style={styles.logo} />
-          
+          </View>
           {isPremium && (
             <View style={styles.premiumBadge}>
               <Text style={styles.premiumBadgeText}>✨ {'Premium 1200 FCFA / an'}</Text>
-            
+            </View>
           )}
-        
-      
+        </View>
+      </View>
 
       {/* Premium Status Card */}
       <View style={[styles.statusCard, isPremium ? styles.statusCardPremium : styles.statusCardFree]}>
@@ -118,13 +118,13 @@ export default function Subscribe() {
                 <Text style={styles.refreshButtonText}>{t('refreshStatus')}</Text>
               )}
             </TouchableOpacity>
-          
+          </View>
         ) : (
           <View style={styles.subscriptionInfo}>
             <Text style={styles.description}>{t('premiumDescription')}</Text>
-          
+          </View>
         )}
-      
+      </View>
 
       {/* Features Grid */}
       <View style={styles.featuresSection}>
@@ -136,10 +136,10 @@ export default function Subscribe() {
               <Text style={styles.featureTitle}>{feature.title}</Text>
               <Text style={styles.featureDescription}>{feature.description}</Text>
               {isPremium && <Text style={styles.featureUnlocked}>✓ {t('unlocked')}</Text>}
-            
+            </View>
           ))}
-        
-      
+        </View>
+      </View>
 
       {/* Call to Action */}
       <View style={styles.ctaSection}>
@@ -174,7 +174,7 @@ export default function Subscribe() {
             <Text style={styles.paymentNote}>{t('securePaymentByCinetPay')}</Text>
           </>
         )}
-      
+      </View>
     </ScrollView>
   );
 }
