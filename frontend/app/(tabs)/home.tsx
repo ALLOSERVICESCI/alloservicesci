@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
@@ -80,41 +80,43 @@ export default function Home() {
           style={styles.carouselContainer}
         >
           {categories.map((category) => (
-            <TouchableOpacity 
-              key={category.slug}
-              style={[
+            <Link 
+              key={category.slug} 
+              href={{ pathname: '/category/[slug]', params: { slug: category.slug } }} 
+              asChild
+            >
+              <TouchableOpacity style={[
                 styles.categoryCard,
                 category.isPremium && styles.categoryCardPremium
-              ]}
-              onPress={() => router.push(`/category/${category.slug}`)}
-            >
-              {category.isPremium && (
-                <View style={styles.premiumBadge}>
-                  <Text style={styles.premiumBadgeText}>✨</Text>
-                </View>
-              )}
-              
-              <View style={styles.categoryIconContainer}>
-                <Text style={styles.categoryEmoji}>{category.emoji}</Text>
-                <Image 
-                  source={ICONS[category.slug as keyof typeof ICONS]} 
-                  style={styles.categoryIcon} 
-                />
-              </View>
-              
-              <Text style={[
-                styles.categoryLabel,
-                category.isPremium && styles.categoryLabelPremium
               ]}>
-                {category.label}
-              </Text>
-              
-              {category.isPremium && (
-                <View style={styles.premiumIndicator}>
-                  <Text style={styles.premiumIndicatorText}>Premium</Text>
+                {category.isPremium && (
+                  <View style={styles.premiumBadge}>
+                    <Text style={styles.premiumBadgeText}>✨</Text>
+                  </View>
+                )}
+                
+                <View style={styles.categoryIconContainer}>
+                  <Text style={styles.categoryEmoji}>{category.emoji}</Text>
+                  <Image 
+                    source={ICONS[category.slug as keyof typeof ICONS]} 
+                    style={styles.categoryIcon} 
+                  />
                 </View>
-              )}
-            </TouchableOpacity>
+                
+                <Text style={[
+                  styles.categoryLabel,
+                  category.isPremium && styles.categoryLabelPremium
+                ]}>
+                  {category.label}
+                </Text>
+                
+                {category.isPremium && (
+                  <View style={styles.premiumIndicator}>
+                    <Text style={styles.premiumIndicatorText}>Premium</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+            </Link>
           ))}
         </ScrollView>
       </View>
@@ -123,37 +125,33 @@ export default function Home() {
       <View style={styles.quickActionsSection}>
         <Text style={styles.sectionTitle}>{t('quickAccess')}</Text>
         <View style={styles.quickActionsGrid}>
-          <TouchableOpacity 
-            style={styles.quickActionCard}
-            onPress={() => router.push('/alerts')}
-          >
-            <Text style={styles.quickActionEmoji}>📢</Text>
-            <Text style={styles.quickActionLabel}>{t('cat_alertes')}</Text>
-          </TouchableOpacity>
+          <Link href="/alerts" asChild>
+            <TouchableOpacity style={styles.quickActionCard}>
+              <Text style={styles.quickActionEmoji}>📢</Text>
+              <Text style={styles.quickActionLabel}>{t('cat_alertes')}</Text>
+            </TouchableOpacity>
+          </Link>
           
-          <TouchableOpacity 
-            style={styles.quickActionCard}
-            onPress={() => router.push('/pharmacies')}
-          >
-            <Text style={styles.quickActionEmoji}>🏥</Text>
-            <Text style={styles.quickActionLabel}>{t('cat_sante')}</Text>
-          </TouchableOpacity>
+          <Link href="/pharmacies" asChild>
+            <TouchableOpacity style={styles.quickActionCard}>
+              <Text style={styles.quickActionEmoji}>🏥</Text>
+              <Text style={styles.quickActionLabel}>{t('cat_sante')}</Text>
+            </TouchableOpacity>
+          </Link>
           
-          <TouchableOpacity 
-            style={styles.quickActionCard}
-            onPress={() => router.push('/subscribe')}
-          >
-            <Text style={styles.quickActionEmoji}>⭐</Text>
-            <Text style={styles.quickActionLabel}>Premium</Text>
-          </TouchableOpacity>
+          <Link href="/subscribe" asChild>
+            <TouchableOpacity style={styles.quickActionCard}>
+              <Text style={styles.quickActionEmoji}>⭐</Text>
+              <Text style={styles.quickActionLabel}>Premium</Text>
+            </TouchableOpacity>
+          </Link>
           
-          <TouchableOpacity 
-            style={styles.quickActionCard}
-            onPress={() => router.push('/profile')}
-          >
-            <Text style={styles.quickActionEmoji}>👤</Text>
-            <Text style={styles.quickActionLabel}>{t('tabProfile')}</Text>
-          </TouchableOpacity>
+          <Link href="/profile" asChild>
+            <TouchableOpacity style={styles.quickActionCard}>
+              <Text style={styles.quickActionEmoji}>👤</Text>
+              <Text style={styles.quickActionLabel}>{t('tabProfile')}</Text>
+            </TouchableOpacity>
+          </Link>
         </View>
       </View>
     </ScrollView>
