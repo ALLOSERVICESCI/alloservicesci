@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, ImageBackground, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
+import { useI18n } from '../../src/i18n/i18n';
 
 const HEADERS: any = {
   urgence: require('../../assets/headers/headers/urgence_bg.png'),
@@ -9,7 +10,7 @@ const HEADERS: any = {
   education: require('../../assets/headers/headers/education_bg.png'),
   examens_concours: require('../../assets/headers/headers/examens_concours_bg.png'),
   services_publics: require('../../assets/headers/headers/services_publics_bg.png'),
-  emplois: require('../../assets/icons/icons/emplois.png'),
+  emplois: require('../../assets/headers/headers/emplois_bg.png'),
   alertes: require('../../assets/headers/headers/alertes_bg.png'),
   services_utiles: require('../../assets/headers/headers/services_utiles_bg.png'),
   agriculture: require('../../assets/headers/headers/agriculture_bg.png'),
@@ -17,24 +18,39 @@ const HEADERS: any = {
   transport: require('../../assets/headers/headers/transport_bg.png'),
 };
 
+const slugToKey = (slug: string): string => {
+  switch (slug) {
+    case 'examens_concours': return 'cat_examens';
+    case 'services_publics': return 'cat_services_publics';
+    case 'loisirs_tourisme': return 'cat_loisirs';
+    case 'services_utiles': return 'cat_services_utiles';
+    default: return `cat_${slug}`;
+  }
+};
+
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { user } = useAuth();
-  const bg = HEADERS[slug as string] || HEADERS.urgence;
+  const { t } = useI18n();
+  const s = (slug as string) || 'urgence';
+  const bg = HEADERS[s] || HEADERS.urgence;
+
+  const catLabel = useMemo(() => t(slugToKey(s)), [s, t]);
+  const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground source={bg} style={styles.header} resizeMode="cover">
         <View style={styles.overlay} />
         <View style={styles.headerContent}>
-          <Text style={styles.brand}>Allô Services CI</Text>
-          <Text style={styles.slogan}>Tous les services essentiels en un clic</Text>
-          {!!user?.first_name && <Text style={styles.greeting}>{`Bonjour M. ${user.first_name}`}</Text>}
-          <Text style={styles.headerTitle}>{slug}</Text>
+          <Text style={styles.brand}>{t('brand')}</Text>
+          <Text style={styles.slogan}>{t('slogan')}</Text>
+          {!!greeting && <Text style={styles.greeting}>{greeting}</Text>}
+          <Text style={styles.headerTitle}>{catLabel}</Text>
         </View>
       </ImageBackground>
       <View style={{ padding: 16 }}>
-        <Text>Contenu à venir pour {slug}</Text>
+        <Text>{t('comingSoon')} {catLabel}</Text>
       </View>
     </View>
   );
