@@ -278,10 +278,115 @@ metadata:
   test_sequence: 2
   run_ui: false
 
+  - task: "PATCH /api/users/{user_id}"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: PATCH user endpoint working correctly. Registered user with preferred_lang=en and city=Abidjan, successfully updated to preferred_lang=es and city=Yamoussoukro. All fields updated correctly and subscription check still functional."
+  - task: "Notifications segmentation /api/notifications/*"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Notifications segmentation working correctly. Push token registration successful with ExpoPushToken[test-123]. Targeted notification to Yamoussoukro/es returned count=1 (matching user). Non-matching notification to Abidjan/fr returned count=0 as expected. Segmentation logic functioning properly."
+frontend:
+  - task: "i18n base integration (FR/EN/ES/IT/AR)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/i18n/i18n.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added provider, translations, RTL handling for Arabic, wired into tabs, profile, subscribe, alerts, pharmacies, register. Default FR."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Complete i18n functionality working perfectly. All 5 languages (FR/EN/ES/IT/AR) tested successfully. Tab titles update correctly: FR (Accueil, Alertes, Pharmacies, Premium, Profil) → EN (Home, Alerts, Pharmacies, Premium, Profile) → ES (Inicio, Alertas, Farmacias, Premium, Perfil) → IT (Home, Avvisi, Farmacie, Premium, Profilo) → AR (الرئيسية, التنبيهات, الصيدليات, بريميوم, الملف الشخصي). Arabic RTL layout working. Language switching via Profile tab buttons functional. Brand text 'Allô Services CI' visible throughout."
+  - task: "Tabs navigation titles localized"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/(tabs)/_layout.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Tabs use t(...) for labels; verify language switch updates titles."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Tab navigation titles perfectly localized. Verified all 5 languages with correct translations. French by default, switches correctly to English, Spanish, Italian, and Arabic. Tab order and icons remain consistent across languages. RTL layout properly applied for Arabic."
+  - task: "Pharmacies screen functional"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/(tabs)/pharmacies.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Fetch nearby pharmacies with geolocation; shows list and refresh; error messaging translated. Default max_km=10 currently; to be updated to 5 after feedback."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Pharmacies screen fully functional. Brand header 'Allô Services CI' visible. Location permission handling working (shows 'Permission localisation refusée' when denied). Refresh button 'Actualiser' present and clickable. Error messaging properly translated. Screen handles geolocation gracefully in web environment. UI responsive on mobile viewports."
+  - task: "Initial Expo screen"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/index.tsx"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Placeholder splash image. Full UI to be implemented next."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Initial screen redirects correctly to /(tabs)/home. App loads successfully and navigates to home tab by default."
+  - task: "Premium screen functionality"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/(tabs)/subscribe.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Premium screen working correctly. Shows 'Premium 1200 FCFA / an' title in French. 'Créer un compte' button navigates to /auth/register. CinetPay payment button present. Proper translations and brand header visible."
+  - task: "Register screen translations"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/auth/register.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Register screen fully translated. French placeholders working: 'Prénom', 'Nom', 'Email (optionnel)', 'Téléphone'. Submit button shows 'Valider'. Create account title 'Créer un compte' displayed. Brand header 'Allô Services CI' visible."
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 3
+  run_ui: false
+
 test_plan:
   current_focus:
-  - "Backend: PATCH /api/users/{user_id}"
-  - "Backend: /api/notifications/send segmentation"
   - "Frontend: Profile edit (city/lang) & Notifications Center"
   stuck_tasks: []
   test_all: false
@@ -296,3 +401,5 @@ agent_communication:
     message: "✅ PHARMACIES NEARBY REVALIDATION COMPLETE: All 4 revalidation tests passed (100% success rate). Health endpoint confirmed working. Pharmacies nearby endpoint with Abidjan coordinates (lat=5.35&lng=-3.99&max_km=20) returns HTTP 200 with 2 pharmacies, all required fields validated. Alerts and useful-numbers endpoints also confirmed working. Geospatial index functioning correctly after environment fork."
   - agent: "testing"
     message: "✅ FRONTEND i18n & PHARMACIES TESTING COMPLETE: All major functionality tested successfully on mobile viewports (iPhone 14: 390x844, Samsung S21: 360x800). Complete i18n system working with 5 languages (FR/EN/ES/IT/AR), RTL support for Arabic, tab navigation localization, pharmacies screen functionality, premium screen navigation, and register screen translations. App is fully functional and ready for production. No critical issues found."
+  - agent: "testing"
+    message: "✅ NEW BACKEND FEATURES TESTING COMPLETE: All 6 tests passed (100% success rate). PATCH /api/users/{user_id} working correctly - successfully updated user from preferred_lang=en/city=Abidjan to preferred_lang=es/city=Yamoussoukro. Notifications segmentation fully functional - push token registration successful, targeted notifications working with proper city/language filtering (matching notification sent to 1 token, non-matching returned 0 tokens as expected). Both new features ready for production."
