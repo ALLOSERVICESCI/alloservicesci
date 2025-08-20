@@ -104,6 +104,17 @@
 
 user_problem_statement: "Build Allô Services CI mobile app backend with MongoDB: multi-category info, alerts with images, GPS pharmacies, premium subscription via CinetPay stub, 5 languages, free Urgence and premium for others."
 backend:
+  - task: "Trigger targeted notification (Bouaké, fr)"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Send push: city=Bouaké, lang=fr, title=Information officielle, custom message as provided by user." 
   - task: "Core API + Mongo models + seed"
     implemented: true
     working: true
