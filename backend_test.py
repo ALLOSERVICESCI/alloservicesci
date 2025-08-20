@@ -444,8 +444,7 @@ class BackendTester:
         self.test_subscription_check_premium()
         self.test_free_endpoints()
         self.test_alerts_endpoints()
-        self.test_premium_gating()
-        self.test_utilities_endpoint()
+        self.test_premium_gating_comprehensive()
         self.test_push_token_registration()
         notification_count = self.test_targeted_notification_bouake_fr()
         
