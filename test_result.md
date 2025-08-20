@@ -467,8 +467,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Core API + Mongo models + seed"
-    - "Premium Content Access Verification"
     - "Profile edit functionality (city/lang selection)"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
