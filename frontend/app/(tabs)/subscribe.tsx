@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     height: 180,
     borderRadius: 90,
     borderWidth: 4,
-    borderColor: '#0A7C3A',
+    borderColor: '#ffffff',
   },
   premiumBadge: {
     position: 'absolute',
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
   buttonOutline: {
     backgroundColor: 'transparent',
     borderWidth: 2,
-    borderColor: '#0A7C3A',
+    borderColor: '#ffffff',
   },
   buttonText: {
     color: '#fff',
