@@ -43,21 +43,29 @@ export default function Subscribe() {
         <Text style={styles.slogan}>{t('slogan')}</Text>
       </View>
 
-      <View style={styles.hero}>
-        <Image source={APP_ICON} style={styles.icon} />
-        <Text style={styles.title}>{t('premiumTitle')}</Text>
-      </View>
-
-      {!user?.id && (
-        <View style={{ marginTop: 8 }}>
-          <Text style={styles.text}>{t('needAccount')}</Text>
-          <TouchableOpacity onPress={goRegister} style={styles.btnAlt}><Text style={styles.btnText}>{t('createAccount')}</Text></TouchableOpacity>
+      <View style={styles.contentWrap}>
+        <View style={styles.hero}>
+          <Image source={APP_ICON} style={styles.icon} />
+          <Text style={styles.title}>{t('premiumTitle')}</Text>
         </View>
-      )}
 
-      {loading ? <ActivityIndicator /> : (
-        <TouchableOpacity onPress={startPayment} style={styles.btn}><Text style={styles.btnText}>{t('payWithCinetPay')}</Text></TouchableOpacity>
-      )}
+        {!user?.id && (
+          <View style={styles.centerBlock}>
+            <Text style={styles.text}>{t('needAccount')}</Text>
+            <TouchableOpacity onPress={goRegister} style={[styles.btnAlt, styles.btnWide]}>
+              <Text style={styles.btnText}>{t('createAccount')}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <TouchableOpacity onPress={startPayment} style={[styles.btn, styles.btnWide]}>
+            <Text style={styles.btnText}>{t('payWithCinetPay')}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
@@ -65,13 +73,16 @@ export default function Subscribe() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16 },
   brandBar: { paddingTop: 4, paddingBottom: 8 },
-  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
-  slogan: { fontSize: 12, color: '#666', marginTop: 2 },
-  hero: { alignItems: 'center', marginTop: 8, marginBottom: 8 },
-  icon: { width: 72, height: 72, borderRadius: 16, marginBottom: 8 },
-  title: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
-  text: { marginTop: 10, color: '#333' },
-  btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 16 },
-  btnAlt: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },
+  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
+  slogan: { fontSize: 12, color: '#666', marginTop: 2, textAlign: 'center' },
+  contentWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 },
+  hero: { alignItems: 'center', marginTop: 8, marginBottom: 16 },
+  icon: { width: 120, height: 120, borderRadius: 24, marginBottom: 12 },
+  title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
+  text: { marginTop: 10, color: '#333', textAlign: 'center' },
+  centerBlock: { alignItems: 'center', marginTop: 8 },
+  btn: { backgroundColor: '#0F5132', padding: 14, borderRadius: 12, alignItems: 'center', marginTop: 20 },
+  btnAlt: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 12 },
+  btnWide: { minWidth: 240, alignSelf: 'center' },
   btnText: { color: '#fff', fontWeight: '700' },
 });
