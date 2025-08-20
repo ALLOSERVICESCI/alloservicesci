@@ -32,7 +32,7 @@ CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
 BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.6.1")
+app = FastAPI(title="Allô Services CI API", version="0.6.2")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -207,6 +207,7 @@ async def cinetpay_initiate(payload: PaymentInitInput):
         'currency': 'XOF',
         'status': 'PENDING',
         'provider': 'cinetpay',
+        'payment_url': None,
         'created_at': datetime.utcnow(),
         'expires_at': datetime.utcnow() + timedelta(minutes=45)
     }
@@ -272,12 +273,15 @@ async def cinetpay_return(transaction_id: str, status: Optional[str] = None):
     return {"transaction_id": transaction_id, "status": final_status}
 
 @api.get('/payments/history')
-async def payments_history(user_id: str, limit: int = 50):
+async def payments_history(user_id: str, limit: int = 50, status: Optional[str] = None):
     try:
         uid = ObjectId(user_id)
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid user_id")
-    cursor = db.transactions.find({'user_id': uid}).sort('created_at', -1).limit(max(1, min(limit, 200)))
+    query: Dict[str, Any] = {'user_id': uid}
+    if status:
+        query['status'] = status
+    cursor = db.transactions.find(query).sort('created_at', -1).limit(max(1, min(limit, 200)))
     items = []
     async for tr in cursor:
         items.append({

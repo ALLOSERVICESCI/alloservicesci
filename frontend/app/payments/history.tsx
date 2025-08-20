@@ -12,11 +12,12 @@ export default function PaymentHistory() {
   const [refreshing, setRefreshing] = useState(false);
   const [onlyPaid, setOnlyPaid] = useState(false);
 
-  const load = async () => {
+  const load = async (acceptOnly: boolean) => {
     if (!user?.id) { setItems([]); setLoading(false); return; }
     try {
       setLoading(true);
-      const res = await apiFetch(`/api/payments/history?user_id=${user.id}`);
+      const qs = acceptOnly ? `&status=ACCEPTED` : '';
+      const res = await apiFetch(`/api/payments/history?user_id=${user.id}${qs}`);
       const json = await res.json();
       setItems(json);
     } catch (e) {
@@ -26,15 +27,17 @@ export default function PaymentHistory() {
     }
   };
 
-  useEffect(() => { load(); }, [user?.id]);
+  useEffect(() => { load(onlyPaid); }, [user?.id]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await load();
+    await load(onlyPaid);
     setRefreshing(false);
-  }, [user?.id]);
+  }, [user?.id, onlyPaid]);
 
-  const visibleItems = useMemo(() => (onlyPaid ? items.filter(i => i.status === 'ACCEPTED') : items), [items, onlyPaid]);
+  useEffect(() => { load(onlyPaid); }, [onlyPaid]);
+
+  const visibleItems = useMemo(() => items, [items]);
 
   const StatusChip = ({ status }: { status: string }) => {
     const label = t(`status_${status}`) || status;
