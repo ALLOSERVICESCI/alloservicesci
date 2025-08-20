@@ -209,7 +209,9 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+  - "i18n (FR/EN/ES/IT/AR) core strings"
+  - "Pharmacies nearby revalidation"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
