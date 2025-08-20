@@ -51,12 +51,12 @@ export default function Profile() {
       ) : (
         <View style={{ marginTop: 16 }}>
           <Text style={styles.info}>{t('hello')} {user.first_name} {user.last_name}</Text>
-          <Text style={styles.info}>Téléphone: {user.phone}</Text>
+          <Text style={styles.info}>{t('phone')}: {user.phone}</Text>
           {premium && (
-            <Text style={styles.info}>Premium: {premium.is_premium ? `Actif jusqu'au ${premium.expires_at ? new Date(premium.expires_at).toLocaleDateString() : ''}` : 'Inactif'}</Text>
+            <Text style={styles.info}>{t('premium')}: {premium.is_premium ? `${t('activeUntil')} ${premium.expires_at ? new Date(premium.expires_at).toLocaleDateString() : ''}` : t('inactive')}</Text>
           )}
           <TouchableOpacity style={[styles.btn, { backgroundColor: '#B00020' }]} onPress={logout}>
-            <Text style={styles.btnText}>Se déconnecter</Text>
+            <Text style={styles.btnText}>{t('logout')}</Text>
           </TouchableOpacity>
         </View>
       )}

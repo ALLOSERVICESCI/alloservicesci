@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking, A
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
+import { useI18n } from '../../src/i18n/i18n';
 
 export default function Subscribe() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { t } = useI18n();
 
   const startPayment = async () => {
     if (!user?.id) { router.push('/auth/register'); return; }
@@ -24,7 +26,7 @@ export default function Subscribe() {
         Alert.alert('Paiement', ((json as any).detail || `Erreur HTTP ${res.status}`));
       }
     } catch (e: any) {
-      Alert.alert('Réseau', e?.message || 'Erreur réseau');
+      Alert.alert(t('network'), e?.message || 'Erreur réseau');
     } finally {
       setLoading(false);
     }
@@ -35,19 +37,18 @@ export default function Subscribe() {
   return (
     <View style={styles.container}>
       <View style={styles.brandBar}>
-        <Text style={styles.brand}>Allô Services CI</Text>
-        <Text style={styles.slogan}>Tous les services essentiels en un clic</Text>
-        {!!user?.first_name && <Text style={styles.greeting}>{`Bonjour Mr ${user.first_name}`}</Text>}
+        <Text style={styles.brand}>{t('brand')}</Text>
+        <Text style={styles.slogan}>{t('slogan')}</Text>
       </View>
-      <Text style={styles.title}>Premium 1200 FCFA / an</Text>
+      <Text style={styles.title}>{t('premiumTitle')}</Text>
       {!user?.id && (
         <View style={{ marginTop: 8 }}>
-          <Text style={styles.text}>Veuillez créer un compte pour activer le paiement.</Text>
-          <TouchableOpacity onPress={goRegister} style={styles.btnAlt}><Text style={styles.btnText}>Créer un compte</Text></TouchableOpacity>
+          <Text style={styles.text}>{t('needAccount')}</Text>
+          <TouchableOpacity onPress={goRegister} style={styles.btnAlt}><Text style={styles.btnText}>{t('createAccount')}</Text></TouchableOpacity>
         </View>
       )}
       {loading ? <ActivityIndicator /> : (
-        <TouchableOpacity onPress={startPayment} style={styles.btn}><Text style={styles.btnText}>Payer avec CinetPay</Text></TouchableOpacity>
+        <TouchableOpacity onPress={startPayment} style={styles.btn}><Text style={styles.btnText}>{t('payWithCinetPay')}</Text></TouchableOpacity>
       )}
     </View>
   );
@@ -58,7 +59,6 @@ const styles = StyleSheet.create({
   brandBar: { paddingTop: 4, paddingBottom: 8 },
   brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   slogan: { fontSize: 12, color: '#666', marginTop: 2 },
-  greeting: { fontSize: 12, color: '#0F5132', marginTop: 4, fontWeight: '700' },
   title: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   text: { marginTop: 10, color: '#333' },
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 16 },

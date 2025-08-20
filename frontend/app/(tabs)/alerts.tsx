@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { Link } from 'expo-router';
 import { apiFetch } from '../../src/utils/api';
+import { useI18n } from '../../src/i18n/i18n';
 
 export default function Alerts() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useI18n();
 
   const fetchAlerts = async () => {
     try {
@@ -16,7 +18,7 @@ export default function Alerts() {
       setData(json);
     } catch (e: any) {
       console.log(e);
-      Alert.alert('Erreur', 'Impossible de charger les alertes');
+      Alert.alert(t('error'), t('fetchError'));
     } finally {
       setLoading(false);
     }
@@ -28,10 +30,10 @@ export default function Alerts() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.brandBar}><Text style={styles.brand}>Allô Services CI</Text></View>
+      <View style={styles.brandBar}><Text style={styles.brand}>{t('brand')}</Text></View>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 16, paddingBottom: 8 }}>
         <Link href="/alerts/new" asChild>
-          <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Nouvelle alerte</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
         </Link>
       </View>
       <FlatList

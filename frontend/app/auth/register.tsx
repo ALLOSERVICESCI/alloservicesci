@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ScrollView } from 'react-native';
 import { useAuth } from '../../src/context/AuthContext';
 import { useRouter } from 'expo-router';
+import { useI18n } from '../../src/i18n/i18n';
 
 export default function Register() {
   const { register } = useAuth();
   const router = useRouter();
+  const { t } = useI18n();
   const [first_name, setFirst] = useState('');
   const [last_name, setLast] = useState('');
   const [email, setEmail] = useState('');
@@ -13,14 +15,14 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async () => {
-    if (!first_name || !last_name || !phone) { Alert.alert('Champs requis', 'Nom, prénom et téléphone sont requis'); return; }
+    if (!first_name || !last_name || !phone) { Alert.alert(t('requiredFields'), t('requiredMsg')); return; }
     setLoading(true);
     try {
       await register({ first_name, last_name, email, phone, preferred_lang: 'fr' });
-      Alert.alert('Bienvenue', 'Inscription réussie');
+      Alert.alert(t('welcomeShort'), t('createAccount'));
       router.replace('/(tabs)/home');
     } catch (e: any) {
-      Alert.alert('Erreur', e.message || 'Inscription échouée');
+      Alert.alert(t('error'), e.message || 'Inscription échouée');
     } finally {
       setLoading(false);
     }
@@ -29,13 +31,13 @@ export default function Register() {
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        <Text style={styles.brand}>Allô Services CI</Text>
-        <Text style={styles.title}>Créer un compte</Text>
-        <TextInput placeholder="Prénom" value={first_name} onChangeText={setFirst} style={styles.input} />
-        <TextInput placeholder="Nom" value={last_name} onChangeText={setLast} style={styles.input} />
-        <TextInput placeholder="Email (optionnel)" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" style={styles.input} />
-        <TextInput placeholder="Téléphone" value={phone} onChangeText={setPhone} keyboardType="phone-pad" style={styles.input} />
-        <TouchableOpacity disabled={loading} onPress={onSubmit} style={styles.btn}><Text style={styles.btnText}>{loading ? '...' : 'Valider'}</Text></TouchableOpacity>
+        <Text style={styles.brand}>{t('brand')}</Text>
+        <Text style={styles.title}>{t('createTitle')}</Text>
+        <TextInput placeholder={t('firstName')} value={first_name} onChangeText={setFirst} style={styles.input} />
+        <TextInput placeholder={t('lastName')} value={last_name} onChangeText={setLast} style={styles.input} />
+        <TextInput placeholder={t('emailOpt')} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" style={styles.input} />
+        <TextInput placeholder={t('phonePh')} value={phone} onChangeText={setPhone} keyboardType="phone-pad" style={styles.input} />
+        <TouchableOpacity disabled={loading} onPress={onSubmit} style={styles.btn}><Text style={styles.btnText}>{loading ? '...' : t('submit')}</Text></TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -2,27 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
 import * as Location from 'expo-location';
 import { apiFetch } from '../../src/utils/api';
+import { useI18n } from '../../src/i18n/i18n';
 
 export default function Pharmacies() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useI18n();
 
   const askPermissionAndFetch = async () => {
     setError(null);
     const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') { setError('Permission localisation refusée'); return; }
+    if (status !== 'granted') { setError(t('locationDenied')); return; }
     setLoading(true);
     try {
       const loc = await Location.getCurrentPositionAsync({});
       const lat = loc.coords.latitude; const lng = loc.coords.longitude;
-      const res = await apiFetch(`/api/pharmacies/nearby?lat=${lat}&lng=${lng}&max_km=20`);
+      const res = await apiFetch(`/api/pharmacies/nearby?lat=${lat}&lng=${lng}&max_km=10`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       setData(json);
     } catch (e: any) {
-      setError('Erreur de récupération');
-      Alert.alert('Erreur', 'Impossible de récupérer les pharmacies');
+      setError(t('fetchError'));
+      Alert.alert(t('error'), t('fetchError'));
     } finally {
       setLoading(false);
     }
@@ -32,7 +34,7 @@ export default function Pharmacies() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.brandBar}><Text style={styles.brand}>Allô Services CI</Text></View>
+      <View style={styles.brandBar}><Text style={styles.brand}>{t('brand')}</Text></View>
       {error && <Text style={styles.error}>{error}</Text>}
       {loading && <ActivityIndicator />}
       {data.map((p) => (
@@ -42,7 +44,7 @@ export default function Pharmacies() {
           <Text style={styles.meta}>{p.phone}</Text>
         </View>
       ))}
-      <TouchableOpacity onPress={askPermissionAndFetch} style={styles.btn}><Text style={styles.btnText}>Actualiser</Text></TouchableOpacity>
+      <TouchableOpacity onPress={askPermissionAndFetch} style={styles.btn}><Text style={styles.btnText}>{t('refresh')}</Text></TouchableOpacity>
     </View>
   );
 }
