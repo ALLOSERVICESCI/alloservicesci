@@ -164,6 +164,7 @@ const translations: Record<Lang, Record<string, string>> = {
     error: 'Errore', network: 'Rete', notAvailable: 'N/D', comingSoon: 'Contenuto in arrivo',
     saved: 'Salvato', save: 'Salva', remove: 'Rimuovere', share: 'Condividere', open: 'Apri',
     phone: 'Telefono', premium: 'Premium', activeUntil: 'Attivo fino al', inactive: 'Inattivo', logout: 'Disconnettersi', editProfile: 'Modifica profilo', city: 'Città', profileUpdated: 'Profilo aggiornato',
+    language: 'Lingua', actions: 'Azioni',
     notifCenter: 'Centro notifiche', clearHistory: 'Cancella cronologia', noNotifications: 'Nessuna notifica', noTitle: 'Senza titolo',
     renewPremium: 'Rinnovare Premium', becomePremium: 'Diventa Premium',
     premiumActiveBadge: 'Premium attivo', refreshStatus: 'Aggiorna stato',
