@@ -12,10 +12,39 @@
       }
     },
     "preview": {
-      "channel": "preview"
+      "channel": "preview",
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://alloservices.preview.emergentagent.com"
+      }
     },
     "production": {
+      "channel": "production",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://alloservices.preview.emergentagent.com"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "your-apple-id@example.com",
+        "ascAppId": "1234567890",
+        "appleTeamId": "XXXXXXXXXX"
+      },
+      "android": {
+        "serviceAccountKeyPath": "../path/to/api-key.json",
+        "track": "production"
+      }
+    }
+  },
+  "update": {
+    "production": {
       "channel": "production"
+    },
+    "preview": {
+      "channel": "preview"
     }
   }
 }
