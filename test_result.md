@@ -138,6 +138,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING COMPLETE: All 41 tests passed (100% success rate). Seed endpoint successfully populates database with categories, useful numbers, pharmacies, exams, and utilities data. Categories endpoint returns 11 categories with proper structure. Complete payment flow tested: user registration → payment initiation → payment validation → premium subscription activation. All core API functionality confirmed working."
+      - working: true
+        agent: "testing"
+        comment: "✅ RETESTED: All new endpoints working perfectly. POST /api/seed successfully populated database with categories (11 items), useful numbers (4 items), pharmacies (2 items), exams (2 items), and utilities (3 items). GET /api/categories returns proper structure. Full comprehensive testing completed with 41/41 tests passed (100% success rate)."
   - task: "Geo query for pharmacies"
     implemented: true
     working: true
