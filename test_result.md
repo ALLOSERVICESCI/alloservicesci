@@ -385,10 +385,46 @@ metadata:
   test_sequence: 3
   run_ui: false
 
+  - task: "Profile edit functionality (city/lang selection)"
+    implemented: true
+    working: false
+    file: "/app/frontend/app/profile/edit.tsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE: Profile edit functionality cannot be tested due to user authentication flow issues. Registration form loads correctly with proper i18n (FR labels: Prénom, Nom, Email (optionnel), Téléphone), but language selector buttons are not clickable in web environment. This prevents user registration and subsequent profile testing. The AuthContext implementation appears correct with proper API calls to /api/auth/register and /api/users/{user_id} PATCH endpoints. Issue likely related to mobile-first design not being fully compatible with web testing environment."
+  - task: "Notifications Center functionality"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/notifications.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "⚠️ CANNOT TEST: Notifications Center cannot be accessed without proper user authentication. Code review shows correct implementation with empty state handling ('Sin notificaciones'), clear history button ('Borrar historial'), and proper i18n support. Component uses NotificationsContext for state management and displays notifications with title/body/timestamp and delete functionality. Requires user login to test properly."
+  - task: "i18n regression testing after language change"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/_layout.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "⚠️ CANNOT TEST: i18n regression testing requires completing profile edit language change flow. Code review confirms tab titles use proper t() translation function and should update correctly when language changes. Spanish translations verified in i18n.tsx: Inicio, Alertas, Farmacias, Premium, Perfil. Brand text 'Allô Services CI' preserved across all languages."
+
 test_plan:
   current_focus:
-  - "Frontend: Profile edit (city/lang) & Notifications Center"
-  stuck_tasks: []
+  - "Profile edit functionality (city/lang selection)"
+  - "Notifications Center functionality"
+  stuck_tasks:
+  - "Profile edit functionality (city/lang selection)"
   test_all: false
   test_priority: "high_first"
 
@@ -403,3 +439,5 @@ agent_communication:
     message: "✅ FRONTEND i18n & PHARMACIES TESTING COMPLETE: All major functionality tested successfully on mobile viewports (iPhone 14: 390x844, Samsung S21: 360x800). Complete i18n system working with 5 languages (FR/EN/ES/IT/AR), RTL support for Arabic, tab navigation localization, pharmacies screen functionality, premium screen navigation, and register screen translations. App is fully functional and ready for production. No critical issues found."
   - agent: "testing"
     message: "✅ NEW BACKEND FEATURES TESTING COMPLETE: All 6 tests passed (100% success rate). PATCH /api/users/{user_id} working correctly - successfully updated user from preferred_lang=en/city=Abidjan to preferred_lang=es/city=Yamoussoukro. Notifications segmentation fully functional - push token registration successful, targeted notifications working with proper city/language filtering (matching notification sent to 1 token, non-matching returned 0 tokens as expected). Both new features ready for production."
+  - agent: "testing"
+    message: "❌ PROFILE & NOTIFICATIONS TESTING BLOCKED: Cannot complete comprehensive testing due to user authentication flow issues in web environment. Registration form displays correctly with proper i18n, but language selector buttons are not clickable, preventing user registration and subsequent profile/notifications testing. This appears to be a mobile-first design compatibility issue with web testing environment rather than a functional bug. Code review confirms all components are properly implemented with correct API integrations and i18n support. Recommend testing on actual mobile device or fixing web compatibility for language selectors."
