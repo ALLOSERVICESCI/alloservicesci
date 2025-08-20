@@ -212,19 +212,27 @@ const styles = StyleSheet.create({
   logoWrapper: {
     position: 'relative',
   },
-
-  logo: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
+  logoContainer: {
+    width: 190,
+    height: 190,
+    borderRadius: 95,
     borderWidth: 4,
     borderColor: '#0A7C3A',
     backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 6,
+  },
+  logo: {
+    width: 170,
+    height: 170,
+    borderRadius: 85,
+    borderWidth: 3,
+    borderColor: '#ffffff',
   },
   premiumBadge: {
     position: 'absolute',
