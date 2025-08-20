@@ -466,7 +466,7 @@ metadata:
         comment: "Implemented comprehensive premium gating verification. All premium endpoints now require user_id parameter and return HTTP 402 'Premium subscription required' for non-premium users. Premium endpoints: /api/exams, /api/utilities, /api/education, /api/services-publics, /api/emplois, /api/agriculture, /api/loisirs, /api/transport. Free endpoints remain: /api/alerts, /api/useful-numbers, /api/pharmacies/nearby. Need to test 402 responses for non-premium and 200 responses for premium users."
       - working: true
         agent: "testing"
-        comment: "✅ PREMIUM GATING VERIFICATION COMPLETE: All premium endpoints tested comprehensively. Verified HTTP 402 'Premium subscription required' responses for ALL premium endpoints (/api/exams, /api/utilities, /api/education, /api/services-publics, /api/emplois, /api/agriculture, /api/loisirs, /api/transport) when accessed without user_id or with non-premium user_id. Confirmed HTTP 200 responses with data for premium users. Free endpoints (/api/alerts, /api/useful-numbers, /api/pharmacies/nearby) remain accessible without premium subscription. Premium gating system is fully functional and business model is protected."
+        comment: "✅ COMPREHENSIVE PREMIUM VERIFICATION COMPLETE: All 8 premium endpoints tested extensively. HTTP 402 'Premium subscription required' responses confirmed for: (1) requests without user_id, (2) requests with non-premium user_id. HTTP 200 responses with data confirmed for premium users. Free endpoints (/api/alerts, /api/useful-numbers, /api/pharmacies/nearby) remain accessible without premium. Business model protection verified - premium gating system 100% functional."
 
 test_plan:
   current_focus:
