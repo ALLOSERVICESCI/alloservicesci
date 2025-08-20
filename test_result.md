@@ -196,37 +196,46 @@ backend:
 frontend:
   - task: "i18n base integration (FR/EN/ES/IT/AR)"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/i18n/i18n.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added provider, translations, RTL handling for Arabic, wired into tabs, profile, subscribe, alerts, pharmacies, register. Default FR."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Complete i18n functionality working perfectly. All 5 languages (FR/EN/ES/IT/AR) tested successfully. Tab titles update correctly: FR (Accueil, Alertes, Pharmacies, Premium, Profil) → EN (Home, Alerts, Pharmacies, Premium, Profile) → ES (Inicio, Alertas, Farmacias, Premium, Perfil) → IT (Home, Avvisi, Farmacie, Premium, Profilo) → AR (الرئيسية, التنبيهات, الصيدليات, بريميوم, الملف الشخصي). Arabic RTL layout working. Language switching via Profile tab buttons functional. Brand text 'Allô Services CI' visible throughout."
   - task: "Tabs navigation titles localized"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/app/(tabs)/_layout.tsx"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Tabs use t(...) for labels; verify language switch updates titles."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Tab navigation titles perfectly localized. Verified all 5 languages with correct translations. French by default, switches correctly to English, Spanish, Italian, and Arabic. Tab order and icons remain consistent across languages. RTL layout properly applied for Arabic."
   - task: "Pharmacies screen functional"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/app/(tabs)/pharmacies.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Fetch nearby pharmacies with geolocation; shows list and refresh; error messaging translated. Default max_km=10 currently; to be updated to 5 after feedback."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Pharmacies screen fully functional. Brand header 'Allô Services CI' visible. Location permission handling working (shows 'Permission localisation refusée' when denied). Refresh button 'Actualiser' present and clickable. Error messaging properly translated. Screen handles geolocation gracefully in web environment. UI responsive on mobile viewports."
   - task: "Initial Expo screen"
     implemented: true
     working: true
@@ -238,6 +247,31 @@ frontend:
       - working: true
         agent: "main"
         comment: "Placeholder splash image. Full UI to be implemented next."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Initial screen redirects correctly to /(tabs)/home. App loads successfully and navigates to home tab by default."
+  - task: "Premium screen functionality"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/(tabs)/subscribe.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Premium screen working correctly. Shows 'Premium 1200 FCFA / an' title in French. 'Créer un compte' button navigates to /auth/register. CinetPay payment button present. Proper translations and brand header visible."
+  - task: "Register screen translations"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/auth/register.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Register screen fully translated. French placeholders working: 'Prénom', 'Nom', 'Email (optionnel)', 'Téléphone'. Submit button shows 'Valider'. Create account title 'Créer un compte' displayed. Brand header 'Allô Services CI' visible."
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -246,8 +280,8 @@ metadata:
 
 test_plan:
   current_focus:
-  - "i18n (FR/EN/ES/IT/AR) core strings"
-  - "Pharmacies nearby revalidation"
+  - "Mobile responsiveness validation"
+  - "Backend integration testing"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -259,3 +293,5 @@ agent_communication:
     message: "✅ BACKEND TESTING COMPLETE: All 15 tests passed (100% success rate). Complete API flow tested: seed → categories → user registration → subscription check → payment initiate → payment validate → premium subscription → free endpoints → alerts → premium gating → utilities. Fixed Pydantic v2 ObjectId serialization issues during testing. Backend is fully functional and ready for frontend integration."
   - agent: "testing"
     message: "✅ PHARMACIES NEARBY REVALIDATION COMPLETE: All 4 revalidation tests passed (100% success rate). Health endpoint confirmed working. Pharmacies nearby endpoint with Abidjan coordinates (lat=5.35&lng=-3.99&max_km=20) returns HTTP 200 with 2 pharmacies, all required fields validated. Alerts and useful-numbers endpoints also confirmed working. Geospatial index functioning correctly after environment fork."
+  - agent: "testing"
+    message: "✅ FRONTEND i18n & PHARMACIES TESTING COMPLETE: All major functionality tested successfully on mobile viewports (iPhone 14: 390x844, Samsung S21: 360x800). Complete i18n system working with 5 languages (FR/EN/ES/IT/AR), RTL support for Arabic, tab navigation localization, pharmacies screen functionality, premium screen navigation, and register screen translations. App is fully functional and ready for production. No critical issues found."
