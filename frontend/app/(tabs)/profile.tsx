@@ -23,6 +23,8 @@ export default function Profile() {
   useEffect(() => { loadPremium(); }, [user?.id]);
 
   const goRegister = () => router.push('/auth/register');
+  const goEdit = () => router.push('/profile/edit');
+  const goNotifCenter = () => router.push('/notifications');
 
   const LangButton = ({ code, label }: { code: Lang; label: string }) => (
     <TouchableOpacity onPress={() => setLang(code)} style={[styles.langBtn, lang === code && styles.langBtnActive]}>
@@ -52,10 +54,19 @@ export default function Profile() {
         <View style={{ marginTop: 16 }}>
           <Text style={styles.info}>{t('hello')} {user.first_name} {user.last_name}</Text>
           <Text style={styles.info}>{t('phone')}: {user.phone}</Text>
+          {!!user.city && <Text style={styles.info}>{t('city')}: {user.city}</Text>}
           {premium && (
             <Text style={styles.info}>{t('premium')}: {premium.is_premium ? `${t('activeUntil')} ${premium.expires_at ? new Date(premium.expires_at).toLocaleDateString() : ''}` : t('inactive')}</Text>
           )}
-          <TouchableOpacity style={[styles.btn, { backgroundColor: '#B00020' }]} onPress={logout}>
+          <View style={{ flexDirection: 'row', marginTop: 12 }}>
+            <TouchableOpacity style={[styles.btn, { marginRight: 8 }]} onPress={goEdit}>
+              <Text style={styles.btnText}>{t('editProfile')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.btnAlt]} onPress={goNotifCenter}>
+              <Text style={styles.btnText}>{t('notifCenter')}</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={[styles.btn, { backgroundColor: '#B00020', marginTop: 12 }]} onPress={logout}>
             <Text style={styles.btnText}>{t('logout')}</Text>
           </TouchableOpacity>
         </View>
@@ -69,7 +80,8 @@ const styles = StyleSheet.create({
   brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   slogan: { fontSize: 12, color: '#666', marginTop: 2 },
   text: { marginTop: 10, color: '#333' },
-  btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 16 },
+  btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center' },
+  btnAlt: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center' },
   btnText: { color: '#fff', fontWeight: '700' },
   info: { marginTop: 8, color: '#333' },
   langBtn: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 8, borderWidth: 1, borderColor: '#E8F0E8', marginRight: 8 },

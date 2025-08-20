@@ -11,12 +11,14 @@ export type User = {
   email?: string;
   phone: string;
   preferred_lang?: string;
+  city?: string;
 };
 
 type AuthContextType = {
   user: User | null;
   expoPushToken: string | null;
   register: (input: { first_name: string; last_name: string; email?: string; phone: string; preferred_lang?: string }) => Promise<void>;
+  updateProfile: (input: Partial<User>) => Promise<User>;
   logout: () => Promise<void>;
 };
 
@@ -24,6 +26,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   expoPushToken: null,
   register: async () => {},
+  updateProfile: async () => ({ id: '' } as any),
   logout: async () => {},
 });
 
@@ -60,14 +63,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (expoPushToken) {
           await apiFetch('/api/notifications/register', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: expoPushToken, user_id: user?.id, platform: Platform.OS })
+            body: JSON.stringify({ token: expoPushToken, user_id: user?.id, platform: Platform.OS, city: user?.city })
           });
         }
       } catch (e) {
         console.log('Register push token failed', e);
       }
     })();
-  }, [expoPushToken, user?.id]);
+  }, [expoPushToken, user?.id, user?.city]);
 
   const register = async (input: { first_name: string; last_name: string; email?: string; phone: string; preferred_lang?: string }) => {
     const res = await apiFetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
@@ -82,10 +85,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         await apiFetch('/api/notifications/register', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: expoPushToken, user_id: u.id, platform: Platform.OS })
+          body: JSON.stringify({ token: expoPushToken, user_id: u.id, platform: Platform.OS, city: u.city })
         });
       } catch {}
     }
+  };
+
+  const updateProfile = async (input: Partial<User>) => {
+    if (!user?.id) throw new Error('Not logged in');
+    const res = await apiFetch(`/api/users/${user.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
+    const updated = await res.json();
+    setUser(updated);
+    await AsyncStorage.setItem('auth_user', JSON.stringify(updated));
+    // re-register token in case city/lang changes for segmentation
+    if (expoPushToken) {
+      try {
+        await apiFetch('/api/notifications/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: expoPushToken, user_id: updated.id, platform: Platform.OS, city: updated.city }) });
+      } catch {}
+    }
+    return updated;
   };
 
   const logout = async () => {
@@ -93,7 +111,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await AsyncStorage.removeItem('auth_user');
   };
 
-  const value = useMemo(() => ({ user, expoPushToken, register, logout }), [user, expoPushToken]);
+  const value = useMemo(() => ({ user, expoPushToken, register, updateProfile, logout }), [user, expoPushToken]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

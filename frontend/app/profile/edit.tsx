@@ -1,0 +1,77 @@
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ScrollView } from 'react-native';
+import { useAuth } from '../../src/context/AuthContext';
+import { useRouter } from 'expo-router';
+import { Lang, useI18n } from '../../src/i18n/i18n';
+
+export default function ProfileEdit() {
+  const { user, updateProfile } = useAuth();
+  const router = useRouter();
+  const { t, setLang, lang } = useI18n();
+  const [city, setCity] = useState(user?.city || '');
+  const [prefLang, setPrefLang] = useState<Lang>((user?.preferred_lang as Lang) || 'fr');
+  const [loading, setLoading] = useState(false);
+
+  if (!user) {
+    return (
+      <View style={styles.center}> 
+        <Text>{t('needAccount')}</Text>
+      </View>
+    );
+  }
+
+  const onSave = async () => {
+    setLoading(true);
+    try {
+      const updated = await updateProfile({ preferred_lang: prefLang, city });
+      setLang(prefLang);
+      Alert.alert(t('saved'), t('profileUpdated'));
+      router.back();
+    } catch (e: any) {
+      Alert.alert(t('error'), e?.message || 'Update failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const LangButton = ({ code, label }: { code: Lang; label: string }) => (
+    <TouchableOpacity onPress={() => { setPrefLang(code); setLang(code); }} style={[styles.langBtn, prefLang === code && styles.langBtnActive]}>
+      <Text style={[styles.langText, prefLang === code && styles.langTextActive]}>{label}</Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <Text style={styles.brand}>{t('brand')}</Text>
+        <Text style={styles.title}>{t('editProfile')}</Text>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 12 }}>
+          <LangButton code="fr" label="FR" />
+          <LangButton code="en" label="EN" />
+          <LangButton code="es" label="ES" />
+          <LangButton code="it" label="IT" />
+          <LangButton code="ar" label="AR" />
+        </View>
+
+        <TextInput placeholder={t('city')} value={city} onChangeText={setCity} style={styles.input} />
+
+        <TouchableOpacity disabled={loading} onPress={onSave} style={styles.btn}><Text style={styles.btnText}>{loading ? '...' : t('save')}</Text></TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+}
+
+const styles = StyleSheet.create({
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  container: { flexGrow: 1, padding: 16, backgroundColor: '#fff' },
+  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', marginBottom: 8, textAlign: 'center' },
+  title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', marginBottom: 16, textAlign: 'center' },
+  input: { borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, padding: 12, marginBottom: 12, backgroundColor: '#FAFAF8' },
+  btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },
+  btnText: { color: '#fff', fontWeight: '700' },
+  langBtn: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 8, borderWidth: 1, borderColor: '#E8F0E8', marginHorizontal: 4 },
+  langBtnActive: { backgroundColor: '#0A7C3A', borderColor: '#0A7C3A' },
+  langText: { color: '#0A7C3A', fontWeight: '700' },
+  langTextActive: { color: '#fff' },
+});
