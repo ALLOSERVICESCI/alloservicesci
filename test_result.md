@@ -181,15 +181,18 @@ backend:
         comment: "✅ TESTED: Premium gating working correctly. Non-premium users get 402 error for /exams. Premium users can access /exams (2 items), /utilities (3 items). Premium status correctly updated after payment validation."
 - task: "Pharmacies nearby revalidation"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Re-validate /api/pharmacies/nearby after environment fork. Expect geospatial index and 200 result with sample seed data."
+      - working: true
+        agent: "testing"
+        comment: "✅ REVALIDATION COMPLETE: All tests passed (100% success rate). Health endpoint returns {status: ok}. Pharmacies nearby endpoint with lat=5.35&lng=-3.99&max_km=20 returns HTTP 200 with JSON array of 2 pharmacies. All required fields validated: id, name, address, city, phone, location. Alerts endpoint returns 5 items, useful-numbers returns 4 items. Geospatial index working correctly."
 frontend:
   - task: "Initial Expo screen"
     implemented: true
