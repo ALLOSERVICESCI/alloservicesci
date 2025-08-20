@@ -179,6 +179,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Premium gating working correctly. Non-premium users get 402 error for /exams. Premium users can access /exams (2 items), /utilities (3 items). Premium status correctly updated after payment validation."
+- task: "Pharmacies nearby revalidation"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Re-validate /api/pharmacies/nearby after environment fork. Expect geospatial index and 200 result with sample seed data."
 frontend:
   - task: "Initial Expo screen"
     implemented: true
