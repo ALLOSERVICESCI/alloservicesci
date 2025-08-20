@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
+import { useI18n } from '../../src/i18n/i18n';
 
 const ICONS = {
   urgence: require('../../assets/icons/icons/urgence.png'),
@@ -21,8 +22,8 @@ const CARD_BG = '#F6F8F6';
 
 export default function Home() {
   const { user } = useAuth();
-  const greeting = user?.first_name ? `Bonjour Mr ${user.first_name}` : 'Bienvenue';
-  const slogan = 'Tous les services essentiels en un clic';
+  const { t } = useI18n();
+  const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : t('welcome');
 
   const categories = useMemo(() => [
     { slug: 'urgence', label: 'Urgence' },
@@ -41,8 +42,8 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.brand}>Allô Services CI</Text>
-        <Text style={styles.slogan}>{slogan}</Text>
+        <Text style={styles.brand}>{t('brand')}</Text>
+        <Text style={styles.slogan}>{t('slogan')}</Text>
         <Text style={styles.greeting}>{greeting}</Text>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>

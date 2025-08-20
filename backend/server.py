@@ -32,12 +32,12 @@ CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
 BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.4.2")
+app = FastAPI(title="Allô Services CI API", version="0.4.3")
 api = APIRouter(prefix="/api")
 
 # CORS
 app.add_middleware(
-    CORSMiddleware,
+    CORSMWARE := CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
@@ -231,6 +231,26 @@ async def cinetpay_return(transaction_id: str, status: Optional[str] = None):
     final_status = status or current or 'PENDING'
     return {"transaction_id": transaction_id, "status": final_status}
 
+# ---------- PHARMACIES (NEARBY) ----------
+@api.get("/pharmacies/nearby")
+async def pharmacies_nearby(lat: float = Query(...), lng: float = Query(...), max_km: float = 10.0, duty_only: bool = False):
+    query: Dict[str, Any] = {
+        'location': {
+            '$near': {
+                '$geometry': {'type': 'Point', 'coordinates': [lng, lat]},
+                '$maxDistance': int(max_km * 1000)
+            }
+        }
+    }
+    if duty_only:
+        dow = datetime.utcnow().weekday()
+        query['duty_days'] = {'$in': [dow]}
+    items = await db.pharmacies.find(query).to_list(50)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
 # ---------- ALERTS ----------
 @api.get("/alerts")
 @api.get("/alerts/")
@@ -279,6 +299,15 @@ async def create_alert(payload: AlertCreate):
     saved['id'] = str(saved['_id'])
     del saved['_id']
     return saved
+
+# ---------- USEFUL NUMBERS ----------
+@api.get('/useful-numbers')
+async def get_useful():
+    items = await db.useful_numbers.find().to_list(100)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
 
 # ---------- PUSH NOTIFICATIONS ----------
 
@@ -340,7 +369,6 @@ app.include_router(api)
 @app.on_event("startup")
 async def on_startup():
     await ensure_indexes()
-    # Log registered routes for debugging
     try:
         paths = [r.path for r in app.router.routes]
         logger.info(f"Registered routes: {paths}")

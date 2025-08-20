@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
+import { useI18n, Lang } from '../../src/i18n/i18n';
 
 export default function Profile() {
   const { user, logout } = useAuth();
   const [premium, setPremium] = useState<{ is_premium: boolean; expires_at?: string } | null>(null);
   const router = useRouter();
+  const { t, lang, setLang } = useI18n();
 
   const loadPremium = async () => {
     try {
@@ -22,24 +24,40 @@ export default function Profile() {
 
   const goRegister = () => router.push('/auth/register');
 
+  const LangButton = ({ code, label }: { code: Lang; label: string }) => (
+    <TouchableOpacity onPress={() => setLang(code)} style={[styles.langBtn, lang === code && styles.langBtnActive]}>
+      <Text style={[styles.langText, lang === code && styles.langTextActive]}>{label}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
-      <Text style={styles.brand}>Allô Services CI</Text>
-      <Text style={styles.slogan}>Tous les services essentiels en un clic</Text>
+      <Text style={styles.brand}>{t('brand')}</Text>
+      <Text style={styles.slogan}>{t('slogan')}</Text>
+
+      <View style={{ flexDirection: 'row', marginTop: 12 }}>
+        <LangButton code="fr" label="FR" />
+        <LangButton code="en" label="EN" />
+        <LangButton code="es" label="ES" />
+        <LangButton code="it" label="IT" />
+        <LangButton code="ar" label="AR" />
+      </View>
+
       {!user ? (
         <View style={{ marginTop: 16 }}>
-          <Text style={styles.text}>Créez un compte pour accéder au Premium.</Text>
-          <TouchableOpacity style={styles.btn} onPress={goRegister}><Text style={styles.btnText}>Créer un compte</Text></TouchableOpacity>
+          <Text style={styles.text}>{t('needAccount')}</Text>
+          <TouchableOpacity style={styles.btn} onPress={goRegister}><Text style={styles.btnText}>{t('createAccount')}</Text></TouchableOpacity>
         </View>
       ) : (
         <View style={{ marginTop: 16 }}>
-          <Text style={styles.info}>Bonjour Mr {user.first_name} {user.last_name}</Text>
+          <Text style={styles.info}>{t('hello')} {user.first_name} {user.last_name}</Text>
           <Text style={styles.info}>Téléphone: {user.phone}</Text>
           {premium && (
             <Text style={styles.info}>Premium: {premium.is_premium ? `Actif jusqu'au ${premium.expires_at ? new Date(premium.expires_at).toLocaleDateString() : ''}` : 'Inactif'}</Text>
           )}
           <TouchableOpacity style={[styles.btn, { backgroundColor: '#B00020' }]} onPress={logout}>
-            <Text style={styles.btnText}>Se déconnecter</Text></TouchableOpacity>
+            <Text style={styles.btnText}>Se déconnecter</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -54,4 +72,8 @@ const styles = StyleSheet.create({
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 16 },
   btnText: { color: '#fff', fontWeight: '700' },
   info: { marginTop: 8, color: '#333' },
+  langBtn: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 8, borderWidth: 1, borderColor: '#E8F0E8', marginRight: 8 },
+  langBtnActive: { backgroundColor: '#0A7C3A', borderColor: '#0A7C3A' },
+  langText: { color: '#0A7C3A', fontWeight: '700' },
+  langTextActive: { color: '#fff' },
 });
