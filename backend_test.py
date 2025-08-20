@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 # Base URL from frontend environment
-BASE_URL = "https://allo-ci.preview.emergentagent.com/api"
+BASE_URL = "https://allo-services.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):

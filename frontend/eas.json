@@ -8,7 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://61899db0-eabf-44da-b893-074694d585ec.preview.emergentagent.com"
+        "EXPO_PUBLIC_BACKEND_URL": "https://allo-services.preview.emergentagent.com"
       }
     },
     "preview": {
