@@ -224,3 +224,5 @@ agent_communication:
     message: "Added base i18n (FR/EN/ES/IT/AR) with RTL handling and hooked into tabs, profile, subscribe, alerts, pharmacies, register. Set up revalidation task for /api/pharmacies/nearby. Ready for backend-only tests now."
   - agent: "testing"
     message: "✅ BACKEND TESTING COMPLETE: All 15 tests passed (100% success rate). Complete API flow tested: seed → categories → user registration → subscription check → payment initiate → payment validate → premium subscription → free endpoints → alerts → premium gating → utilities. Fixed Pydantic v2 ObjectId serialization issues during testing. Backend is fully functional and ready for frontend integration."
+  - agent: "testing"
+    message: "✅ PHARMACIES NEARBY REVALIDATION COMPLETE: All 4 revalidation tests passed (100% success rate). Health endpoint confirmed working. Pharmacies nearby endpoint with Abidjan coordinates (lat=5.35&lng=-3.99&max_km=20) returns HTTP 200 with 2 pharmacies, all required fields validated. Alerts and useful-numbers endpoints also confirmed working. Geospatial index functioning correctly after environment fork."
