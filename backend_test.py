@@ -318,6 +318,53 @@ class BackendTester:
         except Exception as e:
             self.log_test("Utilities endpoint", False, f"Exception: {str(e)}")
             
+    def test_push_token_registration(self):
+        """Test 12: Register a push token for testing notifications"""
+        try:
+            token_data = {
+                "token": "ExpoPushToken[test-bouake-fr-123]",
+                "user_id": self.user_id,
+                "platform": "ios",
+                "city": "Bouaké",
+                "device_info": {"model": "iPhone", "os": "iOS 17"}
+            }
+            response = self.make_request('POST', '/notifications/register', json=token_data)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('status') == 'ok':
+                    self.log_test("Push token registration", True, "Push token registered successfully")
+                else:
+                    self.log_test("Push token registration", False, f"Unexpected response: {data}")
+            else:
+                self.log_test("Push token registration", False, f"Status code: {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("Push token registration", False, f"Exception: {str(e)}")
+            
+    def test_targeted_notification_bouake_fr(self):
+        """Test 13: POST /api/notifications/send with Bouaké, fr targeting"""
+        try:
+            notification_data = {
+                "title": "Information officielle",
+                "body": "la ville de bouaké organise les independances du 7 août 2025, vous êtes tous conviés pour une belle réussite.",
+                "city": "Bouaké",
+                "lang": "fr"
+            }
+            response = self.make_request('POST', '/notifications/send', json=notification_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and 'results' in data:
+                    count = data['count']
+                    results = data['results']
+                    self.log_test("Targeted notification (Bouaké, fr)", True, f"Notification sent successfully. Count: {count}, Results: {len(results)} batches")
+                    return count
+                else:
+                    self.log_test("Targeted notification (Bouaké, fr)", False, f"Missing count or results in response: {data}")
+            else:
+                self.log_test("Targeted notification (Bouaké, fr)", False, f"Status code: {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("Targeted notification (Bouaké, fr)", False, f"Exception: {str(e)}")
+        return 0
+            
     def run_all_tests(self):
         """Run all tests in sequence"""
         print(f"🚀 Starting Backend API Tests")
