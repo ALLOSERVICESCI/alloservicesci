@@ -35,6 +35,8 @@ const translations: Record<Lang, Record<string, string>> = {
     cat_urgence: 'Urgence', cat_sante: 'Santé', cat_education: 'Éducation', cat_examens: 'Examens & Concours', cat_services_publics: 'Services publics', cat_emplois: 'Emplois', cat_alertes: 'Alertes', cat_services_utiles: 'Services utiles', cat_agriculture: 'Agriculture', cat_loisirs: 'Loisirs & Tourisme', cat_transport: 'Transport',
     // NEW PROFILE PAGE TRANSLATIONS
     language: 'Langue', actions: 'Actions',
+    // NEW HOME PAGE TRANSLATIONS
+    categories: 'Catégories', selectCategory: 'Sélectionnez une catégorie', quickAccess: 'Accès rapide',
     // NEW PREMIUM PAGE TRANSLATIONS
     premiumActive: 'Premium Actif',
     premiumActiveDescription: 'Vous avez accès à toutes les fonctionnalités premium !',
