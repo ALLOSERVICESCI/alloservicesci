@@ -45,7 +45,9 @@ export default function Subscribe() {
 
       <View style={styles.contentWrap}>
         <View style={styles.hero}>
-          <Image source={APP_ICON} style={styles.icon} />
+          <View style={styles.logoWrap}>
+            <Image source={APP_ICON} style={styles.icon} />
+          </View>
           <Text style={styles.title}>{t('premiumTitle')}</Text>
         </View>
 
@@ -77,7 +79,8 @@ const styles = StyleSheet.create({
   slogan: { fontSize: 12, color: '#666', marginTop: 2, textAlign: 'center' },
   contentWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 },
   hero: { alignItems: 'center', marginTop: 8, marginBottom: 16 },
-  icon: { width: 160, height: 160, borderRadius: 32, marginBottom: 14 },
+  logoWrap: { width: 200, height: 200, borderRadius: 100, backgroundColor: '#fff', borderWidth: 2, borderColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center', marginBottom: 14, shadowColor: '#000', shadowOpacity: 0.08, shadowOffset: { width: 0, height: 4 }, shadowRadius: 10, elevation: 4 },
+  icon: { width: 180, height: 180, borderRadius: 90 },
   title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
   text: { marginTop: 10, color: '#333', textAlign: 'center' },
   centerBlock: { alignItems: 'center', marginTop: 8 },
