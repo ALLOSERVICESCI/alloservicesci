@@ -10,7 +10,8 @@ const HEADERS: any = {
   education: require('../../assets/headers/headers/education_bg.png'),
   examens_concours: require('../../assets/headers/headers/examens_concours_bg.png'),
   services_publics: require('../../assets/headers/headers/services_publics_bg.png'),
-  emplois: require('../../assets/headers/headers/emplois_bg.png'),
+  // Keep emplois using existing icon to avoid missing asset in web bundler
+  emplois: require('../../assets/icons/icons/emplois.png'),
   alertes: require('../../assets/headers/headers/alertes_bg.png'),
   services_utiles: require('../../assets/headers/headers/services_utiles_bg.png'),
   agriculture: require('../../assets/headers/headers/agriculture_bg.png'),
