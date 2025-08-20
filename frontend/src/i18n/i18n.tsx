@@ -70,6 +70,7 @@ const translations: Record<Lang, Record<string, string>> = {
     error: 'Error', network: 'Network', notAvailable: 'N/A', comingSoon: 'Content coming soon',
     saved: 'Saved', save: 'Save', remove: 'Remove', share: 'Share', open: 'Open',
     phone: 'Phone', premium: 'Premium', activeUntil: 'Active until', inactive: 'Inactive', logout: 'Log out', editProfile: 'Edit profile', city: 'City', profileUpdated: 'Profile updated',
+    language: 'Language', actions: 'Actions',
     notifCenter: 'Notifications Center', clearHistory: 'Clear history', noNotifications: 'No notifications', noTitle: 'No title',
     renewPremium: 'Renew Premium', becomePremium: 'Go Premium',
     premiumActiveBadge: 'Premium active', refreshStatus: 'Refresh status',
