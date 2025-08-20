@@ -94,7 +94,7 @@ export default function Subscribe() {
       {/* Premium Status Card */}
       <View style={[styles.statusCard, isPremium ? styles.statusCardPremium : styles.statusCardFree]}>
         <Text style={[styles.statusTitle, isPremium ? styles.statusTitlePremium : styles.statusTitleFree]}>
-          {isPremium ? t('premiumActive') : t('premiumTitle')}
+          {isPremium ? t('premiumActive') : t('premium')}
         </Text>
         
         {isPremium ? (
