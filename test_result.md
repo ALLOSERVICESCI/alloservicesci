@@ -124,7 +124,7 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
@@ -132,6 +132,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Seed endpoint working correctly, returns {status: ok}. Categories endpoint returns 11 categories with proper slugs. Fixed Pydantic v2 compatibility issues with ObjectId serialization."
+      - working: "NA"
+        agent: "main"
+        comment: "Re-implemented missing seed endpoint and category endpoints with proper premium gating (402 responses). Added /api/seed, /api/categories, and premium-gated endpoints: /api/exams, /api/utilities, /api/education, /api/services-publics, /api/emplois, /api/agriculture, /api/loisirs, /api/transport. All require user_id parameter and return 402 for non-premium users."
   - task: "Geo query for pharmacies"
     implemented: true
     working: true
