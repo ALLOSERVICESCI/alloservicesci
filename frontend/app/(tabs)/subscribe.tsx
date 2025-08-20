@@ -218,6 +218,11 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     borderWidth: 4,
     borderColor: '#ffffff',
+    shadowColor: '#0A7C3A',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 8,
   },
   premiumBadge: {
     position: 'absolute',
@@ -400,6 +405,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: '#ffffff',
+    shadowColor: '#0A7C3A',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 8,
   },
   buttonText: {
     color: '#fff',
