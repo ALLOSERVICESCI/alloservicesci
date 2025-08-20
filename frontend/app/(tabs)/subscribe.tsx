@@ -38,7 +38,7 @@ export default function Subscribe() {
           );
         }, 2000);
       } else {
-        Alert.alert('Paiement', ((json as any).detail || \`Erreur HTTP \${res.status}\`));
+        Alert.alert('Paiement', ((json as any).detail || `Erreur HTTP ${res.status}`));
       }
     } catch (e: any) {
       Alert.alert(t('network'), e?.message || 'Erreur réseau');
