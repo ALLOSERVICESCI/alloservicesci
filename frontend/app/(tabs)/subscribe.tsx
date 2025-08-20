@@ -85,7 +85,7 @@ export default function Subscribe() {
           <Image source={APP_ICON} style={styles.logo} />
           {isPremium && (
             <View style={styles.premiumBadge}>
-              <Text style={styles.premiumBadgeText}>✨ {t('premium')}</Text>
+              <Text style={styles.premiumBadgeText}>✨ {'Premium 1200 FCFA / an'}</Text>
             </View>
           )}
         </View>
@@ -94,7 +94,7 @@ export default function Subscribe() {
       {/* Premium Status Card */}
       <View style={[styles.statusCard, isPremium ? styles.statusCardPremium : styles.statusCardFree]}>
         <Text style={[styles.statusTitle, isPremium ? styles.statusTitlePremium : styles.statusTitleFree]}>
-          {isPremium ? t('premiumActive') : t('premium')}
+          {isPremium ? t('premiumActive') : 'Premium 1200 FCFA / an'}
         </Text>
         
         {isPremium ? (
