@@ -20,6 +20,7 @@ const translations: Record<Lang, Record<string, string>> = {
     saved: 'Enregistré', save: 'Enregistrer', remove: 'Supprimer', share: 'Partager', open: 'Ouvrir',
     // Profile
     phone: 'Téléphone', premium: 'Premium', activeUntil: "Actif jusqu'au", inactive: 'Inactif', logout: 'Se déconnecter', editProfile: 'Modifier le profil', city: 'Ville', profileUpdated: 'Profil mis à jour',
+    language: 'Langue', actions: 'Actions',
     notifCenter: 'Centre de notifications', clearHistory: "Effacer l'historique", noNotifications: 'Aucune notification', noTitle: 'Sans titre',
     renewPremium: 'Renouveler Premium', becomePremium: 'Devenir Premium',
     premiumActiveBadge: 'Premium actif', refreshStatus: 'Actualiser le statut',
