@@ -47,6 +47,8 @@ export default function Subscribe() {
           <Text style={styles.sloganBelow}>{t('slogan')}</Text>
         </View>
 
+        <View style={styles.separator} />
+
         <Text style={styles.title}>{t('premiumTitle')}</Text>
 
         {!user?.id && (
@@ -77,12 +79,13 @@ const styles = StyleSheet.create({
   brandBig: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
   logoWrap: { width: 200, height: 200, borderRadius: 100, backgroundColor: '#fff', borderWidth: 2, borderColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center', marginVertical: 6, shadowColor: '#000', shadowOpacity: 0.08, shadowOffset: { width: 0, height: 4 }, shadowRadius: 10, elevation: 4 },
   icon: { width: 180, height: 180, borderRadius: 90 },
-  sloganBelow: { fontSize: 16, lineHeight: 20, color: '#666', textAlign: 'center' },
-  title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', textAlign: 'center', marginTop: 4 },
-  text: { marginTop: 10, color: '#333', textAlign: 'center' },
-  centerBlock: { alignItems: 'center', marginTop: 8 },
-  btn: { backgroundColor: '#0F5132', padding: 14, borderRadius: 12, alignItems: 'center', marginTop: 16 },
-  btnAlt: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 12 },
+  sloganBelow: { fontSize: 18, lineHeight: 22, color: '#666', textAlign: 'center' },
+  separator: { height: 1, backgroundColor: '#E8F0E8', width: '80%', marginTop: 12, marginBottom: 8 },
+  title: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', textAlign: 'center', marginTop: 0 },
+  text: { marginTop: 8, color: '#333', textAlign: 'center' },
+  centerBlock: { alignItems: 'center', marginTop: 6 },
+  btn: { backgroundColor: '#0F5132', padding: 14, borderRadius: 12, alignItems: 'center', marginTop: 12 },
+  btnAlt: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 10 },
   btnWide: { minWidth: 260, alignSelf: 'center' },
   btnText: { color: '#fff', fontWeight: '700' },
 });
