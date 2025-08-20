@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   logo: {
-    width: 120,
+    width: 150,
     height: 120,
     borderRadius: 60,
     borderWidth: 3,
