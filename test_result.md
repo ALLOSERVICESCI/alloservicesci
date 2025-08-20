@@ -447,12 +447,25 @@ metadata:
         agent: "testing"
         comment: "✅ TESTED: Font preloading fix successful! Smoke test completed successfully. Root URL (/) redirects correctly to /(tabs)/home without '6000ms timeout exceeded' errors. No font loading errors detected in console. Tab icons render properly (5 tabs detected). Brand text 'Allô Services CI' displays correctly. Home screen shows category cards with proper icons (Urgence, Santé, Education visible). Navigation to Profile tab works. Only minor deprecation warnings found (shadow props, resizeMode, pointerEvents) - no critical issues. Startup crash resolved completely."
 
+  - task: "Premium Content Access Verification"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented comprehensive premium gating verification. All premium endpoints now require user_id parameter and return HTTP 402 'Premium subscription required' for non-premium users. Premium endpoints: /api/exams, /api/utilities, /api/education, /api/services-publics, /api/emplois, /api/agriculture, /api/loisirs, /api/transport. Free endpoints remain: /api/alerts, /api/useful-numbers, /api/pharmacies/nearby. Need to test 402 responses for non-premium and 200 responses for premium users."
+
 test_plan:
   current_focus:
-  - "Profile edit functionality (city/lang selection)"
-  - "Notifications Center functionality"
+    - "Core API + Mongo models + seed"
+    - "Premium Content Access Verification"
+    - "Profile edit functionality (city/lang selection)"
   stuck_tasks:
-  - "Profile edit functionality (city/lang selection)"
+    - "Profile edit functionality (city/lang selection)"
   test_all: false
   test_priority: "high_first"
 
