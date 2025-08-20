@@ -280,8 +280,9 @@ metadata:
 
 test_plan:
   current_focus:
-  - "Mobile responsiveness validation"
-  - "Backend integration testing"
+  - "Backend: PATCH /api/users/{user_id}"
+  - "Backend: /api/notifications/send segmentation"
+  - "Frontend: Profile edit (city/lang) & Notifications Center"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
