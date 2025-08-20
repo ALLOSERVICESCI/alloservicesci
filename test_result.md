@@ -218,6 +218,6 @@ test_plan:
 
 agent_communication:
   - agent: "main"
-    message: "Please test backend endpoints per test_plan. No auth headers required; pass user_id query where indicated."
+    message: "Added base i18n (FR/EN/ES/IT/AR) with RTL handling and hooked into tabs, profile, subscribe, alerts, pharmacies, register. Set up revalidation task for /api/pharmacies/nearby. Ready for backend-only tests now."
   - agent: "testing"
     message: "✅ BACKEND TESTING COMPLETE: All 15 tests passed (100% success rate). Complete API flow tested: seed → categories → user registration → subscription check → payment initiate → payment validate → premium subscription → free endpoints → alerts → premium gating → utilities. Fixed Pydantic v2 ObjectId serialization issues during testing. Backend is fully functional and ready for frontend integration."
