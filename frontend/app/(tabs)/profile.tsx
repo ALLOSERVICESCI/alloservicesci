@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, ActivityIndicator, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
@@ -8,6 +8,7 @@ import { useI18n, Lang } from '../../src/i18n/i18n';
 export default function Profile() {
   const { user, logout } = useAuth();
   const [premium, setPremium] = useState<{ is_premium: boolean; expires_at?: string } | null>(null);
+  const [payLoading, setPayLoading] = useState(false);
   const router = useRouter();
   const { t, lang, setLang } = useI18n();
 
@@ -26,9 +27,40 @@ export default function Profile() {
   const goEdit = () => router.push('/profile/edit');
   const goNotifCenter = () => router.push('/notifications');
 
+  const startPayment = async () => {
+    if (!user?.id) { router.push('/auth/register'); return; }
+    setPayLoading(true);
+    try {
+      const res = await apiFetch('/api/payments/cinetpay/initiate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.id, amount_fcfa: 1200 })
+      });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && (json as any).payment_url) {
+        Linking.openURL((json as any).payment_url);
+      } else {
+        Alert.alert('Paiement', ((json as any).detail || `Erreur HTTP ${res.status}`));
+      }
+    } catch (e: any) {
+      Alert.alert(t('network'), e?.message || 'Erreur réseau');
+    } finally {
+      setPayLoading(false);
+    }
+  };
+
   const LangButton = ({ code, label }: { code: Lang; label: string }) => (
     <TouchableOpacity onPress={() => setLang(code)} style={[styles.langBtn, lang === code && styles.langBtnActive]}>
       <Text style={[styles.langText, lang === code && styles.langTextActive]}>{label}</Text>
+    </TouchableOpacity>
+  );
+
+  const PremiumAction = () => (
+    <TouchableOpacity style={[styles.btn, { marginTop: 12 }]} onPress={startPayment} disabled={payLoading}>
+      {payLoading ? (
+        <ActivityIndicator color="#fff" />
+      ) : (
+        <Text style={styles.btnText}>{premium?.is_premium ? t('renewPremium') : t('becomePremium')}</Text>
+      )}
     </TouchableOpacity>
   );
 
@@ -66,6 +98,7 @@ export default function Profile() {
               <Text style={styles.btnText}>{t('notifCenter')}</Text>
             </TouchableOpacity>
           </View>
+          <PremiumAction />
           <TouchableOpacity style={[styles.btn, { backgroundColor: '#B00020', marginTop: 12 }]} onPress={logout}>
             <Text style={styles.btnText}>{t('logout')}</Text>
           </TouchableOpacity>

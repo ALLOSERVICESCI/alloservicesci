@@ -21,6 +21,7 @@ const translations: Record<Lang, Record<string, string>> = {
     // Profile
     phone: 'Téléphone', premium: 'Premium', activeUntil: "Actif jusqu'au", inactive: 'Inactif', logout: 'Se déconnecter', editProfile: 'Modifier le profil', city: 'Ville', profileUpdated: 'Profil mis à jour',
     notifCenter: 'Centre de notifications', clearHistory: "Effacer l'historique", noNotifications: 'Aucune notification', noTitle: 'Sans titre',
+    renewPremium: 'Renouveler Premium', becomePremium: 'Devenir Premium',
     // Register
     createTitle: 'Créer un compte', firstName: 'Prénom', lastName: 'Nom', emailOpt: 'Email (optionnel)', phonePh: 'Téléphone', submit: 'Valider', requiredFields: 'Champs requis', requiredMsg: 'Nom, prénom et téléphone sont requis', welcomeShort: 'Bienvenue',
     // Categories
@@ -38,6 +39,7 @@ const translations: Record<Lang, Record<string, string>> = {
     saved: 'Saved', save: 'Save', remove: 'Remove',
     phone: 'Phone', premium: 'Premium', activeUntil: 'Active until', inactive: 'Inactive', logout: 'Log out', editProfile: 'Edit profile', city: 'City', profileUpdated: 'Profile updated',
     notifCenter: 'Notifications Center', clearHistory: 'Clear history', noNotifications: 'No notifications', noTitle: 'No title',
+    renewPremium: 'Renew Premium', becomePremium: 'Go Premium',
     createTitle: 'Create account', firstName: 'First name', lastName: 'Last name', emailOpt: 'Email (optional)', phonePh: 'Phone', submit: 'Submit', requiredFields: 'Required fields', requiredMsg: 'First name, last name and phone are required', welcomeShort: 'Welcome',
     cat_urgence: 'Emergency', cat_sante: 'Health', cat_education: 'Education', cat_examens: 'Exams & Contests', cat_services_publics: 'Public Services', cat_emplois: 'Jobs', cat_alertes: 'Alerts', cat_services_utiles: 'Useful Services', cat_agriculture: 'Agriculture', cat_loisirs: 'Leisure & Tourism', cat_transport: 'Transport',
   },
@@ -53,6 +55,7 @@ const translations: Record<Lang, Record<string, string>> = {
     saved: 'Guardado', save: 'Guardar', remove: 'Eliminar',
     phone: 'Teléfono', premium: 'Premium', activeUntil: 'Activo hasta', inactive: 'Inactivo', logout: 'Cerrar sesión', editProfile: 'Editar perfil', city: 'Ciudad', profileUpdated: 'Perfil actualizado',
     notifCenter: 'Centro de notificaciones', clearHistory: 'Borrar historial', noNotifications: 'Sin notificaciones', noTitle: 'Sin título',
+    renewPremium: 'Renovar Premium', becomePremium: 'Hacerse Premium',
     createTitle: 'Crear cuenta', firstName: 'Nombre', lastName: 'Apellido', emailOpt: 'Correo (opcional)', phonePh: 'Teléfono', submit: 'Validar', requiredFields: 'Campos obligatorios', requiredMsg: 'Nombre, apellido y teléfono son obligatorios', welcomeShort: 'Bienvenido',
     cat_urgence: 'Emergencia', cat_sante: 'Salud', cat_education: 'Educación', cat_examens: 'Exámenes y Concursos', cat_services_publics: 'Servicios públicos', cat_emplois: 'Empleos', cat_alertes: 'Alertas', cat_services_utiles: 'Servicios útiles', cat_agriculture: 'Agricultura', cat_loisirs: 'Ocio y Turismo', cat_transport: 'Transporte',
   },
@@ -68,6 +71,7 @@ const translations: Record<Lang, Record<string, string>> = {
     saved: 'Salvato', save: 'Salva', remove: 'Rimuovere',
     phone: 'Telefono', premium: 'Premium', activeUntil: 'Attivo fino al', inactive: 'Inattivo', logout: 'Disconnettersi', editProfile: 'Modifica profilo', city: 'Città', profileUpdated: 'Profilo aggiornato',
     notifCenter: 'Centro notifiche', clearHistory: 'Cancella cronologia', noNotifications: 'Nessuna notifica', noTitle: 'Senza titolo',
+    renewPremium: 'Rinnovare Premium', becomePremium: 'Diventa Premium',
     createTitle: 'Crea account', firstName: 'Nome', lastName: 'Cognome', emailOpt: 'Email (opzionale)', phonePh: 'Telefono', submit: 'Conferma', requiredFields: 'Campi obbligatori', requiredMsg: 'Nome, cognome e telefono sono obbligatori', welcomeShort: 'Benvenuto',
     cat_urgence: 'Emergenza', cat_sante: 'Salute', cat_education: 'Istruzione', cat_examens: 'Esami e Concorsi', cat_services_publics: 'Servizi pubblici', cat_emplois: 'Lavoro', cat_alertes: 'Avvisi', cat_services_utiles: 'Servizi utili', cat_agriculture: 'Agricoltura', cat_loisirs: 'Tempo libero e Turismo', cat_transport: 'Trasporti',
   },
@@ -83,6 +87,7 @@ const translations: Record<Lang, Record<string, string>> = {
     saved: 'تم الحفظ', save: 'حفظ', remove: 'حذف',
     phone: 'الهاتف', premium: 'الاشتراك', activeUntil: 'نشط حتى', inactive: 'غير نشط', logout: 'تسجيل الخروج', editProfile: 'تعديل الملف الشخصي', city: 'المدينة', profileUpdated: 'تم تحديث الملف الشخصي',
     notifCenter: 'مركز الإشعارات', clearHistory: 'مسح السجل', noNotifications: 'لا توجد إشعارات', noTitle: 'بدون عنوان',
+    renewPremium: 'تجديد بريميوم', becomePremium: 'احصل على بريميوم',
     createTitle: 'إنشاء حساب', firstName: 'الاسم', lastName: 'الكنية', emailOpt: 'البريد الإلكتروني (اختياري)', phonePh: 'الهاتف', submit: 'تأكيد', requiredFields: 'خانات مطلوبة', requiredMsg: 'الاسم والكنية والهاتف مطلوبة', welcomeShort: 'مرحبًا',
     cat_urgence: 'الطوارئ', cat_sante: 'الصحة', cat_education: 'التعليم', cat_examens: 'الامتحانات والمسابقات', cat_services_publics: 'الخدمات العامة', cat_emplois: 'الوظائف', cat_alertes: 'التنبيهات', cat_services_utiles: 'الخدمات المفيدة', cat_agriculture: 'الزراعة', cat_loisirs: 'الترفيه والسياحة', cat_transport: 'النقل',
   },
