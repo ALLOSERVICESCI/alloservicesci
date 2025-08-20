@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, RefreshControl, Share, Alert, Linking } from 'react-native';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, RefreshControl, Share, Alert, Linking, Switch } from 'react-native';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
@@ -10,6 +10,7 @@ export default function PaymentHistory() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [onlyPaid, setOnlyPaid] = useState(false);
 
   const load = async () => {
     if (!user?.id) { setItems([]); setLoading(false); return; }
@@ -32,6 +33,8 @@ export default function PaymentHistory() {
     await load();
     setRefreshing(false);
   }, [user?.id]);
+
+  const visibleItems = useMemo(() => (onlyPaid ? items.filter(i => i.status === 'ACCEPTED') : items), [items, onlyPaid]);
 
   const StatusChip = ({ status }: { status: string }) => {
     const label = t(`status_${status}`) || status;
@@ -88,15 +91,23 @@ export default function PaymentHistory() {
 
   if (loading) return <View style={styles.center}><ActivityIndicator /></View>;
 
+  const emptyText = onlyPaid ? t('noPaidPayments') : t('noPayments');
+
   return (
     <View style={styles.container}>
       <Text style={styles.brand}>{t('brand')}</Text>
       <Text style={styles.title}>{t('paymentHistory')}</Text>
-      {items.length === 0 ? (
-        <Text style={styles.empty}>{t('noPayments')}</Text>
+
+      <View style={styles.filterRow}>
+        <Text style={styles.filterLabel}>{t('onlyPaid')}</Text>
+        <Switch value={onlyPaid} onValueChange={setOnlyPaid} thumbColor={onlyPaid ? '#0A7C3A' : undefined} trackColor={{ true: '#CFE9DC', false: '#DDD' }} />
+      </View>
+
+      {visibleItems.length === 0 ? (
+        <Text style={styles.empty}>{emptyText}</Text>
       ) : (
         <FlatList
-          data={items}
+          data={visibleItems}
           keyExtractor={(it) => it.id}
           renderItem={Row}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
@@ -111,6 +122,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16 },
   brand: { fontSize: 18, fontWeight: '800', color: '#0A7C3A' },
   title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A', marginTop: 6 },
+  filterRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 },
+  filterLabel: { color: '#333', fontWeight: '600' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   empty: { marginTop: 20, color: '#666' },
   card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginTop: 12, borderWidth: 1, borderColor: '#E8F0E8' },
