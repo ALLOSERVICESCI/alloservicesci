@@ -210,16 +210,7 @@ const styles = StyleSheet.create({
   logoWrapper: {
     position: 'relative',
   },
-  logoOuterBorder: {
-    width: 192,
-    height: 192,
-    borderRadius: 96,
-    borderWidth: 6,
-    borderColor: '#0A7C3A',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-  },
+
   logo: {
     width: 170,
     height: 170,
