@@ -32,7 +32,7 @@ CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
 BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.6.0")
+app = FastAPI(title="Allô Services CI API", version="0.6.1")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -287,6 +287,7 @@ async def payments_history(user_id: str, limit: int = 50):
             'currency': tr.get('currency', 'XOF'),
             'status': tr.get('status'),
             'provider': tr.get('provider'),
+            'payment_url': tr.get('payment_url'),
             'created_at': tr.get('created_at'),
             'updated_at': tr.get('updated_at'),
         })
