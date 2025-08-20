@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 150,
-    height: 120,
+    height: 150,
     borderRadius: 60,
     borderWidth: 3,
     borderColor: '#0A7C3A',
