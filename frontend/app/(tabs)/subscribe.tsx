@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     width: 180,
     height: 180,
     borderRadius: 90,
-    borderWidth: 3,
+    borderWidth: 4,
     borderColor: '#0A7C3A',
   },
   premiumBadge: {
