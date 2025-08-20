@@ -32,7 +32,7 @@ CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
 BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.4.3")
+app = FastAPI(title="Allô Services CI API", version="0.5.0")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -70,9 +70,19 @@ class UserCreate(BaseModel):
     email: Optional[EmailStr] = None
     phone: str
     city_id: Optional[str] = None
+    city: Optional[str] = None
     accept_terms: bool = True
     preferred_lang: LangKey = 'fr'
     photo_base64: Optional[str] = None
+
+class UserUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    city_id: Optional[str] = None
+    city: Optional[str] = None
+    preferred_lang: Optional[LangKey] = None
 
 class PushTokenRegister(BaseModel):
     token: str
@@ -86,6 +96,8 @@ class PushSendInput(BaseModel):
     body: str
     data: Optional[Dict[str, Any]] = None
     city: Optional[str] = None
+    lang: Optional[LangKey] = None
+    premium_only: Optional[bool] = False
 
 class AlertCreate(BaseModel):
     title: str
@@ -108,6 +120,9 @@ async def ensure_indexes():
     await db.commodity_prices.create_index([('updated_at', -1)])
     await db.transactions.create_index('transaction_id', unique=True)
     await db.push_tokens.create_index('token', unique=True)
+    await db.push_tokens.create_index([('city', 1)])
+    await db.push_tokens.create_index([('preferred_lang', 1)])
+    await db.push_tokens.create_index([('is_premium', 1)])
 
 # ---------- BASIC ROUTES ----------
 @api.get('/health')
@@ -118,7 +133,7 @@ async def health():
 async def api_root():
     return {"message": "Allô Services CI API", "paths": [r.path for r in app.router.routes]}
 
-# ---------- AUTH ----------
+# ---------- AUTH / USERS ----------
 @api.post("/auth/register")
 @api.post("/auth/register/")
 async def register_user(payload: UserCreate):
@@ -127,6 +142,24 @@ async def register_user(payload: UserCreate):
     doc['is_premium'] = False
     res = await db.users.insert_one(doc)
     saved = await db.users.find_one({'_id': res.inserted_id})
+    saved['id'] = str(saved['_id'])
+    del saved['_id']
+    return saved
+
+@api.patch("/users/{user_id}")
+async def update_user(user_id: str, payload: UserUpdate):
+    try:
+        _id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+    updates = {k: v for k, v in payload.model_dump(exclude_unset=True).items() if v is not None}
+    if not updates:
+        return {"updated": False}
+    updates['updated_at'] = datetime.utcnow()
+    r = await db.users.update_one({'_id': _id}, {'$set': updates})
+    if r.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    saved = await db.users.find_one({'_id': _id})
     saved['id'] = str(saved['_id'])
     del saved['_id']
     return saved
@@ -147,6 +180,10 @@ async def check_subscription(user_id: str):
         active = True
         expires_at = sub['expires_at']
     return {"is_premium": active, "expires_at": expires_at}
+
+async def _is_user_premium(uid: ObjectId) -> bool:
+    sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
+    return bool(sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow())
 
 # ---------- PAYMENTS (CinetPay) ----------
 class PaymentInitInput(BaseModel):
@@ -222,6 +259,8 @@ async def cinetpay_validate(payload: PaymentValidateInput):
         exp = datetime.utcnow() + timedelta(days=365)
         await db.subscriptions.insert_one({'user_id': tr['user_id'], 'amount_fcfa': tr['amount'], 'provider': 'cinetpay', 'status': 'active', 'transaction_id': payload.transaction_id, 'created_at': datetime.utcnow(), 'expires_at': exp})
         await db.users.update_one({'_id': tr['user_id']}, {'$set': {'is_premium': True}})
+        # Update push token premium flags for this user
+        await db.push_tokens.update_many({'user_id': tr['user_id']}, {'$set': {'is_premium': True}})
     return {"status": 'paid' if payload.success else 'failed'}
 
 @api.get("/payments/cinetpay/return")
@@ -343,7 +382,12 @@ async def register_push_token(payload: PushTokenRegister):
     }
     if payload.user_id:
         try:
-            doc['user_id'] = ObjectId(payload.user_id)
+            uid = ObjectId(payload.user_id)
+            user = await db.users.find_one({'_id': uid})
+            if user:
+                doc['user_id'] = uid
+                doc['preferred_lang'] = user.get('preferred_lang')
+                doc['is_premium'] = await _is_user_premium(uid)
         except Exception:
             pass
     await db.push_tokens.update_one({'token': payload.token}, {'$set': doc}, upsert=True)
@@ -359,6 +403,10 @@ async def send_push(payload: PushSendInput):
     query: Dict[str, Any] = {}
     if payload.city:
         query['city'] = payload.city
+    if payload.lang:
+        query['preferred_lang'] = payload.lang
+    if payload.premium_only:
+        query['is_premium'] = True
     tokens = [pt['token'] async for pt in db.push_tokens.find(query, {'token': 1})]
     results = await _send_expo_push(tokens, {'title': payload.title, 'body': payload.body, 'data': payload.data})
     return {'count': len(tokens), 'results': results}
