@@ -201,19 +201,8 @@ class BackendTester:
         except Exception as e:
             self.log_test("Useful numbers endpoint", False, f"Exception: {str(e)}")
             
-        # Test locations
-        try:
-            response = self.make_request('GET', '/locations')
-            if response.status_code == 200:
-                data = response.json()
-                if isinstance(data, list) and len(data) > 0:
-                    self.log_test("Locations endpoint", True, f"Found {len(data)} locations")
-                else:
-                    self.log_test("Locations endpoint", False, "No locations returned")
-            else:
-                self.log_test("Locations endpoint", False, f"Status code: {response.status_code}")
-        except Exception as e:
-            self.log_test("Locations endpoint", False, f"Exception: {str(e)}")
+        # Test locations - REMOVED as endpoint doesn't exist in current implementation
+        # This was mentioned in previous tests but is not implemented in server.py
             
         # Test pharmacies nearby
         try:
