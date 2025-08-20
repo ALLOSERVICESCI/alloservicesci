@@ -383,6 +383,8 @@ class BackendTester:
         self.test_alerts_endpoints()
         self.test_premium_gating()
         self.test_utilities_endpoint()
+        self.test_push_token_registration()
+        notification_count = self.test_targeted_notification_bouake_fr()
         
         # Summary
         print("\n" + "=" * 60)
