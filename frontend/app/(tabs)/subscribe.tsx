@@ -47,8 +47,6 @@ export default function Subscribe() {
           <Text style={styles.sloganBelow}>{t('slogan')}</Text>
         </View>
 
-        <View style={styles.separator} />
-
         <Text style={styles.title}>{t('premiumTitle')}</Text>
 
         {!user?.id && (
@@ -75,12 +73,11 @@ export default function Subscribe() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16 },
   contentWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 },
-  hero: { alignItems: 'center', marginBottom: 10 },
+  hero: { alignItems: 'center', marginBottom: 4 },
   brandBig: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
-  logoWrap: { width: 200, height: 200, borderRadius: 100, backgroundColor: '#fff', borderWidth: 2, borderColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center', marginVertical: 6, shadowColor: '#000', shadowOpacity: 0.08, shadowOffset: { width: 0, height: 4 }, shadowRadius: 10, elevation: 4 },
+  logoWrap: { width: 200, height: 200, borderRadius: 100, backgroundColor: '#fff', borderWidth: 2, borderColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center', marginVertical: 4, shadowColor: '#000', shadowOpacity: 0.08, shadowOffset: { width: 0, height: 4 }, shadowRadius: 10, elevation: 4 },
   icon: { width: 180, height: 180, borderRadius: 90 },
   sloganBelow: { fontSize: 18, lineHeight: 22, color: '#666', textAlign: 'center' },
-  separator: { height: 1, backgroundColor: '#E8F0E8', width: '80%', marginTop: 12, marginBottom: 8 },
   title: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', textAlign: 'center', marginTop: 0 },
   text: { marginTop: 8, color: '#333', textAlign: 'center' },
   centerBlock: { alignItems: 'center', marginTop: 6 },
