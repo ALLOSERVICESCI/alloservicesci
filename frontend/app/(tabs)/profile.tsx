@@ -80,7 +80,7 @@ export default function Profile() {
           <TouchableOpacity onPress={startPayment} style={styles.expiredCta}><Text style={styles.expiredCtaText}>{t('renewPremium')}</Text></TouchableOpacity>
         </View>
       )}
-      <TouchableOpacity style={[styles.btn, { marginTop: 12 }]} onPress={startPayment} disabled={payLoading}>
+      <TouchableOpacity style={[styles.btn, styles.btnWide, { marginTop: 12 }]} onPress={startPayment} disabled={payLoading}>
         {payLoading ? (
           <ActivityIndicator color="#fff" />
         ) : (
@@ -88,9 +88,9 @@ export default function Profile() {
         )}
       </TouchableOpacity>
       {premium?.is_premium && premium?.expires_at ? (
-        <Text style={styles.expireText}>{`${t('activeUntil')} ${new Date(premium.expires_at).toLocaleDateString()}`}</Text>
+        <Text style={[styles.expireText, styles.centerText]}>{`${t('activeUntil')} ${new Date(premium.expires_at).toLocaleDateString()}`}</Text>
       ) : null}
-      <TouchableOpacity onPress={loadPremium} style={[styles.linkBtn]}>
+      <TouchableOpacity onPress={loadPremium} style={styles.linkBtn}>
         <Text style={styles.linkBtnText}>{t('refreshStatus')}</Text>
       </TouchableOpacity>
     </>
@@ -98,17 +98,15 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <View>
-          <Text style={styles.brand}>{t('brand')}</Text>
-          <Text style={styles.slogan}>{t('slogan')}</Text>
-        </View>
+      <View style={styles.headerCenter}>
+        <Text style={styles.brand}>{t('brand')}</Text>
+        <Text style={styles.slogan}>{t('slogan')}</Text>
         {premium?.is_premium ? (
           <View style={styles.badge}><Text style={styles.badgeText}>{t('premiumActiveBadge')}</Text></View>
         ) : null}
       </View>
 
-      <View style={{ flexDirection: 'row', marginTop: 12 }}>
+      <View style={styles.langRow}>
         <LangButton code="fr" label="FR" />
         <LangButton code="en" label="EN" />
         <LangButton code="es" label="ES" />
@@ -117,31 +115,30 @@ export default function Profile() {
       </View>
 
       {!user ? (
-        <View style={{ marginTop: 16 }}>
-          <Text style={styles.text}>{t('needAccount')}</Text>
-          <TouchableOpacity style={styles.btn} onPress={goRegister}><Text style={styles.btnText}>{t('createAccount')}</Text></TouchableOpacity>
+        <View style={styles.centerBlock}>
+          <Text style={[styles.text, styles.centerText]}>{t('needAccount')}</Text>
+          <TouchableOpacity style={[styles.btn, styles.btnWide, { marginTop: 12 }]} onPress={goRegister}><Text style={styles.btnText}>{t('createAccount')}</Text></TouchableOpacity>
         </View>
       ) : (
-        <View style={{ marginTop: 16 }}>
-          <Text style={styles.info}>{t('hello')} {user.first_name} {user.last_name}</Text>
-          <Text style={styles.info}>{t('phone')}: {user.phone}</Text>
-          {!!user.city && <Text style={styles.info}>{t('city')}: {user.city}</Text>}
+        <View style={styles.centerBlock}>
+          <Text style={[styles.info, styles.centerText]}>{t('hello')} {user.first_name} {user.last_name}</Text>
+          <Text style={[styles.info, styles.centerText]}>{t('phone')}: {user.phone}</Text>
+          {!!user.city && <Text style={[styles.info, styles.centerText]}>{t('city')}: {user.city}</Text>}
           {premium && (
-            <Text style={styles.info}>{t('premium')}: {premium.is_premium ? `${t('activeUntil')} ${premium.expires_at ? new Date(premium.expires_at).toLocaleDateString() : ''}` : t('inactive')}</Text>
+            <Text style={[styles.info, styles.centerText]}>{t('premium')}: {premium.is_premium ? `${t('activeUntil')} ${premium.expires_at ? new Date(premium.expires_at).toLocaleDateString() : ''}` : t('inactive')}</Text>
           )}
-          <View style={{ flexDirection: 'row', marginTop: 12, flexWrap: 'wrap' }}>
-            <TouchableOpacity style={[styles.btn, { marginRight: 8, marginBottom: 8 }]} onPress={goEdit}>
-              <Text style={styles.btnText}>{t('editProfile')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.btnAlt, { marginRight: 8, marginBottom: 8 }]} onPress={goNotifCenter}>
-              <Text style={styles.btnText}>{t('notifCenter')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.btnAlt, { marginBottom: 8 }]} onPress={goPaymentHistory}>
-              <Text style={styles.btnText}>{t('paymentHistory')}</Text>
-            </TouchableOpacity>
-          </View>
+
+          <TouchableOpacity style={[styles.btn, styles.btnWide, { marginTop: 12 }]} onPress={goEdit}>
+            <Text style={styles.btnText}>{t('editProfile')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.btnAlt, styles.btnWide, { marginTop: 10 }]} onPress={goNotifCenter}>
+            <Text style={styles.btnText}>{t('notifCenter')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.btnAlt, styles.btnWide, { marginTop: 10 }]} onPress={goPaymentHistory}>
+            <Text style={styles.btnText}>{t('paymentHistory')}</Text>
+          </TouchableOpacity>
           <PremiumAction />
-          <TouchableOpacity style={[styles.btn, { backgroundColor: '#B00020', marginTop: 12 }]} onPress={logout}>
+          <TouchableOpacity style={[styles.btn, styles.btnWide, { backgroundColor: '#B00020', marginTop: 12 }]} onPress={logout}>
             <Text style={styles.btnText}>{t('logout')}</Text>
           </TouchableOpacity>
         </View>
@@ -151,24 +148,29 @@ export default function Profile() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
-  slogan: { fontSize: 12, color: '#666', marginTop: 2 },
+  container: { flex: 1, backgroundColor: '#fff', padding: 16, alignItems: 'center' },
+  headerCenter: { alignItems: 'center', justifyContent: 'center', marginTop: 8 },
+  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
+  slogan: { fontSize: 12, color: '#666', marginTop: 2, textAlign: 'center' },
   text: { marginTop: 10, color: '#333' },
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center' },
   btnAlt: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center' },
+  btnWide: { minWidth: 260, alignSelf: 'center' },
   linkBtn: { paddingVertical: 8, alignItems: 'center' },
   linkBtnText: { color: '#0A7C3A', fontWeight: '700' },
   btnText: { color: '#fff', fontWeight: '700' },
   info: { marginTop: 8, color: '#333' },
   expireText: { marginTop: 6, color: '#0F5132', fontWeight: '600' },
+  centerBlock: { alignItems: 'center', marginTop: 12, width: '100%' },
+  centerText: { textAlign: 'center' },
+  langRow: { flexDirection: 'row', marginTop: 12, justifyContent: 'center' },
   langBtn: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 8, borderWidth: 1, borderColor: '#E8F0E8', marginRight: 8 },
   langBtnActive: { backgroundColor: '#0A7C3A', borderColor: '#0A7C3A' },
   langText: { color: '#0A7C3A', fontWeight: '700' },
   langTextActive: { color: '#fff' },
-  badge: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 14 },
+  badge: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 14, marginTop: 8 },
   badgeText: { color: '#fff', fontWeight: '800', fontSize: 12 },
-  expiredBanner: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FFF4CC', borderColor: '#9A6700', borderWidth: 1, padding: 10, borderRadius: 10, marginTop: 10 },
+  expiredBanner: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FFF4CC', borderColor: '#9A6700', borderWidth: 1, padding: 10, borderRadius: 10, marginTop: 10, width: '90%' },
   expiredText: { color: '#9A6700', fontWeight: '700' },
   expiredCta: { backgroundColor: '#9A6700', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
   expiredCtaText: { color: '#fff', fontWeight: '700' },
