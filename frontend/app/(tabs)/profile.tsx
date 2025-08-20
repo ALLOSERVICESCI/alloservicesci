@@ -42,6 +42,7 @@ export default function Profile() {
   const goRegister = () => router.push('/auth/register');
   const goEdit = () => router.push('/profile/edit');
   const goNotifCenter = () => router.push('/notifications');
+  const goPaymentHistory = () => router.push('/payments/history');
 
   const startPayment = async () => {
     if (!user?.id) { router.push('/auth/register'); return; }
@@ -73,6 +74,12 @@ export default function Profile() {
 
   const PremiumAction = () => (
     <>
+      {!premium?.is_premium && (
+        <View style={styles.expiredBanner}>
+          <Text style={styles.expiredText}>{t('inactive')}</Text>
+          <TouchableOpacity onPress={startPayment} style={styles.expiredCta}><Text style={styles.expiredCtaText}>{t('renewPremium')}</Text></TouchableOpacity>
+        </View>
+      )}
       <TouchableOpacity style={[styles.btn, { marginTop: 12 }]} onPress={startPayment} disabled={payLoading}>
         {payLoading ? (
           <ActivityIndicator color="#fff" />
@@ -122,12 +129,15 @@ export default function Profile() {
           {premium && (
             <Text style={styles.info}>{t('premium')}: {premium.is_premium ? `${t('activeUntil')} ${premium.expires_at ? new Date(premium.expires_at).toLocaleDateString() : ''}` : t('inactive')}</Text>
           )}
-          <View style={{ flexDirection: 'row', marginTop: 12 }}>
-            <TouchableOpacity style={[styles.btn, { marginRight: 8 }]} onPress={goEdit}>
+          <View style={{ flexDirection: 'row', marginTop: 12, flexWrap: 'wrap' }}>
+            <TouchableOpacity style={[styles.btn, { marginRight: 8, marginBottom: 8 }]} onPress={goEdit}>
               <Text style={styles.btnText}>{t('editProfile')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.btnAlt]} onPress={goNotifCenter}>
+            <TouchableOpacity style={[styles.btnAlt, { marginRight: 8, marginBottom: 8 }]} onPress={goNotifCenter}>
               <Text style={styles.btnText}>{t('notifCenter')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.btnAlt, { marginBottom: 8 }]} onPress={goPaymentHistory}>
+              <Text style={styles.btnText}>{t('paymentHistory')}</Text>
             </TouchableOpacity>
           </View>
           <PremiumAction />
@@ -158,4 +168,8 @@ const styles = StyleSheet.create({
   langTextActive: { color: '#fff' },
   badge: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 14 },
   badgeText: { color: '#fff', fontWeight: '800', fontSize: 12 },
+  expiredBanner: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FFF4CC', borderColor: '#9A6700', borderWidth: 1, padding: 10, borderRadius: 10, marginTop: 10 },
+  expiredText: { color: '#9A6700', fontWeight: '700' },
+  expiredCta: { backgroundColor: '#9A6700', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
+  expiredCtaText: { color: '#fff', fontWeight: '700' },
 });
