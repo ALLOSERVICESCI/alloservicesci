@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking, Alert } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking, Alert, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
+
+const APP_ICON = require('../../assets/icons/icons/icon.png');
 
 export default function Subscribe() {
   const { user } = useAuth();
@@ -40,13 +42,19 @@ export default function Subscribe() {
         <Text style={styles.brand}>{t('brand')}</Text>
         <Text style={styles.slogan}>{t('slogan')}</Text>
       </View>
-      <Text style={styles.title}>{t('premiumTitle')}</Text>
+
+      <View style={styles.hero}>
+        <Image source={APP_ICON} style={styles.icon} />
+        <Text style={styles.title}>{t('premiumTitle')}</Text>
+      </View>
+
       {!user?.id && (
         <View style={{ marginTop: 8 }}>
           <Text style={styles.text}>{t('needAccount')}</Text>
           <TouchableOpacity onPress={goRegister} style={styles.btnAlt}><Text style={styles.btnText}>{t('createAccount')}</Text></TouchableOpacity>
         </View>
       )}
+
       {loading ? <ActivityIndicator /> : (
         <TouchableOpacity onPress={startPayment} style={styles.btn}><Text style={styles.btnText}>{t('payWithCinetPay')}</Text></TouchableOpacity>
       )}
@@ -59,7 +67,9 @@ const styles = StyleSheet.create({
   brandBar: { paddingTop: 4, paddingBottom: 8 },
   brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   slogan: { fontSize: 12, color: '#666', marginTop: 2 },
-  title: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
+  hero: { alignItems: 'center', marginTop: 8, marginBottom: 8 },
+  icon: { width: 72, height: 72, borderRadius: 16, marginBottom: 8 },
+  title: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
   text: { marginTop: 10, color: '#333' },
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 16 },
   btnAlt: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },
