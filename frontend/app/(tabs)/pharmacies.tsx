@@ -18,7 +18,7 @@ export default function Pharmacies() {
     try {
       const loc = await Location.getCurrentPositionAsync({});
       const lat = loc.coords.latitude; const lng = loc.coords.longitude;
-      const res = await apiFetch(`/api/pharmacies/nearby?lat=${lat}&lng=${lng}&max_km=10`);
+      const res = await apiFetch(`/api/pharmacies/nearby?lat=${lat}&lng=${lng}&max_km=5`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       setData(json);

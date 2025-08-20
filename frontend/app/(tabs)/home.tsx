@@ -26,18 +26,18 @@ export default function Home() {
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : t('welcome');
 
   const categories = useMemo(() => [
-    { slug: 'urgence', label: 'Urgence' },
-    { slug: 'sante', label: 'Santé' },
-    { slug: 'education', label: 'Éducation' },
-    { slug: 'examens_concours', label: 'Examens & Concours' },
-    { slug: 'services_publics', label: 'Services publics' },
-    { slug: 'emplois', label: 'Emplois' },
-    { slug: 'alertes', label: 'Alertes' },
-    { slug: 'services_utiles', label: 'Services utiles' },
-    { slug: 'agriculture', label: 'Agriculture' },
-    { slug: 'loisirs_tourisme', label: 'Loisirs & Tourisme' },
-    { slug: 'transport', label: 'Transport' },
-  ], []);
+    { slug: 'urgence', label: t('cat_urgence') },
+    { slug: 'sante', label: t('cat_sante') },
+    { slug: 'education', label: t('cat_education') },
+    { slug: 'examens_concours', label: t('cat_examens') },
+    { slug: 'services_publics', label: t('cat_services_publics') },
+    { slug: 'emplois', label: t('cat_emplois') },
+    { slug: 'alertes', label: t('cat_alertes') },
+    { slug: 'services_utiles', label: t('cat_services_utiles') },
+    { slug: 'agriculture', label: t('cat_agriculture') },
+    { slug: 'loisirs_tourisme', label: t('cat_loisirs') },
+    { slug: 'transport', label: t('cat_transport') },
+  ], [t]);
 
   return (
     <View style={styles.container}>

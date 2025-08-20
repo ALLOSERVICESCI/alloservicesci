@@ -16,11 +16,13 @@ const translations: Record<Lang, Record<string, string>> = {
     tabHome: 'Accueil', tabAlerts: 'Alertes', tabPharm: 'Pharmacies', tabPremium: 'Premium', tabProfile: 'Profil',
     // Common/Errors
     locationDenied: 'Permission localisation refusée', fetchError: 'Erreur de récupération',
-    error: 'Erreur', network: 'Réseau',
+    error: 'Erreur', network: 'Réseau', notAvailable: 'N/A',
     // Profile
     phone: 'Téléphone', premium: 'Premium', activeUntil: "Actif jusqu'au", inactive: 'Inactif', logout: 'Se déconnecter',
     // Register
     createTitle: 'Créer un compte', firstName: 'Prénom', lastName: 'Nom', emailOpt: 'Email (optionnel)', phonePh: 'Téléphone', submit: 'Valider', requiredFields: 'Champs requis', requiredMsg: 'Nom, prénom et téléphone sont requis', welcomeShort: 'Bienvenue',
+    // Categories
+    cat_urgence: 'Urgence', cat_sante: 'Santé', cat_education: 'Éducation', cat_examens: 'Examens & Concours', cat_services_publics: 'Services publics', cat_emplois: 'Emplois', cat_alertes: 'Alertes', cat_services_utiles: 'Services utiles', cat_agriculture: 'Agriculture', cat_loisirs: 'Loisirs & Tourisme', cat_transport: 'Transport',
   },
   en: {
     brand: 'Allô Services CI', slogan: 'All essential services in one click',
@@ -30,9 +32,10 @@ const translations: Record<Lang, Record<string, string>> = {
     needAccount: 'Please create an account to enable payment.',
     tabHome: 'Home', tabAlerts: 'Alerts', tabPharm: 'Pharmacies', tabPremium: 'Premium', tabProfile: 'Profile',
     locationDenied: 'Location permission denied', fetchError: 'Fetch error',
-    error: 'Error', network: 'Network',
+    error: 'Error', network: 'Network', notAvailable: 'N/A',
     phone: 'Phone', premium: 'Premium', activeUntil: 'Active until', inactive: 'Inactive', logout: 'Log out',
     createTitle: 'Create account', firstName: 'First name', lastName: 'Last name', emailOpt: 'Email (optional)', phonePh: 'Phone', submit: 'Submit', requiredFields: 'Required fields', requiredMsg: 'First name, last name and phone are required', welcomeShort: 'Welcome',
+    cat_urgence: 'Emergency', cat_sante: 'Health', cat_education: 'Education', cat_examens: 'Exams & Contests', cat_services_publics: 'Public Services', cat_emplois: 'Jobs', cat_alertes: 'Alerts', cat_services_utiles: 'Useful Services', cat_agriculture: 'Agriculture', cat_loisirs: 'Leisure & Tourism', cat_transport: 'Transport',
   },
   es: {
     brand: 'Allô Services CI', slogan: 'Todos los servicios esenciales en un clic',
@@ -42,9 +45,10 @@ const translations: Record<Lang, Record<string, string>> = {
     needAccount: 'Cree una cuenta para habilitar el pago.',
     tabHome: 'Inicio', tabAlerts: 'Alertas', tabPharm: 'Farmacias', tabPremium: 'Premium', tabProfile: 'Perfil',
     locationDenied: 'Permiso de ubicación denegado', fetchError: 'Error al obtener',
-    error: 'Error', network: 'Red',
+    error: 'Error', network: 'Red', notAvailable: 'N/D',
     phone: 'Teléfono', premium: 'Premium', activeUntil: 'Activo hasta', inactive: 'Inactivo', logout: 'Cerrar sesión',
     createTitle: 'Crear cuenta', firstName: 'Nombre', lastName: 'Apellido', emailOpt: 'Correo (opcional)', phonePh: 'Teléfono', submit: 'Validar', requiredFields: 'Campos obligatorios', requiredMsg: 'Nombre, apellido y teléfono son obligatorios', welcomeShort: 'Bienvenido',
+    cat_urgence: 'Emergencia', cat_sante: 'Salud', cat_education: 'Educación', cat_examens: 'Exámenes y Concursos', cat_services_publics: 'Servicios públicos', cat_emplois: 'Empleos', cat_alertes: 'Alertas', cat_services_utiles: 'Servicios útiles', cat_agriculture: 'Agricultura', cat_loisirs: 'Ocio y Turismo', cat_transport: 'Transporte',
   },
   it: {
     brand: 'Allô Services CI', slogan: 'Tutti i servizi essenziali in un clic',
@@ -54,9 +58,10 @@ const translations: Record<Lang, Record<string, string>> = {
     needAccount: 'Crea un account per abilitare il pagamento.',
     tabHome: 'Home', tabAlerts: 'Avvisi', tabPharm: 'Farmacie', tabPremium: 'Premium', tabProfile: 'Profilo',
     locationDenied: 'Autorizzazione posizione negata', fetchError: 'Errore di recupero',
-    error: 'Errore', network: 'Rete',
+    error: 'Errore', network: 'Rete', notAvailable: 'N/D',
     phone: 'Telefono', premium: 'Premium', activeUntil: 'Attivo fino al', inactive: 'Inattivo', logout: 'Disconnettersi',
     createTitle: 'Crea account', firstName: 'Nome', lastName: 'Cognome', emailOpt: 'Email (opzionale)', phonePh: 'Telefono', submit: 'Conferma', requiredFields: 'Campi obbligatori', requiredMsg: 'Nome, cognome e telefono sono obbligatori', welcomeShort: 'Benvenuto',
+    cat_urgence: 'Emergenza', cat_sante: 'Salute', cat_education: 'Istruzione', cat_examens: 'Esami e Concorsi', cat_services_publics: 'Servizi pubblici', cat_emplois: 'Lavoro', cat_alertes: 'Avvisi', cat_services_utiles: 'Servizi utili', cat_agriculture: 'Agricoltura', cat_loisirs: 'Tempo libero e Turismo', cat_transport: 'Trasporti',
   },
   ar: {
     brand: 'Allô Services CI', slogan: 'جميع الخدمات الأساسية بنقرة واحدة',
@@ -66,9 +71,10 @@ const translations: Record<Lang, Record<string, string>> = {
     needAccount: 'يرجى إنشاء حساب لتفعيل الدفع.',
     tabHome: 'الرئيسية', tabAlerts: 'التنبيهات', tabPharm: 'الصيدليات', tabPremium: 'بريميوم', tabProfile: 'الملف الشخصي',
     locationDenied: 'تم رفض إذن الموقع', fetchError: 'خطأ في الجلب',
-    error: 'خطأ', network: 'الشبكة',
+    error: 'خطأ', network: 'الشبكة', notAvailable: 'غير متوفر',
     phone: 'الهاتف', premium: 'الاشتراك', activeUntil: 'نشط حتى', inactive: 'غير نشط', logout: 'تسجيل الخروج',
     createTitle: 'إنشاء حساب', firstName: 'الاسم', lastName: 'الكنية', emailOpt: 'البريد الإلكتروني (اختياري)', phonePh: 'الهاتف', submit: 'تأكيد', requiredFields: 'خانات مطلوبة', requiredMsg: 'الاسم والكنية والهاتف مطلوبة', welcomeShort: 'مرحبًا',
+    cat_urgence: 'الطوارئ', cat_sante: 'الصحة', cat_education: 'التعليم', cat_examens: 'الامتحانات والمسابقات', cat_services_publics: 'الخدمات العامة', cat_emplois: 'الوظائف', cat_alertes: 'التنبيهات', cat_services_utiles: 'الخدمات المفيدة', cat_agriculture: 'الزراعة', cat_loisirs: 'الترفيه والسياحة', cat_transport: 'النقل',
   },
 };
 

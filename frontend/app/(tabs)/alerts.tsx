@@ -43,7 +43,7 @@ export default function Alerts() {
           <View style={styles.card}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.desc}>{item.description}</Text>
-            <Text style={styles.meta}>{item.type} • {item.city || 'N/A'}</Text>
+            <Text style={styles.meta}>{item.type} • {item.city || t('notAvailable')}</Text>
           </View>
         )}
         onRefresh={fetchAlerts}
