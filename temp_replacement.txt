@@ -1,9 +1,0 @@
-  logo: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    borderWidth: 6,
-    borderColor: '#0A7C3A',
-    backgroundColor: '#ffffff',
-    padding: 4,
-  },
