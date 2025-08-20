@@ -33,6 +33,8 @@ const translations: Record<Lang, Record<string, string>> = {
     createTitle: 'Créer un compte', firstName: 'Prénom', lastName: 'Nom', emailOpt: 'Email (optionnel)', phonePh: 'Téléphone', submit: 'Valider', requiredFields: 'Champs requis', requiredMsg: 'Nom, prénom et téléphone sont requis', welcomeShort: 'Bienvenue',
     // Categories
     cat_urgence: 'Urgence', cat_sante: 'Santé', cat_education: 'Éducation', cat_examens: 'Examens & Concours', cat_services_publics: 'Services publics', cat_emplois: 'Emplois', cat_alertes: 'Alertes', cat_services_utiles: 'Services utiles', cat_agriculture: 'Agriculture', cat_loisirs: 'Loisirs & Tourisme', cat_transport: 'Transport',
+    // NEW PROFILE PAGE TRANSLATIONS
+    language: 'Langue', actions: 'Actions',
     // NEW PREMIUM PAGE TRANSLATIONS
     premiumActive: 'Premium Actif',
     premiumActiveDescription: 'Vous avez accès à toutes les fonctionnalités premium !',
