@@ -268,36 +268,99 @@ class BackendTester:
         except Exception as e:
             self.log_test("List alerts", False, f"Exception: {str(e)}")
             
-    def test_premium_gating(self):
-        """Test 10: Verify premium gating: GET /api/exams without user_id expect 402; then with user_id expect 200"""
+    def test_premium_gating_comprehensive(self):
+        """Test 10: Comprehensive premium gating verification for ALL premium endpoints"""
         
-        # Test without user_id (should get 402)
+        # List of all premium endpoints to test
+        premium_endpoints = [
+            '/exams',
+            '/utilities', 
+            '/education',
+            '/services-publics',
+            '/emplois',
+            '/agriculture',
+            '/loisirs',
+            '/transport'
+        ]
+        
+        # First, create a non-premium user for testing
+        non_premium_user_id = None
         try:
-            response = self.make_request('GET', '/exams')
-            if response.status_code == 402:
-                self.log_test("Premium gating (no user)", True, "Correctly blocked non-premium access")
-            else:
-                self.log_test("Premium gating (no user)", False, f"Expected 402, got {response.status_code}")
-        except Exception as e:
-            self.log_test("Premium gating (no user)", False, f"Exception: {str(e)}")
-            
-        # Test with premium user_id (should get 200)
-        if not self.user_id:
-            self.log_test("Premium gating (with user)", False, "No user_id available")
-            return
-            
-        try:
-            response = self.make_request('GET', f'/exams?user_id={self.user_id}')
+            user_data = {
+                "first_name": "Marie",
+                "last_name": "Diabate", 
+                "phone": "+225 05 98 76 54 32",
+                "email": "marie.diabate@example.ci",
+                "preferred_lang": "fr",
+                "accept_terms": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
             if response.status_code == 200:
-                data = response.json()
-                if isinstance(data, list):
-                    self.log_test("Premium gating (with user)", True, f"Premium user can access exams: {len(data)} items")
-                else:
-                    self.log_test("Premium gating (with user)", False, "Invalid response format")
+                user = response.json()
+                non_premium_user_id = user.get('id')
+                self.log_test("Non-premium user creation", True, f"Created non-premium user: {non_premium_user_id}")
             else:
-                self.log_test("Premium gating (with user)", False, f"Status code: {response.status_code}")
+                self.log_test("Non-premium user creation", False, f"Status code: {response.status_code}")
         except Exception as e:
-            self.log_test("Premium gating (with user)", False, f"Exception: {str(e)}")
+            self.log_test("Non-premium user creation", False, f"Exception: {str(e)}")
+        
+        # Test 1: All premium endpoints should return 402 for non-premium users
+        for endpoint in premium_endpoints:
+            endpoint_name = endpoint.replace('/', '').replace('-', '_')
+            
+            # Test without user_id (should get 402)
+            try:
+                response = self.make_request('GET', endpoint)
+                if response.status_code == 402:
+                    self.log_test(f"Premium gating {endpoint_name} (no user)", True, "Correctly blocked access without user_id")
+                else:
+                    self.log_test(f"Premium gating {endpoint_name} (no user)", False, f"Expected 402, got {response.status_code}")
+            except Exception as e:
+                self.log_test(f"Premium gating {endpoint_name} (no user)", False, f"Exception: {str(e)}")
+            
+            # Test with non-premium user_id (should get 402)
+            if non_premium_user_id:
+                try:
+                    response = self.make_request('GET', f'{endpoint}?user_id={non_premium_user_id}')
+                    if response.status_code == 402:
+                        self.log_test(f"Premium gating {endpoint_name} (non-premium user)", True, "Correctly blocked non-premium user access")
+                    else:
+                        self.log_test(f"Premium gating {endpoint_name} (non-premium user)", False, f"Expected 402, got {response.status_code}")
+                except Exception as e:
+                    self.log_test(f"Premium gating {endpoint_name} (non-premium user)", False, f"Exception: {str(e)}")
+            
+            # Test with premium user_id (should get 200)
+            if self.user_id:
+                try:
+                    response = self.make_request('GET', f'{endpoint}?user_id={self.user_id}')
+                    if response.status_code == 200:
+                        data = response.json()
+                        if isinstance(data, list):
+                            self.log_test(f"Premium gating {endpoint_name} (premium user)", True, f"Premium user can access {endpoint}: {len(data)} items")
+                        else:
+                            self.log_test(f"Premium gating {endpoint_name} (premium user)", False, "Invalid response format")
+                    else:
+                        self.log_test(f"Premium gating {endpoint_name} (premium user)", False, f"Status code: {response.status_code}")
+                except Exception as e:
+                    self.log_test(f"Premium gating {endpoint_name} (premium user)", False, f"Exception: {str(e)}")
+        
+        # Test 2: Verify free endpoints remain accessible without premium
+        free_endpoints = ['/alerts', '/useful-numbers', '/pharmacies/nearby?lat=5.35&lng=-3.99&max_km=20']
+        
+        for endpoint in free_endpoints:
+            endpoint_name = endpoint.split('?')[0].replace('/', '').replace('-', '_')
+            try:
+                response = self.make_request('GET', endpoint)
+                if response.status_code == 200:
+                    data = response.json()
+                    if isinstance(data, list):
+                        self.log_test(f"Free endpoint {endpoint_name}", True, f"Free access confirmed: {len(data)} items")
+                    else:
+                        self.log_test(f"Free endpoint {endpoint_name}", False, "Invalid response format")
+                else:
+                    self.log_test(f"Free endpoint {endpoint_name}", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test(f"Free endpoint {endpoint_name}", False, f"Exception: {str(e)}")
             
     def test_utilities_endpoint(self):
         """Test 11: GET /api/utilities with user_id expect 200"""
