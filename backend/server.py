@@ -32,7 +32,7 @@ CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
 BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.4.0")
+app = FastAPI(title="Allô Services CI API", version="0.4.1")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -71,8 +71,16 @@ class I18nText(BaseModel):
     it: Optional[str] = None
     ar: Optional[str] = None
 
-# ---------- MODELS (existing omitted for brevity in this snippet) ----------
-# ... (keep all previous models)
+# ---------- MODELS (simplified for patch) ----------
+class UserCreate(BaseModel):
+    first_name: str
+    last_name: str
+    email: Optional[EmailStr] = None
+    phone: str
+    city_id: Optional[str] = None
+    accept_terms: bool = True
+    preferred_lang: LangKey = 'fr'
+    photo_base64: Optional[str] = None
 
 # New models: Push notifications
 class PushTokenRegister(BaseModel):
@@ -88,8 +96,21 @@ class PushSendInput(BaseModel):
     data: Optional[Dict[str, Any]] = None
     city: Optional[str] = None  # optional filter
 
-# ---------- PREMIUM GUARD, INDEXES & SEED (keep existing) ----------
-# ... (keep existing functions ensure_indexes and seed_data)
+class GeoPoint(BaseModel):
+    type: Literal['Point'] = 'Point'
+    coordinates: List[float]
+
+class AlertCreate(BaseModel):
+    title: str
+    type: Literal['flood', 'missing_person', 'wanted_notice', 'fire', 'accident', 'other']
+    description: str
+    city: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
+    images_base64: List[str] = Field(default_factory=list)
+    posted_by: Optional[str] = None
+
+# ---------- INDEXES ----------
 async def ensure_indexes():
     await db.pharmacies.create_index([('location', '2dsphere')])
     await db.pharmacies.create_index('name')
@@ -101,10 +122,156 @@ async def ensure_indexes():
     await db.transactions.create_index('transaction_id', unique=True)
     await db.push_tokens.create_index('token', unique=True)
 
-# ---------- ROUTES (existing ones stay unchanged) ----------
-# ... (keep existing routes)
+# ---------- BASIC ROUTES (health, seed placeholder) ----------
+@api.get('/health')
+async def health():
+    return {"status": "ok"}
 
-# ---- PUSH NOTIFICATIONS ----
+@api.post('/seed')
+async def seed():
+    await ensure_indexes()
+    return {"status": "ok"}
+
+# ---------- AUTH ----------
+@api.post("/auth/register")
+async def register_user(payload: UserCreate):
+    doc = payload.model_dump()
+    doc['created_at'] = datetime.utcnow()
+    doc['is_premium'] = False
+    res = await db.users.insert_one(doc)
+    saved = await db.users.find_one({'_id': res.inserted_id})
+    saved['id'] = str(saved['_id'])
+    del saved['_id']
+    return saved
+
+@api.get("/subscriptions/check")
+async def check_subscription(user_id: str):
+    try:
+        uid = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+    user = await db.users.find_one({'_id': uid})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
+    active = False
+    expires_at = None
+    if sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
+        active = True
+        expires_at = sub['expires_at']
+    return {"is_premium": active, "expires_at": expires_at}
+
+# ---------- PAYMENTS (CinetPay) ----------
+class PaymentInitInput(BaseModel):
+    user_id: str
+    amount_fcfa: int = 1200
+    customer_name: Optional[str] = None
+    customer_surname: Optional[str] = None
+    customer_phone: Optional[str] = None
+    customer_email: Optional[str] = None
+
+@api.post("/payments/cinetpay/initiate")
+async def cinetpay_initiate(payload: PaymentInitInput):
+    try:
+        user_id = ObjectId(payload.user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+
+    transaction_id = f"SUB_{uuid.uuid4().hex[:14]}"
+
+    tr_doc = {
+        'transaction_id': transaction_id,
+        'user_id': user_id,
+        'amount': payload.amount_fcfa,
+        'currency': 'XOF',
+        'status': 'PENDING',
+        'provider': 'cinetpay',
+        'created_at': datetime.utcnow(),
+        'expires_at': datetime.utcnow() + timedelta(minutes=45)
+    }
+    await db.transactions.insert_one(tr_doc)
+
+    if CINETPAY_MODE.lower() != 'live' or not (CINETPAY_API_KEY and CINETPAY_SITE_ID and BACKEND_PUBLIC_BASE_URL):
+        stub_url = f"https://checkout.cinetpay.com/stub/{transaction_id}"
+        await db.transactions.update_one({'transaction_id': transaction_id}, {'$set': {'status': 'INITIALIZED', 'payment_url': stub_url}})
+        return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": stub_url}
+
+    try:
+        cinetpay_payload = {
+            "apikey": CINETPAY_API_KEY,
+            "site_id": CINETPAY_SITE_ID,
+            "transaction_id": transaction_id,
+            "amount": payload.amount_fcfa,
+            "currency": "XOF",
+            "description": "Abonnement annuel Allô Services CI",
+            "notify_url": f"{BACKEND_PUBLIC_BASE_URL}/api/payments/cinetpay/webhook",
+            "return_url": f"{BACKEND_PUBLIC_BASE_URL}/api/payments/cinetpay/return",
+            "channels": "ALL",
+            "lang": "fr",
+        }
+        resp = requests.post("https://api-checkout.cinetpay.com/v2/payment", json=cinetpay_payload, timeout=30)
+        data = resp.json() if resp.headers.get('content-type','').startswith('application/json') else {}
+        if resp.status_code != 200 or data.get('code') not in ("201","00"):
+            raise HTTPException(status_code=400, detail=data.get('message','CinetPay init failed'))
+        payment_url = data.get('data',{}).get('payment_url') or data.get('payment_url')
+        if not payment_url:
+            raise HTTPException(status_code=400, detail="No payment_url returned by CinetPay")
+        await db.transactions.update_one({'transaction_id': transaction_id}, {'$set': {'status': 'INITIALIZED', 'payment_url': payment_url}})
+        return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": payment_url}
+    except HTTPException:
+        raise
+    except Exception:
+        stub_url = f"https://checkout.cinetpay.com/stub/{transaction_id}"
+        await db.transactions.update_one({'transaction_id': transaction_id}, {'$set': {'status': 'INITIALIZED', 'payment_url': stub_url}})
+        return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": stub_url}
+
+class PaymentValidateInput(BaseModel):
+    transaction_id: str
+    success: bool
+
+@api.post("/payments/cinetpay/validate")
+async def cinetpay_validate(payload: PaymentValidateInput):
+    tr = await db.transactions.find_one({'transaction_id': payload.transaction_id})
+    if not tr:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    await db.transactions.update_one({'_id': tr['_id']}, {'$set': {'status': 'ACCEPTED' if payload.success else 'REFUSED', 'updated_at': datetime.utcnow()}})
+    if payload.success:
+        exp = datetime.utcnow() + timedelta(days=365)
+        await db.subscriptions.insert_one({'user_id': tr['user_id'], 'amount_fcfa': tr['amount'], 'provider': 'cinetpay', 'status': 'active', 'transaction_id': payload.transaction_id, 'created_at': datetime.utcnow(), 'expires_at': exp})
+        await db.users.update_one({'_id': tr['user_id']}, {'$set': {'is_premium': True}})
+    return {"status": 'paid' if payload.success else 'failed'}
+
+@api.get("/payments/cinetpay/return")
+async def cinetpay_return(transaction_id: str, status: Optional[str] = None):
+    tr = await db.transactions.find_one({'transaction_id': transaction_id})
+    current = tr.get('status') if tr else None
+    final_status = status or current or 'PENDING'
+    return {"transaction_id": transaction_id, "status": final_status}
+
+# ---------- ALERTS ----------
+@api.get("/alerts")
+async def list_alerts(status: Optional[str] = None, type: Optional[str] = None):
+    query: Dict[str, Any] = {}
+    if status:
+        query['status'] = status
+    if type:
+        query['type'] = type
+    items = await db.alerts.find(query).sort('created_at', -1).to_list(200)
+    for i in items:
+        i['id'] = str(i['_id'])
+        del i['_id']
+    return items
+
+@api.post("/alerts/{alert_id}/resolve")
+async def resolve_alert(alert_id: str):
+    try:
+        _id = ObjectId(alert_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid id")
+    await db.alerts.update_one({'_id': _id}, {'$set': {'status': 'resolved'}})
+    return {"status": "resolved"}
+
+# ---------- PUSH NOTIFICATIONS ----------
 
 def _chunk_list(items: List[str], size: int = 100) -> List[List[str]]:
     return [items[i:i+size] for i in range(0, len(items), size)]
@@ -147,7 +314,6 @@ async def register_push_token(payload: PushTokenRegister):
             doc['user_id'] = ObjectId(payload.user_id)
         except Exception:
             pass
-    # upsert by token
     await db.push_tokens.update_one({'token': payload.token}, {'$set': doc}, upsert=True)
     return {'status': 'ok'}
 
@@ -165,20 +331,7 @@ async def send_push(payload: PushSendInput):
     results = await _send_expo_push(tokens, {'title': payload.title, 'body': payload.body, 'data': payload.data})
     return {'count': len(tokens), 'results': results}
 
-# Hook: broadcast basic alert notification (city-targeted if available)
-# Modify existing create_alert to send push after saving
-
-# We re-define create_alert here to append push logic; ensure only one definition exists.
-class AlertCreate(BaseModel):
-    title: str
-    type: Literal['flood', 'missing_person', 'wanted_notice', 'fire', 'accident', 'other']
-    description: str
-    city: Optional[str] = None
-    lat: Optional[float] = None
-    lng: Optional[float] = None
-    images_base64: List[str] = Field(default_factory=list)
-    posted_by: Optional[str] = None
-
+# ---------- CREATE ALERT (with push) ----------
 @api.post("/alerts")
 async def create_alert(payload: AlertCreate):
     doc: Dict[str, Any] = {
@@ -202,7 +355,6 @@ async def create_alert(payload: AlertCreate):
     saved['id'] = str(saved['_id'])
     del saved['_id']
 
-    # Push notify (limit broadcast size in this MVP)
     try:
         query: Dict[str, Any] = {}
         if payload.city:
@@ -218,7 +370,9 @@ async def create_alert(payload: AlertCreate):
 
     return saved
 
-# Keep the rest of routes and lifecycle handlers
+# ---------- INCLUDE ROUTER & LIFECYCLE ----------
+app.include_router(api)
+
 @app.on_event("startup")
 async def on_startup():
     await ensure_indexes()
