@@ -194,6 +194,39 @@ backend:
         agent: "testing"
         comment: "✅ REVALIDATION COMPLETE: All tests passed (100% success rate). Health endpoint returns {status: ok}. Pharmacies nearby endpoint with lat=5.35&lng=-3.99&max_km=20 returns HTTP 200 with JSON array of 2 pharmacies. All required fields validated: id, name, address, city, phone, location. Alerts endpoint returns 5 items, useful-numbers returns 4 items. Geospatial index working correctly."
 frontend:
+  - task: "i18n base integration (FR/EN/ES/IT/AR)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/i18n/i18n.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added provider, translations, RTL handling for Arabic, wired into tabs, profile, subscribe, alerts, pharmacies, register. Default FR."
+  - task: "Tabs navigation titles localized"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/_layout.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Tabs use t(...) for labels; verify language switch updates titles."
+  - task: "Pharmacies screen functional"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/pharmacies.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Fetch nearby pharmacies with geolocation; shows list and refresh; error messaging translated. Default max_km=10 currently; to be updated to 5 after feedback."
   - task: "Initial Expo screen"
     implemented: true
     working: true
