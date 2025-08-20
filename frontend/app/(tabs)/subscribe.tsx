@@ -82,9 +82,7 @@ export default function Subscribe() {
       {/* Logo & Status */}
       <View style={styles.logoSection}>
         <View style={styles.logoWrapper}>
-          <View style={styles.logoOuterBorder}>
-            <Image source={APP_ICON} style={styles.logo} />
-          </View>
+          <Image source={APP_ICON} style={styles.logo} />
           {isPremium && (
             <View style={styles.premiumBadge}>
               <Text style={styles.premiumBadgeText}>✨ {'Premium 1200 FCFA / an'}</Text>
