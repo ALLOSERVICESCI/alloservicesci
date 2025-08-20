@@ -131,11 +131,12 @@ class BackendTester:
             response = self.make_request('POST', '/payments/cinetpay/initiate', json=payment_data)
             if response.status_code == 200:
                 data = response.json()
-                if 'redirect_url' in data and 'transaction_id' in data:
+                if ('redirect_url' in data or 'payment_url' in data) and 'transaction_id' in data:
                     self.transaction_id = data['transaction_id']
-                    self.log_test("Payment initiation", True, f"Payment initiated with transaction_id: {self.transaction_id}")
+                    payment_url = data.get('redirect_url') or data.get('payment_url')
+                    self.log_test("Payment initiation", True, f"Payment initiated with transaction_id: {self.transaction_id}, payment_url: {payment_url}")
                 else:
-                    self.log_test("Payment initiation", False, f"Missing redirect_url or transaction_id: {data}")
+                    self.log_test("Payment initiation", False, f"Missing redirect_url/payment_url or transaction_id: {data}")
             else:
                 self.log_test("Payment initiation", False, f"Status code: {response.status_code}, Response: {response.text}")
         except Exception as e:
