@@ -32,7 +32,7 @@ CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
 BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.5.0")
+app = FastAPI(title="Allô Services CI API", version="0.6.0")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -119,6 +119,7 @@ async def ensure_indexes():
     await db.jobs.create_index([('posted_at', -1)])
     await db.commodity_prices.create_index([('updated_at', -1)])
     await db.transactions.create_index('transaction_id', unique=True)
+    await db.transactions.create_index([('user_id', 1), ('created_at', -1)])
     await db.push_tokens.create_index('token', unique=True)
     await db.push_tokens.create_index([('city', 1)])
     await db.push_tokens.create_index([('preferred_lang', 1)])
@@ -270,6 +271,27 @@ async def cinetpay_return(transaction_id: str, status: Optional[str] = None):
     final_status = status or current or 'PENDING'
     return {"transaction_id": transaction_id, "status": final_status}
 
+@api.get('/payments/history')
+async def payments_history(user_id: str, limit: int = 50):
+    try:
+        uid = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+    cursor = db.transactions.find({'user_id': uid}).sort('created_at', -1).limit(max(1, min(limit, 200)))
+    items = []
+    async for tr in cursor:
+        items.append({
+            'id': str(tr.get('_id')),
+            'transaction_id': tr.get('transaction_id'),
+            'amount': tr.get('amount'),
+            'currency': tr.get('currency', 'XOF'),
+            'status': tr.get('status'),
+            'provider': tr.get('provider'),
+            'created_at': tr.get('created_at'),
+            'updated_at': tr.get('updated_at'),
+        })
+    return items
+
 # ---------- PHARMACIES (NEARBY) ----------
 @api.get("/pharmacies/nearby")
 async def pharmacies_nearby(lat: float = Query(...), lng: float = Query(...), max_km: float = 10.0, duty_only: bool = False):
@@ -362,13 +384,13 @@ async def _send_expo_push(tokens: List[str], payload: Dict[str, Any]) -> List[Di
     results: List[Dict[str, Any]] = []
     for batch in _chunk_list(messages, 100):
         try:
-            r = requests.post('https://exp.host/--/api/v2/push/send', json=batch, timeout=30)
-            if r.headers.get('content-type','').startswith('application/json'):
-                results.append(r.json())
-            else:
-                results.append({'status_code': r.status_code, 'text': r.text})
+          r = requests.post('https://exp.host/--/api/v2/push/send', json=batch, timeout=30)
+          if r.headers.get('content-type','').startswith('application/json'):
+              results.append(r.json())
+          else:
+              results.append({'status_code': r.status_code, 'text': r.text})
         except Exception as e:
-            results.append({'error': str(e)})
+          results.append({'error': str(e)})
     return results
 
 @api.post('/notifications/register')
