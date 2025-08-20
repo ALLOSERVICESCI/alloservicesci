@@ -38,18 +38,16 @@ export default function Subscribe() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.brandBar}>
-        <Text style={styles.brand}>{t('brand')}</Text>
-        <Text style={styles.slogan}>{t('slogan')}</Text>
-      </View>
-
       <View style={styles.contentWrap}>
         <View style={styles.hero}>
+          <Text style={styles.brandBig}>{t('brand')}</Text>
           <View style={styles.logoWrap}>
             <Image source={APP_ICON} style={styles.icon} />
           </View>
-          <Text style={styles.title}>{t('premiumTitle')}</Text>
+          <Text style={styles.sloganBelow}>{t('slogan')}</Text>
         </View>
+
+        <Text style={styles.title}>{t('premiumTitle')}</Text>
 
         {!user?.id && (
           <View style={styles.centerBlock}>
@@ -74,14 +72,13 @@ export default function Subscribe() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  brandBar: { paddingTop: 4, paddingBottom: 8 },
-  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
-  slogan: { fontSize: 12, color: '#666', marginTop: 2, textAlign: 'center' },
   contentWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 },
-  hero: { alignItems: 'center', marginTop: 8, marginBottom: 16 },
-  logoWrap: { width: 200, height: 200, borderRadius: 100, backgroundColor: '#fff', borderWidth: 2, borderColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center', marginBottom: 14, shadowColor: '#000', shadowOpacity: 0.08, shadowOffset: { width: 0, height: 4 }, shadowRadius: 10, elevation: 4 },
+  hero: { alignItems: 'center', marginBottom: 16 },
+  brandBig: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
+  logoWrap: { width: 200, height: 200, borderRadius: 100, backgroundColor: '#fff', borderWidth: 2, borderColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center', marginVertical: 8, shadowColor: '#000', shadowOpacity: 0.08, shadowOffset: { width: 0, height: 4 }, shadowRadius: 10, elevation: 4 },
   icon: { width: 180, height: 180, borderRadius: 90 },
-  title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
+  sloganBelow: { fontSize: 12, color: '#666', textAlign: 'center' },
+  title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', textAlign: 'center', marginTop: 8 },
   text: { marginTop: 10, color: '#333', textAlign: 'center' },
   centerBlock: { alignItems: 'center', marginTop: 8 },
   btn: { backgroundColor: '#0F5132', padding: 14, borderRadius: 12, alignItems: 'center', marginTop: 20 },
