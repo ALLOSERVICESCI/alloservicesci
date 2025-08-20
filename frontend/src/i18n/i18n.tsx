@@ -211,6 +211,7 @@ const translations: Record<Lang, Record<string, string>> = {
     error: 'خطأ', network: 'الشبكة', notAvailable: 'غير متوفر', comingSoon: 'المحتوى قادم قريبًا',
     saved: 'تم الحفظ', save: 'حفظ', remove: 'حذف', share: 'مشاركة', open: 'فتح',
     phone: 'الهاتف', premium: 'الاشتراك', activeUntil: 'نشط حتى', inactive: 'غير نشط', logout: 'تسجيل الخروج', editProfile: 'تعديل الملف الشخصي', city: 'المدينة', profileUpdated: 'تم تحديث الملف الشخصي',
+    language: 'اللغة', actions: 'الإجراءات',
     notifCenter: 'مركز الإشعارات', clearHistory: 'مسح السجل', noNotifications: 'لا توجد إشعارات', noTitle: 'بدون عنوان',
     renewPremium: 'تجديد بريميوم', becomePremium: 'احصل على بريميوم',
     premiumActiveBadge: 'بريميوم نشط', refreshStatus: 'تحديث الحالة',
