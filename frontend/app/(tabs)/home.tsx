@@ -41,6 +41,8 @@ export default function Home() {
         return { top: 30, left: 20, right: undefined, bottom: undefined };
       default:
         return { bottom: 30, right: 20, left: undefined, top: undefined };
+    }
+  }, [aiPos]);
   const [tooltipVisible, setTooltipVisible] = React.useState(false);
   const [fabXY, setFabXY] = React.useState<{x: number; y: number} | null>(null);
   const [dragging, setDragging] = React.useState(false);
