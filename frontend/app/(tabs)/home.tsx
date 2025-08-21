@@ -44,7 +44,6 @@ export default function Home() {
             <Text style={styles.brand}>{t('brand')}</Text>
             <Text style={styles.slogan}>{t('slogan')}</Text>
             <Text style={styles.greeting}>{greeting}</Text>
-            <Text style={styles.premiumInline}>{t('premiumDescription')}</Text>
           </View>
         </View>
 
