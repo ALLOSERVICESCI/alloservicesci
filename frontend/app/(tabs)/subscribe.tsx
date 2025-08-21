@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
-    shadowRadius: 8,
     elevation: 6,
   },
   logo: {
@@ -352,7 +351,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
     shadowOpacity: 0.05,
-    shadowRadius: 8,
     elevation: 4,
   },
   featureCardRight: {
@@ -402,7 +400,6 @@ const styles = StyleSheet.create({
     shadowColor: '#0A7C3A',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
     elevation: 8,
   },
   buttonSecondary: {
