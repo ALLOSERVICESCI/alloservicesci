@@ -46,10 +46,10 @@ export default function Home() {
         </View>
       </View>
 
-      {/* Welcome Card */}
+      {/* Welcome Card - TITRE SUPPRIMÉ */}
       <View style={styles.welcomeCard}>
         <Text style={styles.welcomeDescription}>
-          {t('premiumDescription')}
+          Accédez à tous les services exclusifs
         </Text>
       </View>
 
@@ -101,18 +101,19 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: '#FFFFFF' 
+    backgroundColor: '#F8FAF9' 
   },
   scrollContent: {
-    flexGrow: 1,
+    paddingBottom: 30,
   },
   header: { 
-    paddingHorizontal: 16, 
-    paddingTop: 24, 
-    paddingBottom: 12,
+    paddingHorizontal: 20, 
+    paddingTop: 30, 
+    paddingBottom: 20,
     alignItems: 'center',
   },
   logoSection: {
+    alignItems: 'center',
     marginBottom: 16,
   },
   logoContainer: {
@@ -144,14 +145,18 @@ const styles = StyleSheet.create({
   slogan: { 
     fontSize: 18, 
     color: '#666', 
-    marginTop: 4 
+    marginTop: 4,
+    textAlign: 'center',
   },
   greeting: { 
     fontSize: 20, 
     color: '#0F5132', 
     marginTop: 8, 
-    fontWeight: '700' 
+    fontWeight: '700',
+    textAlign: 'center',
   },
+  
+  // Welcome Card - SANS TITRE BIENVENUE
   welcomeCard: {
     marginHorizontal: 20,
     marginVertical: 16,
@@ -168,23 +173,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 22,
   },
+
+  // Categories Section
   categoriesSection: {
-    flex: 1,
+    marginTop: 10,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: '700',
     color: '#0F5132',
-    marginHorizontal: 16,
-    marginBottom: 12,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    textAlign: 'center',
   },
   carouselContainer: {
-    flexGrow: 0,
+    paddingLeft: 20,
   },
   carousel: { 
-    paddingHorizontal: 16,
+    paddingRight: 20,
     paddingVertical: 8,
   },
+  
+  // CARTES DE CATÉGORIES AGRANDIES
   categoryCard: {
     width: 160,
     height: 190,
@@ -219,6 +229,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#8B7000',
   },
+  // ICÔNES AGRANDIES À 48PX
   categoryIcon: {
     fontSize: 48,
     marginBottom: 12,
@@ -234,6 +245,7 @@ const styles = StyleSheet.create({
     color: '#8B7000',
     fontWeight: '700',
   },
+  // STYLE PREMIUM AMÉLIORÉ
   premiumText: {
     fontSize: 11,
     fontWeight: '700',
