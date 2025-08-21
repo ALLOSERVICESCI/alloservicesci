@@ -73,6 +73,40 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
+  bottomTabs: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5E5',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  tabItem: { alignItems: 'center', justifyContent: 'center', paddingVertical: 4, minWidth: 50 },
+  tabLabel: { fontSize: 10, color: '#0A7C3A', marginTop: 2, textAlign: 'center', fontWeight: '600' },
+});
+
+function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.tabItem}>
+      <Ionicons name={icon} size={22} color="#0A7C3A" />
+      <Text style={styles.tabLabel} numberOfLines={1}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
   container: { flexGrow: 1, padding: 16, backgroundColor: '#fff', justifyContent: 'center' },
   brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', marginBottom: 8, textAlign: 'center' },
   title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', marginBottom: 16, textAlign: 'center' },
