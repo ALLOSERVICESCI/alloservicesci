@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   categoryCardPremium: {
-    borderColor: '#FFD700',
+    borderColor: '#0A7C3A',
     borderWidth: 2,
     backgroundColor: '#FFFBF0',
   },
