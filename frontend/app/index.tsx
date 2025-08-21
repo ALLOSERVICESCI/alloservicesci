@@ -46,6 +46,12 @@ export default function Index() {
             <Image source={APP_ICON} style={styles.logo} resizeMode="contain" />
           </View>
         </Animated.View>
+        <Animated.Text style={[styles.subtitle, { opacity: subOpacity }]}>
+          Bienvenue
+        </Animated.Text>
+        <Animated.Text style={[styles.tagline, { opacity: subOpacity }]}>
+          Tous les services essentiels en un clic
+        </Animated.Text>
         <View style={styles.splashEmblem}>
           <Image
             source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-premium/artifacts/5tgdv5mj_512px-Coat_of_arms_of_Co%CC%82te_d%27Ivoire_%281997-2001_variant%29.svg.png' }}
@@ -53,12 +59,6 @@ export default function Index() {
             resizeMode="contain"
           />
         </View>
-        <Animated.Text style={[styles.subtitle, { opacity: subOpacity }]}>
-          Bienvenue
-        </Animated.Text>
-        <Animated.Text style={[styles.tagline, { opacity: subOpacity }]}>
-          Tous les services essentiels en un clic
-        </Animated.Text>
       </View>
 
       {/* Watermark motto at bottom */}
