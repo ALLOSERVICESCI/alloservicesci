@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
