@@ -27,7 +27,6 @@ export default function Home() {
     { slug: 'transport', label: t('cat_transport'), icon: '🚌', isPremium: true },
   ], [t]);
 
-  return (
   const pulse = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -41,6 +40,7 @@ export default function Home() {
     return () => pulse.stopAnimation();
   }, [pulse]);
 
+  return (
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
         <View style={styles.pageWrapper}>
