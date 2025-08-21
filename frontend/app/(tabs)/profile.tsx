@@ -492,7 +492,8 @@ const styles = StyleSheet.create({
     color: '#E8F0E8',
   },
   refreshTextOnLight: {
-    color: '#0A7C3A',  },
+    color: '#0A7C3A',
+  },
   },
   logoutSection: {
     margin: 20,
