@@ -208,7 +208,7 @@ export default function Home() {
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
           <View style={styles.aiImgWrapLg}>
-            <Image source={require('../../assets/ai/logoia.png')} style={styles.aiImg} />
+            <Image source={require('../../assets/ai/logoia.png')} style={styles.aiImgLg} />
           </View>
         </TouchableOpacity>
       </Animated.View>
