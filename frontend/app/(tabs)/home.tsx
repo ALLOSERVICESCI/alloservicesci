@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   tooltipText: {
-    color: '#fff',
+    color: '#111',
     fontSize: 12,
     fontWeight: '600',
     textAlign: 'center',
