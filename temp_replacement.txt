@@ -1,0 +1,8 @@
+      <Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ color, size }) => (
+        <View>
+          <Ionicons name="megaphone" color={color} size={size} />
+          <View style={{ position: 'absolute', top: -2, right: -6, backgroundColor: '#DC3545', borderRadius: 8, paddingHorizontal: 4, height: 14, minWidth: 14, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ color: '#fff', fontSize: 10, fontWeight: '700' }}>1</Text>
+          </View>
+        </View>
+      ) }} />
