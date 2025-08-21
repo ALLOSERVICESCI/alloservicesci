@@ -347,6 +347,16 @@ const styles = StyleSheet.create({
       default: { },
     }),
   },
+  aiImgWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#fff',
+    borderWidth: 2,
+    borderColor: '#0A7C3A',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   aiImg: {
     width: 28,
     height: 28,
