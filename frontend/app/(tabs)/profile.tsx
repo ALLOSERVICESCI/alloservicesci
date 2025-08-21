@@ -483,6 +483,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+  refreshTextOnGreen: {
+    color: '#E8F0E8',
+  },
+  refreshTextOnLight: {
+    color: '#0A7C3A',
+  },
   logoutSection: {
     margin: 20,
     marginTop: 10,
