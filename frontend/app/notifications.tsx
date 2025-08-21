@@ -44,6 +44,7 @@ export default function NotificationsCenter() {
           )}
           contentContainerStyle={{ paddingVertical: 12 }}
         />
+        )}
       {/* Bottom Tab Quick Nav (icons) */}
       <View style={styles.bottomTabs}>
         <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
