@@ -318,9 +318,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  aiHalo: {
+    ...Platform.select({
+      ios: { shadowColor: '#0A7C3A', shadowOpacity: 0.35, shadowRadius: 14, shadowOffset: { width: 0, height: 0 } },
+      android: { elevation: 10 },
+      default: { },
+    }),
   },
   aiImg: {
     width: 28,
