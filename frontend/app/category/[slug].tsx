@@ -54,6 +54,16 @@ export default function CategoryPage() {
       {/* Bottom Tab Quick Nav (icons) */}
       <View style={styles.bottomTabs}>
         <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
+
+function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.tabItem}>
+      <Ionicons name={icon} size={22} color="#0A7C3A" />
+      <Text style={styles.tabLabel} numberOfLines={1}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
         <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
         <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
         <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
