@@ -6,7 +6,7 @@ import { useI18n } from '../../src/i18n/i18n';
 // Simple message type
 type Msg = { id: string; role: 'user' | 'assistant' | 'system'; content: string; ts: number };
 
-export default function LayahChat() {
+export default function ChatAIA() {
   const { t } = useI18n();
   const [messages, setMessages] = useState<Msg[]>([
     {
