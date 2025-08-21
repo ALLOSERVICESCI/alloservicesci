@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: '#0A7C3A',
   },
   premiumBadgeText: {
     fontSize: 14,
