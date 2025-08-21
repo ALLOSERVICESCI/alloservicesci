@@ -1,19 +1,17 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, FlatList, SafeAreaView, Image, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useI18n } from '../../src/i18n/i18n';
 
 // Simple message type
 type Msg = { id: string; role: 'user' | 'assistant' | 'system'; content: string; ts: number };
 
 export default function ChatAIA() {
-  const { t } = useI18n();
   const [messages, setMessages] = useState<Msg[]>([
     {
       id: 'welcome',
       role: 'assistant',
       ts: Date.now(),
-      content: "Bonjour, je suis Allô IA — l’assistant IA d’Allô Services CI. Posez-moi vos questions en lien avec la Côte d’Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
+      content: "Bonjour, je suis Allô IA — l’assistant IA d’Allô Services CI. Posez‑moi vos questions en lien avec la Côte d’Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
     },
   ]);
   const [input, setInput] = useState('');
@@ -28,18 +26,83 @@ export default function ChatAIA() {
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
 
-    // TODO: Replace with real API call /api/ai/chat
-    setTimeout(() => {
+    try {
+      // Try streaming
+      const ok = await tryStream([...messages, userMsg]);
+      if (!ok) {
+        await tryComplete([...messages, userMsg]);
+      }
+    } catch (e) {
       const reply: Msg = {
         id: String(Date.now() + 1),
         role: 'assistant',
         ts: Date.now() + 1,
-        content: "Merci. Dès que l’agent est branché, je répondrai dans le strict périmètre Côte d’Ivoire (CI) et générerai vos documents au format local (dates FR, +225, FCFA).",
+        content: "Désolé, une erreur est survenue. Réessayez dans un instant.",
       };
       setMessages((prev) => [...prev, reply]);
+    } finally {
       setSending(false);
-      listRef.current?.scrollToEnd({ animated: true });
-    }, 400);
+      setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 50);
+    }
+  };
+
+  const tryStream = async (conv: Msg[]): Promise<boolean> => {
+    try {
+      const resp = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: conv.map(m => ({ role: m.role, content: m.content })),
+          stream: true,
+          temperature: 0.5,
+          max_tokens: 1000,
+        }),
+      });
+      if (!resp.ok || !resp.body) return false;
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+
+      const asst: Msg = { id: String(Date.now() + 2), role: 'assistant', content: '', ts: Date.now() + 2 };
+      setMessages((prev) => [...prev, asst]);
+
+      let buffer = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              return true;
+            }
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.content) {
+                asst.content += parsed.content;
+                setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m));
+              }
+            } catch {}
+          }
+        }
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const tryComplete = async (conv: Msg[]) => {
+    const resp = await fetch('/api/ai/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conv.map(m => ({ role: m.role, content: m.content })), stream: false, temperature: 0.5, max_tokens: 1000 }),
+    });
+    const data = await resp.json();
+    const asst: Msg = { id: String(Date.now() + 3), role: 'assistant', content: data.content || '', ts: Date.now() + 3 };
+    setMessages((prev) => [...prev, asst]);
   };
 
   const renderItem = ({ item }: { item: Msg }) => {

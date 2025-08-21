@@ -1,8 +1,8 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Query, Depends, Request, Form, Path
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
+from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel, Field, EmailStr
-from typing import List, Optional, Literal, Dict, Any
+from typing import List, Optional, Literal, Dict, Any, AsyncGenerator
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -13,6 +13,8 @@ import requests
 import hmac
 import hashlib
 import logging
+import asyncio
+import json
 
 # Load env
 ROOT_DIR = os.path.dirname(__file__)
@@ -31,8 +33,14 @@ CINETPAY_SECRET_KEY = os.environ.get('CINETPAY_SECRET_KEY')
 CINETPAY_MODE = os.environ.get('CINETPAY_MODE', 'stub')  # 'live' or 'stub'
 BACKEND_PUBLIC_BASE_URL = os.environ.get('BACKEND_PUBLIC_BASE_URL', '')
 
+# Emergent LLM config
+EMERGENT_API_KEY = os.environ.get('EMERGENT_API_KEY')
+OPENAI_MODEL = os.environ.get('OPENAI_MODEL', 'gpt-4o-mini')
+TEMPERATURE_DEFAULT = float(os.environ.get('AI_TEMPERATURE', '0.5'))
+MAX_TOKENS_DEFAULT = int(os.environ.get('AI_MAX_TOKENS', '1200'))
+
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.6.2")
+app = FastAPI(title="Allô Services CI API", version="0.7.0")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -240,393 +248,108 @@ async def cinetpay_initiate(payload: PaymentInitInput):
             raise HTTPException(status_code=400, detail="No payment_url returned by CinetPay")
         await db.transactions.update_one({'transaction_id': transaction_id}, {'$set': {'status': 'INITIALIZED', 'payment_url': payment_url}})
         return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": payment_url}
-    except HTTPException:
-        raise
-    except Exception:
-        stub_url = f"https://checkout.cinetpay.com/stub/{transaction_id}"
-        await db.transactions.update_one({'transaction_id': transaction_id}, {'$set': {'status': 'INITIALIZED', 'payment_url': stub_url}})
-        return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": stub_url}
+    except Exception as e:
+        logger.exception("CinetPay init error")
+        raise HTTPException(status_code=500, detail=str(e))
 
-class PaymentValidateInput(BaseModel):
-    transaction_id: str
-    success: bool
+# ---------- AI: Allô IA (OpenAI via Emergent) ----------
+class ChatMessage(BaseModel):
+    role: Literal['system','user','assistant']
+    content: str
 
-@api.post("/payments/cinetpay/validate")
-async def cinetpay_validate(payload: PaymentValidateInput):
-    tr = await db.transactions.find_one({'transaction_id': payload.transaction_id})
-    if not tr:
-        raise HTTPException(status_code=404, detail="Transaction not found")
-    await db.transactions.update_one({'_id': tr['_id']}, {'$set': {'status': 'ACCEPTED' if payload.success else 'REFUSED', 'updated_at': datetime.utcnow()}})
-    if payload.success:
-        exp = datetime.utcnow() + timedelta(days=365)
-        await db.subscriptions.insert_one({'user_id': tr['user_id'], 'amount_fcfa': tr['amount'], 'provider': 'cinetpay', 'status': 'active', 'transaction_id': payload.transaction_id, 'created_at': datetime.utcnow(), 'expires_at': exp})
-        await db.users.update_one({'_id': tr['user_id']}, {'$set': {'is_premium': True}})
-        # Update push token premium flags for this user
-        await db.push_tokens.update_many({'user_id': tr['user_id']}, {'$set': {'is_premium': True}})
-    return {"status": 'paid' if payload.success else 'failed'}
+class ChatRequest(BaseModel):
+    messages: List[ChatMessage]
+    stream: Optional[bool] = True
+    temperature: Optional[float] = TEMPERATURE_DEFAULT
+    max_tokens: Optional[int] = MAX_TOKENS_DEFAULT
 
-@api.get("/payments/cinetpay/return")
-async def cinetpay_return(transaction_id: str, status: Optional[str] = None):
-    tr = await db.transactions.find_one({'transaction_id': transaction_id})
-    current = tr.get('status') if tr else None
-    final_status = status or current or 'PENDING'
-    return {"transaction_id": transaction_id, "status": final_status}
+LAYAH_SYSTEM_PROMPT = (
+    "Assistant IA — Allô Services CI (Périmètre strict : Côte d’Ivoire)\n\n"
+    "RÔLE & MISSION\nTu es l’assistant IA de l’application ‘Allô Services CI’. Ton unique mission est d’aider les utilisateurs sur des sujets liés à la Côte d’Ivoire (CI) et de générer des documents conformes au contexte ivoirien.\n\n"
+    "PÉRIMÈTRE GÉOGRAPHIQUE\n- Tu ne traites QUE des informations concernant la Côte d’Ivoire.\n- Si la demande ne concerne pas la CI, refuse poliment et invite à reformuler en contexte ivoirien.\n\n"
+    "LANGUE & TON\n- Langue : Français (comprends le nouchi et normalise en français clair).\n- Ton : professionnel, respectueux, concis et actionnable.\n\n"
+    "FONCTIONS\n1) Réponses et conseils pratiques 100% CI.\n2) Génération de documents 100% CI (CV ATS, lettres, ordres de mission, attestations, etc.) sans inventer d’informations.\n3) Reformulation/synthèse/structuration.\n\n"
+    "FORMATAGE LOCAL\nTéléphone ‘+225 xx xx xx xx’, dates FR, FCFA, adresses ‘Quartier – Commune – Ville, Côte d’Ivoire’.\n\n"
+    "SÉCURITÉ CONTENUS\nRefuse injures/violence/incitation. En cas d’urgence: orienter vers services locaux.\n\n"
+    "DONNÉES & SOURCES\nUtilise le contexte fourni (CI uniquement). Si incertitude: demande des précisions ou oriente. Ne pas halluciner.\n\n"
+    "PROCESSUS\n1) Vérifie le contexte CI. 2) Contrôle sûreté. 3) Si document: vérifier champs minimaux, demander manquants, formats locaux, ne pas inventer. 4) Si info: CI uniquement; si incertain: le dire + prochaine étape. 5) Re-scanne: aucune mention hors CI, pas d’insulte/violence, formats locaux."
+)
 
-@api.get('/payments/history')
-async def payments_history(user_id: str, limit: int = 50, status: Optional[str] = None):
-    try:
-        uid = ObjectId(user_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid user_id")
-    query: Dict[str, Any] = {'user_id': uid}
-    if status:
-        query['status'] = status
-    cursor = db.transactions.find(query).sort('created_at', -1).limit(max(1, min(limit, 200)))
-    items = []
-    async for tr in cursor:
-        items.append({
-            'id': str(tr.get('_id')),
-            'transaction_id': tr.get('transaction_id'),
-            'amount': tr.get('amount'),
-            'currency': tr.get('currency', 'XOF'),
-            'status': tr.get('status'),
-            'provider': tr.get('provider'),
-            'payment_url': tr.get('payment_url'),
-            'created_at': tr.get('created_at'),
-            'updated_at': tr.get('updated_at'),
-        })
-    return items
+# Emergent client (lazy import to avoid hard fail if key missing)
+_openai_client = None
 
-# ---------- PHARMACIES (NEARBY) ----------
-@api.get("/pharmacies/nearby")
-async def pharmacies_nearby(lat: float = Query(...), lng: float = Query(...), max_km: float = 10.0, duty_only: bool = False):
-    query: Dict[str, Any] = {
-        'location': {
-            '$near': {
-                '$geometry': {'type': 'Point', 'coordinates': [lng, lat]},
-                '$maxDistance': int(max_km * 1000)
-            }
-        }
-    }
-    if duty_only:
-        dow = datetime.utcnow().weekday()
-        query['duty_days'] = {'$in': [dow]}
-    items = await db.pharmacies.find(query).to_list(50)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-# ---------- ALERTS ----------
-@api.get("/alerts")
-@api.get("/alerts/")
-async def list_alerts(status: Optional[str] = None, type: Optional[str] = None):
-    query: Dict[str, Any] = {}
-    if status:
-        query['status'] = status
-    if type:
-        query['type'] = type
-    items = await db.alerts.find(query).sort('created_at', -1).to_list(200)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-@api.post("/alerts/{alert_id}/resolve")
-async def resolve_alert(alert_id: str):
-    try:
-        _id = ObjectId(alert_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid id")
-    await db.alerts.update_one({'_id': _id}, {'$set': {'status': 'resolved'}})
-    return {"status": "resolved"}
-
-@api.post("/alerts")
-@api.post("/alerts/")
-async def create_alert(payload: AlertCreate):
-    doc: Dict[str, Any] = {
-        'title': payload.title,
-        'type': payload.type,
-        'description': payload.description,
-        'city': payload.city,
-        'images_base64': payload.images_base64,
-        'status': 'active',
-        'created_at': datetime.utcnow()
-    }
-    if payload.lat is not None and payload.lng is not None:
-        doc['location'] = {'type': 'Point', 'coordinates': [payload.lng, payload.lat]}
-    if payload.posted_by:
+def get_openai_client():
+    global _openai_client
+    if _openai_client is None:
+        if not EMERGENT_API_KEY:
+            raise HTTPException(status_code=500, detail="EMERGENT_API_KEY not configured")
         try:
-            doc['posted_by'] = ObjectId(payload.posted_by)
-        except Exception:
-            pass
-    res = await db.alerts.insert_one(doc)
-    saved = await db.alerts.find_one({'_id': res.inserted_id})
-    saved['id'] = str(saved['_id'])
-    del saved['_id']
-    return saved
-
-# ---------- USEFUL NUMBERS ----------
-@api.get('/useful-numbers')
-async def get_useful():
-    items = await db.useful_numbers.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-# ---------- SEED DATA ----------
-@api.post('/seed')
-async def seed_data():
-    # Categories
-    categories = [
-        {'slug': 'urgence', 'name_fr': 'Urgence', 'name_en': 'Emergency', 'name_es': 'Emergencia', 'name_it': 'Emergenza', 'name_ar': 'طوارئ', 'is_premium': False},
-        {'slug': 'sante', 'name_fr': 'Santé', 'name_en': 'Health', 'name_es': 'Salud', 'name_it': 'Salute', 'name_ar': 'صحة', 'is_premium': False},
-        {'slug': 'education', 'name_fr': 'Éducation', 'name_en': 'Education', 'name_es': 'Educación', 'name_it': 'Educazione', 'name_ar': 'تعليم', 'is_premium': True},
-        {'slug': 'examens_concours', 'name_fr': 'Examens & Concours', 'name_en': 'Exams & Competitions', 'name_es': 'Exámenes y Concursos', 'name_it': 'Esami e Concorsi', 'name_ar': 'امتحانات ومسابقات', 'is_premium': True},
-        {'slug': 'services_publics', 'name_fr': 'Services Publics', 'name_en': 'Public Services', 'name_es': 'Servicios Públicos', 'name_it': 'Servizi Pubblici', 'name_ar': 'خدمات عامة', 'is_premium': True},
-        {'slug': 'emplois', 'name_fr': 'Emplois', 'name_en': 'Jobs', 'name_es': 'Empleos', 'name_it': 'Lavori', 'name_ar': 'وظائف', 'is_premium': True},
-        {'slug': 'services_utiles', 'name_fr': 'Services Utiles', 'name_en': 'Useful Services', 'name_es': 'Servicios Útiles', 'name_it': 'Servizi Utili', 'name_ar': 'خدمات مفيدة', 'is_premium': True},
-        {'slug': 'agriculture', 'name_fr': 'Agriculture', 'name_en': 'Agriculture', 'name_es': 'Agricultura', 'name_it': 'Agricoltura', 'name_ar': 'زراعة', 'is_premium': True},
-        {'slug': 'loisirs_tourisme', 'name_fr': 'Loisirs & Tourisme', 'name_en': 'Leisure & Tourism', 'name_es': 'Ocio y Turismo', 'name_it': 'Tempo libero e Turismo', 'name_ar': 'ترفيه وسياحة', 'is_premium': True},
-        {'slug': 'transport', 'name_fr': 'Transport', 'name_en': 'Transport', 'name_es': 'Transporte', 'name_it': 'Trasporti', 'name_ar': 'نقل', 'is_premium': True},
-    ]
-    
-    for cat in categories:
-        await db.categories.update_one({'slug': cat['slug']}, {'$set': cat}, upsert=True)
-    
-    # Sample useful numbers (free access)
-    useful_numbers = [
-        {'category': 'urgence', 'name': 'SAMU', 'number': '15', 'description': 'Services d\'urgence médicale'},
-        {'category': 'urgence', 'name': 'Pompiers', 'number': '18', 'description': 'Services d\'incendie et secours'},
-        {'category': 'urgence', 'name': 'Police', 'number': '17', 'description': 'Police nationale'},
-        {'category': 'urgence', 'name': 'Gendarmerie', 'number': '177', 'description': 'Gendarmerie nationale'},
-    ]
-    for un in useful_numbers:
-        await db.useful_numbers.update_one({'number': un['number']}, {'$set': un}, upsert=True)
-    
-    # Sample pharmacies (free access)
-    pharmacies = [
-        {
-            'name': 'Pharmacie Plateau',
-            'address': 'Avenue Chardy, Plateau',
-            'city': 'Abidjan',
-            'phone': '27-20-32-15-47',
-            'location': {'type': 'Point', 'coordinates': [-4.0167, 5.3167]},
-            'duty_days': [0, 1, 2, 3, 4, 5, 6]
-        },
-        {
-            'name': 'Pharmacie Cocody',
-            'address': 'Boulevard de la Paix, Cocody',
-            'city': 'Abidjan',
-            'phone': '27-22-44-33-21',
-            'location': {'type': 'Point', 'coordinates': [-3.9833, 5.3500]},
-            'duty_days': [0, 1, 2, 3, 4]
-        }
-    ]
-    for ph in pharmacies:
-        await db.pharmacies.update_one({'name': ph['name']}, {'$set': ph}, upsert=True)
-    
-    # Sample premium content
-    exams_data = [
-        {'title': 'BEPC 2025', 'date': '2025-06-15', 'type': 'national', 'description': 'Brevet d\'Études du Premier Cycle'},
-        {'title': 'BAC 2025', 'date': '2025-06-20', 'type': 'national', 'description': 'Baccalauréat général et technique'},
-    ]
-    for exam in exams_data:
-        await db.exams.update_one({'title': exam['title']}, {'$set': exam}, upsert=True)
-    
-    utilities_data = [
-        {'name': 'CIE (Électricité)', 'phone': '179', 'service': 'Électricité', 'description': 'Compagnie Ivoirienne d\'Électricité'},
-        {'name': 'SODECI (Eau)', 'phone': '175', 'service': 'Eau', 'description': 'Société de Distribution d\'Eau de Côte d\'Ivoire'},
-        {'name': 'Orange CI', 'phone': '111', 'service': 'Télécom', 'description': 'Services client Orange'},
-    ]
-    for util in utilities_data:
-        await db.utilities.update_one({'name': util['name']}, {'$set': util}, upsert=True)
-    
-    return {'status': 'ok', 'message': 'Database seeded successfully'}
-
-# ---------- CATEGORIES ----------
-@api.get('/categories')
-async def get_categories():
-    items = await db.categories.find().to_list(20)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-# ---------- PREMIUM GATED ENDPOINTS ----------
-
-async def check_user_premium(user_id: str) -> bool:
-    """Helper function to check if user is premium"""
-    try:
-        uid = ObjectId(user_id)
-        return await _is_user_premium(uid)
-    except:
-        return False
-
-@api.get('/exams')
-async def get_exams(user_id: Optional[str] = None):
-    if not user_id or not await check_user_premium(user_id):
-        raise HTTPException(status_code=402, detail="Premium subscription required")
-    
-    items = await db.exams.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-@api.get('/utilities')
-async def get_utilities(user_id: Optional[str] = None):
-    if not user_id or not await check_user_premium(user_id):
-        raise HTTPException(status_code=402, detail="Premium subscription required")
-    
-    items = await db.utilities.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-@api.get('/education')
-async def get_education(user_id: Optional[str] = None):
-    if not user_id or not await check_user_premium(user_id):
-        raise HTTPException(status_code=402, detail="Premium subscription required")
-    
-    items = await db.education.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-@api.get('/services-publics')
-async def get_services_publics(user_id: Optional[str] = None):
-    if not user_id or not await check_user_premium(user_id):
-        raise HTTPException(status_code=402, detail="Premium subscription required")
-    
-    items = await db.services_publics.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-@api.get('/emplois')
-async def get_emplois(user_id: Optional[str] = None):
-    if not user_id or not await check_user_premium(user_id):
-        raise HTTPException(status_code=402, detail="Premium subscription required")
-    
-    items = await db.emplois.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-@api.get('/agriculture')
-async def get_agriculture(user_id: Optional[str] = None):
-    if not user_id or not await check_user_premium(user_id):
-        raise HTTPException(status_code=402, detail="Premium subscription required")
-    
-    items = await db.agriculture.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-@api.get('/loisirs')
-async def get_loisirs(user_id: Optional[str] = None):
-    if not user_id or not await check_user_premium(user_id):
-        raise HTTPException(status_code=402, detail="Premium subscription required")
-    
-    items = await db.loisirs.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-@api.get('/transport')
-async def get_transport(user_id: Optional[str] = None):
-    if not user_id or not await check_user_premium(user_id):
-        raise HTTPException(status_code=402, detail="Premium subscription required")
-    
-    items = await db.transport.find().to_list(100)
-    for i in items:
-        i['id'] = str(i['_id'])
-        del i['_id']
-    return items
-
-# ---------- PUSH NOTIFICATIONS ----------
-
-def _chunk_list(items: List[str], size: int = 100) -> List[List[str]]:
-    return [items[i:i+size] for i in range(0, len(items), size)]
-
-async def _send_expo_push(tokens: List[str], payload: Dict[str, Any]) -> List[Dict[str, Any]]:
-    if not tokens:
-        return []
-    messages = []
-    for t in tokens:
-        messages.append({'to': t,'sound': 'default','title': payload.get('title'),'body': payload.get('body'),'data': payload.get('data') or {}})
-    results: List[Dict[str, Any]] = []
-    for batch in _chunk_list(messages, 100):
-        try:
-          r = requests.post('https://exp.host/--/api/v2/push/send', json=batch, timeout=30)
-          if r.headers.get('content-type','').startswith('application/json'):
-              results.append(r.json())
-          else:
-              results.append({'status_code': r.status_code, 'text': r.text})
+            from emergent import OpenAIClient  # type: ignore
+            _openai_client = OpenAIClient(api_key=EMERGENT_API_KEY)
         except Exception as e:
-          results.append({'error': str(e)})
-    return results
+            logger.exception("Failed to init Emergent OpenAI client")
+            raise HTTPException(status_code=500, detail=f"Emergent client init failed: {e}")
+    return _openai_client
 
-@api.post('/notifications/register')
-async def register_push_token(payload: PushTokenRegister):
-    doc: Dict[str, Any] = {
-        'token': payload.token,
-        'platform': payload.platform,
-        'city': payload.city,
-        'device_info': payload.device_info,
-        'last_seen': datetime.utcnow()
+async def stream_chat(messages: List[Dict[str,str]], temperature: float, max_tokens: int) -> AsyncGenerator[str, None]:
+    client = get_openai_client()
+    try:
+        stream = await client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=messages,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            stream=True,
+        )
+        async for chunk in stream:
+            try:
+                choice = chunk.choices[0]
+                delta = getattr(choice, 'delta', None)
+                if delta and getattr(delta, 'content', None):
+                    yield f"data: {json.dumps({'content': delta.content})}\n\n"
+            except Exception:
+                continue
+        yield "data: [DONE]\n\n"
+    except Exception as e:
+        yield f"data: {json.dumps({'error': str(e)})}\n\n"
+
+async def complete_chat(messages: List[Dict[str,str]], temperature: float, max_tokens: int) -> Dict[str, Any]:
+    client = get_openai_client()
+    resp = await client.chat.completions.create(
+        model=OPENAI_MODEL,
+        messages=messages,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        stream=False,
+    )
+    return {
+        "content": resp.choices[0].message.content,
+        "finish_reason": resp.choices[0].finish_reason,
+        "usage": getattr(resp, 'usage', None) and {
+            "prompt_tokens": resp.usage.prompt_tokens,
+            "completion_tokens": resp.usage.completion_tokens,
+            "total_tokens": resp.usage.total_tokens,
+        }
     }
-    if payload.user_id:
-        try:
-            uid = ObjectId(payload.user_id)
-            user = await db.users.find_one({'_id': uid})
-            if user:
-                doc['user_id'] = uid
-                doc['preferred_lang'] = user.get('preferred_lang')
-                doc['is_premium'] = await _is_user_premium(uid)
-        except Exception:
-            pass
-    await db.push_tokens.update_one({'token': payload.token}, {'$set': doc}, upsert=True)
-    return {'status': 'ok'}
 
-@api.post('/notifications/unregister')
-async def unregister_push_token(token: str):
-    await db.push_tokens.delete_one({'token': token})
-    return {'status': 'ok'}
+@api.post('/ai/chat')
+async def ai_chat(req: ChatRequest):
+    if not req.messages or not isinstance(req.messages, list):
+        raise HTTPException(status_code=422, detail="messages required")
+    # prepend system prompt
+    msgs = [{"role": "system", "content": LAYAH_SYSTEM_PROMPT}] + [m.model_dump() for m in req.messages]
+    if req.stream:
+        return StreamingResponse(stream_chat(msgs, req.temperature or TEMPERATURE_DEFAULT, req.max_tokens or MAX_TOKENS_DEFAULT), media_type='text/event-stream')
+    else:
+        return await complete_chat(msgs, req.temperature or TEMPERATURE_DEFAULT, req.max_tokens or MAX_TOKENS_DEFAULT)
 
-@api.post('/notifications/send')
-async def send_push(payload: PushSendInput):
-    query: Dict[str, Any] = {}
-    if payload.city:
-        query['city'] = payload.city
-    if payload.lang:
-        query['preferred_lang'] = payload.lang
-    if payload.premium_only:
-        query['is_premium'] = True
-    tokens = [pt['token'] async for pt in db.push_tokens.find(query, {'token': 1})]
-    results = await _send_expo_push(tokens, {'title': payload.title, 'body': payload.body, 'data': payload.data})
-    return {'count': len(tokens), 'results': results}
-
-# ---------- INCLUDE ROUTER ----------
+# Mount router
 app.include_router(api)
 
-@app.on_event("startup")
+# Startup hooks
+@app.on_event('startup')
 async def on_startup():
-    await ensure_indexes()
     try:
-        paths = [r.path for r in app.router.routes]
-        logger.info(f"Registered routes: {paths}")
+        await ensure_indexes()
     except Exception:
-        pass
-
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
+        logger.exception('Index init failed')
