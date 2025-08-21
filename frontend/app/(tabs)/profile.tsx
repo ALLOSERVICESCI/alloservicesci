@@ -483,10 +483,7 @@ const styles = StyleSheet.create({
   refreshButton: {
     alignItems: 'center',
     paddingVertical: 8,
-    marginTop: 16,
-  },
-    alignItems: 'center',
-    paddingVertical: 8,
+    marginVertical: 16,
   },
   refreshButtonText: {
     color: '#666',
