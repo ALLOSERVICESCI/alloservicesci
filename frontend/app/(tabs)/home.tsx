@@ -195,7 +195,13 @@ export default function Home() {
     </ScrollView>
 
       {/* Floating AI FAB */}
-      <Animated.View style={[styles.aiFab, styles.aiHalo, { transform: [{ scale: pulse }] }, aiPositionStyle]}>
+      <Animated.View 
+        style={[styles.aiFab, styles.aiHalo, { transform: [{ scale: pulse }] }, aiPositionStyle, fabXY ? { left: pan.x, top: pan.y } : null]}
+        onStartShouldSetResponder={() => true}
+        onResponderGrant={() => setDragging(true)}
+        onResponderMove={panResponder.onResponderMove}
+        onResponderRelease={panResponder.onResponderRelease}
+      >
         <TouchableOpacity
           onPress={() => router.push('/ai/chat')}
           activeOpacity={0.9}
