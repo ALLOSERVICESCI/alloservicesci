@@ -72,4 +72,27 @@ const styles = StyleSheet.create({
   meta: { marginTop: 6, fontSize: 12, color: '#666' },
   btnDel: { backgroundColor: '#B00020', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8, marginLeft: 12 },
   btnDelText: { color: '#fff', fontWeight: '700' },
+  bottomTabs: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5E5',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  tabItem: { alignItems: 'center', justifyContent: 'center', paddingVertical: 4, minWidth: 50 },
+  tabLabel: { fontSize: 10, color: '#0A7C3A', marginTop: 2, textAlign: 'center', fontWeight: '600' },
 });
