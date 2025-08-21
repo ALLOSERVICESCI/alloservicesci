@@ -47,17 +47,7 @@ export default function Home() {
             <Text style={styles.slogan}>{t('slogan')}</Text>
             <Text style={styles.greeting}>{greeting}</Text>
 
-            {/* Floating AI Button */}
-            <TouchableOpacity
-              onPress={() => router.push('/ai/chat')}
-              activeOpacity={0.9}
-              style={styles.aiFab}
-            >
-              <View style={styles.aiFabInner}>
-                <Text style={styles.aiEmoji}>🐘</Text>
-                <Text style={styles.aiLabel}>Layah</Text>
-              </View>
-            </TouchableOpacity>
+
 
           </View>
         </View>
