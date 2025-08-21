@@ -30,6 +30,15 @@ const slugToKey = (slug: string): string => {
   }
 };
 
+function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.tabItem}>
+      <Ionicons name={icon} size={22} color="#0A7C3A" />
+      <Text style={styles.tabLabel} numberOfLines={1}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { user } = useAuth();
