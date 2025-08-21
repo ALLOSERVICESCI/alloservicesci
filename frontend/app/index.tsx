@@ -22,6 +22,7 @@ export default function Index() {
       Animated.parallel([
         Animated.timing(logoOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
         Animated.timing(logoScale, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+        Animated.timing(logoTranslateY, { toValue: 0, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
       ]),
       Animated.timing(subOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
     ]);
@@ -29,9 +30,9 @@ export default function Index() {
 
     const timer = setTimeout(() => {
       router.replace('/(tabs)/home');
-    }, 4000);
+    }, 5000);
     return () => { clearTimeout(timer); };
-  }, [router, titleOpacity, logoOpacity, logoScale, subOpacity]);
+  }, [router, titleOpacity, logoOpacity, logoScale, logoTranslateY, subOpacity]);
 
   return (
     <LinearGradient colors={["#FF8A00", "#FFB347"]} style={styles.container}>
