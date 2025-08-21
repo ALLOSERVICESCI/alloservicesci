@@ -53,6 +53,11 @@ export default function Index() {
           Tous les services essentiels en un clic
         </Animated.Text>
       </View>
+
+      {/* Watermark motto at bottom */}
+      <View style={styles.watermarkContainer} pointerEvents="none">
+        <Text style={styles.watermarkText}>Union - Discipline - Travail</Text>
+      </View>
     </LinearGradient>
   );
 }
