@@ -499,6 +499,7 @@ test_plan:
     - "Frontend Integration with Backend Endpoints"
     - "EAS Update (OTA) Configuration"
     - "Home layout (carousel centered + description below)"
+    - "Home screen UI changes validation"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
   test_all: false
