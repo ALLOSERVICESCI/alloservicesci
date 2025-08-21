@@ -29,68 +29,70 @@ export default function Home() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
-      {/* Header with Logo */}
-      <View style={styles.header}>
-        {/* Logo Section */}
-        <View style={styles.logoSection}>
-          <View style={styles.logoContainer}>
-            <Image source={APP_ICON} style={styles.logo} />
+      <View style={styles.pageWrapper}>
+        {/* Header with Logo */}
+        <View style={styles.header}>
+          {/* Logo Section */}
+          <View style={styles.logoSection}>
+            <View style={styles.logoContainer}>
+              <Image source={APP_ICON} style={styles.logo} />
+            </View>
+          </View>
+          
+          {/* Brand Info */}
+          <View style={styles.brandSection}>
+            <Text style={styles.brand}>{t('brand')}</Text>
+            <Text style={styles.slogan}>{t('slogan')}</Text>
+            <Text style={styles.greeting}>{greeting}</Text>
           </View>
         </View>
-        
-        {/* Brand Info */}
-        <View style={styles.brandSection}>
-          <Text style={styles.brand}>{t('brand')}</Text>
-          <Text style={styles.slogan}>{t('slogan')}</Text>
-          <Text style={styles.greeting}>{greeting}</Text>
+
+        {/* Categories Carousel - AU MILIEU */}
+        <View style={styles.categoriesSection}>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false} 
+            contentContainerStyle={styles.carousel}
+            style={styles.carouselContainer}
+          >
+            {categories.map((category) => (
+              <TouchableOpacity 
+                key={category.slug} 
+                style={[
+                  styles.categoryCard,
+                  category.isPremium && styles.categoryCardPremium
+                ]}
+                onPress={() => router.push(`/category/${category.slug}`)}
+              >
+                {category.isPremium && (
+                  <View style={styles.premiumBadge}>
+                    <Text style={styles.premiumBadgeText}>✨</Text>
+                  </View>
+                )}
+                
+                <Text style={styles.categoryIcon}>{category.icon}</Text>
+                
+                <Text style={[
+                  styles.categoryLabel,
+                  category.isPremium && styles.categoryLabelPremium
+                ]}>
+                  {category.label}
+                </Text>
+                
+                {category.isPremium && (
+                  <Text style={styles.premiumText}>Premium</Text>
+                )}
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
-      </View>
 
-      {/* Categories Carousel - AU MILIEU */}
-      <View style={styles.categoriesSection}>
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false} 
-          contentContainerStyle={styles.carousel}
-          style={styles.carouselContainer}
-        >
-          {categories.map((category) => (
-            <TouchableOpacity 
-              key={category.slug} 
-              style={[
-                styles.categoryCard,
-                category.isPremium && styles.categoryCardPremium
-              ]}
-              onPress={() => router.push(`/category/${category.slug}`)}
-            >
-              {category.isPremium && (
-                <View style={styles.premiumBadge}>
-                  <Text style={styles.premiumBadgeText}>✨</Text>
-                </View>
-              )}
-              
-              <Text style={styles.categoryIcon}>{category.icon}</Text>
-              
-              <Text style={[
-                styles.categoryLabel,
-                category.isPremium && styles.categoryLabelPremium
-              ]}>
-                {category.label}
-              </Text>
-              
-              {category.isPremium && (
-                <Text style={styles.premiumText}>Premium</Text>
-              )}
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-
-      {/* Welcome Card - EN DESSOUS DU CARROUSEL */}
-      <View style={styles.welcomeCard}>
-        <Text style={styles.welcomeDescription}>
-          Accédez à tous les services exclusifs
-        </Text>
+        {/* Welcome Card - EN DESSOUS DU CARROUSEL */}
+        <View style={styles.welcomeCard}>
+          <Text style={styles.welcomeDescription}>
+            Accédez à tous les services exclusifs
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );
