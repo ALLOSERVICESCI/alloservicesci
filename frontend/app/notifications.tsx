@@ -54,8 +54,6 @@ export default function NotificationsCenter() {
         <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
       </View>
 
-
-      )}
     </View>
   );
 }
