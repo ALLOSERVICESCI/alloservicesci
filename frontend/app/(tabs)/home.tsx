@@ -66,7 +66,7 @@ export default function Home() {
               >
                 {category.isPremium && (
                   <View style={styles.premiumBadge}>
-                    <Text style={styles.premiumBadgeText}>✨</Text>
+                    <Text style={styles.premiumBadgeText}>🔒</Text>
                   </View>
                 )}
                 
