@@ -1,31 +1,22 @@
 <analysis>
-The previous AI engineer successfully brought the Allô Services CI mobile application from inception to a stable, feature-rich state. The project began with backend setup using FastAPI and MongoDB, defining extensive data models, and implementing core APIs including user authentication, premium subscriptions, and live CinetPay payment integration. Frontend development leveraged Expo Router for navigation, incorporated user-provided assets, and established key screens for Home, Alerts, Pharmacies, Premium, and Profile.
+The AI engineer successfully developed the Allô Services CI mobile app, establishing a robust FastAPI backend with MongoDB and an Expo/React Native frontend. Initial work focused on core features like user authentication, premium subscriptions via CinetPay, and basic screen layouts. A major phase involved resolving critical build issues (EAS, API URLs) and implementing internationalization for five languages.
 
-A significant portion of the trajectory focused on resolving critical build and runtime issues, such as EAS keystore problems, JavaScript bundling errors (fixed by adding ), and persistent API URL inconsistencies in EAS builds, which were resolved by correctly injecting  in  and fortifying the API utility. Backend Not Found errors for  and  were diagnosed and fixed by re-exposing routes.
-
-Subsequent work, guided by iterative user feedback, expanded upon core functionalities:
-1.  **Internationalization (i18n):** Implemented 5-language support (FR/EN/ES/IT/AR) with a global provider, dynamic language switching in Profile settings, and language selection during user registration. RTL support for Arabic was included.
-2.  **Pharmacies Endpoint:** The  endpoint was re-activated and backend-validated.
-3.  **User Profile & Notifications:** User profile editing (language, city) was enabled with backend PATCH support. A local notifications center was created to store push history, and notification segmentation by language/city/premium status was implemented at the backend.
-4.  **Premium Experience:** The Premium page UI was significantly enhanced with the app logo, dynamic Renew/Become Premium button, display of subscription expiry, and a post-payment alert for status refresh. A comprehensive Payment History screen was added with client/server-side filtering for accepted payments and options to open/share CinetPay transaction links.
-5.  **UI/UX Refinements:** Numerous visual adjustments were made to the Premium and Profile pages, including logo sizing, text alignment, spacing, and the removal/addition of visual separators, all iteratively tuned for a polished look. A startup crash related to font loading was also fixed by preloading Ionicons.
+Subsequent efforts heavily focused on iterative UI/UX refinements for the Premium and Profile pages, including detailed payment history and notification management. A significant challenge arose with the mobile preview displaying a blank screen due to  conflicts and persistent  CSS errors in React Native Web. The engineer meticulously debugged and resolved these, rolling back problematic styles and cleaning caches, ultimately ensuring the app's functionality on native mobile platforms. The most recent work involved extensive redesign of the Home and Profile pages to match the sophisticated Premium page aesthetic, with a focus on icon updates, text sizing, and carousel placement, iteratively addressing user feedback.
 </analysis>
 
 <product_requirements>
-The Allô Services CI mobile application aims to be a public utility for Côte d’Ivoire and its diaspora, supporting five languages: French, English, Spanish, Italian, and Arabic. It offers free access to essential services (emergencies, pharmacies) and an annual premium subscription (1200 FCFA) for advanced features, integrating Orange Money, Wave Money, and bank cards via CinetPay. Users can publish alerts with images and share information.
-
-Core categories include Urgence, Santé, Éducation, and others, requiring a carousel display and dedicated pages with header images. User profiles necessitate photo, name, email, phone, and location (Ivorian cities). The home page greets users by name. The backend is FastAPI with MongoDB, managing user, category, alert, and payment data. Frontend is Expo, using Expo Router for navigation, with a tab-based layout. Key features like user registration, CinetPay payment (live), push notifications, and basic alert creation are functional, with app branding and personalized greetings harmonized across the UI.
+The Allô Services CI mobile application serves as a public utility for Côte d’Ivoire and its diaspora, supporting five languages (FR, EN, ES, IT, AR). It provides free access to essential services (emergencies, pharmacies) and offers an annual premium subscription (1200 FCFA) for advanced features, integrating CinetPay for payments (Orange Money, Wave Money, bank cards). Users can publish alerts with images and share information. Key categories (Urgence, Santé, Éducation) require carousel display and dedicated pages with header images. User profiles manage photo, name, email, phone, and Ivorian city location. The home page offers personalized greetings. The backend uses FastAPI with MongoDB for user, category, alert, and payment data, while the frontend is Expo, utilizing Expo Router for tab-based navigation. Core functionalities like user registration, live CinetPay payment, push notifications, and basic alert creation are implemented and branded.
 </product_requirements>
 
 <key_technical_concepts>
-- **Mobile Framework:** Expo (cross-platform Android/iOS).
-- **Frontend:** React Native, Expo Router, React Navigation, React Context (Auth, Notifications).
-- **Backend:** FastAPI (Python), MongoDB (database).
-- **Payment Gateway:** CinetPay (live integration).
-- **Push Notifications:** Expo Notifications.
-- **Geolocation:** .
-- **Deployment:** EAS Build.
-- **UI/UX:** Flexbox, custom theming, safe areas.
+-   **Mobile Framework:** Expo (cross-platform Android/iOS).
+-   **Frontend:** React Native, Expo Router, React Navigation, React Context.
+-   **Backend:** FastAPI (Python), MongoDB.
+-   **Payment Gateway:** CinetPay (live integration).
+-   **Push Notifications:** Expo Notifications.
+-   **Internationalization:** i18n with RTL support.
+-   **Geolocation:** .
+-   **Deployment:** EAS Build, OTA Updates.
 </key_technical_concepts>
 
 <code_architecture>
@@ -33,133 +24,46 @@ The application follows a full-stack architecture: Expo for the frontend, FastAP
 
 
 
--   **/app/backend/server.py**:
-    -   **Summary**: The main FastAPI backend application, defining API endpoints and interacting with MongoDB.
-    -   **Changes**: Expanded with , re-exposed  and . Added  for profile updates (language, city), enhanced  for segmentation (city, lang, premium_only), updated push token registration to store user details, and implemented  for transaction history with optional status filtering.
--   **/app/backend/.env**:
-    -   **Summary**: Stores environment variables for the backend.
-    -   **Changes**: Updated to include CinetPay credentials provided by the user.
--   **/app/frontend/app.json**:
-    -   **Summary**: Expo application configuration file.
-    -   **Changes**: Configured for Allô Services CI name, bundle IDs, and integrated ,  plugins.
--   **/app/frontend/eas.json**:
-    -   **Summary**: Configuration for Expo Application Services (EAS) builds.
-    -   **Changes**: Added  profile with , , and  within the KUBERNETES_SERVICE_PORT_HTTPS=443
-PYTHON_SHA256=8fb5f9fbc7609fa822cb31549884575db7fd9657cbffb89510b5d7975963a83a
-KUBERNETES_SERVICE_PORT=443
-PYTHONUNBUFFERED=1
-PIP_NO_INPUT=1
-STRIPE_API_KEY=sk_test_emergent
-PREVIEW_PROXY_SERVICE_PORT_80_TCP_PROTO=tcp
-HOSTNAME=agent-env-1d8786a3-773f-4984-a5b0-043c87820a25
-PYTHON_VERSION=3.11.13
-base_url=https://demobackend.emergentagent.com
-run_id=alloservices
-PLUGIN_VENV_PATH=/opt/plugins-venv
-PREVIEW_PROXY_SERVICE_PORT_80_TCP_ADDR=34.118.225.58
-PREVIEW_PROXY_SERVICE_SERVICE_HOST=34.118.225.58
-PWD=/app
-code_server_password=2f7c011e
-PREVIEW_PROXY_SERVICE_PORT=tcp://34.118.225.58:80
-PREVIEW_PROXY_SERVICE_PORT_80_TCP=tcp://34.118.225.58:80
-HOME=/root
-LANG=C.UTF-8
-KUBERNETES_PORT_443_TCP=tcp://34.118.224.1:443
-VIRTUAL_ENV=/root/.venv
-GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
-PLAYWRIGHT_BROWSERS_PATH=/pw-browsers
-integration_proxy_url=https://integrations.emergentagent.com
-preview_endpoint=https://alloservices.preview.emergentagent.com
-ENABLE_RELOAD=true
-SHLVL=0
-KUBERNETES_PORT_443_TCP_PROTO=tcp
-KUBERNETES_PORT_443_TCP_ADDR=34.118.224.1
-KUBERNETES_SERVICE_HOST=34.118.224.1
-KUBERNETES_PORT=tcp://34.118.224.1:443
-KUBERNETES_PORT_443_TCP_PORT=443
-PATH=/root/.venv/bin:/opt/plugins-venv/bin:/opt/bin/:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-monitor_polling_interval=1
-PREVIEW_PROXY_SERVICE_PORT_80_TCP_PORT=80
-NEXT_TELEMETRY_DISABLED=1
-PREVIEW_PROXY_SERVICE_SERVICE_PORT_HTTP=80
-NODE_VERSION=20
-DEBIAN_FRONTEND=noninteractive
-PREVIEW_PROXY_SERVICE_SERVICE_PORT=80
-_=/usr/bin/env block. Also added .
--   **/app/frontend/package.json**:
-    -   **Summary**: Defines frontend project dependencies and scripts.
-    -   **Changes**: Added , , , , , and .
--   **/app/frontend/assets/**:
-    -   **Summary**: Directories for storing image assets.
-    -   **Changes**: Populated with user-provided  and  contents.  was also added and used.
--   **/app/frontend/app/(tabs)/_layout.tsx**:
-    -   **Summary**: Defines the tab-based navigation layout for main application sections.
-    -   **Changes**: Configured with tab screens and icons. Updated  and integrated , , and . Implemented font preloading with  to fix startup timeout errors by loading .
--   **/app/frontend/app/(tabs)/home.tsx**:
-    -   **Summary**: The main home screen.
-    -   **Changes**: Implemented category carousel using i18n for labels. Displays Allô Services CI title, slogan, and personalized greeting.
--   **/app/frontend/app/(tabs)/alerts.tsx**:
-    -   **Summary**: Displays alerts and provides creation functionality.
-    -   **Changes**: Implemented fetching and displaying alerts. New Alert button leads to creation, updated header with i18n.
--   **/app/frontend/app/(tabs)/pharmacies.tsx**:
-    -   **Summary**: Displays nearby pharmacies based on user's GPS location.
-    -   **Changes**: Integrated  for permissions. Displays pharmacy data with i18n, defaults to a 5km radius.
--   **/app/frontend/app/(tabs)/premium.tsx (renamed to subscribe.tsx)**:
-    -   **Summary**: Original premium screen, now replaced by .
-    -   **Changes**: Logic was moved and replaced by .
--   **/app/frontend/app/(tabs)/profile.tsx**:
-    -   **Summary**: User profile screen.
-    -   **Changes**: Added as a new tab. Includes Create an Account button, and new buttons for Modifier le profil (Edit Profile) and Centre de notifications. Enhanced to display Premium actif badge, premium expiration date, and dynamically adjust Renew Premium / Become Premium buttons. All content was explicitly centered.
--   **/app/frontend/app/(tabs)/subscribe.tsx (NEW)**:
-    -   **Summary**: Dedicated premium subscription payment screen.
-    -   **Changes**: Created to handle premium subscription flow. Features the app's  (enlarged to 180x180 px with a white circle, green border, light shadow), app title Allô Services CI and slogan Tous les services essentiels en un clic, the Premium 1200 FCFA / an text, and the CinetPay payment button. Layout is fully centered with refined spacing and expanded button width.
--   **/app/frontend/app/auth/register.tsx**:
-    -   **Summary**: User registration screen.
-    -   **Changes**: Implemented registration form logic. Added language selection buttons (FR/EN/ES/IT/AR) which send  to the backend and immediately synchronize UI language.
--   **/app/frontend/app/category/[slug].tsx**:
-    -   **Summary**: Dynamic screen for a selected category.
-    -   **Changes**: Features a header with category-specific image and app name/slogan, now localized. Corrected a missing image reference for emplois.
--   **/app/frontend/app/payments/history.tsx (NEW)**:
-    -   **Summary**: New screen displaying a user's payment history.
-    -   **Changes**: Created to list transactions from . Displays amount, currency, status (with color chips), date, provider, and transaction ID. Includes pull-to-refresh, a client/server-side filter for Accepted payments, and buttons to open/share CinetPay transaction URLs for each payment.
--   **/app/frontend/app/notifications/index.tsx (NEW)**:
-    -   **Summary**: New screen for displaying a local history of received push notifications.
-    -   **Changes**: Implements the  to store and retrieve the last 200 notifications. Provides functionalities to delete individual items and clear the entire history.
--   **/app/frontend/app/profile/edit.tsx (NEW)**:
-    -   **Summary**: New screen allowing users to edit their profile details.
-    -   **Changes**: Enables users to change their preferred language and city, making a PATCH request to the backend. Includes a simple button-based picker for Ivorian cities, which is more ergonomic than free text input.
--   **/app/frontend/src/context/AuthContext.tsx**:
-    -   **Summary**: Provides authentication context.
-    -   **Changes**: Manages ,  data, and premium status, persisting it locally.
--   **/app/frontend/src/context/NotificationsContext.tsx (NEW)**:
-    -   **Summary**: New context provider for managing local push notification history.
-    -   **Changes**: Integrates with  to provide notification history persistence and management across the app.
--   **/app/frontend/src/utils/api.ts**:
-    -   **Summary**: Centralized utility for making API calls.
-    -   **Changes**: Enhanced for robust backend API URL construction, utilizing  from EAS builds with a  fallback, and incorporates explicit error handling.
--   **/app/frontend/src/i18n/i18n.tsx (NEW)**:
-    -   **Summary**: New file to manage multi-language translations.
-    -   **Changes**: Implemented  and  hook. Contains translation objects for FR/EN/ES/IT/AR. Handles RTL direction for Arabic and sets French as the default language. This file was continuously updated with new translation strings as features were added.
+-   **/app/backend/server.py**: Main FastAPI backend. Expanded with category endpoints (e.g., , ), a  endpoint, and refined premium gating logic for 402 responses. Implemented  for profile updates and  for transaction history.
+-   **/app/frontend/app.json**: Expo configuration. Updated for Allô Services CI branding, ,  plugins, and  for OTA updates.
+-   **/app/frontend/eas.json**: EAS build configuration. Configured  profile with  and . Enhanced for OTA updates by adding  pointing to Expo updates service.
+-   **/app/frontend/package.json**: Frontend dependencies. Added , , , , , and .
+-   **/app/frontend/assets/**: Image assets. Populated with user-provided  and  contents, and  for app logo.
+-   **/app/frontend/app/(tabs)/_layout.tsx**: Tab-based navigation layout. Configured tab screens, icons, integrated , , , and preloaded Ionicons.
+-   **/app/frontend/app/(tabs)/home.tsx**: Home screen. Initially designed with category carousel and greetings. Recently refactored multiple times to incorporate the premium page's sophisticated design: added large logo with green/white border and shadow (130x130px), enlarged Allô Services CI title (32px), slogan (18px), and personalized greeting (20px). Switched from image icons to larger emoji icons (48px) for categories and applied distinct premium styling (golden background, border, larger premium badges). The Bienvenue container text was removed, and Accédez à tous les services exclusifs was centered. The carousel was recentered for one-hand use, and its associated text was moved below.
+-   **/app/frontend/app/(tabs)/premium.tsx**: Replaced by .
+-   **/app/frontend/app/(tabs)/profile.tsx**: User profile screen. Transformed to match premium page's sophisticated design, including avatar with dynamic premium badge, elegant cards for user info, improved language selection, and action grid with premium styling.
+-   **/app/frontend/app/(tabs)/subscribe.tsx**: Dedicated premium subscription payment screen. Features a large app logo (180x180px, white circle, green border, light shadow, later updated to 190px total with distinct green/white double border), app title and slogan, Premium 1200 FCFA / an displayed concisely on one line (previously duplicated and separate), CinetPay button, and a grid of premium features.
+-   **/app/frontend/app/auth/register.tsx**: User registration. Implemented language selection () and UI language synchronization.
+-   **/app/frontend/app/category/[slug].tsx**: Dynamic category screen. Features localized header with category-specific image and app name/slogan.
+-   **/app/frontend/app/payments/history.tsx**: New screen for payment history. Lists transactions with filtering, status chips, and CinetPay link options.
+-   **/app/frontend/app/notifications/index.tsx**: New notifications center. Displays local history of received push notifications, with delete functionalities.
+-   **/app/frontend/app/profile/edit.tsx**: New profile editing screen. Allows users to update preferred language and city via backend PATCH request.
+-   **/app/frontend/src/context/AuthContext.tsx**: Auth context provider. Manages  and  data.
+-   **/app/frontend/src/context/NotificationsContext.tsx**: New context for local push notification history.
+-   **/app/frontend/src/utils/api.ts**: API utility. Enhanced for robust backend URL construction using  and error handling.
+-   **/app/frontend/src/i18n/i18n.tsx**: Multi-language translations. Implemented  and  with FR/EN/ES/IT/AR translations, handling RTL for Arabic. Continuously updated with new strings for UI changes.
+-   **/app/frontend/.env**: Stores frontend environment variables.  was updated to resolve ngrok conflicts.
+-   **/app/frontend/scripts/deploy-updates.sh**: New script to demonstrate publishing OTA updates.
+-   **/app/frontend/EAS-UPDATE-GUIDE.md**: New README for OTA deployment instructions.
 </code_architecture>
 
 <pending_tasks>
--   **iOS Development Build:** User was provided instructions for EAS build but the build process itself was not performed by the AI.
--   **EAS Update (OTA):** Configuration and publishing of Over-The-Air updates are yet to be implemented.
--   **Premium Content Access Verification:** Full validation is pending to ensure all premium content endpoints correctly return 402 if the user is not premium.
+-   **iOS Development Build**: User was provided instructions for EAS build, but the build process itself was not performed by the AI.
 </pending_tasks>
 
 <current_work>
-The Allô Services CI application has achieved a robust state. The backend, built with FastAPI and MongoDB, supports all core functionalities: user management, category data, alerts, CinetPay payment (live), and push notifications with segmentation. The frontend, developed with Expo, features a comprehensive Expo Router navigation structure with tab-based layouts.
+The Allô Services CI application is in a highly refined state. The backend is fully operational, including user management, category data with premium gating, CinetPay payment, and segmented push notifications. Frontend development has extensively focused on UI/UX enhancements and critical bug fixes.
 
-Recent efforts focused heavily on enhancing user experience and fixing critical issues:
-1.  **Internationalization (i18n):** Full 5-language support (FR/EN/ES/IT/AR) has been integrated, affecting tab titles, key screens (Home, Alerts, Pharmacies, Premium, Register, Profile), and error messages. Language selection is available during registration and via profile edit, with French as default and RTL support for Arabic.
-2.  **Pharmacies Endpoint:** The  backend endpoint has been re-activated and validated, with the frontend defaulting to a 5km radius.
-3.  **User Profile & Notifications:** A profile editing screen allows users to update their preferred language and city, synchronizing with the backend. A new Notifications Center screen was implemented to store a local history of received push notifications, accessible from the profile. Backend notifications now support segmentation by city, language, and premium status.
-4.  **Premium Features:** The Premium page UI was refined with the app's logo, dynamic Renew/Become Premium button, display of subscription expiration, and an Actualiser le statut (Refresh Status) alert post-payment. A Payment History screen was added, offering a detailed list of transactions with client/server-side filtering for accepted payments and options to open/share CinetPay transaction links.
-5.  **UI/UX Polishing:** Extensive iterative adjustments were made to the Premium and Profile pages, focusing on logo sizing (increased to 180x180 with a white circle background, green border, and light shadow), text alignment (centering all content on profile), and spacing for a polished visual appearance. A startup error related to font loading (6000ms timeout) was resolved by preloading Ionicons.
-The application is in a state where core user flows, including registration, CinetPay payments, push notifications, and profile management, are functional with multi-language support and enhanced UI.
+Recent work included:
+1.  **Premium Content Verification:** Backend endpoints for premium content (e.g., categories, exams) were re-implemented and tested to correctly return 402 for non-premium users, achieving 100% pass rate.
+2.  **EAS Update (OTA) Configuration:**  and  were configured for Over-The-Air updates, and a  script with an accompanying  was created to facilitate this.
+3.  **UI/UX Redesign - Premium Page:** The Premium page () underwent several iterations. It now features a large app logo (190px total diameter) with an elegant green outer and white inner border, a subtle shadow, and a concise Premium 1200 FCFA / an title displayed on a single line. A grid of premium features with clear descriptions and adaptive call-to-action buttons (Create Account, Subscribe, Renew) is implemented.
+4.  **UI/UX Redesign - Profile Page:** The Profile page () was updated to align with the sophisticated design of the Premium page, featuring a refined avatar section, elegant user information cards, and a clear action grid.
+5.  **UI/UX Redesign - Home Page:** The Home page () was significantly transformed. It now includes the identical large logo (130x130px) with green/white border and shadow. The main title Allô Services CI (32px), slogan (18px), and personalized greeting (20px) are prominently displayed. The category carousel now uses larger emoji icons (48px) instead of PNG images, with distinct aesthetic styling for premium categories (golden background/border, larger premium badges). The Bienvenue welcome text was removed, and Accédez à tous les services exclusifs was centered. The carousel was then re-positioned to the middle of the screen for one-hand use, and the Accédez à tous les services exclusifs container was moved below it.
+6.  **Critical Bug Fix (Mobile Preview):** The app faced persistent  preventing mobile preview. This was thoroughly debugged and resolved by fixing  subdomain conflicts, clearing Metro cache, and specifically replacing problematic / React Native styles with  for web compatibility. The issue was traced to and fixed in , , and , ensuring the application now functions correctly on mobile preview and native devices.
 </current_work>
 
 <optional_next_step>
-No new explicit development tasks were requested after the last UI adjustments were completed.
+Test the new layout of the home page with the carousel centered and the Accédez à tous les services exclusifs section below it, as per the last requested change.
 </optional_next_step>
