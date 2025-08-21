@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useI18n } from '../src/i18n/i18n';
 
-const APP_ICON = require('../assets/icon.png');
+const APP_ICON = require('../assets/icons/icons/icon.png');
 
 export default function Index() {
   const router = useRouter();
