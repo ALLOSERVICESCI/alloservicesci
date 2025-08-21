@@ -78,7 +78,7 @@ export default function Home() {
   const panResponder = React.useRef(
     {
       onStartShouldSetResponder: () => dragging,
-      onMoveShouldSetResponder: () => true,
+      onMoveShouldSetResponder: () => dragging,
       onResponderGrant: () => {},
       onResponderMove: (e: any) => {
         const { pageX, pageY } = e.nativeEvent;
