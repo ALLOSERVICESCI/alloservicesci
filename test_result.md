@@ -627,6 +627,17 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ HOME HEADER LOGO VS PROFILE LOGO STYLE TESTING COMPLETE: Comprehensive testing completed on both iPhone 14 (390x844) and Galaxy S21 (360x800) viewports. DETAILED FINDINGS: 1) ✅ Logo container dimensions perfectly matched: Both Home and Profile screens show 140x140px containers with 0px size difference. 2) ✅ Border styling identical: Both screens have 4px rgb(10, 124, 58) green borders (#0A7C3A) as specified. 3) ✅ Background color consistent: Both containers have white (rgb(255, 255, 255)) backgrounds. 4) ✅ Inner logo sizing confirmed: 120x120px inner logo images detected on both screens. 5) ✅ Visual consistency verified: Screenshots captured on both devices show identical circular logo styling, positioning, and shadow/elevation effects. 6) ✅ Cross-device compatibility: Perfect consistency maintained across iPhone 14 (390x844) and Galaxy S21 (360x800) viewports. All specified requirements met successfully - logo containers are ~140x140 with green border (#0A7C3A) 4px, inner logos ~120x120 with white borders. Visual consistency between Home and Profile headers is perfect. No differences detected."
+  - task: "Profile title matches Home title style"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/profile.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Profile brand style set to fontSize 32, fontWeight '800', color #0A7C3A, textAlign center — matching Home title."
   - task: "Home FAB Layah: logo mask (no green border), tooltip, nav, pulse"
     implemented: true
     working: true
