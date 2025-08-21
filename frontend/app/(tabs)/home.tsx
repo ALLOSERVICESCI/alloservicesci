@@ -424,14 +424,17 @@ const styles = StyleSheet.create({
       default: { },
     }),
   },
-  aiImgLg: {
+  aiMask: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    borderWidth: 0,
-    borderColor: 'transparent',
-    resizeMode: 'contain',
     backgroundColor: '#fff',
+    overflow: 'hidden',
+  },
+  aiImgCover: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   tooltip: {
     position: 'absolute',
