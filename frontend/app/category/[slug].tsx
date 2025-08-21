@@ -49,6 +49,7 @@ export default function CategoryPage() {
   const catLabel = useMemo(() => t(slugToKey(s)), [s, t]);
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
+  const router = useRouter();
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground source={bg} style={styles.header} resizeMode="cover">
@@ -59,29 +60,17 @@ export default function CategoryPage() {
           {!!greeting && <Text style={styles.greeting}>{greeting}</Text>}
           <Text style={styles.headerTitle}>{catLabel}</Text>
         </View>
-
+      </ImageBackground>
+      <View style={{ padding: 16, flex: 1 }}>
+        <Text>{t('comingSoon')} {catLabel}</Text>
+      </View>
       {/* Bottom Tab Quick Nav (icons) */}
       <View style={styles.bottomTabs}>
         <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
-
-function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.tabItem}>
-      <Ionicons name={icon} size={22} color="#0A7C3A" />
-      <Text style={styles.tabLabel} numberOfLines={1}>{label}</Text>
-    </TouchableOpacity>
-  );
-}
-
         <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
         <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
         <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
         <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
-      </View>
-
-      </ImageBackground>
-      <View style={{ padding: 16 }}>
-        <Text>{t('comingSoon')} {catLabel}</Text>
       </View>
     </View>
   );
