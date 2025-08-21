@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#0A7C3A',
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tooltipBubble: {
-    backgroundColor: '#0A7C3A',
+    backgroundColor: 'transparent',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
