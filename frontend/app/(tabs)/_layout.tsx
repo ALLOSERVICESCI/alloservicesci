@@ -35,7 +35,7 @@ export default function Layout() {
   return (
     <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#0A7C3A' }}>
       <Tabs.Screen name="home" options={{ title: t('tabHome'), tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} /> }} />
-<Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ color, size }) => (
+      <Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ color, size }) => (
         <View>
           <Ionicons name="megaphone" color={color} size={size} />
           <View style={{ position: 'absolute', top: -2, right: -6, backgroundColor: '#DC3545', borderRadius: 8, paddingHorizontal: 4, height: 14, minWidth: 14, alignItems: 'center', justifyContent: 'center' }}>
