@@ -55,7 +55,7 @@ export default function Index() {
       </View>
 
       {/* Watermark motto at bottom */}
-      <View style={styles.watermarkContainer} pointerEvents="none">
+      <View style={[styles.watermarkContainer, { pointerEvents: 'none' }]}>
         <Text style={styles.watermarkText}>Union - Discipline - Travail</Text>
       </View>
     </LinearGradient>
