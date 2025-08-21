@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
   langText: {
     color: '#0A7C3A',
     fontWeight: '600',
-    fontSize: 14,
+    fontSize: 16,
   },
   langTextActive: {
     color: '#fff',
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   expiryText: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#000',
     textAlign: 'center',
     marginBottom: 16,
@@ -482,7 +482,7 @@ const styles = StyleSheet.create({
   },
   refreshButtonText: {
     color: '#000',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
   },
   refreshTextOnGreen: {
