@@ -611,6 +611,17 @@ agent_communication:
     message: "✅ HOME FAB LAYAH MASKED LOGO FINAL TESTING COMPLETE: Successfully tested the updated masked logo implementation on both iPhone 14 (390x844) and Galaxy S21 (360x800). CONFIRMED: 1) ✅ AI logo displayed inside circular mask with overflow: hidden - no visible green border detected. 2) ✅ Image fills mask properly with 52px dimensions and object-fit: fill. 3) ✅ Tooltip 'Layah (Agent IA)' appears initially and hides on tap. 4) ✅ Navigation to /ai/chat works perfectly. 5) ✅ Pulsing animation implementation present. 6) ✅ FAB persists after navigation and return to Home. Screenshots captured showing before tap (tooltip visible), chat screen, and after return for both devices. The circular mask implementation successfully removes any embedded green border from the logo image. All requirements met - masked logo FAB is production-ready."
 
 frontend:
+  - task: "Home header logo matches Profile logo style"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Home header logoContainer set to 140x140, borderRadius 70, borderWidth 4, borderColor #0A7C3A; inner logo 120x120 with white border 3 — aligned with Profile screen styles."
   - task: "Home FAB Layah: logo mask (no green border), tooltip, nav, pulse"
     implemented: true
     working: true
