@@ -197,7 +197,7 @@ export default function Home() {
       {/* Floating AI FAB */}
       <Animated.View 
         style={[styles.aiFab, styles.aiHalo, { transform: [{ scale: pulse }] }, aiPositionStyle, fabXY ? { left: pan.x, top: pan.y } : null]}
-        onStartShouldSetResponder={() => true}
+        onStartShouldSetResponder={() => false}
         onResponderGrant={() => setDragging(true)}
         onResponderMove={panResponder.onResponderMove}
         onResponderRelease={panResponder.onResponderRelease}
