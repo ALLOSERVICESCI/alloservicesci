@@ -414,9 +414,9 @@ const styles = StyleSheet.create({
     }),
   },
   aiImgWrapLg: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: '#fff',
     borderWidth: 2,
     borderColor: '#0A7C3A',
@@ -424,8 +424,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   aiImgLg: {
-    width: 34,
-    height: 34,
+    width: 38,
+    height: 38,
     resizeMode: 'contain',
   },
 });
