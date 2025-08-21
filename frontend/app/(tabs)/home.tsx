@@ -43,6 +43,7 @@ export default function Home() {
         return { bottom: 30, right: 20, left: undefined, top: undefined };
   const [tooltipVisible, setTooltipVisible] = React.useState(false);
   const [fabXY, setFabXY] = React.useState<{x: number; y: number} | null>(null);
+  const [dragging, setDragging] = React.useState(false);
   const pan = useRef(new Animated.ValueXY()).current;
 
   // Load saved position + tooltip state
