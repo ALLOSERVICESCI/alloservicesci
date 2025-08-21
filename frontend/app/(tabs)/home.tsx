@@ -161,6 +161,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
+  premiumInline: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 6,
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
   
   // Welcome Card - EN BAS
   welcomeCard: {
