@@ -208,7 +208,13 @@ export default function Home() {
           </View>
         )}
         <TouchableOpacity
-          onPress={() => router.push('/ai/chat')}
+          onPress={async () => {
+            if (tooltipVisible) {
+              setTooltipVisible(false);
+              try { await AsyncStorage.setItem('layah_tooltip_seen', '1'); } catch (e) {}
+            }
+            router.push('/ai/chat');
+          }}
           activeOpacity={0.9}
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
