@@ -41,6 +41,56 @@ export default function Home() {
         return { top: 30, left: 20, right: undefined, bottom: undefined };
       default:
         return { bottom: 30, right: 20, left: undefined, top: undefined };
+  const [tooltipVisible, setTooltipVisible] = React.useState(false);
+  const [fabXY, setFabXY] = React.useState<{x: number; y: number} | null>(null);
+  const pan = useRef(new Animated.ValueXY()).current;
+
+  // Load saved position + tooltip state
+  useEffect(() => {
+    (async () => {
+      try {
+        const saved = await AsyncStorage.getItem('layah_fab_pos');
+        if (saved) {
+          const pos = JSON.parse(saved);
+          setFabXY(pos);
+          pan.setValue(pos);
+        } else {
+          // default bottom-right
+          const pos = { x: width - FAB_SIZE - FAB_MARGIN, y: height - FAB_SIZE - 140 };
+          setFabXY(pos);
+          pan.setValue(pos);
+        }
+        const seen = await AsyncStorage.getItem('layah_tooltip_seen');
+        setTooltipVisible(!seen);
+      } catch (e) {}
+    })();
+  }, []);
+
+  const savePos = async (x: number, y: number) => {
+    const clampedX = Math.min(Math.max(x, FAB_MARGIN), width - FAB_SIZE - FAB_MARGIN);
+    const clampedY = Math.min(Math.max(y, 80), height - FAB_SIZE - 100);
+    const pos = { x: clampedX, y: clampedY };
+    setFabXY(pos);
+    pan.setValue(pos);
+    try { await AsyncStorage.setItem('layah_fab_pos', JSON.stringify(pos)); } catch (e) {}
+  };
+
+  const panResponder = React.useRef(
+    {
+      onStartShouldSetResponder: () => true,
+      onMoveShouldSetResponder: () => true,
+      onResponderGrant: () => {},
+      onResponderMove: (e: any) => {
+        const { pageX, pageY } = e.nativeEvent;
+        pan.setValue({ x: pageX - FAB_SIZE/2, y: pageY - FAB_SIZE/2 });
+      },
+      onResponderRelease: (e: any) => {
+        const { pageX, pageY } = e.nativeEvent;
+        savePos(pageX - FAB_SIZE/2, pageY - FAB_SIZE/2);
+      }
+    }
+  ).current;
+
     }
   }, [aiPos]);
 
