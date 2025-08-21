@@ -73,9 +73,8 @@ const styles = StyleSheet.create({
   logoInner: { width: 190, height: 190, borderRadius: 95, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', borderWidth: 6, borderColor: '#0A7C3A' },
   logo: { width: 150, height: 150, borderRadius: 75 },
   subtitle: { marginTop: 20, color: '#FFFFFF', fontSize: 18, fontWeight: '700', textShadowColor: 'rgba(0,0,0,0.45)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-  tagline: { marginTop: 6, color: '#FFF', fontSize: 16, opacity: 0.9, textAlign: 'center', textShadowColor: 'rgba(0,0,0,0.45)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
+  tagline: { marginTop: 6, color: '#FFF', fontSize: 16, opacity: 0.9, textAlign: 'center', textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
+  motto: { marginTop: 12, color: '#FFFFFF', opacity: 0.9, fontSize: 18, fontWeight: '700', textAlign: 'center', textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
   watermarkContainer: { position: 'absolute', left: 0, right: 0, bottom: 4, alignItems: 'center' },
   watermarkText: { color: '#FFFFFF', opacity: 0.12, fontSize: 14, fontWeight: '800', letterSpacing: 0.5 },
-  splashEmblem: { alignItems: 'center', marginTop: 12 },
-  splashEmblemImg: { width: 80, height: 80 },
 });
