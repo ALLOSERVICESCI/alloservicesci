@@ -218,7 +218,9 @@ export default function Home() {
           activeOpacity={0.9}
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
-          <Image source={require('../../assets/ai/logoia.png')} style={styles.aiImgLg} />
+          <View style={styles.aiMask}>
+            <Image source={require('../../assets/ai/logoia.png')} style={styles.aiImgCover} />
+          </View>
         </TouchableOpacity>
       </Animated.View>
     </View>
