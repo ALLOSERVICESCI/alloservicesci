@@ -362,6 +362,7 @@ const styles = StyleSheet.create({
   },
   langBtn: {
     paddingVertical: 8,
+    marginTop: 16,
     paddingHorizontal: 12,
     borderRadius: 20,
     borderWidth: 2,
@@ -484,9 +485,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     marginTop: 16,
+    marginTop: 16,
   },
     alignItems: 'center',
     paddingVertical: 8,
+    marginTop: 16,
   },
   refreshButtonText: {
     color: '#666',
