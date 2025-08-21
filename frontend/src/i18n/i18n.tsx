@@ -36,7 +36,7 @@ const translations: Record<Lang, Record<string, string>> = {
     // NEW PROFILE PAGE TRANSLATIONS
     language: 'Langue', actions: 'Actions',
     // NEW HOME PAGE TRANSLATIONS
-    categories: 'Catégories', selectCategory: 'Sélectionnez une catégorie', quickAccess: 'Accès rapide',
+    categories: 'Catégories', selectCategory: 'Sélectionnez une catégorie', quickAccess: 'Accès rapide', ai_agent: 'Agent IA',
     // NEW PREMIUM PAGE TRANSLATIONS
     premiumActive: 'Premium Actif',
     premiumActiveDescription: 'Vous avez accès à toutes les fonctionnalités premium !',
