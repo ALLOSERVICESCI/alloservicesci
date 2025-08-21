@@ -48,7 +48,6 @@ export default function Home() {
 
       {/* Welcome Card */}
       <View style={styles.welcomeCard}>
-        <Text style={styles.welcomeTitle}>{t('welcome')}</Text>
         <Text style={styles.welcomeDescription}>
           {t('premiumDescription')}
         </Text>
@@ -164,12 +163,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: '#E9ECEF',
-  },
-  welcomeTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#0A7C3A',
-    marginBottom: 8,
   },
   welcomeDescription: {
     fontSize: 14,
