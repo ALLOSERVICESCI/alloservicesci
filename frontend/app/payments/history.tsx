@@ -118,6 +118,16 @@ export default function PaymentHistory() {
         />
       )}
     </View>
+
+      {/* Bottom Tab Quick Nav (icons) */}
+      <View style={styles.bottomTabs}>
+        <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
+        <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
+        <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
+        <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
+        <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
+      </View>
+
   );
 }
 
