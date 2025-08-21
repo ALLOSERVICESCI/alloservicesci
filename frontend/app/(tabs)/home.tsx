@@ -141,19 +141,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   brand: { 
-    fontSize: 24, 
+    fontSize: 32, 
     fontWeight: '800', 
     color: '#0A7C3A' 
   },
   slogan: { 
-    fontSize: 14, 
+    fontSize: 18, 
     color: '#666', 
-    marginTop: 2 
+    marginTop: 4 
   },
   greeting: { 
-    fontSize: 14, 
+    fontSize: 20, 
     color: '#0F5132', 
-    marginTop: 6, 
+    marginTop: 8, 
     fontWeight: '700' 
   },
   welcomeCard: {
