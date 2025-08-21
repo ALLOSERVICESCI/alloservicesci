@@ -1,11 +1,15 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, Platform } from 'react-native';
+import React, { useMemo, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, Platform, Animated, Easing } from 'react-native';
+import * as Haptics from 'expo-haptics';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const FAB_SIZE = 60;
+const FAB_MARGIN = 20;
 
 export default function Home() {
   const { user } = useAuth();
@@ -14,7 +18,6 @@ export default function Home() {
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
   const categories = useMemo(() => [
-    { slug: 'ai', label: t('ai_agent'), icon: '🐘', isPremium: false },
     { slug: 'urgence', label: t('cat_urgence'), icon: '🚨', isPremium: false },
     { slug: 'sante', label: t('cat_sante'), icon: '🏥', isPremium: false },
     { slug: 'alertes', label: t('cat_alertes'), icon: '📢', isPremium: false },
@@ -27,10 +30,96 @@ export default function Home() {
     { slug: 'loisirs_tourisme', label: t('cat_loisirs'), icon: '🏖️', isPremium: true },
     { slug: 'transport', label: t('cat_transport'), icon: '🚌', isPremium: true },
   ], [t]);
+  const [aiPos, setAiPos] = React.useState<'bottom-right'|'bottom-left'|'top-right'|'top-left'>('bottom-right');
+  const aiPositionStyle = React.useMemo(() => {
+    switch (aiPos) {
+      case 'bottom-left':
+        return { bottom: 30, left: 20, right: undefined, top: undefined };
+      case 'top-right':
+        return { top: 30, right: 20, left: undefined, bottom: undefined };
+      case 'top-left':
+        return { top: 30, left: 20, right: undefined, bottom: undefined };
+      default:
+        return { bottom: 30, right: 20, left: undefined, top: undefined };
+    }
+  }, [aiPos]);
+  const [tooltipVisible, setTooltipVisible] = React.useState(false);
+  const [fabXY, setFabXY] = React.useState<{x: number; y: number} | null>(null);
+  const [dragging, setDragging] = React.useState(false);
+  const pan = useRef(new Animated.ValueXY()).current;
+
+  // Load saved position + tooltip state
+  useEffect(() => {
+    (async () => {
+      try {
+        const saved = await AsyncStorage.getItem('layah_fab_pos');
+        if (saved) {
+          const pos = JSON.parse(saved);
+          setFabXY(pos);
+          pan.setValue(pos);
+        } else {
+          // default bottom-right
+          const pos = { x: width - FAB_SIZE - FAB_MARGIN, y: height - FAB_SIZE - 140 };
+          setFabXY(pos);
+          pan.setValue(pos);
+        }
+        const seen = await AsyncStorage.getItem('layah_tooltip_seen');
+        setTooltipVisible(!seen);
+        if (!seen) {
+          setTimeout(() => setTooltipVisible(false), 5000);
+        }
+      } catch (e) {}
+    })();
+  }, []);
+
+  const savePos = async (x: number, y: number) => {
+    const clampedX = Math.min(Math.max(x, FAB_MARGIN), width - FAB_SIZE - FAB_MARGIN);
+    const clampedY = Math.min(Math.max(y, 80), height - FAB_SIZE - 100);
+    const pos = { x: clampedX, y: clampedY };
+    setFabXY(pos);
+    pan.setValue(pos);
+    try { await AsyncStorage.setItem('layah_fab_pos', JSON.stringify(pos)); } catch (e) {}
+  };
+
+  const panResponder = React.useRef(
+    {
+      onStartShouldSetResponder: () => dragging,
+      onMoveShouldSetResponder: () => dragging,
+      onResponderGrant: () => {},
+      onResponderMove: (e: any) => {
+        if (!dragging) return;
+        const { pageX, pageY } = e.nativeEvent;
+        pan.setValue({ x: pageX - FAB_SIZE/2, y: pageY - FAB_SIZE/2 });
+      },
+      onResponderRelease: (e: any) => {
+        const { pageX, pageY } = e.nativeEvent;
+        savePos(pageX - FAB_SIZE/2, pageY - FAB_SIZE/2);
+        setDragging(false);
+      }
+    }
+  ).current;
+
+    }
+  }, [aiPos]);
+
+
+  const pulse = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const run = () => {
+      Animated.sequence([
+        Animated.timing(pulse, { toValue: 1.06, duration: 900, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+        Animated.timing(pulse, { toValue: 1.0, duration: 900, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
+      ]).start(({ finished }) => { if (finished) run(); });
+    };
+    run();
+    return () => pulse.stopAnimation();
+  }, [pulse]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
-      <View style={styles.pageWrapper}>
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+        <View style={styles.pageWrapper}>
         {/* Header with Logo */}
         <View style={styles.header}>
           {/* Logo Section */}
@@ -46,17 +135,7 @@ export default function Home() {
             <Text style={styles.slogan}>{t('slogan')}</Text>
             <Text style={styles.greeting}>{greeting}</Text>
 
-            {/* Floating AI Button */}
-            <TouchableOpacity
-              onPress={() => router.push('/ai/chat')}
-              activeOpacity={0.9}
-              style={styles.aiFab}
-            >
-              <View style={styles.aiFabInner}>
-                <Text style={styles.aiEmoji}>🐘</Text>
-                <Text style={styles.aiLabel}>Layah</Text>
-              </View>
-            </TouchableOpacity>
+
 
           </View>
         </View>
@@ -114,6 +193,26 @@ export default function Home() {
 
       </View>
     </ScrollView>
+
+      {/* Floating AI FAB */}
+      <Animated.View 
+        style={[styles.aiFab, styles.aiHalo, { transform: [{ scale: pulse }] }, aiPositionStyle, fabXY ? { left: pan.x, top: pan.y } : null]}
+        onStartShouldSetResponder={() => true}
+        onResponderGrant={() => setDragging(true)}
+        onResponderMove={panResponder.onResponderMove}
+        onResponderRelease={panResponder.onResponderRelease}
+      >
+        <TouchableOpacity
+          onPress={() => router.push('/ai/chat')}
+          activeOpacity={0.9}
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <View style={styles.aiImgWrapLg}>
+            <Image source={require('../../assets/ai/logoia.png')} style={styles.aiImgLg} />
+          </View>
+        </TouchableOpacity>
+      </Animated.View>
+    </View>
   );
 }
 
@@ -288,5 +387,45 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
     textAlign: 'center',
+  },
+  
+  // AI FAB Styles
+  aiFab: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#0A7C3A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  aiHalo: {
+    ...Platform.select({
+      ios: { shadowColor: '#0A7C3A', shadowOpacity: 0.35, shadowRadius: 14, shadowOffset: { width: 0, height: 0 } },
+      android: { elevation: 10 },
+      default: { },
+    }),
+  },
+  aiImgWrapLg: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#fff',
+    borderWidth: 2,
+    borderColor: '#0A7C3A',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  aiImgLg: {
+    width: 28,
+    height: 28,
+    resizeMode: 'contain',
   },
 });
