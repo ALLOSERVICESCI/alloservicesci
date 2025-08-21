@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 16,
   },
-premiumSection: {
+  premiumSection: {
     marginHorizontal: 16,
     marginTop: 12,
     marginBottom: 16,
