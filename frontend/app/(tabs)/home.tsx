@@ -435,8 +435,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   aiImgLg: {
-    width: 44,
-    height: 44,
+    width: 49,
+    height: 49,
     resizeMode: 'contain',
   },
   tooltip: {
