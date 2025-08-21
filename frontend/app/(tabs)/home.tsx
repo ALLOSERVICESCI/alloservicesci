@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   categoryCardPremium: {
     borderColor: '#0A7C3A',
     borderWidth: 2,
-    backgroundColor: '#FFFBF0',
+    backgroundColor: '#fff',
   },
   premiumBadge: {
     position: 'absolute',
