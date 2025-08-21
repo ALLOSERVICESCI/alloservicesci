@@ -72,7 +72,26 @@ export default function Register() {
   );
 }
 
+function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.tabItem}>
+      <Ionicons name={icon} size={22} color="#0A7C3A" />
+      <Text style={styles.tabLabel} numberOfLines={1}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
+  container: { flexGrow: 1, padding: 16, backgroundColor: '#fff', justifyContent: 'center' },
+  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', marginBottom: 8, textAlign: 'center' },
+  title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', marginBottom: 16, textAlign: 'center' },
+  input: { borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, padding: 12, marginBottom: 12, backgroundColor: '#FAFAF8' },
+  btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },
+  btnText: { color: '#fff', fontWeight: '700' },
+  langBtn: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 8, borderWidth: 1, borderColor: '#E8F0E8', marginHorizontal: 4 },
+  langBtnActive: { backgroundColor: '#0A7C3A', borderColor: '#0A7C3A' },
+  langText: { color: '#0A7C3A', fontWeight: '700' },
+  langTextActive: { color: '#fff' },
   bottomTabs: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -96,25 +115,4 @@ const styles = StyleSheet.create({
   },
   tabItem: { alignItems: 'center', justifyContent: 'center', paddingVertical: 4, minWidth: 50 },
   tabLabel: { fontSize: 10, color: '#0A7C3A', marginTop: 2, textAlign: 'center', fontWeight: '600' },
-});
-
-function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.tabItem}>
-      <Ionicons name={icon} size={22} color="#0A7C3A" />
-      <Text style={styles.tabLabel} numberOfLines={1}>{label}</Text>
-    </TouchableOpacity>
-  );
-}
-
-  container: { flexGrow: 1, padding: 16, backgroundColor: '#fff', justifyContent: 'center' },
-  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A', marginBottom: 8, textAlign: 'center' },
-  title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', marginBottom: 16, textAlign: 'center' },
-  input: { borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, padding: 12, marginBottom: 12, backgroundColor: '#FAFAF8' },
-  btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },
-  btnText: { color: '#fff', fontWeight: '700' },
-  langBtn: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 8, borderWidth: 1, borderColor: '#E8F0E8', marginHorizontal: 4 },
-  langBtnActive: { backgroundColor: '#0A7C3A', borderColor: '#0A7C3A' },
-  langText: { color: '#0A7C3A', fontWeight: '700' },
-  langTextActive: { color: '#fff' },
 });
