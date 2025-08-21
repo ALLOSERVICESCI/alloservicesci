@@ -417,6 +417,89 @@ class BackendTester:
         except Exception as e:
             self.log_test("Targeted notification (Bouaké, fr)", False, f"Exception: {str(e)}")
         return 0
+
+    def test_health_endpoint(self):
+        """Test 14: GET /api/health should return 200 OK"""
+        try:
+            response = self.make_request('GET', '/health')
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('status') == 'ok':
+                    self.log_test("Health endpoint", True, "Health check passed")
+                else:
+                    self.log_test("Health endpoint", False, f"Unexpected response: {data}")
+            else:
+                self.log_test("Health endpoint", False, f"Status code: {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("Health endpoint", False, f"Exception: {str(e)}")
+
+    def test_ai_chat_endpoint_no_key(self):
+        """Test 15: POST /api/ai/chat should return 500 when EMERGENT_API_KEY is not configured"""
+        try:
+            chat_data = {
+                "messages": [{"role": "user", "content": "Bonjour"}],
+                "stream": False
+            }
+            response = self.make_request('POST', '/ai/chat', json=chat_data)
+            if response.status_code == 500:
+                data = response.json()
+                detail = data.get('detail', '')
+                if 'EMERGENT_API_KEY' in detail:
+                    self.log_test("AI chat endpoint (no key)", True, f"Correctly returned 500 with EMERGENT_API_KEY error: {detail}")
+                else:
+                    self.log_test("AI chat endpoint (no key)", False, f"Expected EMERGENT_API_KEY error, got: {detail}")
+            else:
+                self.log_test("AI chat endpoint (no key)", False, f"Expected 500, got {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("AI chat endpoint (no key)", False, f"Exception: {str(e)}")
+
+    def test_existing_routes_unaffected(self):
+        """Test 16: Verify existing routes remain unaffected"""
+        
+        # Test GET /api/alerts
+        try:
+            response = self.make_request('GET', '/alerts')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    self.log_test("Existing route: GET /api/alerts", True, f"Alerts endpoint working: {len(data)} alerts")
+                else:
+                    self.log_test("Existing route: GET /api/alerts", False, "Invalid response format")
+            else:
+                self.log_test("Existing route: GET /api/alerts", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Existing route: GET /api/alerts", False, f"Exception: {str(e)}")
+
+        # Test POST /api/auth/register with minimal valid body
+        try:
+            user_data = {
+                "first_name": "Test",
+                "last_name": "User",
+                "phone": "+225 01 23 45 67 89",
+                "accept_terms": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'id' in data:
+                    self.log_test("Existing route: POST /api/auth/register", True, f"Registration working: user ID {data['id']}")
+                else:
+                    self.log_test("Existing route: POST /api/auth/register", False, f"No user ID in response: {data}")
+            else:
+                self.log_test("Existing route: POST /api/auth/register", False, f"Status code: {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("Existing route: POST /api/auth/register", False, f"Exception: {str(e)}")
+
+        # Test GET /api/payments/history (skip if requires auth as requested)
+        try:
+            response = self.make_request('GET', '/payments/history')
+            # We expect this to fail gracefully (not crash the server)
+            if response.status_code in [200, 400, 401, 403, 404, 422]:
+                self.log_test("Existing route: GET /api/payments/history", True, f"Endpoint responds gracefully: {response.status_code}")
+            else:
+                self.log_test("Existing route: GET /api/payments/history", False, f"Unexpected status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Existing route: GET /api/payments/history", False, f"Exception: {str(e)}")
             
     def run_all_tests(self):
         """Run all tests in sequence"""
