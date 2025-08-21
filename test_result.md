@@ -498,10 +498,24 @@ test_plan:
     - "Premium Content Access Verification" 
     - "Frontend Integration with Backend Endpoints"
     - "EAS Update (OTA) Configuration"
+    - "Home layout (carousel centered + description below)"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
   test_all: false
   test_priority: "high_first"
+
+frontend:
+  - task: "Home layout - carousel centered and description below"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Adjusted layout: wrapped content in pageWrapper, ensured scrollContent.flexGrow=1. Carousel section remains flex-centered, 'Accédez à tous les services exclusifs' section placed below." 
 
 agent_communication:
   - agent: "main"
