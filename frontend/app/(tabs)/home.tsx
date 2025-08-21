@@ -94,6 +94,17 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+        {/* Ivorian emblem below categories and motto */}
+        <View style={{ alignItems: 'center', marginTop: 8, marginBottom: 24 }}>
+          <Image
+            source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-premium/artifacts/5tgdv5mj_512px-Coat_of_arms_of_Co%CC%82te_d%27Ivoire_%281997-2001_variant%29.svg.png' }}
+            style={{ width: 120, height: 120, resizeMode: 'contain' }}
+          />
+          <Text style={{ marginTop: 8, color: '#0F5132', fontWeight: '700' }}>
+            Union - Discipline - Travail
+          </Text>
+        </View>
+
   container: { 
     flex: 1, 
     backgroundColor: '#F8FAF9' 
