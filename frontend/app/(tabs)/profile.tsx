@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
   },
   langText: {
     color: '#0A7C3A',
-    fontWeight: '600',
+    fontWeight: '800',
     fontSize: 16,
   },
   langTextActive: {
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
   },
   actionTitle: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '800',
     color: '#0F5132',
     textAlign: 'center',
     lineHeight: 16,
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
   refreshButtonText: {
     color: '#000',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '800',
   },
   refreshTextOnGreen: {
     color: '#000',
