@@ -63,11 +63,9 @@ export default function Home() {
           setFabXY(pos);
           pan.setValue(pos);
         }
-        const seen = await AsyncStorage.getItem('layah_tooltip_seen');
-        setTooltipVisible(!seen);
-        if (!seen) {
-          setTimeout(() => setTooltipVisible(false), 5000);
-        }
+        // Always show label for 5s on screen load
+        setTooltipVisible(true);
+        setTimeout(() => setTooltipVisible(false), 5000);
       } catch (e) {}
     })();
   }, []);
