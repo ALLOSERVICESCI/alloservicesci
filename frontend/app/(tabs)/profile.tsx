@@ -485,7 +485,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     marginTop: 16,
-    marginTop: 16,
   },
     alignItems: 'center',
     paddingVertical: 8,
