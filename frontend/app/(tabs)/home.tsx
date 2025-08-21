@@ -153,18 +153,20 @@ const styles = StyleSheet.create({
     fontWeight: '700' 
   },
   welcomeCard: {
-    marginHorizontal: 16,
+    marginHorizontal: 20,
     marginVertical: 16,
     padding: 20,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: '#fff',
     borderRadius: 16,
     borderWidth: 1,
     borderColor: '#E9ECEF',
+    alignItems: 'center',
   },
   welcomeDescription: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#6C757D',
-    lineHeight: 20,
+    textAlign: 'center',
+    lineHeight: 22,
   },
   categoriesSection: {
     flex: 1,
