@@ -521,6 +521,14 @@ class BackendTester:
         self.test_push_token_registration()
         notification_count = self.test_targeted_notification_bouake_fr()
         
+        # New AI endpoint tests
+        print("\n" + "=" * 60)
+        print("🤖 AI ENDPOINT TESTS (Review Request)")
+        print("=" * 60)
+        self.test_health_endpoint()
+        self.test_ai_chat_endpoint_no_key()
+        self.test_existing_routes_unaffected()
+        
         # Summary
         print("\n" + "=" * 60)
         print("📊 TEST SUMMARY")
