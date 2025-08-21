@@ -237,7 +237,8 @@ const styles = StyleSheet.create({
   },
   brand: {
     fontSize: 28,
-    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 22,
     color: '#0A7C3A',
     textAlign: 'center',
   },
@@ -376,7 +377,8 @@ const styles = StyleSheet.create({
   },
   langText: {
     color: '#0A7C3A',
-    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 22,
     fontSize: 16,
   },
   langTextActive: {
@@ -412,7 +414,8 @@ const styles = StyleSheet.create({
   },
   actionTitle: {
     fontSize: 12,
-    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 22,
     color: '#0F5132',
     textAlign: 'center',
     lineHeight: 16,
@@ -437,7 +440,8 @@ const styles = StyleSheet.create({
   },
   premiumTitle: {
     fontSize: 20,
-    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 22,
     textAlign: 'center',
     marginBottom: 12,
   },
@@ -483,7 +487,8 @@ const styles = StyleSheet.create({
   refreshButtonText: {
     color: '#666',
     fontSize: 16,
-    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 22,
   },
   refreshTextOnGreen: {
     color: '#666',
