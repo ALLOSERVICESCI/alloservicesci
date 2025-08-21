@@ -13,7 +13,7 @@ export default function ChatAIA() {
       id: 'welcome',
       role: 'assistant',
       ts: Date.now(),
-      content: "Bonjour, je suis Layah — l’assistant IA d’Allô Services CI. Posez-moi vos questions en lien avec la Côte d’Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
+      content: "Bonjour, je suis Allô IA — l’assistant IA d’Allô Services CI. Posez-moi vos questions en lien avec la Côte d’Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
     },
   ]);
   const [input, setInput] = useState('');
