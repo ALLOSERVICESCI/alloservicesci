@@ -92,6 +92,7 @@ export default function Home() {
       onResponderRelease: (e: any) => {
         const { pageX, pageY } = e.nativeEvent;
         savePos(pageX - FAB_SIZE/2, pageY - FAB_SIZE/2);
+        setDragging(false);
       }
     }
   ).current;
