@@ -99,10 +99,6 @@ export default function Home() {
     }
   ).current;
 
-    }
-  }, [aiPos]);
-
-
   const pulse = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -197,19 +193,32 @@ export default function Home() {
       {/* Floating AI FAB */}
       <Animated.View 
         style={[styles.aiFab, styles.aiHalo, { transform: [{ scale: pulse }] }, aiPositionStyle, fabXY ? { left: pan.x, top: pan.y } : null]}
-        onStartShouldSetResponder={() => true}
-        onResponderGrant={() => setDragging(true)}
+        onStartShouldSetResponder={() => false}
+        onMoveShouldSetResponder={() => dragging}
+        onResponderGrant={() => {}}
         onResponderMove={panResponder.onResponderMove}
         onResponderRelease={panResponder.onResponderRelease}
       >
+        {tooltipVisible && (
+          <View style={styles.tooltip} pointerEvents="none">
+            <View style={styles.tooltipBubble}>
+              <Text style={styles.tooltipText}>Layah (Agent IA)</Text>
+            </View>
+            <View style={styles.tooltipArrow} />
+          </View>
+        )}
         <TouchableOpacity
-          onPress={() => router.push('/ai/chat')}
+          onPress={async () => {
+            if (tooltipVisible) {
+              setTooltipVisible(false);
+              try { await AsyncStorage.setItem('layah_tooltip_seen', '1'); } catch (e) {}
+            }
+            router.push('/ai/chat');
+          }}
           activeOpacity={0.9}
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
-          <View style={styles.aiImgWrapLg}>
-            <Image source={require('../../assets/ai/logoia.png')} style={styles.aiImgLg} />
-          </View>
+          <Image source={require('../../assets/ai/logoia.png')} style={styles.aiImgLg} />
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -414,9 +423,9 @@ const styles = StyleSheet.create({
     }),
   },
   aiImgWrapLg: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     backgroundColor: '#fff',
     borderWidth: 2,
     borderColor: '#0A7C3A',
@@ -424,8 +433,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   aiImgLg: {
-    width: 28,
-    height: 28,
+    width: 49,
+    height: 49,
     resizeMode: 'contain',
+  },
+  tooltip: {
+    position: 'absolute',
+    bottom: 70,
+    right: -10,
+    alignItems: 'center',
+  },
+  tooltipBubble: {
+    backgroundColor: '#0A7C3A',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  tooltipText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  tooltipArrow: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderTopWidth: 6,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: '#0A7C3A',
+    marginTop: -1,
   },
 });
