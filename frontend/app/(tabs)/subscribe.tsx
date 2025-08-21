@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
-    elevation: 6,
   },
   logo: {
     width: 170,
