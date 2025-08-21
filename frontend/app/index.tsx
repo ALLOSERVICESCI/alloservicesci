@@ -18,12 +18,14 @@ export default function Index() {
   }, [router]);
 
   return (
-    <LinearGradient colors={["#FF7E5F", "#FEB47B"]} style={styles.container}>
+    <LinearGradient colors={["#FF8A00", "#FFB347"]} style={styles.container}>
       <StatusBar barStyle={Platform.OS === 'ios' ? 'light-content' : 'light-content'} />
       <View style={styles.content}>
         <Text style={styles.title}>Allô Services CI</Text>
-        <View style={styles.logoWrap}>
-          <Image source={APP_ICON} style={styles.logo} resizeMode="contain" />
+        <View style={styles.logoOuter}>
+          <View style={styles.logoInner}>
+            <Image source={APP_ICON} style={styles.logo} resizeMode="contain" />
+          </View>
         </View>
         <Text style={styles.subtitle}>Bienvenue</Text>
         <Text style={styles.tagline}>Tous les services essentiels en un clic</Text>
