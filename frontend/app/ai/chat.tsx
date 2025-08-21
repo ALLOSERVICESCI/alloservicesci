@@ -56,7 +56,7 @@ export default function ChatAIA() {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         <View style={styles.header}>
           <Ionicons name="chatbubble-ellipses" size={22} color="#0A7C3A" />
-          <Text style={styles.headerTitle}>Layah — Assistant IA</Text>
+          <Text style={styles.headerTitle}>Allô IA</Text>
         </View>
         <FlatList
           ref={listRef}
