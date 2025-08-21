@@ -99,10 +99,6 @@ export default function Home() {
     }
   ).current;
 
-    }
-  }, [aiPos]);
-
-
   const pulse = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
