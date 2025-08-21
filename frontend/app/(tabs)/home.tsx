@@ -198,7 +198,8 @@ export default function Home() {
       <Animated.View 
         style={[styles.aiFab, styles.aiHalo, { transform: [{ scale: pulse }] }, aiPositionStyle, fabXY ? { left: pan.x, top: pan.y } : null]}
         onStartShouldSetResponder={() => false}
-        onResponderGrant={() => setDragging(true)}
+        onMoveShouldSetResponder={() => dragging}
+        onResponderGrant={() => {}}
         onResponderMove={panResponder.onResponderMove}
         onResponderRelease={panResponder.onResponderRelease}
       >
