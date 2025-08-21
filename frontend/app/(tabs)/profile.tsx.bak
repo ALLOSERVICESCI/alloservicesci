@@ -202,7 +202,9 @@ export default function Profile() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={loadPremium} style={styles.refreshButton}>
-              <Text style={styles.refreshButtonText}>{t('refreshStatus')}</Text>
+              <Text style={styles.premiumDescription}>
+                {t('refreshStatus')}
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -234,10 +236,11 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   brand: {
-    fontSize: 28,
-    fontWeight: '800',
+    fontSize: 32,
+    
+    
     color: '#0A7C3A',
-    textAlign: 'center',
+    
   },
   slogan: {
     fontSize: 16,
@@ -374,8 +377,9 @@ const styles = StyleSheet.create({
   },
   langText: {
     color: '#0A7C3A',
-    fontWeight: '600',
-    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 22,
+    fontSize: 16,
   },
   langTextActive: {
     color: '#fff',
@@ -410,20 +414,23 @@ const styles = StyleSheet.create({
   },
   actionTitle: {
     fontSize: 12,
-    fontWeight: '600',
+    textAlign: 'center',
+    lineHeight: 22,
     color: '#0F5132',
     textAlign: 'center',
     lineHeight: 16,
   },
   premiumSection: {
-    margin: 20,
-    borderRadius: 16,
-    padding: 24,
+    marginHorizontal: 12,
+    marginTop: 8,
+    marginBottom: 12,
+    borderRadius: 12,
+    padding: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 4,
   },
   premiumSectionActive: {
     backgroundColor: '#0A7C3A',
@@ -435,7 +442,8 @@ const styles = StyleSheet.create({
   },
   premiumTitle: {
     fontSize: 20,
-    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 22,
     textAlign: 'center',
     marginBottom: 12,
   },
@@ -453,8 +461,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   expiryText: {
-    fontSize: 14,
-    color: '#E8F0E8',
+    fontSize: 16,
+    color: '#666',
     textAlign: 'center',
     marginBottom: 16,
   },
@@ -477,11 +485,19 @@ const styles = StyleSheet.create({
   refreshButton: {
     alignItems: 'center',
     paddingVertical: 8,
+    marginVertical: 16,
   },
   refreshButtonText: {
-    color: '#E8F0E8',
-    fontSize: 14,
-    fontWeight: '600',
+    color: '#666',
+    fontSize: 16,
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  refreshTextOnGreen: {
+    color: '#666',
+  },
+  refreshTextOnLight: {
+    color: '#0A7C3A',
   },
   logoutSection: {
     margin: 20,
