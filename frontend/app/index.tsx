@@ -53,7 +53,7 @@ export default function Index() {
             resizeMode="contain"
           />
         </View>
-        <Animated.Text style={[styles.subtitle, { opacity: subOpacity }]>
+        <Animated.Text style={[styles.subtitle, { opacity: subOpacity }]}>
           Bienvenue
         </Animated.Text>
         <Animated.Text style={[styles.tagline, { opacity: subOpacity }]}>
