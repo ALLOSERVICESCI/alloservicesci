@@ -237,9 +237,10 @@ const styles = StyleSheet.create({
   },
   brand: {
     fontSize: 32,
-    fontWeight: '800',
+    
+    
     color: '#0A7C3A',
-    textAlign: 'center',
+    
   },
   slogan: {
     fontSize: 16,
