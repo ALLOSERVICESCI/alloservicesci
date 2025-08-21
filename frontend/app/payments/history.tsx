@@ -4,6 +4,18 @@ import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
 
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+
+function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.tabItem}>
+      <Ionicons name={icon} size={22} color="#0A7C3A" />
+      <Text style={styles.tabLabel} numberOfLines={1}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
 export default function PaymentHistory() {
   const { user } = useAuth();
   const { t } = useI18n();
