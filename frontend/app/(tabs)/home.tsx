@@ -87,6 +87,16 @@ export default function Home() {
           </ScrollView>
         </View>
 
+        {/* Ivorian emblem below categories and motto */}
+        <View style={styles.emblemSection}>
+          <Image
+            source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-premium/artifacts/5tgdv5mj_512px-Coat_of_arms_of_Co%CC%82te_d%27Ivoire_%281997-2001_variant%29.svg.png' }}
+            style={styles.emblemImage}
+          />
+          <Text style={styles.mottoText}>
+            Union - Discipline - Travail
+          </Text>
+        </View>
 
       </View>
     </ScrollView>
@@ -94,17 +104,6 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-        {/* Ivorian emblem below categories and motto */}
-        <View style={{ alignItems: 'center', marginTop: 8, marginBottom: 24 }}>
-          <Image
-            source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-premium/artifacts/5tgdv5mj_512px-Coat_of_arms_of_Co%CC%82te_d%27Ivoire_%281997-2001_variant%29.svg.png' }}
-            style={{ width: 120, height: 120, resizeMode: 'contain' }}
-          />
-          <Text style={{ marginTop: 8, color: '#0F5132', fontWeight: '700' }}>
-            Union - Discipline - Travail
-          </Text>
-        </View>
-
   container: { 
     flex: 1, 
     backgroundColor: '#F8FAF9' 
@@ -136,7 +135,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
   },
   logo: {
     width: 110,
@@ -166,33 +169,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  premiumInline: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 6,
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
   
-  // Welcome Card - EN BAS
-  welcomeCard: {
-    marginHorizontal: 20,
-    marginVertical: 20,
-    marginBottom: 40,
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#E9ECEF',
-    alignItems: 'center',
-  },
-  welcomeDescription: {
-    fontSize: 16,
-    color: '#6C757D',
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-
   // Categories Section - CENTRÉE AU MILIEU
   categoriesSection: {
     flex: 1,
@@ -278,5 +255,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 8,
     textTransform: 'uppercase',
+  },
+  
+  // Emblem Section
+  emblemSection: {
+    alignItems: 'center',
+    marginTop: 8,
+    marginBottom: 24,
+  },
+  emblemImage: {
+    width: 120,
+    height: 120,
+    resizeMode: 'contain',
+  },
+  mottoText: {
+    marginTop: 8,
+    color: '#0F5132',
+    fontWeight: '700',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
