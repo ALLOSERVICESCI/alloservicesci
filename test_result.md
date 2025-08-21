@@ -506,6 +506,19 @@ test_plan:
   test_priority: "high_first"
 
 frontend:
+  - task: "Home FAB Layah: size, tooltip, drag, persistence, navigation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "FAB IA with logoia.png (wrap 48, img 38, green border), halo+pulse, tooltip first launch with callout, long-press drag + position persistence via AsyncStorage."
+
+frontend:
   - task: "Home layout - carousel centered and description below"
     implemented: true
     working: true
