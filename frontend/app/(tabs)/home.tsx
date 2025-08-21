@@ -323,6 +323,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   aiImg: {
-    fontSize: 28,
+    width: 28,
+    height: 28,
+    resizeMode: 'contain',
   },
 });
