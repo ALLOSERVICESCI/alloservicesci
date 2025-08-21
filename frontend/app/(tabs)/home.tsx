@@ -85,6 +85,7 @@ export default function Home() {
       onMoveShouldSetResponder: () => dragging,
       onResponderGrant: () => {},
       onResponderMove: (e: any) => {
+        if (!dragging) return;
         const { pageX, pageY } = e.nativeEvent;
         pan.setValue({ x: pageX - FAB_SIZE/2, y: pageY - FAB_SIZE/2 });
       },
