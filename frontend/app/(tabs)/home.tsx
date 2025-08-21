@@ -63,7 +63,7 @@ export default function Home() {
                   styles.categoryCard,
                   category.isPremium && styles.categoryCardPremium
                 ]}
-                onPress={() => router.push(`/category/${category.slug}`)}
+                onPress={() => category.slug === 'ai' ? router.push('/ai/chat') : router.push(`/category/${category.slug}`)}
               >
                 {category.isPremium && (
                   <View style={styles.premiumBadge}>
