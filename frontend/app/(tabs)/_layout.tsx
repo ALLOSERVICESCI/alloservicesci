@@ -32,15 +32,37 @@ export default function Layout() {
     })();
   }, []);
 
+  const [alertCount, setAlertCount] = useState<number>(0);
+
+  useEffect(() => {
+    let mounted = true;
+    const tick = async () => {
+      try {
+        const res = await fetch('/api/alerts');
+        if (res.ok) {
+          const json = await res.json();
+          if (mounted) setAlertCount(Array.isArray(json) ? json.length : 0);
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+    tick();
+    const id = setInterval(tick, 20000);
+    return () => { mounted = false; clearInterval(id); };
+  }, []);
+
   return (
     <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#0A7C3A' }}>
       <Tabs.Screen name="home" options={{ title: t('tabHome'), tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} /> }} />
       <Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ color, size }) => (
         <View>
           <Ionicons name="megaphone" color={color} size={size} />
-          <View style={{ position: 'absolute', top: -2, right: -6, backgroundColor: '#DC3545', borderRadius: 8, paddingHorizontal: 4, height: 14, minWidth: 14, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ color: '#fff', fontSize: 10, fontWeight: '700' }}>1</Text>
-          </View>
+          {alertCount > 0 && (
+            <View style={{ position: 'absolute', top: -2, right: -6, backgroundColor: '#DC3545', borderRadius: 8, paddingHorizontal: 4, height: 14, minWidth: 14, alignItems: 'center', justifyContent: 'center' }}>
+              <Text style={{ color: '#fff', fontSize: 10, fontWeight: '700' }}>{alertCount > 99 ? '99+' : alertCount}</Text>
+            </View>
+          )}
         </View>
       ) }} />
       <Tabs.Screen name="pharmacies" options={{ title: t('tabPharm'), tabBarIcon: ({ color, size }) => <Ionicons name="medkit" color={color} size={size} /> }} />
