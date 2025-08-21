@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   },
   // ICÔNES AGRANDIES À 48PX
   categoryIcon: {
-    fontSize: 48,
+    fontSize: 64,
     marginBottom: 12,
   },
   categoryLabel: {
