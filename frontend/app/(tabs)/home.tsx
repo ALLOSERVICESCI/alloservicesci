@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#0A7C3A',
   },
-  // ICÔNES AGRANDIES À 48PX
+  // ICÔNES AGRANDIES À 64PX
   categoryIcon: {
     fontSize: 64,
     marginBottom: 12,
