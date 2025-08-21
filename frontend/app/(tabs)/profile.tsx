@@ -202,10 +202,7 @@ export default function Profile() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={loadPremium} style={styles.refreshButton}>
-              <Text style={[
-                styles.refreshButtonText,
-                premium?.is_premium ? styles.refreshTextOnGreen : styles.refreshTextOnLight
-              ]}>
+              <Text style={styles.refreshButtonText}>
                 {t('refreshStatus')}
               </Text>
             </TouchableOpacity>
