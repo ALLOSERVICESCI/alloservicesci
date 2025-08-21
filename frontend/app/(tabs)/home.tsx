@@ -46,17 +46,8 @@ export default function Home() {
         </View>
       </View>
 
-      {/* Welcome Card - TITRE SUPPRIMÉ */}
-      <View style={styles.welcomeCard}>
-        <Text style={styles.welcomeDescription}>
-          Accédez à tous les services exclusifs
-        </Text>
-      </View>
-
-      {/* Categories Carousel */}
+      {/* Categories Carousel - AU MILIEU */}
       <View style={styles.categoriesSection}>
-        <Text style={styles.sectionTitle}>{t('categories')}</Text>
-        
         <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={false} 
@@ -93,6 +84,13 @@ export default function Home() {
             </TouchableOpacity>
           ))}
         </ScrollView>
+      </View>
+
+      {/* Welcome Card - EN DESSOUS DU CARROUSEL */}
+      <View style={styles.welcomeCard}>
+        <Text style={styles.welcomeDescription}>
+          Accédez à tous les services exclusifs
+        </Text>
       </View>
     </ScrollView>
   );
