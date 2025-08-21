@@ -93,6 +93,14 @@ export default function Home() {
           <Text style={styles.welcomeDescription}>
             {t('premiumDescription')}
           </Text>
+        {/* Ivorian emblem below categories */}
+        <View style={{ alignItems: 'center', marginBottom: 24 }}>
+          <Image
+            source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-premium/artifacts/5tgdv5mj_512px-Coat_of_arms_of_Co%CC%82te_d%27Ivoire_%281997-2001_variant%29.svg.png' }}
+            style={{ width: 120, height: 120, resizeMode: 'contain' }}
+          />
+        </View>
+
         </View>
       </View>
     </ScrollView>
