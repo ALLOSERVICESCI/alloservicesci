@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, FlatList, SafeAreaView, Alert, ScrollView } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 import { Ionicons } from '@expo/vector-icons';
 
 // Simple message type
