@@ -422,20 +422,14 @@ const styles = StyleSheet.create({
       default: { },
     }),
   },
-  aiImgWrapLg: {
+  aiImgLg: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#fff',
     borderWidth: 2,
     borderColor: '#0A7C3A',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  aiImgLg: {
-    width: 49,
-    height: 49,
     resizeMode: 'contain',
+    backgroundColor: '#fff',
   },
   tooltip: {
     position: 'absolute',
