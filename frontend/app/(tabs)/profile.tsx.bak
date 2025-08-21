@@ -258,11 +258,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
-    
-    
-    
-    
-    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 6,
     position: 'relative',
   },
   avatar: {
@@ -293,11 +293,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 24,
     backgroundColor: '#fff',
-    
-    
-    
-    
-    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
     borderWidth: 1,
     borderColor: '#E8F0E8',
   },
@@ -339,11 +339,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     backgroundColor: '#fff',
-    
-    
-    
-    
-    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
   },
   sectionTitle: {
     fontSize: 18,
@@ -396,11 +396,11 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
     marginBottom: 12,
-    
-    
-    
-    
-    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 4,
     borderWidth: 1,
     borderColor: '#E8F0E8',
   },
@@ -419,11 +419,11 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 16,
     padding: 24,
-    
-    
-    
-    
-    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
   },
   premiumSectionActive: {
     backgroundColor: '#0A7C3A',
@@ -493,11 +493,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 12,
     alignItems: 'center',
-    
-    
-    
-    
-    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
   logoutButtonText: {
     color: '#fff',
