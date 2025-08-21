@@ -19,6 +19,7 @@ function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: 
 export default function PaymentHistory() {
   const { user } = useAuth();
   const { t } = useI18n();
+  const router = useRouter();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
