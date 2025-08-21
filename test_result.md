@@ -607,3 +607,16 @@ agent_communication:
     message: "✅ LAYAH FAB TESTING COMPLETE: Comprehensive testing completed on iPhone 14 (390x844) and Galaxy S21 (360x800). FAB displays correctly with green circular styling, tooltip 'Layah (Agent IA)' appears on first load, navigation to /ai/chat works perfectly, position persistence logic implemented with AsyncStorage. Image wrapper 48x48 with white background/green border confirmed, AI image (logoia.png) ~40x40 dimensions detected. Pulsing animation implemented. Drag & drop cannot be tested in web environment (mobile-specific). Screenshots captured showing initial state with tooltip, both viewports, and persistence after navigation. All core requirements met - FAB is production-ready."
   - agent: "testing"
     message: "✅ LAYAH FAB SIZE UPDATE VALIDATION COMPLETE: Comprehensive testing completed on both iPhone 14 (390x844) and Galaxy S21 (360x800) after size update. DETAILED FINDINGS: 1) ✅ FAB wrapper dimensions confirmed: iPhone 14: 63.5x63.5px, Galaxy S21: 61.2x61.2px (close to expected 60x60). 2) ✅ AI image wrapper (aiImgWrapLg) confirmed as 52x52 with white background and green border (#0A7C3A). 3) ⚠️ AI image (aiImgLg) dimensions: iPhone 14: 46.6x46.6px, Galaxy S21: 44.9x44.9px (slightly smaller than expected 49x49, likely due to resizeMode: 'contain' scaling in web environment). 4) ✅ Tooltip 'Layah (Agent IA)' shows correctly on first load with green background and proper positioning. 5) ✅ Tooltip hides immediately when tapping the FAB as expected. 6) ✅ Navigation to /ai/chat works perfectly on both devices - chat screen loads with 'Layah — Assistant IA' header. 7) ✅ Pulsing animation present in code implementation. 8) ✅ Screenshots captured: initial state (tooltip visible), chat screen, and after tap (tooltip hidden) for both devices. Minor size variance likely due to web rendering vs native mobile environment. All core functionality validated successfully - size update working as intended."
+
+frontend:
+  - task: "Home FAB Layah: logo mask (no green border), tooltip, nav, pulse"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Applied circular mask (aiMask 52x52 overflow hidden) + cover image to remove any green border embedded in logo. Kept halo+pulse, drag persistence, tooltip behavior, and navigation."
