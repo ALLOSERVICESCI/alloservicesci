@@ -13,6 +13,7 @@ export default function Index() {
   const titleOpacity = useRef(new Animated.Value(0)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoScale = useRef(new Animated.Value(0.98)).current;
+  const logoTranslateY = useRef(new Animated.Value(6)).current;
   const subOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
