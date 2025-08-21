@@ -119,13 +119,15 @@ export default function Home() {
     </ScrollView>
 
       {/* Floating AI FAB */}
-      <TouchableOpacity
-        onPress={() => router.push('/ai/chat')}
-        activeOpacity={0.9}
-        style={styles.aiFab}
-      >
-        <Text style={styles.aiEmoji}>🐘</Text>
-      </TouchableOpacity>
+      <Animated.View style={[styles.aiFab, { transform: [{ scale: pulse }] }]}>
+        <TouchableOpacity
+          onPress={() => router.push('/ai/chat')}
+          activeOpacity={0.9}
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Text style={styles.aiEmoji}>🐘</Text>
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 }
