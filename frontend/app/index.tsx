@@ -52,13 +52,9 @@ export default function Index() {
         <Animated.Text style={[styles.tagline, { opacity: subOpacity }]}>
           Tous les services essentiels en un clic
         </Animated.Text>
-        <View style={styles.splashEmblem}>
-          <Image
-            source={require('../assets/emblems/ci_emblem.png')}
-            style={styles.splashEmblemImg}
-            resizeMode="contain"
-          />
-        </View>
+        <Animated.Text style={[styles.motto, { opacity: subOpacity }]}>
+          Union - Discipline - Travail
+        </Animated.Text>
       </View>
 
       {/* Watermark motto at bottom */}
