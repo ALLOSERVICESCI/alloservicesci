@@ -80,4 +80,6 @@ const styles = StyleSheet.create({
   tagline: { marginTop: 6, color: '#FFF', fontSize: 16, opacity: 0.9, textAlign: 'center', textShadowColor: 'rgba(0,0,0,0.45)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
   watermarkContainer: { position: 'absolute', left: 0, right: 0, bottom: 4, alignItems: 'center' },
   watermarkText: { color: '#FFFFFF', opacity: 0.12, fontSize: 14, fontWeight: '800', letterSpacing: 0.5 },
+  splashEmblem: { alignItems: 'center', marginTop: 12 },
+  splashEmblemImg: { width: 80, height: 80 },
 });
