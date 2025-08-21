@@ -103,6 +103,10 @@ const styles = StyleSheet.create({
     flex: 1, 
     backgroundColor: '#F8FAF9' 
   },
+  pageWrapper: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
   scrollContent: {
     paddingBottom: 30,
     flexGrow: 1,
