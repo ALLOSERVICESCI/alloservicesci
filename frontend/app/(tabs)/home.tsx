@@ -28,6 +28,20 @@ export default function Home() {
     { slug: 'loisirs_tourisme', label: t('cat_loisirs'), icon: '🏖️', isPremium: true },
     { slug: 'transport', label: t('cat_transport'), icon: '🚌', isPremium: true },
   ], [t]);
+  const [aiPos, setAiPos] = React.useState<'bottom-right'|'bottom-left'|'top-right'|'top-left'>('bottom-right');
+  const aiPositionStyle = React.useMemo(() => {
+    switch (aiPos) {
+      case 'bottom-left':
+        return { bottom: 30, left: 20, right: undefined, top: undefined };
+      case 'top-right':
+        return { top: 30, right: 20, left: undefined, bottom: undefined };
+      case 'top-left':
+        return { top: 30, left: 20, right: undefined, bottom: undefined };
+      default:
+        return { bottom: 30, right: 20, left: undefined, top: undefined };
+    }
+  }, [aiPos]);
+
 
   const pulse = useRef(new Animated.Value(1)).current;
 
