@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
   },
   expiryText: {
     fontSize: 16,
-    color: '#000',
+    color: '#666',
     textAlign: 'center',
     marginBottom: 16,
   },
@@ -481,12 +481,12 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   refreshButtonText: {
-    color: '#000',
+    color: '#666',
     fontSize: 16,
     fontWeight: '800',
   },
   refreshTextOnGreen: {
-    color: '#000',
+    color: '#666',
   },
   refreshTextOnLight: {
     color: '#0A7C3A',
