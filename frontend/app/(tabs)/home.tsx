@@ -115,11 +115,44 @@ const styles = StyleSheet.create({
     marginTop: 6, 
     fontWeight: '700' 
   },
+  welcomeCard: {
+    marginHorizontal: 16,
+    marginVertical: 16,
+    padding: 20,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E9ECEF',
+  },
+  welcomeTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#0A7C3A',
+    marginBottom: 8,
+  },
+  welcomeDescription: {
+    fontSize: 14,
+    color: '#6C757D',
+    lineHeight: 20,
+  },
+  categoriesSection: {
+    flex: 1,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#0F5132',
+    marginHorizontal: 16,
+    marginBottom: 12,
+  },
+  carouselContainer: {
+    flexGrow: 0,
+  },
   carousel: { 
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
-  card: { 
+  categoryCard: { 
     width: 140,
     height: 160,
     backgroundColor: '#F6F8F6',
@@ -130,17 +163,45 @@ const styles = StyleSheet.create({
     padding: 12,
     borderWidth: 1,
     borderColor: '#E8F0E8',
+    position: 'relative',
   },
-  icon: { 
-    width: 60, 
-    height: 60, 
+  categoryCardPremium: {
+    backgroundColor: '#FFF8E1',
+    borderColor: '#FFD54F',
+    borderWidth: 2,
+  },
+  premiumBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: '#FFD54F',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  premiumBadgeText: {
+    fontSize: 12,
+  },
+  categoryIcon: {
+    fontSize: 32,
     marginBottom: 8,
-    resizeMode: 'contain',
   },
-  cardLabel: { 
+  categoryLabel: { 
     fontSize: 14, 
     fontWeight: '600', 
     color: '#0F5132', 
-    textAlign: 'center' 
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  categoryLabelPremium: {
+    color: '#F57C00',
+  },
+  premiumText: {
+    fontSize: 10,
+    fontWeight: '500',
+    color: '#F57C00',
+    textTransform: 'uppercase',
   },
 });
