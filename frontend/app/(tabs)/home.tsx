@@ -14,6 +14,7 @@ export default function Home() {
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
   const categories = useMemo(() => [
+    { slug: 'ai', label: t('ai_agent'), icon: '🐘', isPremium: false },
     { slug: 'urgence', label: t('cat_urgence'), icon: '🚨', isPremium: false },
     { slug: 'sante', label: t('cat_sante'), icon: '🏥', isPremium: false },
     { slug: 'alertes', label: t('cat_alertes'), icon: '📢', isPremium: false },
