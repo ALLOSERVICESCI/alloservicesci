@@ -97,6 +97,18 @@ function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: 
   );
 }
 
+function TabBar({ t, router }: { t: any; router: any }) {
+  return (
+    <View style={styles.bottomTabs}>
+      <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
+      <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
+      <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
+      <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
+      <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   container: { flexGrow: 1, padding: 16, backgroundColor: '#fff' },
