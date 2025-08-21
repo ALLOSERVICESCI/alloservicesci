@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
+const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width } = Dimensions.get('window');
 
 export default function Home() {
@@ -27,12 +28,22 @@ export default function Home() {
   ], [t]);
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      {/* Header with Logo */}
       <View style={styles.header}>
-        <Text style={styles.brand}>{t('brand')}</Text>
-        <Text style={styles.slogan}>{t('slogan')}</Text>
-        <Text style={styles.greeting}>{greeting}</Text>
+        {/* Logo Section */}
+        <View style={styles.logoSection}>
+          <View style={styles.logoContainer}>
+            <Image source={APP_ICON} style={styles.logo} />
+          </View>
+        </View>
+        
+        {/* Brand Info */}
+        <View style={styles.brandSection}>
+          <Text style={styles.brand}>{t('brand')}</Text>
+          <Text style={styles.slogan}>{t('slogan')}</Text>
+          <Text style={styles.greeting}>{greeting}</Text>
+        </View>
       </View>
 
       {/* Welcome Card */}
@@ -84,7 +95,7 @@ export default function Home() {
           ))}
         </ScrollView>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -93,10 +104,40 @@ const styles = StyleSheet.create({
     flex: 1, 
     backgroundColor: '#FFFFFF' 
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
   header: { 
     paddingHorizontal: 16, 
     paddingTop: 24, 
     paddingBottom: 12,
+    alignItems: 'center',
+  },
+  logoSection: {
+    marginBottom: 16,
+  },
+  logoContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#F8F9FA',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  logo: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  brandSection: {
     alignItems: 'center',
   },
   brand: { 
