@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   premiumBadgeText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#8B7000',
+    color: '#0A7C3A',
   },
   // ICÔNES AGRANDIES À 48PX
   categoryIcon: {
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   categoryLabelPremium: {
-    color: '#8B7000',
+    color: '#0A7C3A',
     fontWeight: '700',
   },
   // STYLE PREMIUM AMÉLIORÉ
