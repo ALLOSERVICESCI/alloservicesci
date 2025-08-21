@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 8,
   },
-  aiEmoji: {
+  aiImg: {
     fontSize: 28,
   },
 });
