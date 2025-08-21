@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
   logo: { width: 150, height: 150, borderRadius: 75 },
   subtitle: { marginTop: 20, color: '#FFFFFF', fontSize: 18, fontWeight: '700', textShadowColor: 'rgba(0,0,0,0.45)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
   tagline: { marginTop: 6, color: '#FFF', fontSize: 16, opacity: 0.9, textAlign: 'center', textShadowColor: 'rgba(0,0,0,0.45)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-  watermarkContainer: { position: 'absolute', left: 0, right: 0, bottom: 8, alignItems: 'center' },
-  watermarkText: { color: '#FFFFFF', opacity: 0.15, fontSize: 14, fontWeight: '800', letterSpacing: 0.5 },
+  watermarkContainer: { position: 'absolute', left: 0, right: 0, bottom: 4, alignItems: 'center' },
+  watermarkText: { color: '#FFFFFF', opacity: 0.12, fontSize: 14, fontWeight: '800', letterSpacing: 0.5 },
 });
