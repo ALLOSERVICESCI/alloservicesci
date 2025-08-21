@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   brand: {
-    fontSize: 28,
+    fontSize: 32,
     textAlign: 'center',
     lineHeight: 22,
     color: '#0A7C3A',
