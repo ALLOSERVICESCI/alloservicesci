@@ -37,14 +37,20 @@ export default function Index() {
     <LinearGradient colors={["#FF8A00", "#FFB347"]} style={styles.container}>
       <StatusBar barStyle={Platform.OS === 'ios' ? 'light-content' : 'light-content'} />
       <View style={styles.content}>
-        <Text style={styles.title}>Allô Services CI</Text>
-        <View style={styles.logoOuter}>
+        <Animated.Text style={[styles.title, { opacity: titleOpacity }]}>
+          Allô Services CI
+        </Animated.Text>
+        <Animated.View style={[styles.logoOuter, { opacity: logoOpacity, transform: [{ scale: logoScale }, { translateY: logoTranslateY }] }]}>
           <View style={styles.logoInner}>
             <Image source={APP_ICON} style={styles.logo} resizeMode="contain" />
           </View>
-        </View>
-        <Text style={styles.subtitle}>Bienvenue</Text>
-        <Text style={styles.tagline}>Tous les services essentiels en un clic</Text>
+        </Animated.View>
+        <Animated.Text style={[styles.subtitle, { opacity: subOpacity }]}>
+          Bienvenue
+        </Animated.Text>
+        <Animated.Text style={[styles.tagline, { opacity: subOpacity }]}>
+          Tous les services essentiels en un clic
+        </Animated.Text>
       </View>
     </LinearGradient>
   );
