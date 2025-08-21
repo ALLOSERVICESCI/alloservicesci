@@ -115,6 +115,7 @@ export default function Home() {
 
       </View>
     </ScrollView>
+    </View>
   );
 }
 
