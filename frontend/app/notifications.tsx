@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { useNotificationsCenter } from '../src/context/NotificationsContext';
 import { useI18n } from '../src/i18n/i18n';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function NotificationsCenter() {
   const { items, clear, removeAt } = useNotificationsCenter();
