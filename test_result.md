@@ -522,15 +522,18 @@ frontend:
         comment: "✅ HOME LAYOUT TEST PASSED: Comprehensive testing completed on iPhone 14 (390x844) and Samsung Galaxy S21 (360x800). Brand header 'Allô Services CI' and logo render correctly. Categories carousel is horizontally scrollable with 7 categories visible (Urgence, Santé, Éducation, Examens, Services publics, Emplois, Alertes). Carousel is vertically centered (43.5px from window center - well within acceptable range). The exact French text 'Accédez à tous les services exclusifs' appears below the carousel as required. Horizontal scrolling functionality tested successfully. 4 screenshots captured showing layout before and after scroll on both devices. Only minor deprecation warnings found (shadow props, pointerEvents) - no critical issues. Layout meets all specified requirements." 
   - task: "Splash screen: gradient, animated cascade, emblem, watermark, 5s redirect"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/app/index.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented LinearGradient (#FF8A00→#FFB347), animated cascade (title→logo fade+scale+translateY→subtitles), emblem under logo, watermark motto at bottom, redirect after 5s."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE SPLASH SCREEN TESTING COMPLETE: Successfully tested all requirements on both iPhone 14 (390x844) and Galaxy S21 (360x800) viewports. 1) ✅ Gradient background (#FF8A00→#FFB347) confirmed working - detected as 'linear-gradient(rgb(255, 138, 0), rgb(255, 179, 71))' which matches expected colors perfectly. 2) ✅ Title text 'Allô Services CI' displays with white color and text shadow. 3) ✅ Animated cascade sequence working: title fades in first, then logo appears with fade + scale (0.98→1.0) + translateY (6→0) animations, followed by subtitles 'Bienvenue' and 'Tous les services essentiels en un clic'. 4) ✅ Emblem image (Côte d'Ivoire coat of arms) displays correctly below the logo. 5) ✅ Watermark text 'Union - Discipline - Travail' appears at bottom with low opacity (0.12). 6) ✅ 5-second redirect to /(tabs)/home works perfectly. 7) ✅ All text elements have proper shadows for readability. Screenshots captured at t0 (initial), t+1.2s (mid-animation), and t+5.3s (post-redirect) on both devices. All 6 core requirements validated successfully. No critical issues found."
 
 frontend:
   - task: "Home screen UI changes validation"
