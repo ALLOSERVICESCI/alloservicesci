@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
       default: { },
     }),
   },
-  aiImgWrap: {
+  aiImgWrapLg: {
     width: 36,
     height: 36,
     borderRadius: 18,
