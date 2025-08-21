@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  aiImg: {
+  aiImgLg: {
     width: 28,
     height: 28,
     resizeMode: 'contain',
