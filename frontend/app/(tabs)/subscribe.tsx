@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
-    shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 6,
   },
