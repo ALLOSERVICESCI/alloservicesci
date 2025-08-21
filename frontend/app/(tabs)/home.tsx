@@ -7,7 +7,9 @@ import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const FAB_SIZE = 60;
+const FAB_MARGIN = 20;
 
 export default function Home() {
   const { user } = useAuth();
