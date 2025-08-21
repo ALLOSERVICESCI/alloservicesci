@@ -507,15 +507,18 @@ test_plan:
 frontend:
   - task: "Home layout - carousel centered and description below"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/app/(tabs)/home.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Adjusted layout: wrapped content in pageWrapper, ensured scrollContent.flexGrow=1. Carousel section remains flex-centered, 'Accédez à tous les services exclusifs' section placed below." 
+        comment: "Adjusted layout: wrapped content in pageWrapper, ensured scrollContent.flexGrow=1. Carousel section remains flex-centered, 'Accédez à tous les services exclusifs' section placed below."
+      - working: true
+        agent: "testing"
+        comment: "✅ HOME LAYOUT TEST PASSED: Comprehensive testing completed on iPhone 14 (390x844) and Samsung Galaxy S21 (360x800). Brand header 'Allô Services CI' and logo render correctly. Categories carousel is horizontally scrollable with 7 categories visible (Urgence, Santé, Éducation, Examens, Services publics, Emplois, Alertes). Carousel is vertically centered (43.5px from window center - well within acceptable range). The exact French text 'Accédez à tous les services exclusifs' appears below the carousel as required. Horizontal scrolling functionality tested successfully. 4 screenshots captured showing layout before and after scroll on both devices. Only minor deprecation warnings found (shadow props, pointerEvents) - no critical issues. Layout meets all specified requirements." 
 
 agent_communication:
   - agent: "main"
