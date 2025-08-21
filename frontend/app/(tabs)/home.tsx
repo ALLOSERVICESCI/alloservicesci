@@ -90,7 +90,7 @@ export default function Home() {
         {/* Welcome Card - EN DESSOUS DU CARROUSEL */}
         <View style={styles.welcomeCard}>
           <Text style={styles.welcomeDescription}>
-            Accédez à tous les services exclusifs
+            {t('premiumDescription')}
           </Text>
         </View>
       </View>
