@@ -10,12 +10,27 @@ export default function Index() {
   const router = useRouter();
   const { t } = useI18n();
 
+  const titleOpacity = useRef(new Animated.Value(0)).current;
+  const logoOpacity = useRef(new Animated.Value(0)).current;
+  const logoScale = useRef(new Animated.Value(0.96)).current;
+  const subOpacity = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
+    const seq = Animated.sequence([
+      Animated.timing(titleOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+      Animated.parallel([
+        Animated.timing(logoOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+        Animated.timing(logoScale, { toValue: 1, duration: 300, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+      ]),
+      Animated.timing(subOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+    ]);
+    seq.start();
+
     const timer = setTimeout(() => {
       router.replace('/(tabs)/home');
-    }, 1600);
-    return () => clearTimeout(timer);
-  }, [router]);
+    }, 3000);
+    return () => { clearTimeout(timer); };
+  }, [router, titleOpacity, logoOpacity, logoScale, subOpacity]);
 
   return (
     <LinearGradient colors={["#FF8A00", "#FFB347"]} style={styles.container}>
