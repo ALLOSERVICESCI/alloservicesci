@@ -130,7 +130,6 @@ export default function PaymentHistory() {
           contentContainerStyle={{ paddingVertical: 12 }}
         />
       )}
-    </View>
 
       {/* Bottom Tab Quick Nav (icons) */}
       <View style={styles.bottomTabs}>
@@ -140,8 +139,9 @@ export default function PaymentHistory() {
         <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
         <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
       </View>
-
+    </View>
   );
+}
 }
 
 const styles = StyleSheet.create({
