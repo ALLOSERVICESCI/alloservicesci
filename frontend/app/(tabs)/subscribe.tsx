@@ -221,7 +221,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 6,
   },
   logo: {
     width: 170,
@@ -250,11 +254,11 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 16,
     padding: 24,
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
-    
-    
-    
-    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
   },
   statusCardFree: {
     backgroundColor: '#fff',
@@ -348,9 +352,11 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
     alignItems: 'center',
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
-    
-    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 4,
   },
   featureCardRight: {
     marginLeft: 10,
@@ -396,10 +402,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     minWidth: 250,
     alignItems: 'center',
-    
-    
-    
-    
+    shadowColor: '#0A7C3A',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
   buttonSecondary: {
     backgroundColor: '#0F5132',
@@ -408,11 +415,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: '#ffffff',
-    
-    
-    
-    
-    
+    shadowColor: '#0A7C3A',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 8,
   },
   buttonText: {
     color: '#fff',
