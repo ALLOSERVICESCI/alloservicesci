@@ -202,6 +202,14 @@ export default function Home() {
         onResponderMove={panResponder.onResponderMove}
         onResponderRelease={panResponder.onResponderRelease}
       >
+        {tooltipVisible && (
+          <View style={styles.tooltip} pointerEvents="none">
+            <View style={styles.tooltipBubble}>
+              <Text style={styles.tooltipText}>Layah (Agent IA)</Text>
+            </View>
+            <View style={styles.tooltipArrow} />
+          </View>
+        )}
         <TouchableOpacity
           onPress={() => router.push('/ai/chat')}
           activeOpacity={0.9}
