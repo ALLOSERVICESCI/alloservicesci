@@ -63,6 +63,9 @@ export default function Home() {
         }
         const seen = await AsyncStorage.getItem('layah_tooltip_seen');
         setTooltipVisible(!seen);
+        if (!seen) {
+          setTimeout(() => setTooltipVisible(false), 5000);
+        }
       } catch (e) {}
     })();
   }, []);
