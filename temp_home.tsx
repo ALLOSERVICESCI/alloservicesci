@@ -1,22 +1,10 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
-const ICONS = {
-  urgence: require('../../assets/icons/icons/urgence.png'),
-  sante: require('../../assets/icons/icons/sante.png'),
-  education: require('../../assets/icons/icons/education.png'),
-  examens_concours: require('../../assets/icons/icons/examens_concours.png'),
-  services_publics: require('../../assets/icons/icons/services_publics.png'),
-  emplois: require('../../assets/icons/icons/emplois.png'),
-  alertes: require('../../assets/icons/icons/alertes.png'),
-  services_utiles: require('../../assets/icons/icons/services_utiles.png'),
-  agriculture: require('../../assets/icons/icons/agriculture.png'),
-  loisirs_tourisme: require('../../assets/icons/icons/loisirs_tourisme.png'),
-  transport: require('../../assets/icons/icons/transport.png'),
-};
+const { width } = Dimensions.get('window');
 
 export default function Home() {
   const { user } = useAuth();
@@ -25,43 +13,77 @@ export default function Home() {
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : t('welcome');
 
   const categories = useMemo(() => [
-    { slug: 'urgence', label: t('cat_urgence') },
-    { slug: 'sante', label: t('cat_sante') },
-    { slug: 'education', label: t('cat_education') },
-    { slug: 'examens_concours', label: t('cat_examens') },
-    { slug: 'services_publics', label: t('cat_services_publics') },
-    { slug: 'emplois', label: t('cat_emplois') },
-    { slug: 'alertes', label: t('cat_alertes') },
-    { slug: 'services_utiles', label: t('cat_services_utiles') },
-    { slug: 'agriculture', label: t('cat_agriculture') },
-    { slug: 'loisirs_tourisme', label: t('cat_loisirs') },
-    { slug: 'transport', label: t('cat_transport') },
+    { slug: 'urgence', label: t('cat_urgence'), icon: '🚨', isPremium: false },
+    { slug: 'sante', label: t('cat_sante'), icon: '🏥', isPremium: false },
+    { slug: 'alertes', label: t('cat_alertes'), icon: '📢', isPremium: false },
+    { slug: 'education', label: t('cat_education'), icon: '🎓', isPremium: true },
+    { slug: 'examens_concours', label: t('cat_examens'), icon: '📚', isPremium: true },
+    { slug: 'services_publics', label: t('cat_services_publics'), icon: '🏛️', isPremium: true },
+    { slug: 'emplois', label: t('cat_emplois'), icon: '💼', isPremium: true },
+    { slug: 'services_utiles', label: t('cat_services_utiles'), icon: '⚡', isPremium: true },
+    { slug: 'agriculture', label: t('cat_agriculture'), icon: '🌾', isPremium: true },
+    { slug: 'loisirs_tourisme', label: t('cat_loisirs'), icon: '🏖️', isPremium: true },
+    { slug: 'transport', label: t('cat_transport'), icon: '🚌', isPremium: true },
   ], [t]);
 
   return (
     <View style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.brand}>{t('brand')}</Text>
         <Text style={styles.slogan}>{t('slogan')}</Text>
         <Text style={styles.greeting}>{greeting}</Text>
       </View>
-      
-      <ScrollView 
-        horizontal 
-        showsHorizontalScrollIndicator={false} 
-        contentContainerStyle={styles.carousel}
-      >
-        {categories.map((c) => (
-          <TouchableOpacity 
-            key={c.slug} 
-            style={styles.card}
-            onPress={() => router.push(`/category/${c.slug}`)}
-          >
-            <Image source={ICONS[c.slug as keyof typeof ICONS]} style={styles.icon} />
-            <Text style={styles.cardLabel}>{c.label}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+
+      {/* Welcome Card */}
+      <View style={styles.welcomeCard}>
+        <Text style={styles.welcomeTitle}>{t('welcome')}</Text>
+        <Text style={styles.welcomeDescription}>
+          {t('premiumDescription')}
+        </Text>
+      </View>
+
+      {/* Categories Carousel */}
+      <View style={styles.categoriesSection}>
+        <Text style={styles.sectionTitle}>{t('categories')}</Text>
+        
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false} 
+          contentContainerStyle={styles.carousel}
+          style={styles.carouselContainer}
+        >
+          {categories.map((category) => (
+            <TouchableOpacity 
+              key={category.slug} 
+              style={[
+                styles.categoryCard,
+                category.isPremium && styles.categoryCardPremium
+              ]}
+              onPress={() => router.push(`/category/${category.slug}`)}
+            >
+              {category.isPremium && (
+                <View style={styles.premiumBadge}>
+                  <Text style={styles.premiumBadgeText}>✨</Text>
+                </View>
+              )}
+              
+              <Text style={styles.categoryIcon}>{category.icon}</Text>
+              
+              <Text style={[
+                styles.categoryLabel,
+                category.isPremium && styles.categoryLabelPremium
+              ]}>
+                {category.label}
+              </Text>
+              
+              {category.isPremium && (
+                <Text style={styles.premiumText}>Premium</Text>
+              )}
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
     </View>
   );
 }
