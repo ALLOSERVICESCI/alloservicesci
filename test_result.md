@@ -629,15 +629,18 @@ frontend:
         comment: "✅ HOME HEADER LOGO VS PROFILE LOGO STYLE TESTING COMPLETE: Comprehensive testing completed on both iPhone 14 (390x844) and Galaxy S21 (360x800) viewports. DETAILED FINDINGS: 1) ✅ Logo container dimensions perfectly matched: Both Home and Profile screens show 140x140px containers with 0px size difference. 2) ✅ Border styling identical: Both screens have 4px rgb(10, 124, 58) green borders (#0A7C3A) as specified. 3) ✅ Background color consistent: Both containers have white (rgb(255, 255, 255)) backgrounds. 4) ✅ Inner logo sizing confirmed: 120x120px inner logo images detected on both screens. 5) ✅ Visual consistency verified: Screenshots captured on both devices show identical circular logo styling, positioning, and shadow/elevation effects. 6) ✅ Cross-device compatibility: Perfect consistency maintained across iPhone 14 (390x844) and Galaxy S21 (360x800) viewports. All specified requirements met successfully - logo containers are ~140x140 with green border (#0A7C3A) 4px, inner logos ~120x120 with white borders. Visual consistency between Home and Profile headers is perfect. No differences detected."
   - task: "Profile title matches Home title style"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/app/(tabs)/profile.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Profile brand style set to fontSize 32, fontWeight '800', color #0A7C3A, textAlign center — matching Home title."
+      - working: true
+        agent: "testing"
+        comment: "✅ PROFILE vs HOME TITLE STYLE TESTING COMPLETE: Comprehensive testing completed successfully on both iPhone 14 (390x844) and Galaxy S21 (360x800) viewports. DETAILED FINDINGS: 1) ✅ Font Size: Perfect match - Both Home and Profile screens show exactly 32px font size (0px difference). 2) ✅ Font Weight: Perfect match - Both screens use font weight 800 (bold). 3) ✅ Color: Perfect match - Both screens use identical color rgb(10, 124, 58) which corresponds to #0A7C3A. 4) ✅ Alignment: Perfect match - Both titles are perfectly centered (iPhone 14: centerX=195.0 vs screenCenterX=195.0, Galaxy S21: centerX=180.0 vs screenCenterX=180.0). 5) ✅ Cross-device consistency: All styling properties remain identical across both mobile viewports. Screenshots captured for both screens on both devices. OVERALL RESULT: PASS - All criteria match perfectly. The Profile title style is 100% consistent with the Home title style as required."
   - task: "Home FAB Layah: logo mask (no green border), tooltip, nav, pulse"
     implemented: true
     working: true
