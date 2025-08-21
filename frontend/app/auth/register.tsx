@@ -56,6 +56,16 @@ export default function Register() {
         <TextInput placeholder={t('lastName')} value={last_name} onChangeText={setLast} style={styles.input} />
         <TextInput placeholder={t('emailOpt')} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" style={styles.input} />
         <TextInput placeholder={t('phonePh')} value={phone} onChangeText={setPhone} keyboardType="phone-pad" style={styles.input} />
+
+        {/* Bottom Tab Quick Nav (icons) */}
+        <View style={styles.bottomTabs}>
+          <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
+          <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
+          <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
+          <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
+          <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
+        </View>
+
         <TouchableOpacity disabled={loading} onPress={onSubmit} style={styles.btn}><Text style={styles.btnText}>{loading ? '...' : t('submit')}</Text></TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
