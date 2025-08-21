@@ -29,8 +29,9 @@ export default function Home() {
   ], [t]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
-      <View style={styles.pageWrapper}>
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+        <View style={styles.pageWrapper}>
         {/* Header with Logo */}
         <View style={styles.header}>
           {/* Logo Section */}
