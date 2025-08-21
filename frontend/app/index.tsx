@@ -12,23 +12,23 @@ export default function Index() {
 
   const titleOpacity = useRef(new Animated.Value(0)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
-  const logoScale = useRef(new Animated.Value(0.96)).current;
+  const logoScale = useRef(new Animated.Value(0.98)).current;
   const subOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const seq = Animated.sequence([
-      Animated.timing(titleOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+      Animated.timing(titleOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
       Animated.parallel([
-        Animated.timing(logoOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.ease), useNativeDriver: true }),
-        Animated.timing(logoScale, { toValue: 1, duration: 300, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+        Animated.timing(logoOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+        Animated.timing(logoScale, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
       ]),
-      Animated.timing(subOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+      Animated.timing(subOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
     ]);
     seq.start();
 
     const timer = setTimeout(() => {
       router.replace('/(tabs)/home');
-    }, 3000);
+    }, 4000);
     return () => { clearTimeout(timer); };
   }, [router, titleOpacity, logoOpacity, logoScale, subOpacity]);
 
