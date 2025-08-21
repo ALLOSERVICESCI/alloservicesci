@@ -11,7 +11,7 @@ export default function Home() {
   const { user } = useAuth();
   const { t } = useI18n();
   const router = useRouter();
-  const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : t('welcome');
+  const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
   const categories = useMemo(() => [
     { slug: 'urgence', label: t('cat_urgence'), icon: '🚨', isPremium: false },
