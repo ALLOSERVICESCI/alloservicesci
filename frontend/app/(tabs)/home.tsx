@@ -154,10 +154,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   
-  // Welcome Card - SANS TITRE BIENVENUE
+  // Welcome Card - EN BAS
   welcomeCard: {
     marginHorizontal: 20,
-    marginVertical: 16,
+    marginVertical: 20,
+    marginBottom: 40,
     padding: 20,
     backgroundColor: '#fff',
     borderRadius: 16,
@@ -172,9 +173,11 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
 
-  // Categories Section
+  // Categories Section - CENTRÉE AU MILIEU
   categoriesSection: {
-    marginTop: 10,
+    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: 40,
   },
   sectionTitle: {
     fontSize: 22,
