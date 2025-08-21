@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
   },
   categoryCardPremium: {
     borderColor: '#0A7C3A',
-    borderWidth: 0.5,
+    borderWidth: 0,
     backgroundColor: '#fff',
   },
   premiumBadge: {
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderWidth: 0.5,
+    borderWidth: 0,
     borderColor: '#0A7C3A',
   },
   premiumBadgeText: {
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    borderWidth: 0.5,
+    borderWidth: 0,
     borderColor: '#0A7C3A',
     resizeMode: 'contain',
     backgroundColor: '#fff',
