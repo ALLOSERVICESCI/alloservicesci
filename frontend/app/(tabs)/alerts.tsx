@@ -10,6 +10,23 @@ export default function Alerts() {
   const [loading, setLoading] = useState(true);
   const { t } = useI18n();
 
+  // Robust header image handling (prefetch + fallback local)
+  const REMOTE_ALERTS_BG = 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/jym9kzrr_bg-alertes.png';
+  const LOCAL_ALERTS_BG = require('../../assets/headers/headers/alertes_bg.png');
+  const [headerSource, setHeaderSource] = useState<any>(LOCAL_ALERTS_BG);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const url = `${REMOTE_ALERTS_BG}?v=2`;
+        const ok = await Image.prefetch(url);
+        if (mounted && ok) setHeaderSource({ uri: url });
+      } catch {}
+    })();
+    return () => { mounted = false; };
+  }, []);
+
   const fetchAlerts = async () => {
     try {
       setLoading(true);
