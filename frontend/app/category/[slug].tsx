@@ -132,7 +132,7 @@ export default function CategoryPage() {
 }
 
 const styles = StyleSheet.create({
-  header: { height: 260, justifyContent: 'flex-end' },
+  header: { height: 280, justifyContent: 'flex-end' },
   urgencyImage: { resizeMode: 'cover' },
   // Aligne visuellement le bas de l'image Santé au bas du header
   santeImage: { resizeMode: 'cover', transform: [{ translateY: 18 }] },
