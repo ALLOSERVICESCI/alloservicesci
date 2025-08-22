@@ -51,6 +51,8 @@ export default function CategoryPage() {
   }, [s]);
 
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
+  // Titre avec retour manuel pour Services publics
+  const displayLabel = s === 'services_publics' ? 'Services\npublics' : catLabel;
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
