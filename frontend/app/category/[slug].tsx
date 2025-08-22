@@ -59,7 +59,7 @@ export default function CategoryPage() {
         <View style={styles.lightOverlay} />
         {/* Dégradé bas pour lisibilité */}
         <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.6)']} locations={[0,1]} style={styles.overlay} />
-        <View style={styles.headerContent}>
+        <View style={[styles.headerContent, s==='urgence' && styles.urgencyContent]}>
           {s === 'urgence' ? (
             <Text style={styles.urgencyTitle}>Urgence</Text>
           ) : (
