@@ -60,6 +60,10 @@ export default function Alerts() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
+  header: { height: 200, justifyContent: 'flex-end' },
+  overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
+  headerBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingBottom: 20, paddingTop: 40 },
+  headerTitle: { fontSize: 24, fontWeight: '800', color: '#fff' },
   brandBar: { paddingTop: 20, paddingHorizontal: 16, paddingBottom: 8 },
   brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
