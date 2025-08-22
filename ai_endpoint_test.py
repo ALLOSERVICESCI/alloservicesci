@@ -240,20 +240,24 @@ class AIEndpointTester:
 
     def run_review_tests(self):
         """Run the specific tests requested in the review"""
-        print(f"🤖 AI Endpoint Review Tests")
+        print(f"🤖 AI Endpoint Review Tests - Allô IA (Emergent Option B)")
         print(f"Base URL: {self.base_url}")
         print("=" * 60)
         
         print("Testing requirements from review request:")
-        print("1) Verify /api/health returns 200 ok")
-        print("2) Call POST /api/ai/chat with minimal payload, expect 500 if EMERGENT_API_KEY not configured")
-        print("3) Ensure existing routes remain unaffected")
-        print("4) Do NOT attempt to provide a real key in the test")
+        print("1) GET /api/health → 200 {status: ok}")
+        print("2) POST /api/ai/chat without EMERGENT_API_KEY → 500 with explicit message")
+        print("3) POST /api/ai/chat with key (clé déjà en backend/.env) → 200")
+        print("   - stream=true: vérifier flux SSE 'data: {\"content\": ...}' et terminaison [DONE]")
+        print("   - stream=false: vérifier JSON {content: ...}")
+        print("4) Régression: endpoints critiques doivent rester OK")
         print()
         
         # Run the specific tests
         self.test_health_endpoint()
         self.test_ai_chat_endpoint_no_key()
+        self.test_ai_chat_streaming()
+        self.test_ai_chat_non_streaming()
         self.test_existing_routes_unaffected()
         
         # Summary
