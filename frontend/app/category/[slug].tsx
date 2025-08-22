@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   headerContent: { padding: 16 },
   urgencyContent: { alignItems: 'flex-start', justifyContent: 'center', height: '100%', paddingBottom: 0 },
   urgencyTitleWrap: { position: 'relative', marginTop: -4 },
-  urgencyTitleStroke: { color: 'transparent', fontSize: 30, fontWeight: '800', letterSpacing: 0.2, textTransform: 'uppercase', textAlign: 'left',
+  urgencyTitleStroke: { color: 'transparent', fontSize: 30, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase', textAlign: 'left',
     textShadowColor: 'rgba(0,0,0,0.6)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 1.5, position: 'absolute', left: 0, top: 0 },
   brand: { color: '#fff', fontSize: 16, fontWeight: '800' },
   slogan: { color: '#E8F0E8', fontSize: 12, marginTop: 2 },
