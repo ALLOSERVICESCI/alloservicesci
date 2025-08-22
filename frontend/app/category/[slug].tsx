@@ -79,7 +79,7 @@ export default function CategoryPage() {
 }
 
 const styles = StyleSheet.create({
-  header: { height: 200, justifyContent: 'flex-end' },
+  header: { height: 260, justifyContent: 'flex-end' },
   urgencyImage: { resizeMode: 'cover' },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
   headerContent: { padding: 16 },
