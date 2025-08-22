@@ -108,15 +108,18 @@ user_problem_statement: "Build Allô Services CI mobile app backend with MongoDB
 backend:
   - task: "Fix Allô IA Emergent client (replace wrong import, set AsyncOpenAI base_url)"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Bug root cause: incorrect import from emergent causing ImportError and 500. Implemented fix: use AsyncOpenAI with EMERGENT_API_KEY and base_url env (default https://api.emergentai.dev/v1). Updated requirements.txt to openai>=1.40.0."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE: AI chat endpoint failing due to network connectivity issues with Emergent API. Testing results: 1) ✅ Health endpoint working (200 OK). 2) ❌ AI chat endpoint returns 500 'Internal Server Error' (not JSON) due to 'Connection error' in backend logs. 3) ❌ Both streaming and non-streaming modes fail with same connection error. 4) ✅ Regression tests pass - auth/register works, other endpoints respond gracefully. ROOT CAUSE: Cannot resolve host 'api.emergentai.dev' - DNS resolution fails with 'Could not resolve host' error. This suggests either: (a) Domain doesn't exist/has DNS issues, (b) Network restrictions in container, or (c) API endpoint URL has changed. EMERGENT_API_KEY is configured but cannot be validated due to connectivity issues. Backend implementation appears correct but external API is unreachable."
   - task: "Trigger targeted notification (Bouaké, fr)"
     implemented: true
     working: true
