@@ -688,5 +688,11 @@ class BackendTester:
 
 if __name__ == "__main__":
     tester = BackendTester()
-    success = tester.run_all_tests()
+    
+    # Check if we should run focused Emergent AI tests only
+    if len(sys.argv) > 1 and sys.argv[1] == "--emergent-only":
+        success = tester.run_emergent_ai_tests()
+    else:
+        success = tester.run_all_tests()
+    
     sys.exit(0 if success else 1)
