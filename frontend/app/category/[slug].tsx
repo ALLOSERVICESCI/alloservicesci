@@ -133,6 +133,8 @@ export default function CategoryPage() {
 const styles = StyleSheet.create({
   header: { height: 260, justifyContent: 'flex-end' },
   urgencyImage: { resizeMode: 'cover' },
+  // Aligne visuellement le bas de l'image Santé au bas du header
+  santeImage: { resizeMode: 'cover', transform: [{ translateY: 18 }] },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
   lightOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(255,255,255,0.10)' },
   headerContent: { paddingTop: 16, paddingRight: 16, paddingBottom: 16, paddingLeft: 20 },
