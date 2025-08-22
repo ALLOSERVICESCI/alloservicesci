@@ -107,8 +107,8 @@ export default function CategoryPage() {
         <LinearGradient colors={gradientColors} locations={[0,1]} style={styles.overlay} />
         <View style={[styles.headerContent, styles.urgencyContent]}>
           <View style={styles.urgencyTitleWrap}>
-            <Text style={styles.urgencyTitleStroke}>{displayLabel}</Text>
-            <Text style={styles.urgencyTitle}>{displayLabel}</Text>
+            <Text style={[styles.urgencyTitleStroke, { fontSize: titleFontSize, letterSpacing: titleLetterSpacing, textAlign: textAlignValue }]}>{displayLabel}</Text>
+            <Text style={[styles.urgencyTitle, { fontSize: titleFontSize, letterSpacing: titleLetterSpacing, textAlign: textAlignValue }]}>{displayLabel}</Text>
           </View>
         </View>
       </ImageBackground>
