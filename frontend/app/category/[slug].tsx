@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   greeting: { color: '#D6F5E2', fontSize: 12, marginTop: 4, fontWeight: '700' },
   headerTitle: { color: '#fff', fontSize: 22, fontWeight: '800', marginTop: 8 },
   urgencyTitle: { color: '#fff', fontSize: 32, fontWeight: '800', letterSpacing: 0, textTransform: 'uppercase', textAlign: 'left',
-    textShadowColor: 'rgba(0,0,0,0.4)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4, fontFamily: 'InterBlack' },
+    textShadowColor: 'rgba(0,0,0,0.4)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
   bottomTabs: {
     flexDirection: 'row',
     alignItems: 'center',
