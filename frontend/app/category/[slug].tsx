@@ -63,8 +63,8 @@ export default function CategoryPage() {
         <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.65)']} locations={[0,1]} style={styles.overlay} />
         <View style={[styles.headerContent, styles.urgencyContent]}>
           <View style={styles.urgencyTitleWrap}>
-            <Text style={styles.urgencyTitleStroke}>{catLabel}</Text>
-            <Text style={styles.urgencyTitle}>{catLabel}</Text>
+            <Text style={styles.urgencyTitleStroke}>{displayLabel}</Text>
+            <Text style={styles.urgencyTitle}>{displayLabel}</Text>
           </View>
         </View>
       </ImageBackground>
