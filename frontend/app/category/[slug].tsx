@@ -86,6 +86,11 @@ export default function CategoryPage() {
   };
   const displayLabel = lineBreaks[lang]?.[s] ?? catLabel;
 
+  // Dynamique: taille/espacement/alignement selon langue
+  const titleFontSize = lang === 'en' ? 26 : 25;
+  const titleLetterSpacing = lang === 'ar' ? 0.3 : 0.5;
+  const textAlignValue: 'left' | 'right' = isRTL ? 'right' : 'left';
+
   // Ajuste l'opacité du dégradé selon la luminosité supposée des images
   const BRIGHT = new Set(['urgence','sante','education','agriculture','loisirs_tourisme','services_utiles','examens_concours']);
   const DARK = new Set(['services_publics','transport']);
