@@ -78,7 +78,8 @@ export default function Alerts() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   header: { height: 260, justifyContent: 'flex-end' },
-  headerImage: { borderRadius: 0 },
+  // Fine-tune framing: small downward shift to reveal more of the top subject
+  headerImage: { transform: [{ translateY: 8 }] },
   overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   headerBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingBottom: 20, paddingTop: 40 },
   headerTitle: { fontSize: 24, fontWeight: '800', color: '#fff' },
