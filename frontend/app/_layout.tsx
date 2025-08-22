@@ -10,6 +10,7 @@ import { View, ActivityIndicator } from 'react-native';
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     ...Ionicons.font,
+    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
   });
 
   if (!fontsLoaded) {
