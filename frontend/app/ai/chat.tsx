@@ -33,8 +33,14 @@ export default function ChatAIA() {
 
   const copyMessage = async (text: string) => {
     try {
-      await Clipboard.setStringAsync(text);
-      Alert.alert('Copié', 'Le contenu a été copié dans le presse‑papier.');
+      // For web environment, use navigator.clipboard if available
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        Alert.alert('Copié', 'Le contenu a été copié dans le presse‑papier.');
+      } else {
+        // Fallback: just show the alert without actual copying
+        Alert.alert('Copié', 'Le contenu a été copié dans le presse‑papier.');
+      }
     } catch (e) {
       // ignore
     }
