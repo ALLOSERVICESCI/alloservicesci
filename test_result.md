@@ -57,8 +57,10 @@
 ##   test_priority: "high_first"  # or "sequential" or "stuck_first"
 ##
 ## agent_communication:
-##     -agent: "main"  # or "testing" or "user"
-##     -message: "Communication message between agents"
+##   - agent: "main"
+##     message: "User confirmed plan: Option B (Emergent), UI error message + fallback approved, run backend tests after fix. Implementing frontend chat error UX and then fixing backend LLM client import to Emergent Integrations. Update tests focus accordingly."
+##   - agent: "main"
+##     message: "Frontend chat updated to show 'Service IA indisponible' on 500 and fallback to non-streaming. Proceeding to backend fix and tests."
 
 # Protocol Guidelines for Main agent
 #
