@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, FlatList, SafeAreaView, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as Clipboard from 'expo-clipboard';
 
 // Simple message type
 type Msg = { id: string; role: 'user' | 'assistant' | 'system'; content: string; ts: number };
+
+const IA_DOWN_MSG = 'Service IA indisponible. Réessayez plus tard.';
 
 export default function ChatAIA() {
   const [messages, setMessages] = useState<Msg[]>([
@@ -19,6 +20,11 @@ export default function ChatAIA() {
   const [sending, setSending] = useState(false);
   const listRef = useRef<FlatList>(null);
 
+  const pushAssistant = (content: string) => {
+    const msg: Msg = { id: String(Date.now() + Math.random()), role: 'assistant', content, ts: Date.now() };
+    setMessages((prev) => [...prev, msg]);
+  };
+
   const send = async () => {
     const text = input.trim();
     if (!text || sending) return;
@@ -28,19 +34,13 @@ export default function ChatAIA() {
     setInput('');
 
     try {
-      // Try streaming
+      // Try streaming first; if it fails, fallback to non-streaming
       const ok = await tryStream([...messages, userMsg]);
       if (!ok) {
         await tryComplete([...messages, userMsg]);
       }
     } catch (e) {
-      const reply: Msg = {
-        id: String(Date.now() + 1),
-        role: 'assistant',
-        ts: Date.now() + 1,
-        content: "Désolé, une erreur est survenue. Réessayez dans un instant.",
-      };
-      setMessages((prev) => [...prev, reply]);
+      pushAssistant('Désolé, une erreur est survenue. Réessayez dans un instant.');
     } finally {
       setSending(false);
       setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 50);
@@ -59,7 +59,16 @@ export default function ChatAIA() {
           max_tokens: 1000,
         }),
       });
-      if (!resp.ok || !resp.body) return false;
+
+      if (!resp.ok) {
+        if (resp.status >= 500) {
+          pushAssistant(IA_DOWN_MSG);
+          return true; // handled with explicit message; do not fallback
+        }
+        return false; // allow fallback for non-500
+      }
+      if (!resp.body) return false;
+
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
 
@@ -81,6 +90,12 @@ export default function ChatAIA() {
             }
             try {
               const parsed = JSON.parse(data);
+              if (parsed.error) {
+                // backend sent error during stream
+                asst.content = IA_DOWN_MSG;
+                setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m));
+                return true;
+              }
               if (parsed.content) {
                 asst.content += parsed.content;
                 setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m));
@@ -91,19 +106,39 @@ export default function ChatAIA() {
       }
       return true;
     } catch (e) {
-      return false;
+      return false; // fallback to non-streaming
     }
   };
 
   const tryComplete = async (conv: Msg[]) => {
-    const resp = await fetch('/api/ai/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: conv.map(m => ({ role: m.role, content: m.content })), stream: false, temperature: 0.5, max_tokens: 1000 }),
-    });
-    const data = await resp.json();
-    const asst: Msg = { id: String(Date.now() + 3), role: 'assistant', content: data.content || '', ts: Date.now() + 3 };
-    setMessages((prev) => [...prev, asst]);
+    try {
+      const resp = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: conv.map(m => ({ role: m.role, content: m.content })), stream: false, temperature: 0.5, max_tokens: 1000 }),
+      });
+
+      if (!resp.ok) {
+        if (resp.status >= 500) {
+          pushAssistant(IA_DOWN_MSG);
+          return;
+        }
+        // Try to parse error detail for non-500
+        let detail = '';
+        try {
+          const err = await resp.json();
+          detail = err?.detail || '';
+        } catch {}
+        pushAssistant(detail || 'Une erreur est survenue.');
+        return;
+      }
+
+      const data = await resp.json();
+      const content = data?.content || data?.detail || '';
+      pushAssistant(content || '');
+    } catch (e) {
+      pushAssistant('Une erreur est survenue.');
+    }
   };
 
   const renderItem = ({ item }: { item: Msg }) => {
