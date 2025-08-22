@@ -55,12 +55,21 @@ export default function CategoryPage() {
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground source={bg} style={styles.header} imageStyle={s==='urgence' ? styles.urgencyImage : undefined} resizeMode="cover">
+        {/* Éclaircissement global léger */}
+        <View style={styles.lightOverlay} />
+        {/* Dégradé bas pour lisibilité */}
         <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.6)']} locations={[0,1]} style={styles.overlay} />
         <View style={styles.headerContent}>
-          <Text style={styles.brand}>{t('brand')}</Text>
-          <Text style={styles.slogan}>{t('slogan')}</Text>
-          {!!greeting && <Text style={styles.greeting}>{greeting}</Text>}
-          <Text style={styles.headerTitle}>{catLabel}</Text>
+          {s === 'urgence' ? (
+            <Text style={styles.urgencyTitle}>Urgence</Text>
+          ) : (
+            <>
+              <Text style={styles.brand}>{t('brand')}</Text>
+              <Text style={styles.slogan}>{t('slogan')}</Text>
+              {!!greeting && <Text style={styles.greeting}>{greeting}</Text>}
+              <Text style={styles.headerTitle}>{catLabel}</Text>
+            </>
+          )}
         </View>
       </ImageBackground>
       <View style={{ padding: 16, flex: 1 }}>
