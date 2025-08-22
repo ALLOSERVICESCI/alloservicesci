@@ -14,7 +14,7 @@ export default function ChatAIA() {
       id: 'welcome',
       role: 'assistant',
       ts: Date.now(),
-      content: "Bonjour, je suis Allô IA — l’assistant IA d’Allô Services CI. Posez‑moi vos questions en lien avec la Côte d’Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
+      content: "Bonjour, je suis Allô IA — l'assistant IA d'Allô Services CI. Posez‑moi vos questions en lien avec la Côte d'Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
     },
   ]);
   const [input, setInput] = useState('');
@@ -22,17 +22,17 @@ export default function ChatAIA() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [temperature, setTemperature] = useState(0.5);
-  const listRef = useRef&lt;FlatList&gt;(null);
-  const abortRef = useRef&lt;AbortController | null&gt;(null);
+  const listRef = useRef<FlatList>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  const scrollToEnd = () =&gt; setTimeout(() =&gt; listRef.current?.scrollToEnd({ animated: true }), 50);
+  const scrollToEnd = () => setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 50);
 
-  const pushAssistant = (content: string) =&gt; {
+  const pushAssistant = (content: string) => {
     const msg: Msg = { id: String(Date.now() + Math.random()), role: 'assistant', content, ts: Date.now() };
-    setMessages((prev) =&gt; [...prev, msg]);
+    setMessages((prev) => [...prev, msg]);
   };
 
-  const copyMessage = async (text: string) =&gt; {
+  const copyMessage = async (text: string) => {
     try {
       await Clipboard.setStringAsync(text);
       Alert.alert('Copié', 'Le contenu a été copié dans le presse‑papier.');
@@ -41,14 +41,14 @@ export default function ChatAIA() {
     }
   };
 
-  const adjustTemp = (delta: number) =&gt; {
-    setTemperature((prev) =&gt; {
+  const adjustTemp = (delta: number) => {
+    setTemperature((prev) => {
       const next = Math.max(0, Math.min(2, parseFloat((prev + delta).toFixed(1))));
       return next;
     });
   };
 
-  const stopStreaming = () =&gt; {
+  const stopStreaming = () => {
     if (abortRef.current) {
       abortRef.current.abort();
       abortRef.current = null;
@@ -56,12 +56,12 @@ export default function ChatAIA() {
     setIsStreaming(false);
   };
 
-  const send = async () =&gt; {
+  const send = async () => {
     const text = input.trim();
     if (!text || sending || isStreaming) return;
     setSending(true);
     const userMsg: Msg = { id: String(Date.now()), role: 'user', content: text, ts: Date.now() };
-    setMessages((prev) =&gt; [...prev, userMsg]);
+    setMessages((prev) => [...prev, userMsg]);
     setInput('');
 
     try {
@@ -78,7 +78,7 @@ export default function ChatAIA() {
     }
   };
 
-  const tryStream = async (conv: Msg[]): Promise&lt;boolean&gt; =&gt; {
+  const tryStream = async (conv: Msg[]): Promise<boolean> => {
     try {
       setIsStreaming(true);
       const ctrl = new AbortController();
@@ -89,7 +89,7 @@ export default function ChatAIA() {
         headers: { 'Content-Type': 'application/json' },
         signal: ctrl.signal,
         body: JSON.stringify({
-          messages: conv.map(m =&gt; ({ role: m.role, content: m.content })),
+          messages: conv.map(m => ({ role: m.role, content: m.content })),
           stream: true,
           temperature: temperature,
           max_tokens: 1000,
@@ -99,7 +99,7 @@ export default function ChatAIA() {
       if (!resp.ok) {
         setIsStreaming(false);
         abortRef.current = null;
-        if (resp.status &gt;= 500) {
+        if (resp.status >= 500) {
           pushAssistant(IA_DOWN_MSG);
           return true; // handled with explicit message; do not fallback
         }
@@ -115,7 +115,7 @@ export default function ChatAIA() {
       const decoder = new TextDecoder();
 
       const asst: Msg = { id: String(Date.now() + 2), role: 'assistant', content: '', ts: Date.now() + 2 };
-      setMessages((prev) =&gt; [...prev, asst]);
+      setMessages((prev) => [...prev, asst]);
 
       let buffer = '';
       while (true) {
@@ -136,14 +136,14 @@ export default function ChatAIA() {
               const parsed = JSON.parse(data);
               if (parsed.error) {
                 asst.content = IA_DOWN_MSG;
-                setMessages((prev) =&gt; prev.map(m =&gt; m.id === asst.id ? { ...m, content: asst.content } : m));
+                setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m));
                 setIsStreaming(false);
                 abortRef.current = null;
                 return true;
               }
               if (parsed.content) {
                 asst.content += parsed.content;
-                setMessages((prev) =&gt; prev.map(m =&gt; m.id === asst.id ? { ...m, content: asst.content } : m));
+                setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m));
               }
             } catch {}
           }
@@ -163,16 +163,16 @@ export default function ChatAIA() {
     }
   };
 
-  const tryComplete = async (conv: Msg[]) =&gt; {
+  const tryComplete = async (conv: Msg[]) => {
     try {
       const resp = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: conv.map(m =&gt; ({ role: m.role, content: m.content })), stream: false, temperature: temperature, max_tokens: 1000 }),
+        body: JSON.stringify({ messages: conv.map(m => ({ role: m.role, content: m.content })), stream: false, temperature: temperature, max_tokens: 1000 }),
       });
 
       if (!resp.ok) {
-        if (resp.status &gt;= 500) {
+        if (resp.status >= 500) {
           pushAssistant(IA_DOWN_MSG);
           return;
         }
@@ -194,83 +194,83 @@ export default function ChatAIA() {
     }
   };
 
-  const renderItem = ({ item }: { item: Msg }) =&gt; {
+  const renderItem = ({ item }: { item: Msg }) => {
     const isUser = item.role === 'user';
     return (
-      &lt;TouchableOpacity
+      <TouchableOpacity
         activeOpacity={0.8}
-        onLongPress={() =&gt; !isUser &amp;&amp; item.content ? copyMessage(item.content) : undefined}
-      &gt;
-        &lt;View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}&gt;
-          &lt;Text style={[styles.bubbleText, isUser ? styles.userText : styles.assistantText]}&gt;{item.content}&lt;/Text&gt;
-        &lt;/View&gt;
-      &lt;/TouchableOpacity&gt;
+        onLongPress={() => !isUser && item.content ? copyMessage(item.content) : undefined}
+      >
+        <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
+          <Text style={[styles.bubbleText, isUser ? styles.userText : styles.assistantText]}>{item.content}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
   return (
-    &lt;SafeAreaView style={{ flex: 1, backgroundColor: '#F8FAF9' }}&gt;
-      &lt;KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}&gt;
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8FAF9' }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         {/* Header */}
-        &lt;View style={styles.header}&gt;
-          &lt;View style={{ flexDirection: 'row', alignItems: 'center' }}&gt;
-            &lt;Ionicons name="chatbubble-ellipses" size={22} color="#0A7C3A" /&gt;
-            &lt;Text style={styles.headerTitle}&gt;Allô IA&lt;/Text&gt;
-          &lt;/View&gt;
-          &lt;View style={styles.headerActions}&gt;
-            &lt;View style={styles.tempPill}&gt;
-              &lt;TouchableOpacity onPress={() =&gt; adjustTemp(-0.1)} style={styles.tempBtn}&gt;
-                &lt;Ionicons name="remove" size={16} color="#0A7C3A" /&gt;
-              &lt;/TouchableOpacity&gt;
-              &lt;Text style={styles.tempText}&gt;Temp. {temperature.toFixed(1)}&lt;/Text&gt;
-              &lt;TouchableOpacity onPress={() =&gt; adjustTemp(0.1)} style={styles.tempBtn}&gt;
-                &lt;Ionicons name="add" size={16} color="#0A7C3A" /&gt;
-              &lt;/TouchableOpacity&gt;
-            &lt;/View&gt;
-          &lt;/View&gt;
-        &lt;/View&gt;
+        <View style={styles.header}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name="chatbubble-ellipses" size={22} color="#0A7C3A" />
+            <Text style={styles.headerTitle}>Allô IA</Text>
+          </View>
+          <View style={styles.headerActions}>
+            <View style={styles.tempPill}>
+              <TouchableOpacity onPress={() => adjustTemp(-0.1)} style={styles.tempBtn}>
+                <Ionicons name="remove" size={16} color="#0A7C3A" />
+              </TouchableOpacity>
+              <Text style={styles.tempText}>Temp. {temperature.toFixed(1)}</Text>
+              <TouchableOpacity onPress={() => adjustTemp(0.1)} style={styles.tempBtn}>
+                <Ionicons name="add" size={16} color="#0A7C3A" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
 
         {/* List */}
-        &lt;FlatList
+        <FlatList
           ref={listRef}
           data={messages}
           renderItem={renderItem}
-          keyExtractor={(it) =&gt; it.id}
+          keyExtractor={(it) => it.id}
           contentContainerStyle={{ padding: 16, paddingBottom: 8 }}
           onContentSizeChange={scrollToEnd}
-        /&gt;
+        />
 
         {/* Typing indicator */}
-        {(sending || isStreaming) &amp;&amp; (
-          &lt;View style={styles.typingRow}&gt;
-            &lt;ActivityIndicator size="small" color="#0A7C3A" /&gt;
-            &lt;Text style={styles.typingText}&gt;Allô IA est en train d’écrire…&lt;/Text&gt;
-          &lt;/View&gt;
+        {(sending || isStreaming) && (
+          <View style={styles.typingRow}>
+            <ActivityIndicator size="small" color="#0A7C3A" />
+            <Text style={styles.typingText}>Allô IA est en train d'écrire…</Text>
+          </View>
         )}
 
         {/* Composer */}
-        &lt;View style={styles.composer}&gt;
-          &lt;TextInput
+        <View style={styles.composer}>
+          <TextInput
             style={styles.input}
             value={input}
             onChangeText={setInput}
             placeholder="Écrivez votre message (contexte CI uniquement)…"
             placeholderTextColor="#8AA39B"
             multiline
-          /&gt;
+          />
 
           {isStreaming ? (
-            &lt;TouchableOpacity onPress={stopStreaming} style={[styles.stopBtn]} disabled={!isStreaming}&gt;
-              &lt;Ionicons name="stop" size={18} color="#fff" /&gt;
-            &lt;/TouchableOpacity&gt;
+            <TouchableOpacity onPress={stopStreaming} style={[styles.stopBtn]} disabled={!isStreaming}>
+              <Ionicons name="stop" size={18} color="#fff" />
+            </TouchableOpacity>
           ) : (
-            &lt;TouchableOpacity onPress={send} style={[styles.sendBtn, (sending) &amp;&amp; { opacity: 0.6 }]} disabled={sending}&gt;
-              &lt;Ionicons name="send" size={18} color="#fff" /&gt;
-            &lt;/TouchableOpacity&gt;
+            <TouchableOpacity onPress={send} style={[styles.sendBtn, (sending) && { opacity: 0.6 }]} disabled={sending}>
+              <Ionicons name="send" size={18} color="#fff" />
+            </TouchableOpacity>
           )}
-        &lt;/View&gt;
-      &lt;/KeyboardAvoidingView&gt;
-    &lt;/SafeAreaView&gt;
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
