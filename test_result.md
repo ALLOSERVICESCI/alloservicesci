@@ -513,13 +513,15 @@ metadata:
 
 test_plan:
   current_focus:
-    - "UI sanity across tabs and categories after recent header changes"
-    - "Network connectivity: backend /api health, AI chat endpoint"
-    - "Images load (remote + local fallbacks)"
+    - "Tab bar: Alerts icon styled (halo + pulse) and visible"
+    - "Category pages bottom shortcuts: Alerts icon styled and navigates"
+    - "Alerts header image forced display + fallback"
+    - "Allô IA chat interactions"
+    - "Backend connectivity /api/health and /api/ai/chat"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
   test_all: true
-  test_priority: "ui_and_connectivity"
+  test_priority: "ui_and_connectivity_nav_alerts"
 
 frontend:
   - task: "Home FAB Layah: size, tooltip, drag, persistence, navigation"
