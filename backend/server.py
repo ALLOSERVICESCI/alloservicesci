@@ -284,10 +284,12 @@ def get_openai_client():
         if not EMERGENT_API_KEY:
             raise HTTPException(status_code=500, detail="EMERGENT_API_KEY not configured")
         try:
-            from emergent import OpenAIClient  # type: ignore
-            _openai_client = OpenAIClient(api_key=EMERGENT_API_KEY)
+            # Use Emergent Integrations OpenAI-compatible async client
+            from openai import AsyncOpenAI  # type: ignore
+            base_url = os.environ.get('EMERGENT_BASE_URL', 'https://api.emergentai.dev/v1')
+            _openai_client = AsyncOpenAI(api_key=EMERGENT_API_KEY, base_url=base_url)
         except Exception as e:
-            logger.exception("Failed to init Emergent OpenAI client")
+            logger.exception("Failed to init Emergent OpenAI-compatible client")
             raise HTTPException(status_code=500, detail=f"Emergent client init failed: {e}")
     return _openai_client
 
