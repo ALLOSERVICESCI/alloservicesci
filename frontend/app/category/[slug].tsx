@@ -54,7 +54,7 @@ export default function CategoryPage() {
   const router = useRouter();
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <ImageBackground source={bg} style={styles.header} resizeMode="contain">
+      <ImageBackground source={bg} style={styles.header} imageStyle={s==='urgence' ? styles.urgencyImage : undefined} resizeMode="cover">
         <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.6)']} locations={[0,1]} style={styles.overlay} />
         <View style={styles.headerContent}>
           <Text style={styles.brand}>{t('brand')}</Text>
