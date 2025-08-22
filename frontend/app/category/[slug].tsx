@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
   headerContent: { padding: 16 },
   urgencyContent: { alignItems: 'flex-start', paddingBottom: 18 },
-  urgencyTitle: { color: '#fff', fontSize: 28, fontWeight: '900', letterSpacing: 1.2, textTransform: 'uppercase', textAlign: 'center',
+  urgencyTitle: { color: '#fff', fontSize: 32, fontWeight: '900', letterSpacing: 1.0, textTransform: 'uppercase', textAlign: 'left',
     textShadowColor: 'rgba(0,0,0,0.4)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
   brand: { color: '#fff', fontSize: 16, fontWeight: '800' },
   slogan: { color: '#E8F0E8', fontSize: 12, marginTop: 2 },
