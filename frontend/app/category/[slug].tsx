@@ -20,9 +20,33 @@ const HEADERS: Record<string, any> = {
 };
 
 function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
+  const pulse = new Animated.Value(0);
+  React.useEffect(() => {
+    Animated.loop(
+      Animated.timing(pulse, { toValue: 1, duration: 1400, useNativeDriver: true, easing: Easing.inOut(Easing.ease) })
+    ).start();
+  }, []);
+  const scale = pulse.interpolate({ inputRange: [0, 1], outputRange: [1, icon === 'megaphone' ? 1.12 : 1] });
+  const opacity = pulse.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1] });
+  const size = 20;
+  const ringSize = size + 8;
+  const haloSize = ringSize + 4;
+  const isAlert = icon === 'megaphone';
   return (
     <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', flex: 1 }}>
-      <Ionicons name={icon} size={20} color="#0A7C3A" />
+      {isAlert ? (
+        <Animated.View style={{ transform: [{ scale }], opacity }}>
+          <View style={{ width: haloSize, height: haloSize, borderRadius: haloSize/2, borderWidth: 2, borderColor: 'rgba(239,68,68,0.25)', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ width: ringSize, height: ringSize, borderRadius: ringSize/2, borderWidth: 2, borderColor: '#EF4444', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ width: size+4, height: size+4, borderRadius: (size+4)/2, backgroundColor: '#F59E0B', alignItems: 'center', justifyContent: 'center' }}>
+                <Ionicons name="warning" size={size-2} color="#fff" />
+              </View>
+            </View>
+          </View>
+        </Animated.View>
+      ) : (
+        <Ionicons name={icon} size={20} color="#0A7C3A" />
+      )}
       <Text style={{ color: '#0A7C3A', fontSize: 11, marginTop: 4 }}>{label}</Text>
     </TouchableOpacity>
   );
