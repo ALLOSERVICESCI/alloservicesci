@@ -513,12 +513,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Frontend Integration with Backend Endpoints"
-    - "EAS Update (OTA) Configuration"
+    - "UI sanity across tabs and categories after recent header changes"
+    - "Network connectivity: backend /api health, AI chat endpoint"
+    - "Images load (remote + local fallbacks)"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
-  test_all: false
-  test_priority: "high_first"
+  test_all: true
+  test_priority: "ui_and_connectivity"
 
 frontend:
   - task: "Home FAB Layah: size, tooltip, drag, persistence, navigation"
