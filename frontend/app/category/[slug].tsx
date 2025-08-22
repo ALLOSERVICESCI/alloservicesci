@@ -58,13 +58,20 @@ export default function CategoryPage() {
     : s === 'examens_concours' ? 'Examens\nconcours'
     : catLabel;
 
+  // Ajuste l'opacité du dégradé selon la luminosité supposée des images
+  const BRIGHT = new Set(['urgence','sante','education','agriculture','loisirs_tourisme']);
+  const DARK = new Set(['services_publics','transport']);
+  const baseAlpha = 0.65;
+  const gradientAlpha = BRIGHT.has(s) ? baseAlpha + 0.05 : DARK.has(s) ? baseAlpha - 0.05 : baseAlpha;
+  const gradientColors = ['rgba(0,0,0,0.0)', `rgba(0,0,0,${gradientAlpha})`];
+
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground source={bg} style={styles.header} imageStyle={s==='urgence' ? styles.urgencyImage : undefined} resizeMode="cover">
         {/* Éclaircissement global léger */}
         <View style={styles.lightOverlay} />
         {/* Dégradé bas pour lisibilité */}
-        <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.65)']} locations={[0,1]} style={styles.overlay} />
+        <LinearGradient colors={gradientColors} locations={[0,1]} style={styles.overlay} />
         <View style={[styles.headerContent, styles.urgencyContent]}>
           <View style={styles.urgencyTitleWrap}>
             <Text style={styles.urgencyTitleStroke}>{displayLabel}</Text>
