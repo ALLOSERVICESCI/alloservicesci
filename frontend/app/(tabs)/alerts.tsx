@@ -51,15 +51,24 @@ export default function Alerts() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} imageStyle={styles.headerImage} resizeMode="cover">
-        <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} style={styles.overlay} />
-        <View style={styles.headerBar}>
+      {SHOW_HEADER_IMAGE ? (
+        <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} imageStyle={styles.headerImage} resizeMode="cover">
+          <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} style={styles.overlay} />
+          <View style={styles.headerBar}>
+            <Text style={styles.headerTitle}>{t('tabAlerts')}</Text>
+            <Link href="/alerts/new" asChild>
+              <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
+            </Link>
+          </View>
+        </ImageBackground>
+      ) : (
+        <View style={[styles.header, styles.headerBar, { backgroundColor: '#0A7C3A' }]}>
           <Text style={styles.headerTitle}>{t('tabAlerts')}</Text>
           <Link href="/alerts/new" asChild>
             <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
           </Link>
         </View>
-      </ImageBackground>
+      )}
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
