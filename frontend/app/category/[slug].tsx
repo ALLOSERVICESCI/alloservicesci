@@ -32,7 +32,7 @@ export default function CategoryPage() {
   const s = Array.isArray(slug) ? slug[0] : slug || '';
   const bg = HEADERS[s] || HEADERS['urgence'];
   const router = useRouter();
-  const { t } = useI18n();
+  const { t, lang, isRTL } = useI18n();
   const { user } = useAuth();
 
   const catLabel = useMemo(() => {
