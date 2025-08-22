@@ -87,7 +87,7 @@ export default function CategoryPage() {
   const displayLabel = lineBreaks[lang]?.[s] ?? catLabel;
 
   // Ajuste l'opacité du dégradé selon la luminosité supposée des images
-  const BRIGHT = new Set(['urgence','sante','education','agriculture','loisirs_tourisme']);
+  const BRIGHT = new Set(['urgence','sante','education','agriculture','loisirs_tourisme','services_utiles','examens_concours']);
   const DARK = new Set(['services_publics','transport']);
   const baseAlpha = 0.65;
   const gradientAlpha = BRIGHT.has(s) ? baseAlpha + 0.05 : DARK.has(s) ? baseAlpha - 0.05 : baseAlpha;
