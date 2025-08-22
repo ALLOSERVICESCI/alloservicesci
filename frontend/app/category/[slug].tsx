@@ -117,7 +117,7 @@ export default function CategoryPage() {
       {/* Bottom Tab Quick Nav (icons) */}
       <View style={styles.bottomTabs}>
         <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
-        {/* Alerts tab shortcut removed per request */}
+        <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
         <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
         <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
         <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
