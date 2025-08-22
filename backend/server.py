@@ -45,7 +45,7 @@ api = APIRouter(prefix="/api")
 
 # CORS
 app.add_middleware(
-    CORSMWARE := CORSMiddleware,
+    CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
@@ -252,7 +252,7 @@ async def cinetpay_initiate(payload: PaymentInitInput):
         logger.exception("CinetPay init error")
         raise HTTPException(status_code=500, detail=str(e))
 
-# ---------- AI: Allô IA (OpenAI via Emergent) ----------
+# ---------- AI: Allô IA (Emergent Integrations) ----------
 class ChatMessage(BaseModel):
     role: Literal['system','user','assistant']
     content: str
@@ -264,50 +264,71 @@ class ChatRequest(BaseModel):
     max_tokens: Optional[int] = MAX_TOKENS_DEFAULT
 
 LAYAH_SYSTEM_PROMPT = (
-    "Assistant IA — Allô Services CI (Périmètre strict : Côte d’Ivoire)\n\n"
-    "RÔLE & MISSION\nTu es l’assistant IA de l’application ‘Allô Services CI’. Ton unique mission est d’aider les utilisateurs sur des sujets liés à la Côte d’Ivoire (CI) et de générer des documents conformes au contexte ivoirien.\n\n"
-    "PÉRIMÈTRE GÉOGRAPHIQUE\n- Tu ne traites QUE des informations concernant la Côte d’Ivoire.\n- Si la demande ne concerne pas la CI, refuse poliment et invite à reformuler en contexte ivoirien.\n\n"
+    "Assistant IA — Allô Services CI (Périmètre strict : Côte d'Ivoire)\n\n"
+    "RÔLE & MISSION\nTu es l'assistant IA de l'application 'Allô Services CI'. Ton unique mission est d'aider les utilisateurs sur des sujets liés à la Côte d'Ivoire (CI) et de générer des documents conformes au contexte ivoirien.\n\n"
+    "PÉRIMÈTRE GÉOGRAPHIQUE\n- Tu ne traites QUE des informations concernant la Côte d'Ivoire.\n- Si la demande ne concerne pas la CI, refuse poliment et invite à reformuler en contexte ivoirien.\n\n"
     "LANGUE & TON\n- Langue : Français (comprends le nouchi et normalise en français clair).\n- Ton : professionnel, respectueux, concis et actionnable.\n\n"
-    "FONCTIONS\n1) Réponses et conseils pratiques 100% CI.\n2) Génération de documents 100% CI (CV ATS, lettres, ordres de mission, attestations, etc.) sans inventer d’informations.\n3) Reformulation/synthèse/structuration.\n\n"
-    "FORMATAGE LOCAL\nTéléphone ‘+225 xx xx xx xx’, dates FR, FCFA, adresses ‘Quartier – Commune – Ville, Côte d’Ivoire’.\n\n"
-    "SÉCURITÉ CONTENUS\nRefuse injures/violence/incitation. En cas d’urgence: orienter vers services locaux.\n\n"
+    "FONCTIONS\n1) Réponses et conseils pratiques 100% CI.\n2) Génération de documents 100% CI (CV ATS, lettres, ordres de mission, attestations, etc.) sans inventer d'informations.\n3) Reformulation/synthèse/structuration.\n\n"
+    "FORMATAGE LOCAL\nTéléphone '+225 xx xx xx xx', dates FR, FCFA, adresses 'Quartier – Commune – Ville, Côte d'Ivoire'.\n\n"
+    "SÉCURITÉ CONTENUS\nRefuse injures/violence/incitation. En cas d'urgence: orienter vers services locaux.\n\n"
     "DONNÉES & SOURCES\nUtilise le contexte fourni (CI uniquement). Si incertitude: demande des précisions ou oriente. Ne pas halluciner.\n\n"
-    "PROCESSUS\n1) Vérifie le contexte CI. 2) Contrôle sûreté. 3) Si document: vérifier champs minimaux, demander manquants, formats locaux, ne pas inventer. 4) Si info: CI uniquement; si incertain: le dire + prochaine étape. 5) Re-scanne: aucune mention hors CI, pas d’insulte/violence, formats locaux."
+    "PROCESSUS\n1) Vérifie le contexte CI. 2) Contrôle sûreté. 3) Si document: vérifier champs minimaux, demander manquants, formats locaux, ne pas inventer. 4) Si info: CI uniquement; si incertain: le dire + prochaine étape. 5) Re-scanne: aucune mention hors CI, pas d'insulte/violence, formats locaux."
 )
 
 # Emergent client (lazy import to avoid hard fail if key missing)
-_openai_client = None
+_llm_chat_client = None
 
-def get_openai_client():
-    global _openai_client
-    if _openai_client is None:
+def get_llm_chat_client():
+    global _llm_chat_client
+    if _llm_chat_client is None:
         if not EMERGENT_API_KEY:
             raise HTTPException(status_code=500, detail="EMERGENT_API_KEY not configured")
         try:
-            # Use Emergent Integrations universal async client (no base_url)
-            from emergentintegrations import AsyncEmergentClient  # type: ignore
-            _openai_client = AsyncEmergentClient(api_key=EMERGENT_API_KEY)
+            # Use Emergent Integrations LlmChat client
+            from emergentintegrations.llm.chat import LlmChat
+            _llm_chat_client = LlmChat(
+                api_key=EMERGENT_API_KEY,
+                session_id="allo-services-ci",
+                system_message=LAYAH_SYSTEM_PROMPT
+            )
         except Exception as e:
-            logger.exception("Failed to init Emergent OpenAI-compatible client")
+            logger.exception("Failed to init Emergent LlmChat client")
             raise HTTPException(status_code=500, detail=f"Emergent client init failed: {e}")
-    return _openai_client
+    return _llm_chat_client
 
 async def stream_chat(messages: List[Dict[str,str]], temperature: float, max_tokens: int) -> AsyncGenerator[str, None]:
-    client = get_openai_client()
+    # Initialize client to ensure it's available
+    get_llm_chat_client()
+    
     try:
-        stream = await client.chat.completions.create(
-            model=OPENAI_MODEL,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            stream=True,
-        )
-        async for chunk in stream:
+        # Use litellm directly for streaming since LlmChat doesn't expose streaming
+        import litellm
+        
+        # Prepare parameters for Emergent proxy
+        params = {
+            "model": OPENAI_MODEL,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "stream": True,
+            "api_key": EMERGENT_API_KEY,
+        }
+        
+        # Configure for Emergent proxy
+        if EMERGENT_API_KEY.startswith("sk-emergent-"):
+            proxy_url = os.environ.get("INTEGRATION_PROXY_URL", "https://integrations.emergentagent.com")
+            params["api_base"] = proxy_url + "/llm"
+            params["custom_llm_provider"] = "openai"
+        
+        stream = litellm.completion(**params)
+        
+        for chunk in stream:
             try:
-                choice = chunk.choices[0]
-                delta = getattr(choice, 'delta', None)
-                if delta and getattr(delta, 'content', None):
-                    yield f"data: {json.dumps({'content': delta.content})}\n\n"
+                if hasattr(chunk, 'choices') and len(chunk.choices) > 0:
+                    choice = chunk.choices[0]
+                    delta = getattr(choice, 'delta', None)
+                    if delta and hasattr(delta, 'content') and delta.content:
+                        yield f"data: {json.dumps({'content': delta.content})}\n\n"
             except Exception:
                 continue
         yield "data: [DONE]\n\n"
@@ -315,23 +336,42 @@ async def stream_chat(messages: List[Dict[str,str]], temperature: float, max_tok
         yield f"data: {json.dumps({'error': str(e)})}\n\n"
 
 async def complete_chat(messages: List[Dict[str,str]], temperature: float, max_tokens: int) -> Dict[str, Any]:
-    client = get_openai_client()
-    resp = await client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=messages,
-        temperature=temperature,
-        max_tokens=max_tokens,
-        stream=False,
-    )
-    return {
-        "content": resp.choices[0].message.content,
-        "finish_reason": resp.choices[0].finish_reason,
-        "usage": getattr(resp, 'usage', None) and {
-            "prompt_tokens": resp.usage.prompt_tokens,
-            "completion_tokens": resp.usage.completion_tokens,
-            "total_tokens": resp.usage.total_tokens,
+    # Initialize client to ensure it's available
+    get_llm_chat_client()
+    
+    try:
+        # Use litellm directly for non-streaming
+        import litellm
+        
+        # Prepare parameters for Emergent proxy
+        params = {
+            "model": OPENAI_MODEL,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "stream": False,
+            "api_key": EMERGENT_API_KEY,
         }
-    }
+        
+        # Configure for Emergent proxy
+        if EMERGENT_API_KEY.startswith("sk-emergent-"):
+            proxy_url = os.environ.get("INTEGRATION_PROXY_URL", "https://integrations.emergentagent.com")
+            params["api_base"] = proxy_url + "/llm"
+            params["custom_llm_provider"] = "openai"
+        
+        response = litellm.completion(**params)
+        
+        return {
+            "content": response.choices[0].message.content,
+            "finish_reason": response.choices[0].finish_reason,
+            "usage": getattr(response, 'usage', None) and {
+                "prompt_tokens": response.usage.prompt_tokens,
+                "completion_tokens": response.usage.completion_tokens,
+                "total_tokens": response.usage.total_tokens,
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Chat completion failed: {str(e)}")
 
 @api.post('/ai/chat')
 async def ai_chat(req: ChatRequest):
