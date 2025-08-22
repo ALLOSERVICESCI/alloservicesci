@@ -48,7 +48,7 @@ export default function Alerts() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/jym9kzrr_bg-alertes.png' }} style={styles.header} resizeMode="cover">
+      <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} resizeMode="cover">
         <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} style={styles.overlay} />
         <View style={styles.headerBar}>
           <Text style={styles.headerTitle}>{t('tabAlerts')}</Text>
