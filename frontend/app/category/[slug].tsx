@@ -51,12 +51,40 @@ export default function CategoryPage() {
   }, [s]);
 
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
-  // Titre avec retour manuel pour certaines catégories à deux mots
-  const displayLabel = s === 'services_publics' ? 'Services\npublics'
-    : s === 'services_utiles' ? 'Services\nutiles'
-    : s === 'loisirs_tourisme' ? 'Loisirs\ntourisme'
-    : s === 'examens_concours' ? 'Examens\nconcours'
-    : catLabel;
+  // Titre avec retour manuel par langue pour certaines catégories à deux mots
+  const lineBreaks: Record<string, Record<string, string>> = {
+    fr: {
+      services_publics: 'Services\npublics',
+      services_utiles: 'Services\nutiles',
+      loisirs_tourisme: 'Loisirs\ntourisme',
+      examens_concours: 'Examens\nconcours',
+    },
+    en: {
+      services_publics: 'Public\nServices',
+      services_utiles: 'Useful\nServices',
+      loisirs_tourisme: 'Leisure &\nTourism',
+      examens_concours: 'Exams &\nContests',
+    },
+    es: {
+      services_publics: 'Servicios\npúblicos',
+      services_utiles: 'Servicios\nútiles',
+      loisirs_tourisme: 'Ocio y\nTurismo',
+      examens_concours: 'Exámenes y\nConcursos',
+    },
+    it: {
+      services_publics: 'Servizi\npubblici',
+      services_utiles: 'Servizi\nutili',
+      loisirs_tourisme: 'Tempo libero e\nTurismo',
+      examens_concours: 'Esami e\nConcorsi',
+    },
+    ar: {
+      services_publics: 'الخدمات\nالعامة',
+      services_utiles: 'الخدمات\nالمفيدة',
+      loisirs_tourisme: 'الترفيه\nوالسياحة',
+      examens_concours: 'الامتحانات\nوالمسابقات',
+    },
+  };
+  const displayLabel = lineBreaks[lang]?.[s] ?? catLabel;
 
   // Ajuste l'opacité du dégradé selon la luminosité supposée des images
   const BRIGHT = new Set(['urgence','sante','education','agriculture','loisirs_tourisme']);
