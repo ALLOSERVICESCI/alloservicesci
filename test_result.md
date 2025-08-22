@@ -659,6 +659,17 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ HOME HEADER LOGO VS PROFILE LOGO STYLE TESTING COMPLETE: Comprehensive testing completed on both iPhone 14 (390x844) and Galaxy S21 (360x800) viewports. DETAILED FINDINGS: 1) ✅ Logo container dimensions perfectly matched: Both Home and Profile screens show 140x140px containers with 0px size difference. 2) ✅ Border styling identical: Both screens have 4px rgb(10, 124, 58) green borders (#0A7C3A) as specified. 3) ✅ Background color consistent: Both containers have white (rgb(255, 255, 255)) backgrounds. 4) ✅ Inner logo sizing confirmed: 120x120px inner logo images detected on both screens. 5) ✅ Visual consistency verified: Screenshots captured on both devices show identical circular logo styling, positioning, and shadow/elevation effects. 6) ✅ Cross-device compatibility: Perfect consistency maintained across iPhone 14 (390x844) and Galaxy S21 (360x800) viewports. All specified requirements met successfully - logo containers are ~140x140 with green border (#0A7C3A) 4px, inner logos ~120x120 with white borders. Visual consistency between Home and Profile headers is perfect. No differences detected."
+  - task: "Allô IA Chat Screen Comprehensive Testing"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/ai/chat.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ ALLÔ IA COMPREHENSIVE TESTING COMPLETE: Successfully tested all 8 specified requirements on both iPhone 14 (390x844) and Galaxy S21 (360x800) mobile viewports. DETAILED RESULTS: 1) ✅ Rendu et navigation: FAB navigation from home to /ai/chat works perfectly. 2) ✅ Header verification: Title 'Allô IA' with chat icon and temperature pastille 'Temp. 0.5' with -/+ buttons displayed correctly. 3) ✅ Message input and sending: Input field with French placeholder 'Écrivez votre message (contexte CI uniquement)…' and green send button functional. Welcome message in French displayed properly. 4) ✅ Streaming + Stop: Streaming functionality implemented with red stop button during generation. Non-streaming fallback working correctly. 5) ✅ Copy message: Long press on assistant messages triggers copy functionality with 'Copié' alert feedback. 6) ✅ Temperature adjustment: +/- buttons update temperature value correctly within bounds (0.0-2.0) with 0.1 increments. 7) ✅ Error resilience: 500 errors show 'Service IA indisponible' message with proper fallback to non-streaming. 8) ✅ Mobile responsiveness: All functionality works perfectly on both target mobile viewports. Screenshots captured documenting all test scenarios. AI chat screen is production-ready and meets all specified requirements."
   - task: "Profile title matches Home title style"
     implemented: true
     working: true
