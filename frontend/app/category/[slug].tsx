@@ -10,7 +10,7 @@ const COMMON_HEADER = { uri: 'https://customer-assets.emergentagent.com/job_allo
 const HEADERS: Record<string, any> = {
   urgence: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/16jgx6x2_urgence_bg.png' },
   sante: COMMON_HEADER,
-  education: COMMON_HEADER,
+  education: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/kuyfb8wf_bg-education.png' },
   services_utiles: COMMON_HEADER,
   agriculture: COMMON_HEADER,
   loisirs_tourisme: COMMON_HEADER,
