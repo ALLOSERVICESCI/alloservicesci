@@ -19,7 +19,6 @@ const HEADERS: any = {
   services_utiles: require('../../assets/headers/headers/services_utiles_bg.png'),
   agriculture: require('../../assets/headers/headers/agriculture_bg.png'),
   loisirs_tourisme: require('../../assets/headers/headers/loisirs_tourisme_bg.png'),
-import { Dimensions, Image } from 'react-native';
   transport: require('../../assets/headers/headers/transport_bg.png'),
 };
 
