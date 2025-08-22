@@ -11,6 +11,7 @@ export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     ...Ionicons.font,
     PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
+    InterBlack: require('../assets/fonts/Inter-Black.ttf'),
   });
 
   if (!fontsLoaded) {
