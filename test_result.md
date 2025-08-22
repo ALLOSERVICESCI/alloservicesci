@@ -513,12 +513,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix Allô IA backend integration (Emergent Option B) - CRITICAL DNS/CONNECTIVITY ISSUE"
-    - "AI chat endpoint streaming + non-streaming validation"
     - "Frontend Integration with Backend Endpoints"
     - "EAS Update (OTA) Configuration"
   stuck_tasks:
-    - "Fix Allô IA Emergent client (replace wrong import, set AsyncOpenAI base_url)"
     - "Profile edit functionality (city/lang selection)"
   test_all: false
   test_priority: "high_first"
