@@ -59,20 +59,11 @@ export default function CategoryPage() {
         <View style={styles.lightOverlay} />
         {/* Dégradé bas pour lisibilité */}
         <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.6)']} locations={[0,1]} style={styles.overlay} />
-        <View style={[styles.headerContent, s==='urgence' && styles.urgencyContent]}>
-          {s === 'urgence' ? (
-            <View style={styles.urgencyTitleWrap}>
-              <Text style={styles.urgencyTitleStroke}>Urgence</Text>
-              <Text style={styles.urgencyTitle}>Urgence</Text>
-            </View>
-          ) : (
-            <>
-              <Text style={styles.brand}>{t('brand')}</Text>
-              <Text style={styles.slogan}>{t('slogan')}</Text>
-              {!!greeting && <Text style={styles.greeting}>{greeting}</Text>}
-              <Text style={styles.headerTitle}>{catLabel}</Text>
-            </>
-          )}
+        <View style={[styles.headerContent, styles.urgencyContent]}>
+          <View style={styles.urgencyTitleWrap}>
+            <Text style={styles.urgencyTitleStroke}>{catLabel}</Text>
+            <Text style={styles.urgencyTitle}>{catLabel}</Text>
+          </View>
         </View>
       </ImageBackground>
       <View style={{ padding: 16, flex: 1 }}>
