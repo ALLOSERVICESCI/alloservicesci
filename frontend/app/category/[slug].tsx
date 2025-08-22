@@ -58,7 +58,7 @@ export default function CategoryPage() {
         {/* Éclaircissement global léger */}
         <View style={styles.lightOverlay} />
         {/* Dégradé bas pour lisibilité */}
-        <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.6)']} locations={[0,1]} style={styles.overlay} />
+        <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.65)']} locations={[0,1]} style={styles.overlay} />
         <View style={[styles.headerContent, styles.urgencyContent]}>
           <View style={styles.urgencyTitleWrap}>
             <Text style={styles.urgencyTitleStroke}>{catLabel}</Text>
