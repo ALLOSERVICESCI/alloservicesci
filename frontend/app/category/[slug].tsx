@@ -96,7 +96,7 @@ export default function CategoryPage() {
   const DARK = new Set(['services_publics','transport']);
   const baseAlpha = 0.65;
   let gradientAlpha = BRIGHT.has(s) ? baseAlpha + 0.05 : DARK.has(s) ? baseAlpha - 0.05 : baseAlpha;
-  if (s === 'sante') gradientAlpha = 0.60;
+  if (s === 'sante') gradientAlpha = 0.55;
   const gradientColors = ['rgba(0,0,0,0.0)', `rgba(0,0,0,${gradientAlpha})`];
 
   return (
