@@ -6,16 +6,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
+const COMMON_HEADER = { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/ce52q6f0_sante_bg.png' };
 const HEADERS: Record<string, any> = {
-  urgence: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/wb49s8ag_bg-rgences.png' },
-  sante: require('../../assets/headers/headers/sante_bg.png'),
-  education: require('../../assets/headers/headers/education_bg.png'),
-  services_utiles: require('../../assets/headers/headers/services_utiles_bg.png'),
-  agriculture: require('../../assets/headers/headers/agriculture_bg.png'),
-  loisirs_tourisme: require('../../assets/headers/headers/loisirs_tourisme_bg.png'),
-  services_publics: require('../../assets/headers/headers/services_publics_bg.png'),
-  examens_concours: require('../../assets/headers/headers/examens_concours_bg.png'),
-  transport: require('../../assets/headers/headers/transport_bg.png'),
+  urgence: COMMON_HEADER,
+  sante: COMMON_HEADER,
+  education: COMMON_HEADER,
+  services_utiles: COMMON_HEADER,
+  agriculture: COMMON_HEADER,
+  loisirs_tourisme: COMMON_HEADER,
+  services_publics: COMMON_HEADER,
+  examens_concours: COMMON_HEADER,
+  transport: COMMON_HEADER,
 };
 
 function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
