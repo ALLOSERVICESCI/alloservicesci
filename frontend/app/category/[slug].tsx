@@ -8,7 +8,7 @@ import { useI18n } from '../../src/i18n/i18n';
 
 const COMMON_HEADER = { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/ce52q6f0_sante_bg.png' };
 const HEADERS: Record<string, any> = {
-  urgence: COMMON_HEADER,
+  urgence: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/16jgx6x2_urgence_bg.png' },
   sante: COMMON_HEADER,
   education: COMMON_HEADER,
   services_utiles: COMMON_HEADER,
