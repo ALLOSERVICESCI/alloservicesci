@@ -63,11 +63,14 @@ export default function Layout() {
         const scale = pulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.12] });
         const opacity = pulse.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1] });
         const ringSize = size + 10;
+        const haloSize = ringSize + 6;
         return (
           <Animated.View style={{ transform: [{ scale }], opacity }}>
-            <View style={{ width: ringSize, height: ringSize, borderRadius: ringSize/2, borderWidth: 2, borderColor: '#EF4444', alignItems: 'center', justifyContent: 'center' }}>
-              <View style={{ width: size+4, height: size+4, borderRadius: (size+4)/2, backgroundColor: '#F59E0B', alignItems: 'center', justifyContent: 'center' }}>
-                <Ionicons name="warning" size={size-2} color="#fff" />
+            <View style={{ width: haloSize, height: haloSize, borderRadius: haloSize/2, borderWidth: 3, borderColor: 'rgba(239,68,68,0.25)', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ width: ringSize, height: ringSize, borderRadius: ringSize/2, borderWidth: 2, borderColor: '#EF4444', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ width: size+4, height: size+4, borderRadius: (size+4)/2, backgroundColor: '#F59E0B', alignItems: 'center', justifyContent: 'center' }}>
+                  <Ionicons name="warning" size={size-2} color="#fff" />
+                </View>
               </View>
             </View>
           </Animated.View>
