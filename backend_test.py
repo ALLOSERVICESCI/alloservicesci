@@ -593,6 +593,48 @@ class BackendTester:
         except Exception as e:
             self.log_test("Existing route: GET /api/payments/history", False, f"Exception: {str(e)}")
             
+    def run_emergent_ai_tests(self):
+        """Run focused tests for Emergent AI integration (Review Request)"""
+        print(f"🤖 EMERGENT AI INTEGRATION TESTS (Review Request)")
+        print(f"Base URL: {self.base_url}")
+        print("=" * 60)
+        
+        # Test 1: Health endpoint (regression)
+        self.test_health_endpoint()
+        
+        # Test 2: AI chat non-streaming (stream=false)
+        self.test_ai_chat_non_streaming()
+        
+        # Test 3: AI chat streaming (stream=true)
+        self.test_ai_chat_streaming()
+        
+        # Test 4: Error handling when provider fails
+        self.test_ai_chat_endpoint_no_key()
+        
+        # Test 5: Quick regression tests
+        self.test_existing_routes_unaffected()
+        
+        # Summary
+        print("\n" + "=" * 60)
+        print("📊 EMERGENT AI TEST SUMMARY")
+        print("=" * 60)
+        
+        passed = sum(1 for result in self.test_results if result['success'])
+        total = len(self.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        
+        if passed < total:
+            print("\n❌ FAILED TESTS:")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['details']}")
+        
+        return passed == total
+
     def run_all_tests(self):
         """Run all tests in sequence"""
         print(f"🚀 Starting Backend API Tests")
