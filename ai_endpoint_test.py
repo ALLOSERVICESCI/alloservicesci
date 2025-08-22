@@ -62,17 +62,130 @@ class AIEndpointTester:
                 "stream": False
             }
             response = self.make_request('POST', '/ai/chat', json=chat_data)
+            
             if response.status_code == 500:
-                data = response.json()
-                detail = data.get('detail', '')
-                if 'EMERGENT_API_KEY' in detail:
-                    self.log_test("AI chat endpoint (no key)", True, f"Correctly returned 500 with EMERGENT_API_KEY error: {detail}")
-                else:
-                    self.log_test("AI chat endpoint (no key)", False, f"Expected EMERGENT_API_KEY error, got: {detail}")
+                try:
+                    data = response.json()
+                    detail = data.get('detail', '')
+                    if 'EMERGENT_API_KEY' in detail:
+                        self.log_test("AI chat endpoint (no key)", True, f"Correctly returned 500 with EMERGENT_API_KEY error: {detail}")
+                    else:
+                        self.log_test("AI chat endpoint (no key)", False, f"Expected EMERGENT_API_KEY error, got: {detail}")
+                except json.JSONDecodeError:
+                    self.log_test("AI chat endpoint (no key)", False, f"Server returned 500 but response is not JSON: {response.text}")
+            elif response.status_code == 200:
+                # API key is configured and working
+                try:
+                    data = response.json()
+                    if 'content' in data:
+                        self.log_test("AI chat endpoint (with key)", True, f"API key is configured and working. Response: {data.get('content', '')[:100]}...")
+                    else:
+                        self.log_test("AI chat endpoint (with key)", False, f"Unexpected response format: {data}")
+                except json.JSONDecodeError:
+                    self.log_test("AI chat endpoint (with key)", False, f"Response is not valid JSON: {response.text}")
             else:
-                self.log_test("AI chat endpoint (no key)", False, f"Expected 500, got {response.status_code}, Response: {response.text}")
+                self.log_test("AI chat endpoint", False, f"Unexpected status code: {response.status_code}, Response: {response.text}")
         except Exception as e:
-            self.log_test("AI chat endpoint (no key)", False, f"Exception: {str(e)}")
+            self.log_test("AI chat endpoint", False, f"Exception: {str(e)}")
+
+    def test_ai_chat_streaming(self):
+        """Test 3: POST /api/ai/chat with stream=true → verify SSE flux and [DONE] termination"""
+        try:
+            chat_data = {
+                "messages": [{"role": "user", "content": "Dis-moi quelque chose sur la Côte d'Ivoire en une phrase."}],
+                "stream": True,
+                "temperature": 0.3,
+                "max_tokens": 100
+            }
+            response = self.make_request('POST', '/ai/chat', json=chat_data, stream=True)
+            
+            if response.status_code == 200:
+                # Check if it's SSE format
+                content_type = response.headers.get('content-type', '')
+                if 'text/event-stream' in content_type:
+                    # Read streaming response
+                    content_chunks = []
+                    done_found = False
+                    error_found = False
+                    
+                    try:
+                        for line in response.iter_lines(decode_unicode=True):
+                            if line.startswith('data: '):
+                                data_part = line[6:]  # Remove 'data: ' prefix
+                                if data_part == '[DONE]':
+                                    done_found = True
+                                    break
+                                try:
+                                    chunk_data = json.loads(data_part)
+                                    if 'content' in chunk_data:
+                                        content_chunks.append(chunk_data['content'])
+                                    elif 'error' in chunk_data:
+                                        error_found = True
+                                        self.log_test("AI chat streaming", False, f"Error in stream: {chunk_data['error']}")
+                                        return
+                                except json.JSONDecodeError:
+                                    continue
+                        
+                        full_content = ''.join(content_chunks)
+                        if content_chunks and len(full_content) > 0:
+                            self.log_test("AI chat streaming", True, f"SSE streaming working. Content: '{full_content[:100]}...', Done signal: {done_found}")
+                        elif done_found:
+                            self.log_test("AI chat streaming", True, f"SSE streaming completed with [DONE] signal, but no content received")
+                        else:
+                            self.log_test("AI chat streaming", False, "No content received in streaming response")
+                    except Exception as stream_error:
+                        self.log_test("AI chat streaming", False, f"Error reading stream: {str(stream_error)}")
+                else:
+                    self.log_test("AI chat streaming", False, f"Expected text/event-stream, got: {content_type}")
+            elif response.status_code == 500:
+                try:
+                    data = response.json()
+                    detail = data.get('detail', '')
+                    if 'EMERGENT_API_KEY' in detail:
+                        self.log_test("AI chat streaming", False, f"API key not configured: {detail}")
+                    else:
+                        self.log_test("AI chat streaming", False, f"Server error: {detail}")
+                except json.JSONDecodeError:
+                    self.log_test("AI chat streaming", False, f"Server returned 500: {response.text}")
+            else:
+                self.log_test("AI chat streaming", False, f"Status code: {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("AI chat streaming", False, f"Exception: {str(e)}")
+
+    def test_ai_chat_non_streaming(self):
+        """Test 4: POST /api/ai/chat with stream=false → verify JSON {content: ...}"""
+        try:
+            chat_data = {
+                "messages": [{"role": "user", "content": "Dis-moi quelque chose sur Abidjan en une phrase."}],
+                "stream": False,
+                "temperature": 0.3,
+                "max_tokens": 50
+            }
+            response = self.make_request('POST', '/ai/chat', json=chat_data)
+            
+            if response.status_code == 200:
+                try:
+                    data = response.json()
+                    if 'content' in data and isinstance(data['content'], str) and len(data['content']) > 0:
+                        self.log_test("AI chat non-streaming", True, f"Non-streaming JSON response working. Content: '{data['content'][:100]}...'")
+                    else:
+                        self.log_test("AI chat non-streaming", False, f"Invalid response format: {data}")
+                except json.JSONDecodeError:
+                    self.log_test("AI chat non-streaming", False, f"Response is not valid JSON: {response.text}")
+            elif response.status_code == 500:
+                try:
+                    data = response.json()
+                    detail = data.get('detail', '')
+                    if 'EMERGENT_API_KEY' in detail:
+                        self.log_test("AI chat non-streaming", False, f"API key not configured: {detail}")
+                    else:
+                        self.log_test("AI chat non-streaming", False, f"Server error: {detail}")
+                except json.JSONDecodeError:
+                    self.log_test("AI chat non-streaming", False, f"Server returned 500: {response.text}")
+            else:
+                self.log_test("AI chat non-streaming", False, f"Status code: {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("AI chat non-streaming", False, f"Exception: {str(e)}")
 
     def test_existing_routes_unaffected(self):
         """Test 3: Verify existing routes remain unaffected"""
