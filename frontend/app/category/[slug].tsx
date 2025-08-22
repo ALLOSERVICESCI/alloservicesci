@@ -55,7 +55,7 @@ export default function CategoryPage() {
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground source={bg} style={styles.header} resizeMode="cover">
-        <View style={styles.overlay} />
+        <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.5)']} locations={[0,1]} style={styles.overlay} />
         <View style={styles.headerContent}>
           <Text style={styles.brand}>{t('brand')}</Text>
           <Text style={styles.slogan}>{t('slogan')}</Text>
