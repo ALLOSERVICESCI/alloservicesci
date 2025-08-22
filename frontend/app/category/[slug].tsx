@@ -61,7 +61,10 @@ export default function CategoryPage() {
         <LinearGradient colors={['rgba(0,0,0,0.0)','rgba(0,0,0,0.6)']} locations={[0,1]} style={styles.overlay} />
         <View style={[styles.headerContent, s==='urgence' && styles.urgencyContent]}>
           {s === 'urgence' ? (
-            <Text style={styles.urgencyTitle}>Urgence</Text>
+            <View style={styles.urgencyTitleWrap}>
+              <Text style={styles.urgencyTitleStroke}>Urgence</Text>
+              <Text style={styles.urgencyTitle}>Urgence</Text>
+            </View>
           ) : (
             <>
               <Text style={styles.brand}>{t('brand')}</Text>
