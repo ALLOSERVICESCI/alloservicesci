@@ -9,7 +9,7 @@ type Msg = { id: string; role: 'user' | 'assistant' | 'system'; content: string;
 const IA_DOWN_MSG = 'Service IA indisponible. Réessayez plus tard.';
 
 export default function ChatAIA() {
-  const [messages, setMessages] = useState&lt;Msg[]&gt;([
+  const [messages, setMessages] = useState<Msg[]>([
     {
       id: 'welcome',
       role: 'assistant',
