@@ -31,12 +31,15 @@ export default function Alerts() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.brandBar}><Text style={styles.brand}>{t('brand')}</Text></View>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 16, paddingBottom: 8 }}>
-        <Link href="/alerts/new" asChild>
-          <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
-        </Link>
-      </View>
+      <ImageBackground source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/68ko117b_bg-alertes.png' }} style={styles.header} resizeMode="cover">
+        <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} style={styles.overlay} />
+        <View style={styles.headerBar}>
+          <Text style={styles.headerTitle}>{t('tabAlerts')}</Text>
+          <Link href="/alerts/new" asChild>
+            <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
+          </Link>
+        </View>
+      </ImageBackground>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
