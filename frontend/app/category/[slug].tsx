@@ -131,7 +131,7 @@ export default function CategoryPage() {
 }
 
 const styles = StyleSheet.create({
-  header: { height: 280, justifyContent: 'flex-end' },
+  header: { height: 260, justifyContent: 'flex-end' },
   urgencyImage: { resizeMode: 'cover' },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
   lightOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(255,255,255,0.10)' },
