@@ -103,7 +103,7 @@ export default function CategoryPage() {
         {/* Dégradé bas pour lisibilité */}
         <LinearGradient colors={gradientColors} locations={[0,1]} style={styles.overlay} />
         <View style={[styles.headerContent, styles.urgencyContent]}>
-          {s === 'sante' ? null : (
+          {s === 'education' ? null : (
             <View style={styles.urgencyTitleWrap}>
               <Text style={[styles.urgencyTitleStroke, { fontSize: titleFontSize, letterSpacing: titleLetterSpacing, textAlign: textAlignValue }]}>{displayLabel}</Text>
               <Text style={[styles.urgencyTitle, { fontSize: titleFontSize, letterSpacing: titleLetterSpacing, textAlign: textAlignValue }]}>{displayLabel}</Text>
