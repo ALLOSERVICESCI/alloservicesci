@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
-import { Platform, View, Text } from 'react-native';
+import { Platform, View, Text, Animated, Easing } from 'react-native';
 import { useI18n } from '../../src/i18n/i18n';
 
 Notifications.setNotificationHandler({
