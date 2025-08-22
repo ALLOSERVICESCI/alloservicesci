@@ -6,7 +6,8 @@ import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
 const HEADERS: any = {
-  urgence: require('../../assets/headers/headers/urgence_bg.png'),
+  // Using a remote high-quality image for better aesthetics and legibility under gradient overlay
+  urgence: { uri: 'https://images.unsplash.com/photo-1599700403969-f77b3aa74837?q=80&w=1600&auto=format&fit=crop' },
   sante: require('../../assets/headers/headers/sante_bg.png'),
   education: require('../../assets/headers/headers/education_bg.png'),
   examens_concours: require('../../assets/headers/headers/examens_concours_bg.png'),
