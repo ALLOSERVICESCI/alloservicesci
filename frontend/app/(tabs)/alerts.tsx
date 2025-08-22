@@ -11,7 +11,7 @@ export default function Alerts() {
   const { t } = useI18n();
 
   // Robust header image handling (prefetch + fallback local)
-  const REMOTE_ALERTS_BG = 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/jym9kzrr_bg-alertes.png';
+  const REMOTE_ALERTS_BG = 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/aiwoflhn_alerte_gb.png';
   const LOCAL_ALERTS_BG = require('../../assets/headers/headers/alertes_bg.png');
   const [headerSource, setHeaderSource] = useState<any>(LOCAL_ALERTS_BG);
   // Toggle to show/hide header image; set to false to remove image
