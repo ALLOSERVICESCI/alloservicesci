@@ -106,6 +106,17 @@
 
 user_problem_statement: "Build Allô Services CI mobile app backend with MongoDB: multi-category info, alerts with images, GPS pharmacies, premium subscription via CinetPay stub, 5 languages, free Urgence and premium for others."
 backend:
+  - task: "Fix Allô IA Emergent client (replace wrong import, set AsyncOpenAI base_url)"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Bug root cause: incorrect import from emergent causing ImportError and 500. Implemented fix: use AsyncOpenAI with EMERGENT_API_KEY and base_url env (default https://api.emergentai.dev/v1). Updated requirements.txt to openai>=1.40.0."
   - task: "Trigger targeted notification (Bouaké, fr)"
     implemented: true
     working: true
