@@ -101,7 +101,7 @@ export default function CategoryPage() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <ImageBackground source={bg} style={styles.header} imageStyle={s==='urgence' ? styles.urgencyImage : (s==='sante' ? styles.santeImage : undefined)} resizeMode="cover">
+      <ImageBackground source={bg} style={[styles.header, s==='sante' && styles.santeHeader]} imageStyle={s==='urgence' ? styles.urgencyImage : (s==='sante' ? styles.santeImage : undefined)} resizeMode={s==='sante' ? 'contain' : 'cover'}>
         {/* Éclaircissement global léger */}
         <View style={styles.lightOverlay} />
         {/* Dégradé bas pour lisibilité */}
