@@ -619,6 +619,8 @@ class BackendTester:
         print("=" * 60)
         self.test_health_endpoint()
         self.test_ai_chat_endpoint_no_key()
+        self.test_ai_chat_streaming()
+        self.test_ai_chat_non_streaming()
         self.test_existing_routes_unaffected()
         
         # Summary
