@@ -513,15 +513,15 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Tab bar: Alerts icon styled (halo + pulse) and visible"
-    - "Category pages bottom shortcuts: Alerts icon styled and navigates"
-    - "Alerts header image forced display + fallback"
-    - "Allô IA chat interactions"
-    - "Backend connectivity /api/health and /api/ai/chat"
+    - "Tab bar: Alerts icon (warning #F59E0B) present"
+    - "Category bottom shortcuts: Alerts icon with stronger pulse (1.25) + halo"
+    - "Headers updated images: services_publics, services_utiles, transport, agriculture"
+    - "Education header title hidden; Santé header title hidden"
+    - "Alerts page header forced remote image"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
   test_all: true
-  test_priority: "ui_and_connectivity_nav_alerts"
+  test_priority: "ui_alerts_icons_headers"
 
 frontend:
   - task: "Home FAB Layah: size, tooltip, drag, persistence, navigation"
