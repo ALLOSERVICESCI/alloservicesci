@@ -55,27 +55,9 @@ export default function Layout() {
   return (
     <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#0A7C3A' }}>
       <Tabs.Screen name="home" options={{ title: t('tabHome'), tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} /> }} />
-      <Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ color, size }) => {
-        const pulse = new Animated.Value(0);
-        Animated.loop(
-          Animated.timing(pulse, { toValue: 1, duration: 1400, useNativeDriver: true, easing: Easing.inOut(Easing.ease) })
-        ).start();
-        const scale = pulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.12] });
-        const opacity = pulse.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1] });
-        const ringSize = size + 10;
-        const haloSize = ringSize + 6;
-        return (
-          <Animated.View style={{ transform: [{ scale }], opacity }}>
-            <View style={{ width: haloSize, height: haloSize, borderRadius: haloSize/2, borderWidth: 3, borderColor: 'rgba(239,68,68,0.25)', alignItems: 'center', justifyContent: 'center' }}>
-              <View style={{ width: ringSize, height: ringSize, borderRadius: ringSize/2, borderWidth: 2, borderColor: '#EF4444', alignItems: 'center', justifyContent: 'center' }}>
-                <View style={{ width: size+4, height: size+4, borderRadius: (size+4)/2, backgroundColor: '#F59E0B', alignItems: 'center', justifyContent: 'center' }}>
-                  <Ionicons name="warning" size={size-2} color="#fff" />
-                </View>
-              </View>
-            </View>
-          </Animated.View>
-        );
-      } }} />
+      <Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ color, size }) => (
+        <Ionicons name="warning" size={size} color={color} />
+      ) }} />
       <Tabs.Screen name="pharmacies" options={{ title: t('tabPharm'), tabBarIcon: ({ color, size }) => <Ionicons name="medkit" color={color} size={size} /> }} />
       <Tabs.Screen name="subscribe" options={{ title: t('tabPremium'), tabBarIcon: ({ color, size }) => <Ionicons name="card" color={color} size={size} /> }} />
       <Tabs.Screen name="profile" options={{ title: t('tabProfile'), tabBarIcon: ({ color, size }) => <Ionicons name="person" color={color} size={size} /> }} />
