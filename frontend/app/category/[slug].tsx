@@ -15,7 +15,7 @@ const HEADERS: Record<string, any> = {
   agriculture: COMMON_HEADER,
   loisirs_tourisme: COMMON_HEADER,
   services_publics: COMMON_HEADER,
-  examens_concours: COMMON_HEADER,
+  examens_concours: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/sfdp17jj_examens_concours_bg.png' },
   transport: COMMON_HEADER,
 };
 
