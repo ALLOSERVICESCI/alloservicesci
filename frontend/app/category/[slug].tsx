@@ -23,11 +23,11 @@ function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: 
   const pulse = new Animated.Value(0);
   React.useEffect(() => {
     Animated.loop(
-      Animated.timing(pulse, { toValue: 1, duration: 1200, useNativeDriver: true, easing: Easing.inOut(Easing.ease) })
+      Animated.timing(pulse, { toValue: 1, duration: 1000, useNativeDriver: true, easing: Easing.inOut(Easing.ease) })
     ).start();
   }, []);
   const isAlert = icon === 'megaphone';
-  const scale = pulse.interpolate({ inputRange: [0, 1], outputRange: [1, isAlert ? 1.2 : 1] });
+  const scale = pulse.interpolate({ inputRange: [0, 1], outputRange: [1, isAlert ? 1.25 : 1] });
   const opacity = pulse.interpolate({ inputRange: [0, 1], outputRange: [0.8, 1] });
   const size = 20;
   const ringSize = size + 12;
