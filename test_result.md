@@ -525,15 +525,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Tab bar: Alerts icon (warning #F59E0B) present"
-    - "Category bottom shortcuts: Alerts icon with stronger pulse (1.25) + halo"
-    - "Headers updated images: services_publics, services_utiles, transport, agriculture"
-    - "Education header title hidden; Santé header title hidden"
-    - "Alerts page header forced remote image"
+    - "Backend Smoke Tests (Review Request)"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
-  test_all: true
-  test_priority: "ui_alerts_icons_headers"
+  test_all: false
+  test_priority: "backend_smoke_complete"
 
 frontend:
   - task: "Home FAB Layah: size, tooltip, drag, persistence, navigation"
