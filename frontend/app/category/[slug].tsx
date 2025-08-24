@@ -12,7 +12,7 @@ const HEADERS: Record<string, any> = {
   sante: COMMON_HEADER,
   education: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/kuyfb8wf_bg-education.png' },
   services_utiles: COMMON_HEADER,
-  agriculture: COMMON_HEADER,
+  agriculture: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/r7xlibx4_agriculture_bg.png' },
   loisirs_tourisme: COMMON_HEADER,
   services_publics: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/7w0pi6lv_services_publics_bg.png' },
   examens_concours: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/sfdp17jj_examens_concours_bg.png' },
