@@ -734,3 +734,73 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE ALLÔ IA CHAT TESTING COMPLETE: Successfully tested all requirements from review request on both iPhone 14 (390x844) and Galaxy S21 (360x800). 1) ✅ Home page loads correctly with Allô IA FAB visible in bottom-right corner with tooltip. 2) ✅ FAB navigation to /ai/chat works (direct navigation tested due to web environment limitations). 3) ✅ Header correctly shows 'Allô IA' with chat bubble icon. 4) ✅ Welcome message verified: 'Bonjour, je suis Allô IA — l'assistant IA d'Allô Services CI. Posez‑moi vos questions en lien avec la Côte d'Ivoire ou demandez un document (CV, lettre, ordre de mission…).' 5) ✅ Successfully sent test message 'Rédige un CV de technicien réseau basé à Abidjan (format ATS).' 6) ✅ Input field found with correct placeholder 'Écrivez votre message (contexte CI uniquement)…' 7) ✅ AI response detected within 1 second - streaming behavior working (content appeared progressively). 8) ✅ All screenshots captured: initial home with FAB, initial chat, after message response on both devices. Chat interface fully functional with proper French localization, correct system prompt integration, and responsive design. Backend API endpoint /api/ai/chat properly configured with Emergent LLM integration and Côte d'Ivoire context system prompt."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 5
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Category headers: 280dp height, bottom gradient 0.65, dynamic brightness overlay"
+    - "Overlay titles: Crisp style, multilingual line breaks; hide for Santé and Éducation"
+    - "Alerts tab icon simplified (warning #F59E0B)"
+    - "Category bottom shortcuts: animated Alerts icon with pulse 1.25 + halo"
+    - "Alerts page header: robust remote image with prefetch + fallback"
+  stuck_tasks:
+    - "Profile edit functionality (city/lang selection)"
+  test_all: false
+  test_priority: "high_first"
+
+backend:
+  - task: "Backend regression smoke before UI tests"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Run deep_testing_backend_v2 to confirm health, categories, premium gating, and /api/ai/chat connectivity before UI tests."
+
+frontend:
+  - task: "Category headers visual validation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/category/[slug].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Agriculture image applied; several headers updated. Validate 280dp height, gradient overlay, Crisp text style, per-language line breaks, and hidden titles for Santé & Éducation."
+  - task: "Alerts icon animations (tabs and bottom shortcuts)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/_layout.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Verify tab bar uses simplified warning icon. Bottom shortcuts use animated 'danger panel' (pulse ~1.25, halo, red ring, orange disk)."
+  - task: "Alertes page header loader"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/alerts.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Validate remote image prefetch + cache-bust + local fallback, framing, gradient, and title positioning."
+
+agent_communication:
+  - agent: "main"
+    message: "User confirmed A,A,A: Run backend + frontend automated tests now; Android package com.alloservices.ci; proceed immediately. Updating test plan and starting with backend smoke tests, then focused UI tests on category headers and Alertes icon/animations."
