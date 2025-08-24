@@ -8,21 +8,21 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://allo-services-1.preview.emergentagent.com"
+        "EXPO_PUBLIC_BACKEND_URL": "https://allo-ia-mobile-1.preview.emergentagent.com"
       }
     },
     "preview": {
       "channel": "preview",
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://allo-services-1.preview.emergentagent.com"
+        "EXPO_PUBLIC_BACKEND_URL": "https://allo-ia-mobile-1.preview.emergentagent.com"
       }
     },
     "production": {
       "channel": "production",
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://allo-services-1.preview.emergentagent.com"
+        "EXPO_PUBLIC_BACKEND_URL": "https://allo-ia-mobile-1.preview.emergentagent.com"
       }
     }
   },
