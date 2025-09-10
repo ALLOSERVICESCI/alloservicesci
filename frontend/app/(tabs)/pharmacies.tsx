@@ -46,6 +46,7 @@ export default function Pharmacies() {
         </View>
       ))}
       <TouchableOpacity onPress={askPermissionAndFetch} style={styles.btn}><Text style={styles.btnText}>{t('refresh')}</Text></TouchableOpacity>
+      <NavMenu />
     </View>
   );
 }
