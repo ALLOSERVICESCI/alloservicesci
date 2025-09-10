@@ -47,7 +47,6 @@ export default function Layout() {
             importance: Notifications.AndroidImportance.MAX,
           });
         }
-        // Permissions + token handled in AuthProvider
       } catch (e) {
         console.log('Notifications setup error', e);
       }
@@ -65,9 +64,7 @@ export default function Layout() {
           const json = await res.json();
           if (mounted) setAlertCount(Array.isArray(json) ? json.length : 0);
         }
-      } catch (e) {
-        // ignore
-      }
+      } catch (e) {}
     };
     tick();
     const id = setInterval(tick, 20000);
@@ -75,7 +72,7 @@ export default function Layout() {
   }, []);
 
   return (
-    <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#0A7C3A' }}>
+    <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#0A7C3A', tabBarStyle: { display: 'none' } }}>
       <Tabs.Screen name="home" options={{ title: t('tabHome'), tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} /> }} />
       <Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ size }) => (
         <BellIcon size={size} color="#F59E0B" />

@@ -67,8 +67,8 @@ export default function NavMenu() {
 const styles = StyleSheet.create({
   fabWrap: {
     position: 'absolute',
-    right: 16,
-    bottom: Platform.select({ ios: 26, android: 20, default: 20 }),
+    left: 16,
+    top: Platform.select({ ios: 26, android: 20, default: 20 }),
   },
   fab: {
     width: 56, height: 56, borderRadius: 28, backgroundColor: '#0A7C3A',
