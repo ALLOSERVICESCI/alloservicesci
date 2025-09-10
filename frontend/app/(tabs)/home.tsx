@@ -189,6 +189,9 @@ export default function Home() {
       </View>
     </ScrollView>
 
+      {/* Floating Nav Menu */}
+      <NavMenu />
+
       {/* Floating AI FAB */}
       <Animated.View 
         style={[styles.aiFab, styles.aiHalo, { transform: [{ scale: pulse }] }, aiPositionStyle, fabXY ? { left: pan.x, top: pan.y } : null]}
