@@ -772,6 +772,13 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ BACKEND SMOKE COMPLETE: Health 200 OK; AI chat streaming + non-streaming 200 OK; auth/register 200; subscriptions/check 200; payments/cinetpay/initiate 200. ⚠️ Missing endpoints: /api/categories, /api/pharmacies/nearby, premium endpoints not present in current server.py so skipped."
+
+    priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
