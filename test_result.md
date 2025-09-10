@@ -511,6 +511,18 @@ metadata:
         agent: "main"
         comment: "Implemented comprehensive EAS Update (Over-The-Air) configuration. Enhanced eas.json with preview/production channels, autoIncrement for production builds, and proper environment variable management. Updated app.json with automatic update checking (ON_LOAD), 10-second fallback timeout, and proper update URL. Created deploy-updates.sh script with commands for preview/production publishing, status checking, and rollback procedures. Added comprehensive EAS-UPDATE-GUIDE.md with deployment workflows, best practices, troubleshooting, and emergency procedures. App now supports seamless JavaScript updates without app store releases."
 
+  - task: "NavMenu Visibility Scope Testing (Review Request)"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/NavMenu.tsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL TESTING FAILURE: Unable to complete NavMenu visibility scope testing due to app loading issues. ATTEMPTED TESTS: 1) /(tabs)/home: Should show hamburger (three green lines) - UNABLE TO VERIFY due to app loading failure. 2) /(tabs)/alerts, /(tabs)/pharmacies, /(tabs)/subscribe, /(tabs)/profile: Should show NO hamburger - UNABLE TO VERIFY. 3) /category/transport: Should show NO hamburger - UNABLE TO VERIFY. 4) Premium grid regression on /(tabs)/subscribe: 2-column grid, ~36px icons, Examens tile navigation - UNABLE TO VERIFY. ROOT CAUSE: Frontend displays only orange gradient background in web testing environment, preventing UI interaction testing. CODE ANALYSIS CONFIRMS: NavMenu component properly implemented with green hamburger bars (#0A7C3A), correctly imported only in home.tsx, other pages correctly exclude NavMenu import. Subscribe page has proper 2-column grid implementation. RECOMMENDATION: Fix app loading issues or test on actual mobile device to complete verification."
+
   - task: "Backend Smoke Tests (Review Request)"
     implemented: true
     working: true
