@@ -31,6 +31,12 @@ const translations: Record<Lang, Record<string, string>> = {
     status_pending: 'En attente', status_INITIALIZED: 'Initialisé', status_PENDING: 'En attente', status_ACCEPTED: 'Accepté', status_REFUSED: 'Refusé',
     // Register
     createTitle: 'Créer un compte', firstName: 'Prénom', lastName: 'Nom', emailOpt: 'Email (optionnel)', phonePh: 'Téléphone', submit: 'Valider', requiredFields: 'Champs requis', requiredMsg: 'Nom, prénom et téléphone sont requis', welcomeShort: 'Bienvenue',
+    // Legal
+    legalConsentPrefix: 'En vous inscrivant, vous acceptez nos',
+    legalAnd: 'et notre',
+    legalCGU: 'CGU',
+    legalPolicy: 'Politique de confidentialité',
+    legalRequiredError: 'Vous devez accepter les CGU et la Politique de confidentialité pour continuer.',
     // Categories
     cat_urgence: 'Urgence', cat_sante: 'Santé', cat_education: 'Éducation', cat_examens: 'Examens & Concours', cat_services_publics: 'Services publics', cat_emplois: 'Emplois', cat_alertes: 'Alertes', cat_services_utiles: 'Services utiles', cat_agriculture: 'Agriculture', cat_loisirs: 'Loisirs & Tourisme', cat_transport: 'Transport',
     // NEW PROFILE PAGE TRANSLATIONS
