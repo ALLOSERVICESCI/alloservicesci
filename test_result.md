@@ -883,6 +883,31 @@ frontend:
     stuck_count: 0
     priority: "high"
     needs_retesting: false
+
+# --- Targeted UI Test Plan: Hamburger only on Home + Premium grid 36px ---
+
+test_plan:
+  current_focus:
+    - "Hamburger NavMenu visible only on /(tabs)/home"
+    - "No NavMenu on /(tabs)/alerts, /(tabs)/pharmacies, /(tabs)/subscribe, /(tabs)/profile, and /category/transport"
+    - "Hamburger opens menu on Home with 5 FR items"
+    - "Premium page: 2-column tiles, icon size ~36px, tile navigation works"
+  test_all: false
+  test_priority: "high_first"
+
+frontend:
+  - task: "Verify Hamburger presence scope + Premium grid"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Hamburger should render only in home. Premium grid tiles 2 columns, icons 36px, tiles navigate to categories."
+
     status_history:
       - working: true
         agent: "testing"
