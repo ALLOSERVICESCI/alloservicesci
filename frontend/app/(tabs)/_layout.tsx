@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
-import { Platform, View, Text } from 'react-native';
+import { Platform, View, Text, Animated, Easing } from 'react-native';
 import { useI18n } from '../../src/i18n/i18n';
 
 Notifications.setNotificationHandler({
@@ -12,6 +12,28 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+function BellIcon({ color, size }: { color: string; size: number }) {
+  const rotate = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.timing(rotate, { toValue: 1, duration: 300, useNativeDriver: true, easing: Easing.inOut(Easing.ease) }),
+        Animated.timing(rotate, { toValue: -1, duration: 600, useNativeDriver: true, easing: Easing.inOut(Easing.ease) }),
+        Animated.timing(rotate, { toValue: 0, duration: 300, useNativeDriver: true, easing: Easing.inOut(Easing.ease) }),
+        Animated.delay(600),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, [rotate]);
+  const deg = rotate.interpolate({ inputRange: [-1, 0, 1], outputRange: ['-15deg', '0deg', '15deg'] });
+  return (
+    <Animated.View style={{ transform: [{ rotate: deg }], transformOrigin: 'top center' as any }}>
+      <Ionicons name="notifications" size={size} color={color} />
+    </Animated.View>
+  );
+}
 
 export default function Layout() {
   const { t } = useI18n();
@@ -55,9 +77,9 @@ export default function Layout() {
   return (
     <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#0A7C3A' }}>
       <Tabs.Screen name="home" options={{ title: t('tabHome'), tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} /> }} />
-      <Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ color, size }) => (
-        <Ionicons name="warning" size={size} color="#F59E0B" />
-      ) }} />
+      <Tabs.Screen name="alerts" options={{ title: t('tabAlerts'), tabBarIcon: ({ size }) => (
+        <BellIcon size={size} color="#F59E0B" />
+      ), tabBarBadge: alertCount > 0 ? String(alertCount) : undefined }} />
       <Tabs.Screen name="pharmacies" options={{ title: t('tabPharm'), tabBarIcon: ({ color, size }) => <Ionicons name="medkit" color={color} size={size} /> }} />
       <Tabs.Screen name="subscribe" options={{ title: t('tabPremium'), tabBarIcon: ({ color, size }) => <Ionicons name="card" color={color} size={size} /> }} />
       <Tabs.Screen name="profile" options={{ title: t('tabProfile'), tabBarIcon: ({ color, size }) => <Ionicons name="person" color={color} size={size} /> }} />

@@ -137,10 +137,10 @@ export default function Subscribe() {
           </LinearGradient>
         ) : (
           <View style={[styles.statusCard, styles.statusCardFree]}>
-            <Text style={[styles.statusTitle, styles.statusTitleFree]}>Premium 1200 FCFA / an</Text>
+            {/* Smaller title as requested */}
+            <Text style={[styles.statusTitle, styles.statusTitleFree, { fontSize: 20 }]}>Premium 1200 FCFA / an</Text>
             <View style={styles.subscriptionInfo}>
-              <Text style={styles.price}>1200 FCFA</Text>
-              <Text style={styles.period}>/ {t('perYear') || 'an'}</Text>
+              {/* Remove big price and perYear text per request */}
               <Text style={styles.description}>{t('premiumDescription')}</Text>
             </View>
           </View>
@@ -152,10 +152,13 @@ export default function Subscribe() {
           <View style={styles.featuresGrid}>
             {premiumFeatures.map((feature, index) => (
               <View key={feature.key} style={[styles.featureCard, (index % 2 === 1) && styles.featureCardRight]}>
+                {/* Side-by-side icon and texts */}
                 <Text style={styles.featureIcon}>{feature.icon}</Text>
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDescription}>{feature.description}</Text>
-                {isPremium && <Text style={styles.featureUnlocked}>✓ {t('unlocked')}</Text>}
+                <View style={styles.featureTextWrap}>
+                  <Text style={styles.featureTitle}>{feature.title}</Text>
+                  <Text style={styles.featureDescription}>{feature.description}</Text>
+                  {isPremium && <Text style={styles.featureUnlocked}>✓ {t('unlocked')}</Text>}
+                </View>
               </View>
             ))}
           </View>
@@ -378,6 +381,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: GAP,
     alignItems: 'center',
+    flexDirection: 'row',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
@@ -388,20 +392,23 @@ const styles = StyleSheet.create({
     marginLeft: GAP,
   },
   featureIcon: {
-    fontSize: 32,
-    marginBottom: 8,
+    fontSize: 28,
+    marginRight: 12,
+  },
+  featureTextWrap: {
+    flex: 1,
   },
   featureTitle: {
     fontSize: 14,
     fontWeight: '600',
     color: '#0F5132',
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: 4,
   },
   featureDescription: {
     fontSize: 12,
     color: '#666',
-    textAlign: 'center',
+    textAlign: 'left',
     lineHeight: 16,
   },
   featureUnlocked: {

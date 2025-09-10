@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, Platform, Animated, Easing } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,31 +19,34 @@ const HEADERS: Record<string, any> = {
   transport: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/1yzx1q1o_transport_bg.png' },
 };
 
-function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
-  const pulse = new Animated.Value(0);
+function RingingBellIcon({ size = 20, color = '#F59E0B' }: { size?: number; color?: string }) {
+  const rotate = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
-    Animated.loop(
-      Animated.timing(pulse, { toValue: 1, duration: 1000, useNativeDriver: true, easing: Easing.inOut(Easing.ease) })
-    ).start();
-  }, []);
-  const isAlert = icon === 'megaphone';
-  const scale = pulse.interpolate({ inputRange: [0, 1], outputRange: [1, isAlert ? 1.25 : 1] });
-  const opacity = pulse.interpolate({ inputRange: [0, 1], outputRange: [0.8, 1] });
-  const size = 20;
-  const ringSize = size + 12;
-  const haloSize = ringSize + 6;
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.timing(rotate, { toValue: 1, duration: 280, useNativeDriver: true, easing: Easing.inOut(Easing.ease) }),
+        Animated.timing(rotate, { toValue: -1, duration: 560, useNativeDriver: true, easing: Easing.inOut(Easing.ease) }),
+        Animated.timing(rotate, { toValue: 0, duration: 280, useNativeDriver: true, easing: Easing.inOut(Easing.ease) }),
+        Animated.delay(700),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, [rotate]);
+  const deg = rotate.interpolate({ inputRange: [-1, 0, 1], outputRange: ['-15deg', '0deg', '15deg'] });
+  return (
+    <Animated.View style={{ transform: [{ rotate: deg }] }}>
+      <Ionicons name="notifications" size={size} color={color} />
+    </Animated.View>
+  );
+}
+
+function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
+  const isAlert = icon === 'megaphone' || icon === 'notifications';
   return (
     <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', flex: 1 }}>
       {isAlert ? (
-        <Animated.View style={{ transform: [{ scale }], opacity }}>
-          <View style={{ width: haloSize, height: haloSize, borderRadius: haloSize/2, borderWidth: 2, borderColor: 'rgba(239,68,68,0.25)', alignItems: 'center', justifyContent: 'center' }}>
-            <View style={{ width: ringSize, height: ringSize, borderRadius: ringSize/2, borderWidth: 2, borderColor: '#EF4444', alignItems: 'center', justifyContent: 'center' }}>
-              <View style={{ width: size+4, height: size+4, borderRadius: (size+4)/2, backgroundColor: '#F59E0B', alignItems: 'center', justifyContent: 'center' }}>
-                <Ionicons name="warning" size={size-2} color="#fff" />
-              </View>
-            </View>
-          </View>
-        </Animated.View>
+        <RingingBellIcon size={20} color="#F59E0B" />
       ) : (
         <Ionicons name={icon} size={20} color="#0A7C3A" />
       )}
@@ -75,8 +78,6 @@ export default function CategoryPage() {
     return map[s] || s;
   }, [s]);
 
-  const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
-  // Titre avec retour manuel par langue pour certaines catégories à deux mots
   const lineBreaks: Record<string, Record<string, string>> = {
     fr: {
       services_publics: 'Services\npublics',
@@ -109,22 +110,17 @@ export default function CategoryPage() {
       examens_concours: 'الامتحانات\nوالمسابقات',
     },
   };
-  const displayLabel = lineBreaks[lang]?.[s] ?? catLabel;
 
-  // Dynamique: taille/espacement/alignement selon langue
+  const displayLabel = lineBreaks[lang]?.[s] ?? catLabel;
   const titleFontSize = lang === 'en' ? 26 : 25;
   const titleLetterSpacing = lang === 'ar' ? 0.3 : 0.5;
-  const textAlignValue: 'left' | 'right' = isRTL ? 'right' : 'left';
-
-  // Gradient bas uniforme (supprime l'adaptatif)
+  const textAlignValue: 'left' | 'right' = (isRTL ? 'right' : 'left');
   const gradientColors = ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.65)'];
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground source={bg} style={[styles.header, s==='education' && styles.eduHeader]} imageStyle={s==='urgence' ? styles.urgencyImage : undefined} resizeMode="cover">
-        {/* Éclaircissement global léger */}
         <View style={styles.lightOverlay} />
-        {/* Dégradé bas pour lisibilité */}
         <LinearGradient colors={gradientColors} locations={[0,1]} style={styles.overlay} />
         <View style={[styles.headerContent, styles.urgencyContent]}>
           {s === 'education' || s === 'sante' ? null : (
@@ -136,12 +132,11 @@ export default function CategoryPage() {
         </View>
       </ImageBackground>
       <View style={{ padding: 16, flex: 1 }}>
-        <Text>{t('comingSoon')} {catLabel}</Text>
+        <Text>Contenu à venir {catLabel}</Text>
       </View>
-      {/* Bottom Tab Quick Nav (icons) */}
       <View style={styles.bottomTabs}>
         <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
-        <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
+        <TabIcon label={t('tabAlerts')} icon="notifications" onPress={() => router.push('/(tabs)/alerts')} />
         <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
         <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
         <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
@@ -153,7 +148,6 @@ export default function CategoryPage() {
 const styles = StyleSheet.create({
   header: { height: 280, justifyContent: 'flex-end' },
   urgencyImage: { resizeMode: 'cover' },
-  // Aligne visuellement le bas de l'image Santé au bas du header
   santeImage: { resizeMode: 'cover', transform: [{ translateY: 18 }] },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
   lightOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(255,255,255,0.10)' },
