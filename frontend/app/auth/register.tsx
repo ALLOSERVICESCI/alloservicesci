@@ -66,10 +66,9 @@ export default function Register() {
           <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
         </View>
 
-
         <View style={styles.disclaimerWrap}>
           <Text style={styles.disclaimerText}>
-            En vous inscrivant, vous acceptez nos CGU et notre Politique de confidentialité.
+            En vous inscrivant, vous acceptez nos <Text style={styles.link} onPress={() => router.push('/legal/cgu')}>CGU</Text> et notre <Text style={styles.link} onPress={() => router.push('/legal/confidentialite')}>Politique de confidentialité</Text>.
           </Text>
         </View>
 
@@ -116,13 +115,13 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
       },
       android: {
-  disclaimerWrap: { alignItems: 'center', marginTop: 8, marginBottom: 8 },
-  disclaimerText: { fontSize: 12, color: '#666', textAlign: 'center', lineHeight: 16 },
-
         elevation: 8,
       },
     }),
   },
   tabItem: { alignItems: 'center', justifyContent: 'center', paddingVertical: 4, minWidth: 50 },
   tabLabel: { fontSize: 10, color: '#0A7C3A', marginTop: 2, textAlign: 'center', fontWeight: '600' },
+  disclaimerWrap: { alignItems: 'center', marginTop: 8, marginBottom: 8 },
+  disclaimerText: { fontSize: 12, color: '#666', textAlign: 'center', lineHeight: 16 },
+  link: { color: '#0A7C3A', textDecorationLine: 'underline', fontWeight: '600' },
 });
