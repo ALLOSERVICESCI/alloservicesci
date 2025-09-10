@@ -217,7 +217,7 @@ export default function Profile() {
           </View>
         </>
       )}
-      <NavMenu />
+
     </ScrollView>
   );
 }
