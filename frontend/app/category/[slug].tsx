@@ -94,7 +94,6 @@ export default function CategoryPage() {
       <View style={{ padding: 16, flex: 1 }}>
         <Text>{t('comingSoon')} {catLabel}</Text>
       </View>
-      <NavMenu />
     </View>
   );
 }
