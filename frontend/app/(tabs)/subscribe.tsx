@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3,
     paddingHorizontal: 6,
   },
-  tileIcon: { fontSize: 28, marginBottom: 6 },
+  tileIcon: { fontSize: 36, marginBottom: 8 },
   tileTitle: { fontSize: 12, fontWeight: '600', color: '#0F5132', textAlign: 'center' },
 
   ctaSection: { paddingHorizontal: H_PADDING, alignItems: 'center' },
