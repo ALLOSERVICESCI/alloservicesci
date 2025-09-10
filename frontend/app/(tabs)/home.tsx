@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 
+import NavMenu from '../../src/components/NavMenu';
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width, height } = Dimensions.get('window');
 const FAB_SIZE = 60;
