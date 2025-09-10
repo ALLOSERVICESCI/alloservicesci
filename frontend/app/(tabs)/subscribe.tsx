@@ -199,6 +199,7 @@ export default function Subscribe() {
 
         {/* Bottom spacer for safe scroll */}
         <View style={{ height: Platform.select({ ios: 24, android: 16, default: 16 }) }} />
+      <NavMenu />
       </ScrollView>
     </SafeAreaView>
   );
