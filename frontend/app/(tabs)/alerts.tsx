@@ -6,6 +6,8 @@ import { Link } from 'expo-router';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
 
+import NavMenu from '../../src/components/NavMenu';
+
 export default function Alerts() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
