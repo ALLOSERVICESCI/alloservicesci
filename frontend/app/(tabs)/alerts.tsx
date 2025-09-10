@@ -85,7 +85,7 @@ export default function Alerts() {
         refreshing={loading}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
       />
-      <NavMenu />
+
     </View>
   );
 }
