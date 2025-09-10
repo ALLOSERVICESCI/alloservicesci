@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated, Easing, Plat
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useI18n } from '../i18n/i18n';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function RingingBellIcon({ size = 22, color = '#F59E0B' }: { size?: number; color?: string }) {
   const rotate = React.useRef(new Animated.Value(0)).current;
@@ -30,6 +31,7 @@ export default function NavMenu() {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const { t } = useI18n();
+  const insets = useSafeAreaInsets();
 
   const items = [
     { key: 'home', label: t('tabHome'), icon: <Ionicons name="home" size={22} color="#0A7C3A" />, onPress: () => router.push('/(tabs)/home') },
@@ -39,13 +41,20 @@ export default function NavMenu() {
     { key: 'profile', label: t('tabProfile'), icon: <Ionicons name="person" size={22} color="#0A7C3A" />, onPress: () => router.push('/(tabs)/profile') },
   ];
 
+  // Position the hamburger slightly below the slogan: safe area + offset
+  const topOffset = insets.top + 60; // approx. just below the brand slogan area
+
   return (
     <>
-      <View pointerEvents="box-none" style={styles.fabWrap}>
-        <TouchableOpacity onPress={() => setOpen(true)} activeOpacity={0.9} style={styles.fab} accessibilityRole="button">
-          <Ionicons name="menu" size={26} color="#fff" />
+      {/* Simple hamburger (three lines), no green button */}
+      <View pointerEvents="box-none" style={[styles.hambWrap, { top: topOffset }]}>
+        <TouchableOpacity onPress={() => setOpen(true)} activeOpacity={0.7} style={styles.hambTouch} accessibilityRole="button">
+          <View style={styles.bar} />
+          <View style={[styles.bar, { width: 28 }]} />
+          <View style={[styles.bar, { width: 22 }]} />
         </TouchableOpacity>
       </View>
+
       <Modal transparent visible={open} animationType="fade" onRequestClose={() => setOpen(false)}>
         <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={() => setOpen(false)} />
         <View style={styles.sheet}>
@@ -65,15 +74,24 @@ export default function NavMenu() {
 }
 
 const styles = StyleSheet.create({
-  fabWrap: {
+  hambWrap: {
     position: 'absolute',
     left: 16,
-    top: Platform.select({ ios: 26, android: 20, default: 20 }),
+    zIndex: 50,
   },
-  fab: {
-    width: 56, height: 56, borderRadius: 28, backgroundColor: '#0A7C3A',
-    alignItems: 'center', justifyContent: 'center',
-    shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.22, shadowRadius: 8, elevation: 10,
+  hambTouch: {
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+    minWidth: 44,
+    minHeight: 44,
+    justifyContent: 'center',
+  },
+  bar: {
+    height: 3,
+    width: 32,
+    backgroundColor: '#0A7C3A',
+    borderRadius: 2,
+    marginVertical: 3,
   },
   backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.25)' },
   sheet: {
@@ -84,9 +102,7 @@ const styles = StyleSheet.create({
   },
   sheetTitle: { fontSize: 16, fontWeight: '800', color: '#0A7C3A', marginBottom: 12, textAlign: 'center' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  item: {
-    width: '30%', alignItems: 'center', marginBottom: 16,
-  },
+  item: { width: '30%', alignItems: 'center', marginBottom: 16 },
   itemIcon: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#F3F7F5', alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
   itemLabel: { fontSize: 12, color: '#0F5132', textAlign: 'center' },
 });
