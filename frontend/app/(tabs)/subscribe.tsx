@@ -13,7 +13,7 @@ const { width } = Dimensions.get('window');
 // Layout constants (8pt grid)
 const H_PADDING = 20; // horizontal page padding
 const GAP = 16;       // gap between grid tiles
-const COLS = 3;       // 3 columns grid for side-by-side categories
+const COLS = 2;       // 2 columns grid for side-by-side categories
 const TILE_WIDTH = (width - (H_PADDING * 2) - (GAP * (COLS - 1))) / COLS;
 
 export default function Subscribe() {
@@ -65,18 +65,21 @@ export default function Subscribe() {
 
   const goRegister = () => router.push('/auth/register');
 
+  // Feature tiles + routing targets
   const premiumFeatures = [
-    { key: 'exams', icon: '📚', title: t('cat_examens'), description: t('premiumFeature_exams') },
-    { key: 'education', icon: '🎓', title: t('cat_education'), description: t('premiumFeature_education') },
-    { key: 'jobs', icon: '💼', title: t('cat_emplois'), description: t('premiumFeature_jobs') },
-    { key: 'services', icon: '🏛️', title: t('cat_services_publics'), description: t('premiumFeature_services') },
-    { key: 'utilities', icon: '⚡', title: t('cat_services_utiles'), description: t('premiumFeature_utilities') },
-    { key: 'agriculture', icon: '🌾', title: t('cat_agriculture'), description: t('premiumFeature_agriculture') },
-    { key: 'leisure', icon: '🏖️', title: t('cat_loisirs'), description: t('premiumFeature_leisure') },
-    { key: 'transport', icon: '🚌', title: t('cat_transport'), description: t('premiumFeature_transport') },
+    { key: 'exams', icon: '📚', title: t('cat_examens'), slug: 'examens_concours' },
+    { key: 'education', icon: '🎓', title: t('cat_education'), slug: 'education' },
+    { key: 'jobs', icon: '💼', title: t('cat_emplois'), slug: 'emplois' },
+    { key: 'services', icon: '🏛️', title: t('cat_services_publics'), slug: 'services_publics' },
+    { key: 'utilities', icon: '⚡', title: t('cat_services_utiles'), slug: 'services_utiles' },
+    { key: 'agriculture', icon: '🌾', title: t('cat_agriculture'), slug: 'agriculture' },
+    { key: 'leisure', icon: '🏖️', title: t('cat_loisirs'), slug: 'loisirs_tourisme' },
+    { key: 'transport', icon: '🚌', title: t('cat_transport'), slug: 'transport' },
   ];
 
   const isPremium = user?.is_premium;
+
+  const openCategory = (slug: string) => router.push(`/category/${slug}`);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
@@ -147,15 +150,15 @@ export default function Subscribe() {
           </View>
         )}
 
-        {/* Features Grid: categories side-by-side (3 columns) */}
+        {/* Features Grid: categories side-by-side (2 columns) */}
         <View style={styles.featuresSection}>
           <Text style={styles.sectionTitle}>{t('premiumFeatures')}</Text>
           <View style={styles.tilesGrid}>
             {premiumFeatures.map((feature) => (
-              <View key={feature.key} style={styles.tile}>
+              <TouchableOpacity key={feature.key} style={styles.tile} onPress={() => openCategory(feature.slug)} accessibilityRole="button">
                 <Text style={styles.tileIcon}>{feature.icon}</Text>
                 <Text style={styles.tileTitle} numberOfLines={2}>{feature.title}</Text>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
