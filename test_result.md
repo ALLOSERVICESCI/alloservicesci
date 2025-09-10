@@ -768,6 +768,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Premium page: spacing/alignment on 8pt grid, clear sections, CTA prominence, gradient premium card"
     - "Category headers: 280dp height, bottom gradient 0.65, dynamic brightness overlay"
     - "Overlay titles: Crisp style, multilingual line breaks; hide for Santé and Éducation"
     - "Alerts tab icon simplified (warning #F59E0B)"
