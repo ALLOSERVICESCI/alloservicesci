@@ -528,8 +528,9 @@ test_plan:
     - "Navigation Changes UI Testing (Review Request)"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
+    - "Navigation Changes UI Testing (Review Request)"
   test_all: false
-  test_priority: "navigation_ui_testing"
+  test_priority: "navigation_critical_fixes"
 
 frontend:
   - task: "Home FAB Layah: size, tooltip, drag, persistence, navigation"
