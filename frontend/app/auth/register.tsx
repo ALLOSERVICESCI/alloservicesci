@@ -116,6 +116,9 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
       },
       android: {
+  disclaimerWrap: { alignItems: 'center', marginTop: 8, marginBottom: 8 },
+  disclaimerText: { fontSize: 12, color: '#666', textAlign: 'center', lineHeight: 16 },
+
         elevation: 8,
       },
     }),
