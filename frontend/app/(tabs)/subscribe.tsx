@@ -12,8 +12,9 @@ const { width } = Dimensions.get('window');
 
 // Layout constants (8pt grid)
 const H_PADDING = 20; // horizontal page padding
-const GAP = 16;       // gap between grid cards
-const CARD_WIDTH = (width - (H_PADDING * 2) - GAP) / 2; // two columns
+const GAP = 16;       // gap between grid tiles
+const COLS = 3;       // 3 columns grid for side-by-side categories
+const TILE_WIDTH = (width - (H_PADDING * 2) - (GAP * (COLS - 1))) / COLS;
 
 export default function Subscribe() {
   const { user, refreshUserData } = useAuth();
@@ -140,25 +141,20 @@ export default function Subscribe() {
             {/* Smaller title as requested */}
             <Text style={[styles.statusTitle, styles.statusTitleFree, { fontSize: 20 }]}>Premium 1200 FCFA / an</Text>
             <View style={styles.subscriptionInfo}>
-              {/* Remove big price and perYear text per request */}
+              {/* per request: removed price block and perYear text */}
               <Text style={styles.description}>{t('premiumDescription')}</Text>
             </View>
           </View>
         )}
 
-        {/* Features Grid */}
+        {/* Features Grid: categories side-by-side (3 columns) */}
         <View style={styles.featuresSection}>
           <Text style={styles.sectionTitle}>{t('premiumFeatures')}</Text>
-          <View style={styles.featuresGrid}>
-            {premiumFeatures.map((feature, index) => (
-              <View key={feature.key} style={[styles.featureCard, (index % 2 === 1) && styles.featureCardRight]}>
-                {/* Side-by-side icon and texts */}
-                <Text style={styles.featureIcon}>{feature.icon}</Text>
-                <View style={styles.featureTextWrap}>
-                  <Text style={styles.featureTitle}>{feature.title}</Text>
-                  <Text style={styles.featureDescription}>{feature.description}</Text>
-                  {isPremium && <Text style={styles.featureUnlocked}>✓ {t('unlocked')}</Text>}
-                </View>
+          <View style={styles.tilesGrid}>
+            {premiumFeatures.map((feature) => (
+              <View key={feature.key} style={styles.tile}>
+                <Text style={styles.tileIcon}>{feature.icon}</Text>
+                <Text style={styles.tileTitle} numberOfLines={2}>{feature.title}</Text>
               </View>
             ))}
           </View>
@@ -209,271 +205,59 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAF9',
   },
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 40,
-  },
-  header: {
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingHorizontal: H_PADDING,
-    paddingBottom: 10,
-  },
-  brand: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#0A7C3A',
-    textAlign: 'center',
-  },
-  slogan: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginTop: 4,
-  },
-  logoSection: {
-    alignItems: 'center',
-    paddingVertical: 20,
-  },
-  logoWrapper: {
-    position: 'relative',
-  },
+  container: { flex: 1 },
+  scrollContent: { paddingBottom: 40 },
+  header: { alignItems: 'center', paddingTop: 20, paddingHorizontal: H_PADDING, paddingBottom: 10 },
+  brand: { fontSize: 28, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
+  slogan: { fontSize: 16, color: '#666', textAlign: 'center', marginTop: 4 },
+  logoSection: { alignItems: 'center', paddingVertical: 20 },
+  logoWrapper: { position: 'relative' },
   logoContainer: {
-    width: 190,
-    height: 190,
-    borderRadius: 95,
-    borderWidth: 4,
-    borderColor: '#0A7C3A',
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 6,
+    width: 190, height: 190, borderRadius: 95, borderWidth: 4, borderColor: '#0A7C3A', backgroundColor: '#ffffff',
+    alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 6,
   },
-  logo: {
-    width: 170,
-    height: 170,
-    borderRadius: 85,
-    borderWidth: 3,
-    borderColor: '#ffffff',
-  },
-  premiumBadge: {
-    position: 'absolute',
-    top: -8,
-    right: -8,
-    backgroundColor: '#FFD700',
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderWidth: 2,
-    borderColor: '#fff',
-  },
-  premiumBadgeText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#8B7000',
-  },
+  logo: { width: 170, height: 170, borderRadius: 85, borderWidth: 3, borderColor: '#ffffff' },
+  premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: '#FFD700', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 2, borderColor: '#fff' },
+  premiumBadgeText: { fontSize: 12, fontWeight: '700', color: '#8B7000' },
   statusCard: {
-    marginHorizontal: H_PADDING,
-    marginTop: 8,
-    marginBottom: 20,
-    borderRadius: 16,
-    padding: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
+    marginHorizontal: H_PADDING, marginTop: 8, marginBottom: 20, borderRadius: 16, padding: 24,
+    shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 8,
   },
-  statusCardFree: {
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: '#E8F0E8',
+  statusCardFree: { backgroundColor: '#fff', borderWidth: 2, borderColor: '#E8F0E8' },
+  statusCardPremium: { overflow: 'hidden' },
+  statusTitle: { fontSize: 24, fontWeight: '800', textAlign: 'center', marginBottom: 12 },
+  statusTitleFree: { color: '#0A7C3A' },
+  statusTitlePremium: { color: '#fff' },
+  subscriptionInfo: { alignItems: 'center' },
+  description: { fontSize: 16, color: '#666', textAlign: 'center', lineHeight: 22 },
+  premiumInfo: { alignItems: 'center' },
+  premiumDescription: { fontSize: 16, color: '#E8F0E8', textAlign: 'center', lineHeight: 22, marginBottom: 8 },
+  expiryText: { fontSize: 14, color: '#B8D8C0', marginBottom: 16 },
+  refreshButton: { backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 8, borderRadius: 20, minHeight: 36, justifyContent: 'center' },
+  refreshButtonText: { color: '#0A7C3A', fontWeight: '600', fontSize: 14 },
+
+  featuresSection: { paddingHorizontal: H_PADDING, marginBottom: 30 },
+  sectionTitle: { fontSize: 22, fontWeight: '700', color: '#0F5132', textAlign: 'center', marginBottom: 20 },
+  tilesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+  tile: {
+    width: TILE_WIDTH, height: TILE_WIDTH, borderRadius: 16, backgroundColor: '#fff',
+    alignItems: 'center', justifyContent: 'center', marginBottom: GAP,
+    shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3,
+    paddingHorizontal: 6,
   },
-  statusCardPremium: {
-    overflow: 'hidden',
-  },
-  statusTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    textAlign: 'center',
-    marginBottom: 12,
-  },
-  statusTitleFree: {
-    color: '#0A7C3A',
-  },
-  statusTitlePremium: {
-    color: '#fff',
-  },
-  subscriptionInfo: {
-    alignItems: 'center',
-  },
-  price: {
-    fontSize: 36,
-    fontWeight: '800',
-    color: '#0A7C3A',
-  },
-  period: {
-    fontSize: 18,
-    color: '#666',
-    marginTop: -4,
-    marginBottom: 12,
-  },
-  description: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  premiumInfo: {
-    alignItems: 'center',
-  },
-  premiumDescription: {
-    fontSize: 16,
-    color: '#E8F0E8',
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 8,
-  },
-  expiryText: {
-    fontSize: 14,
-    color: '#B8D8C0',
-    marginBottom: 16,
-  },
-  refreshButton: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingVertical: 8,
-    borderRadius: 20,
-    minHeight: 36,
-    justifyContent: 'center',
-  },
-  refreshButtonText: {
-    color: '#0A7C3A',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  featuresSection: {
-    paddingHorizontal: H_PADDING,
-    marginBottom: 30,
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#0F5132',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  featuresGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  featureCard: {
-    width: CARD_WIDTH,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: GAP,
-    alignItems: 'center',
-    flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  featureCardRight: {
-    marginLeft: GAP,
-  },
-  featureIcon: {
-    fontSize: 28,
-    marginRight: 12,
-  },
-  featureTextWrap: {
-    flex: 1,
-  },
-  featureTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#0F5132',
-    textAlign: 'left',
-    marginBottom: 4,
-  },
-  featureDescription: {
-    fontSize: 12,
-    color: '#666',
-    textAlign: 'left',
-    lineHeight: 16,
-  },
-  featureUnlocked: {
-    fontSize: 12,
-    color: '#0A7C3A',
-    fontWeight: '600',
-    marginTop: 4,
-  },
-  ctaSection: {
-    paddingHorizontal: H_PADDING,
-    alignItems: 'center',
-  },
-  ctaText: {
-    fontSize: 16,
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 20,
-    lineHeight: 22,
-  },
+  tileIcon: { fontSize: 28, marginBottom: 6 },
+  tileTitle: { fontSize: 12, fontWeight: '600', color: '#0F5132', textAlign: 'center' },
+
+  ctaSection: { paddingHorizontal: H_PADDING, alignItems: 'center' },
+  ctaText: { fontSize: 16, color: '#333', textAlign: 'center', marginBottom: 20, lineHeight: 22 },
   button: {
-    backgroundColor: '#0A7C3A',
-    paddingVertical: 16,
-    paddingHorizontal: 40,
-    borderRadius: 12,
-    minWidth: 250,
-    alignItems: 'center',
-    shadowColor: '#0A7C3A',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    backgroundColor: '#0A7C3A', paddingVertical: 16, paddingHorizontal: 40, borderRadius: 12, minWidth: 250,
+    alignItems: 'center', shadowColor: '#0A7C3A', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 8,
   },
-  buttonSecondary: {
-    backgroundColor: '#0F5132',
-  },
-  buttonOutline: {
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#ffffff',
-    shadowColor: 'transparent',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  buttonSecondaryText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  buttonOutlineText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  paymentNote: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-    marginTop: 12,
-    fontStyle: 'italic',
-  },
+  buttonSecondary: { backgroundColor: '#0F5132' },
+  buttonOutline: { backgroundColor: 'transparent', borderWidth: 2, borderColor: '#ffffff', shadowColor: 'transparent', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0, shadowRadius: 0, elevation: 0 },
+  buttonText: { color: '#fff', fontSize: 18, fontWeight: '700' },
+  buttonSecondaryText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  buttonOutlineText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  paymentNote: { fontSize: 14, color: '#666', textAlign: 'center', marginTop: 12, fontStyle: 'italic' },
 });
