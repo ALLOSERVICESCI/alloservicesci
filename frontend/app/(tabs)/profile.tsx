@@ -8,6 +8,7 @@ import { useI18n, Lang } from '../../src/i18n/i18n';
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width } = Dimensions.get('window');
 
+import NavMenu from '../../src/components/NavMenu';
 export default function Profile() {
   const { user, logout } = useAuth();
   const [premium, setPremium] = useState<{ is_premium: boolean; expires_at?: string } | null>(null);
