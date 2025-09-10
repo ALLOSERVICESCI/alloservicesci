@@ -746,6 +746,22 @@ frontend:
     status_history:
       - working: "NA"
         agent: "main"
+  - task: "Premium page grid update (2 columns + clickable tiles)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/subscribe.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated Premium features to 2-column tile grid with equal widths and clickable navigation to /category/[slug]. Removed perYear line and reduced main title size. Run UI tests to verify grid layout and navigation." 
+
+agent_communication:
+  - agent: "main"
+    message: "User approved: 2 columns + clickable tiles + run automated UI tests. Implemented changes in /(tabs)/subscribe.tsx and will now run focused UI tests to validate tile grid and navigation behavior."
+
         comment: "Chat connected to /api/ai/chat with SSE streaming + fallback; header and welcome updated to 'Allô IA'. Ready for end-to-end test."
       - working: true
         agent: "testing"
