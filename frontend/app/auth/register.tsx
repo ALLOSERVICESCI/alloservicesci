@@ -66,6 +66,13 @@ export default function Register() {
           <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
         </View>
 
+
+        <View style={styles.disclaimerWrap}>
+          <Text style={styles.disclaimerText}>
+            En vous inscrivant, vous acceptez nos CGU et notre Politique de confidentialité.
+          </Text>
+        </View>
+
         <TouchableOpacity disabled={loading} onPress={onSubmit} style={styles.btn}><Text style={styles.btnText}>{loading ? '...' : t('submit')}</Text></TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
