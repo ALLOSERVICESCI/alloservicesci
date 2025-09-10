@@ -525,11 +525,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Backend Smoke Tests (Review Request)"
+    - "Navigation Changes UI Testing (Review Request)"
   stuck_tasks:
     - "Profile edit functionality (city/lang selection)"
   test_all: false
-  test_priority: "backend_smoke_complete"
+  test_priority: "navigation_ui_testing"
 
 frontend:
   - task: "Home FAB Layah: size, tooltip, drag, persistence, navigation"
