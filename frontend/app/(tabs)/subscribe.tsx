@@ -5,7 +5,6 @@ import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import NavMenu from '../../src/components/NavMenu';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
