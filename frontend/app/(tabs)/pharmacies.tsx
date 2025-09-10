@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } fr
 import * as Location from 'expo-location';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
+import NavMenu from '../../src/components/NavMenu';
 
 export default function Pharmacies() {
   const [data, setData] = useState<any[]>([]);
