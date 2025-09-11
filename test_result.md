@@ -884,6 +884,30 @@ frontend:
     status_history:
       - working: "NA"
 
+# --- Quick UI Test: Premium & Profile French by default ---
+
+test_plan:
+  current_focus:
+    - "On fresh session, app language defaults to FR (AsyncStorage empty)"
+    - "Premium page shows French heading (Fonctionnalités Premium) and FR labels"
+    - "Profile (logged out) shows French labels: brand, slogan, welcome title, 'Créer mon compte'"
+  test_all: false
+  test_priority: "high_first"
+
+frontend:
+  - task: "Verify Premium & Profile in FR by default"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/i18n/i18n.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Use a fresh browser context (incognito) to simulate first run, then validate FR on /(tabs)/subscribe and /(tabs)/profile."
+
+
 # --- UI Test Plan: Language persistence + Premium respects user language ---
 
 test_plan:
