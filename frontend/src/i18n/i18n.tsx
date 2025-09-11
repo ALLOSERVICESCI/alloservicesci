@@ -58,6 +58,7 @@ const dicts: Record<Lang, Dict> = {
     // Premium
     premiumLabel: 'Premium',
     premiumFeatures: 'Fonctionnalités Premium',
+    premiumAnnualTitle: 'Premium 1200 FCFA / an',
     // Alerts
     markAsRead: 'Marquer comme lu',
     loginRequired: 'Connexion requise',
