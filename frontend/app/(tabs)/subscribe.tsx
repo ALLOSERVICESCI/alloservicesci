@@ -149,7 +149,6 @@ export default function Subscribe() {
             <Text style={[styles.statusTitle, styles.statusTitleFree, { fontSize: 20 }]}>Premium 1200 FCFA / an</Text>
             <View style={styles.subscriptionInfo}>
               {/* per request: removed price block and perYear text */}
-              <Text style={styles.description}>{t('premiumDescription')}</Text>
             </View>
           </View>
         )}
