@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
+import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import { useI18n } from '../../src/i18n/i18n';
 
 import NavMenu from '../../src/components/NavMenu';
