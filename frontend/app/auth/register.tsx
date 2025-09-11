@@ -127,6 +127,12 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  legalRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 12, marginBottom: 6, paddingHorizontal: 8 },
+  checkbox: { width: 22, height: 22, borderWidth: 2, borderColor: '#0A7C3A', borderRadius: 4, marginRight: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  checkboxChecked: { backgroundColor: '#0A7C3A', borderColor: '#0A7C3A' },
+  legalLabel: { flex: 1, fontSize: 13, color: '#333', lineHeight: 18 },
+  legalError: { marginTop: 4, color: '#EF4444', textAlign: 'center', fontSize: 12 },
+
   tabItem: { alignItems: 'center', justifyContent: 'center', paddingVertical: 4, minWidth: 50 },
   tabLabel: { fontSize: 10, color: '#0A7C3A', marginTop: 2, textAlign: 'center', fontWeight: '600' },
   disclaimerWrap: { alignItems: 'center', marginTop: 8, marginBottom: 8 },
