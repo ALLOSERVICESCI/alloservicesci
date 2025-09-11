@@ -549,19 +549,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Utilisateur test injecté au démarrage (Serge Angoua)"
-    - "Header langue global: pastille visible partout, FR/EN/ES/IT/TR/ZH (AR absent)"
-    - "Accueil: pas de liste de langues sous le nom"
-    - "Premium: 'Paiement sécurisé par CinetPay' visible sous le bouton"
-    - "Profil/Edit: caméra visible, téléphone 0763632022, email sergeangoua@icloud.com, menu ville + recherche 'abi' => Abidjan"
-    - "Profil: avatar remplace le logo si avatar défini"
-    - "Notifications & Paiements: logo + 'Allô Services CI' + titre FR en haut"
+    - "NavMenu & pastille langue visibles UNIQUEMENT sur Accueil"
+    - "Absence de menu et pastille langue sur: Profil, Profil/Edit, Premium, Notifications, Historique paiements, Alertes, Pharmacies"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 agent_communication:
   - agent: "main"
-    message: "Relancer les tests frontend mobiles (iPhone 14 + Galaxy S21) avec utilisateur test injecté côté app/_layout.tsx. Vérifier header langue global, Accueil, Premium (texte CinetPay), Profil/Edit avec données préremplies et recherche ville, Notifications et Historique paiements (logo + titres FR)."
+    message: "Vérifier que le menu hamburger et la pastille langue (FR) n'apparaissent que sur / (tabs)/home et sont absents sur toutes les autres pages: /profile, /profile/edit, /notifications, /payments/history, / (tabs)/subscribe, / (tabs)/alerts, / (tabs)/pharmacies. Devices: iPhone 14 + Galaxy S21."
   - agent: "testing"
     message: "✅ COMPREHENSIVE LANGUAGE FLOW TESTING COMPLETE: Successfully executed backend tests (14/14 passed, 100% success rate) and frontend implementation validation (8/8 passed, 100% success rate). BACKEND VALIDATION: All 3 test scenarios working perfectly - Case A (FR registration), Case B (EN→FR switch), Case C (cold start FR default). User registration with language preferences fully functional, language updates via PATCH /api/users/{id} working, all 5 languages supported (FR/EN/ES/IT/AR), alerts functionality unaffected by language changes, AI chat working in French context. FRONTEND IMPLEMENTATION VALIDATION: Complete i18n system properly implemented with ActivityIndicator hydration gate, registration form applies setLang(prefLang) before navigation to Profile, all Profile actions use t() for localization (editProfile, notifCenter, paymentHistory, premiumActive, becomePremium, renewPremium), tab titles use t() for localization, language persistence via AsyncStorage working, French set as default language. All requirements from review request satisfied - language flow working end-to-end from registration to Profile page with immediate language application and no English flicker."
   - agent: "testing"
