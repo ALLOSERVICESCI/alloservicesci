@@ -69,7 +69,7 @@ export default function Subscribe() {
 
   // Feature tiles + routing targets
   const premiumFeatures = [
-    { key: 'pharmacies', icon: '💊', title: t('tabPharm'), description: '', slug: 'pharmacies_tab' },
+    { key: 'pharmacies', icon: '💊', title: t('tabPharm'), description: '', slug: 'pharmacies' },
     { key: 'alerts', icon: '🔔', title: t('cat_alertes'), description: '', slug: 'alerts_tab' },
     { key: 'exams', icon: '📚', title: t('cat_examens'), description: t('premiumFeature_exams'), slug: 'examens_concours' },
     { key: 'education', icon: '🎓', title: t('cat_education'), description: t('premiumFeature_education'), slug: 'education' },
