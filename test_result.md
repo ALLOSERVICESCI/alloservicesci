@@ -1321,6 +1321,18 @@ frontend:
         agent: "main"
         comment: "Replaced FAB with simple 3-line hamburger, positioned top-left under slogan; tab bar removed via tabBar={() => null}; category quick-nav removed; NavMenu added to all main tabs and category pages."
 
+  - task: "Review Request Mobile Testing - iPhone 14 & Galaxy S21"
+    implemented: true
+    working: false
+    file: "/app/frontend/app/(tabs)/subscribe.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL MOBILE UI TESTING RESULTS - REVIEW REQUEST VALIDATION: Executed comprehensive mobile UI testing on iPhone 14 (390x844) and Galaxy S21 (360x800) as requested. DETAILED FINDINGS: 1) ✅ PREMIUM PAGE /(tabs)/subscribe: CinetPay security text 'Paiement sécurisé par CinetPay' is VISIBLE under the button on both devices as required. Subscribe button 'S'abonner à Premium' found and clickable - payment flow can be triggered successfully. 2) ❌ PROFILE PAGE /(tabs)/profile: 'Devenir Premium' text is NOT FOUND on both devices when user is not premium. Profile shows user info with 'inactif' status instead of the required French label. This is a critical localization issue. 3) ❌ HOME PAGE NAVMENU REGRESSION: Hamburger menu (3 green bars) is NOT VISIBLE on home page (0 bars found on both devices) - critical navigation failure. FR language pill is correctly visible on home page. 4) ❌ NAVMENU SCOPE VIOLATION: FR language pill incorrectly appears on pharmacies and profile pages when it should only be on home page. Hamburger menu correctly absent on other pages. CRITICAL ISSUES REQUIRING IMMEDIATE ATTENTION: (a) Missing hamburger menu on home page breaks primary navigation, (b) Missing 'Devenir Premium' text on profile page, (c) FR pill showing on wrong pages. Screenshots captured: premium_test_iphone14.png, premium_test_galaxy_s21.png, profile_test_iphone14.png, profile_test_galaxy_s21.png, home_test_iphone14.png, home_test_galaxy_s21.png. Only 3/7 requirements passed - major fixes needed."
+
 agent_communication:
   - agent: "main"
     message: "Proceeding with focused UI tests for hamburger menu and hidden navigation bars across all pages."
