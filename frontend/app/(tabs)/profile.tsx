@@ -106,7 +106,6 @@ export default function Profile() {
         /* No User Card */
         <View style={styles.userCard}>
           <Text style={styles.cardTitle}>{t('welcome')}</Text>
-          <Text style={styles.cardDescription}>Bienvenue sur votre espace Allô Services CI.</Text>
           <TouchableOpacity onPress={goRegister} style={styles.primaryButton}>
             <Text style={styles.primaryButtonText}>{t('createAccount')}</Text>
           </TouchableOpacity>
