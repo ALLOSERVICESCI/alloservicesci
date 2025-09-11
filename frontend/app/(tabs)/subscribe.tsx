@@ -67,14 +67,16 @@ export default function Subscribe() {
 
   // Feature tiles + routing targets
   const premiumFeatures = [
-    { key: 'exams', icon: '📚', title: t('cat_examens'), slug: 'examens_concours' },
-    { key: 'education', icon: '🎓', title: t('cat_education'), slug: 'education' },
-    { key: 'jobs', icon: '💼', title: t('cat_emplois'), slug: 'emplois' },
-    { key: 'services', icon: '🏛️', title: t('cat_services_publics'), slug: 'services_publics' },
-    { key: 'utilities', icon: '⚡', title: t('cat_services_utiles'), slug: 'services_utiles' },
-    { key: 'agriculture', icon: '🌾', title: t('cat_agriculture'), slug: 'agriculture' },
-    { key: 'leisure', icon: '🏖️', title: t('cat_loisirs'), slug: 'loisirs_tourisme' },
-    { key: 'transport', icon: '🚌', title: t('cat_transport'), slug: 'transport' },
+    { key: 'pharmacies', icon: '💊', title: t('tabPharm'), description: '', slug: 'pharmacies_tab' },
+    { key: 'alerts', icon: '🔔', title: t('cat_alertes'), description: '', slug: 'alerts_tab' },
+    { key: 'exams', icon: '📚', title: t('cat_examens'), description: t('premiumFeature_exams'), slug: 'examens_concours' },
+    { key: 'education', icon: '🎓', title: t('cat_education'), description: t('premiumFeature_education'), slug: 'education' },
+    { key: 'jobs', icon: '💼', title: t('cat_emplois'), description: t('premiumFeature_jobs'), slug: 'emplois' },
+    { key: 'services', icon: '🏛️', title: t('cat_services_publics'), description: t('premiumFeature_services'), slug: 'services_publics' },
+    { key: 'utilities', icon: '⚡', title: t('cat_services_utiles'), description: t('premiumFeature_utilities'), slug: 'services_utiles' },
+    { key: 'agriculture', icon: '🌾', title: t('cat_agriculture'), description: t('premiumFeature_agriculture'), slug: 'agriculture' },
+    { key: 'leisure', icon: '🏖️', title: t('cat_loisirs'), description: t('premiumFeature_leisure'), slug: 'loisirs_tourisme' },
+    { key: 'transport', icon: '🚌', title: t('cat_transport'), description: t('premiumFeature_transport'), slug: 'transport' },
   ];
 
   const isPremium = user?.is_premium;
