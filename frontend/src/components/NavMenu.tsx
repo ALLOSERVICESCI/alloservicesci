@@ -32,8 +32,9 @@ function RingingBellIcon({ size = 22, color = '#F59E0B' }: { size?: number; colo
 
 export default function NavMenu() {
   const [open, setOpen] = React.useState(false);
+  const [openLang, setOpenLang] = React.useState(false);
   const router = useRouter();
-  const { t } = useI18n();
+  const { t, lang, setLang } = useI18n();
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { items: notifItems } = useNotificationsCenter();
@@ -68,12 +69,20 @@ export default function NavMenu() {
     { key: 'profile', label: t('tabProfile'), icon: <Ionicons name="person" size={22} color="#0A7C3A" />, onPress: () => router.push('/(tabs)/profile') },
   ];
 
-  // Position the hamburger slightly below the slogan: safe area + offset
-  const topOffset = insets.top + 60; // approx. just below the brand slogan area
+  // Position slightly below slogan area
+  const topOffset = insets.top + 60;
+
+  const LANGS: { code: 'fr'|'en'|'es'|'it'|'ar'; label: string }[] = [
+    { code: 'fr', label: 'Français' },
+    { code: 'en', label: 'English' },
+    { code: 'es', label: 'Español' },
+    { code: 'it', label: 'Italiano' },
+    { code: 'ar', label: 'العربية' },
+  ];
 
   return (
     <>
-      {/* Simple hamburger (three lines), no green button */}
+      {/* Simple hamburger (left) */}
       <View pointerEvents="box-none" style={[styles.hambWrap, { top: topOffset }]}>
         <TouchableOpacity onPress={() => setOpen(true)} activeOpacity={0.7} style={styles.hambTouch} accessibilityRole="button">
           <View style={styles.bar} />
@@ -82,6 +91,14 @@ export default function NavMenu() {
         </TouchableOpacity>
       </View>
 
+      {/* Language pill (right) */}
+      <View pointerEvents="box-none" style={[styles.langWrap, { top: topOffset }]}>
+        <TouchableOpacity onPress={() => setOpenLang(true)} activeOpacity={0.8} style={styles.langPill} accessibilityRole="button">
+          <Text style={styles.langPillText}>{(lang || 'fr').toUpperCase()}</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Main Menu Modal */}
       <Modal transparent visible={open} animationType="fade" onRequestClose={() => setOpen(false)}>
         <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={() => setOpen(false)} />
         <View style={styles.sheet}>
@@ -96,6 +113,21 @@ export default function NavMenu() {
                   )}
                 </View>
                 <Text style={styles.itemLabel} numberOfLines={1}>{it.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </Modal>
+
+      {/* Language Modal */}
+      <Modal transparent visible={openLang} animationType="fade" onRequestClose={() => setOpenLang(false)}>
+        <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={() => setOpenLang(false)} />
+        <View style={styles.sheet}>
+          <Text style={styles.sheetTitle}>Langue</Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+            {LANGS.map((l) => (
+              <TouchableOpacity key={l.code} style={[styles.langItem, l.code === lang && styles.langItemActive]} onPress={async () => { await setLang(l.code); setOpenLang(false); }}>
+                <Text style={[styles.langItemText, l.code === lang && styles.langItemTextActive]}>{l.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -125,6 +157,20 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     marginVertical: 3,
   },
+  langWrap: {
+    position: 'absolute',
+    right: 16,
+    zIndex: 50,
+  },
+  langPill: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#0A7C3A',
+    backgroundColor: '#fff',
+  },
+  langPillText: { color: '#0A7C3A', fontWeight: '800', fontSize: 12 },
   backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.25)' },
   sheet: {
     position: 'absolute', left: 16, right: 16,
@@ -140,4 +186,9 @@ const styles = StyleSheet.create({
   // Badge for alerts in menu
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
   badgeText: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
+  // Language sheet
+  langItem: { paddingVertical: 10, paddingHorizontal: 12, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, marginBottom: 10, width: '48%', alignItems: 'center' },
+  langItemActive: { borderColor: '#0A7C3A', backgroundColor: '#F3F7F5' },
+  langItemText: { color: '#0F5132', fontWeight: '700' },
+  langItemTextActive: { color: '#0A7C3A' },
 });
