@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ScrollView, Image, TextInput, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../src/context/AuthContext';
 import { useRouter } from 'expo-router';
@@ -18,8 +18,16 @@ export default function ProfileEdit() {
   const [city, setCity] = useState(user?.city || '');
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
 
   const sortedCities = useMemo(() => CI_CITIES.slice().sort((a,b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })), []);
+
+  const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const filteredCities = useMemo(() => {
+    const q = normalize(query);
+    if (!q) return sortedCities;
+    return sortedCities.filter((c) => normalize(c).includes(q));
+  }, [sortedCities, query]);
 
   if (!user) {
     return (
@@ -59,18 +67,40 @@ export default function ProfileEdit() {
         {/* Sélecteur de ville (déroulant aligné à gauche) */}
         <View style={styles.selectBlock}>
           <Text style={styles.sectionTitle}>{t('city')}</Text>
-          <TouchableOpacity style={styles.select} onPress={() => setOpen(!open)} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.select}
+            onPress={() => { const next = !open; setOpen(next); if (next) { setQuery(''); } }}
+            activeOpacity={0.8}
+          >
             <Text style={styles.selectText}>{city || t('select')}</Text>
             <Ionicons name={open ? 'chevron-up' : 'chevron-down'} size={18} color="#0A7C3A" />
           </TouchableOpacity>
           {open && (
             <View style={styles.dropdown}>
-              <ScrollView style={{ maxHeight: 260 }}>
-                {sortedCities.map((c) => (
-                  <TouchableOpacity key={c} style={styles.option} onPress={() => { setCity(c); setOpen(false); }}>
+              <View style={styles.searchWrap}>
+                <Ionicons name="search" size={16} color="#0A7C3A" style={{ marginRight: 8 }} />
+                <TextInput
+                  value={query}
+                  onChangeText={setQuery}
+                  placeholder={t('searchCity')}
+                  style={styles.searchInput}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="done"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+              </View>
+              <ScrollView style={{ maxHeight: 260 }} keyboardShouldPersistTaps="handled">
+                {filteredCities.map((c) => (
+                  <TouchableOpacity key={c} style={styles.option} onPress={() => { setCity(c); setOpen(false); Keyboard.dismiss(); }}>
                     <Text style={[styles.optionText, city === c && styles.optionTextActive]}>{c}</Text>
                   </TouchableOpacity>
                 ))}
+                {filteredCities.length === 0 && (
+                  <View style={{ paddingVertical: 12, paddingHorizontal: 12 }}>
+                    <Text style={{ color: '#666' }}>{t('notAvailable')}</Text>
+                  </View>
+                )}
               </ScrollView>
             </View>
           )}
@@ -94,9 +124,11 @@ const styles = StyleSheet.create({
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 16 },
   btnText: { color: '#fff', fontWeight: '700' },
   selectBlock: { alignItems: 'flex-start' },
-  select: { minWidth: 180, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, backgroundColor: '#FAFAF8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  select: { minWidth: 220, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, backgroundColor: '#FAFAF8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   selectText: { color: '#0A7C3A', fontWeight: '600' },
-  dropdown: { marginTop: 6, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#fff', width: 240, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 6, elevation: 4 },
+  dropdown: { marginTop: 6, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#fff', width: 260, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 6, elevation: 4 },
+  searchWrap: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#F0F3F0' },
+  searchInput: { flex: 1, height: 36, paddingHorizontal: 8, color: '#0A7C3A' },
   option: { paddingVertical: 10, paddingHorizontal: 12, borderBottomWidth: 1, borderBottomColor: '#F0F3F0' },
   optionText: { color: '#0A7C3A' },
   optionTextActive: { fontWeight: '800' },
