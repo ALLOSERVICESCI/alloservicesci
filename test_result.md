@@ -547,6 +547,18 @@ metadata:
         agent: "testing"
         comment: "✅ BACKEND SMOKE TESTS COMPLETE: Successfully tested all available endpoints with 100% success rate (7/7 passed). WORKING ENDPOINTS: 1) GET /api/health returns 200 OK. 2) POST /api/auth/register creates users successfully. 3) GET /api/subscriptions/check returns proper subscription status. 4) PATCH /api/users/{user_id} updates user profiles. 5) POST /api/payments/cinetpay/initiate creates payment transactions. 6) POST /api/ai/chat (non-streaming) returns 200 with JSON content from Emergent AI. 7) POST /api/ai/chat (streaming) returns 200 with SSE format. MISSING ENDPOINTS (404): POST /api/seed, GET /api/categories, GET /api/pharmacies/nearby, GET /api/exams, POST /api/payments/cinetpay/validate were previously implemented but are missing from current server.py. All available backend functionality is working correctly."
 
+  - task: "RETEX Backend Complet - Validation APIs clés (Review Request)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ RETEX BACKEND COMPLET TERMINÉ - 100% SUCCÈS: Effectué un RETEX backend complet pour valider les APIs clés selon la demande de révision. RÉSULTATS DÉTAILLÉS: 1) ✅ PAIEMENT CINETPAY: POST /api/payments/cinetpay/initiate avec {user_id: 'test-user', amount_fcfa: 1200} retourne 200 avec payment_url (https://checkout.cinetpay.com/payment/...) et transaction_id valides. Intégration CinetPay fonctionnelle en mode live avec clés API configurées. 2) ✅ UTILISATEURS: PATCH /api/users/{id} avec mise à jour city/email/phone fonctionne parfaitement - utilisateur mis à jour avec city=Yamoussoukro, email=serge.updated@example.ci. 3) ✅ NOTIFICATIONS: GET /api/alerts/unread_count retourne 200 + {count: 15} sans user_id et avec user_id. Endpoint fonctionnel pour comptage des alertes non lues. 4) ✅ SUBSCRIPTIONS: GET /api/subscriptions/check?user_id={id} retourne 200 + {is_premium: false, expires_at: null} correctement. 5) ✅ CORS ET ROUTES: Headers CORS présents (Access-Control-Allow-Origin: *, Access-Control-Allow-Credentials: true), routes /api accessibles, backend répond sur 0.0.0.0:8001 via proxy Kubernetes. STATUT GLOBAL: 9/9 tests réussis (100% de réussite). Tous les endpoints critiques fonctionnent correctement. Backend prêt pour production."
+
 test_plan:
   current_focus:
     - "RETEX COMPLET FRONT+BACK: flux paiement CinetPay, i18n FR par défaut, menu seulement Accueil"
