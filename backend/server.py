@@ -40,7 +40,7 @@ TEMPERATURE_DEFAULT = float(os.environ.get('AI_TEMPERATURE', '0.5'))
 MAX_TOKENS_DEFAULT = int(os.environ.get('AI_MAX_TOKENS', '1200'))
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.7.1")
+app = FastAPI(title="Allô Services CI API", version="0.7.2")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -253,7 +253,50 @@ async def cinetpay_initiate(payload: PaymentInitInput):
         logger.exception("CinetPay init error")
         raise HTTPException(status_code=500, detail=str(e))
 
-# ---------- ALERTS: Unread Count ----------
+# ---------- ALERTS: basic CRUD + unread count + read mark ----------
+@api.post('/alerts')
+async def create_alert(payload: AlertCreate):
+    doc = payload.model_dump()
+    doc['created_at'] = datetime.utcnow()
+    doc['status'] = doc.get('status') or 'new'
+    doc['read_by'] = []
+    res = await db.alerts.insert_one(doc)
+    saved = await db.alerts.find_one({'_id': res.inserted_id})
+    saved['id'] = str(saved['_id'])
+    del saved['_id']
+    return saved
+
+@api.get('/alerts')
+async def list_alerts(limit: int = 50):
+    cur = db.alerts.find({}).sort('created_at', -1).limit(max(1, min(limit, 200)))
+    out = []
+    async for a in cur:
+        a['id'] = str(a['_id'])
+        del a['_id']
+        out.append(a)
+    return out
+
+class MarkReadInput(BaseModel):
+    user_id: str
+
+@api.patch('/alerts/{alert_id}/read')
+async def mark_alert_read(alert_id: str, payload: MarkReadInput):
+    try:
+        aid = ObjectId(alert_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid alert_id")
+    try:
+        uid = ObjectId(payload.user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+    r = await db.alerts.update_one({'_id': aid}, {'$addToSet': {'read_by': uid}, '$set': {'updated_at': datetime.utcnow(), 'status': 'read'}})
+    if r.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    a = await db.alerts.find_one({'_id': aid})
+    a['id'] = str(a['_id'])
+    del a['_id']
+    return a
+
 @api.get('/alerts/unread_count')
 async def alerts_unread_count(user_id: Optional[str] = None):
     """
@@ -417,7 +460,7 @@ app.include_router(api)
 # Startup hooks
 @app.on_event('startup')
 async def on_startup():
-    try:
-        await ensure_indexes()
-    except Exception:
-        logger.exception('Index init failed')
+  try:
+    await ensure_indexes()
+  except Exception:
+    logger.exception('Index init failed')
