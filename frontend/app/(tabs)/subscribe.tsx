@@ -174,7 +174,6 @@ export default function Subscribe() {
         <View style={styles.ctaSection}>
           {!user?.id ? (
             <>
-              <Text style={styles.ctaText}>{t('needAccountToProceed')}</Text>
               <TouchableOpacity onPress={goRegister} style={[styles.button, styles.buttonSecondary]} accessibilityRole="button">
                 <Text style={styles.buttonSecondaryText}>{t('createAccount')}</Text>
               </TouchableOpacity>
