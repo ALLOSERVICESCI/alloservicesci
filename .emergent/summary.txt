@@ -1,0 +1,59 @@
+<analysis>
+The previous AI engineer has meticulously transformed the Allô Services CI mobile application from a basic functional state to a highly polished and feature-rich product, heavily focusing on UI/UX and localization. Initial work involved critical bug fixes for the AI assistant and chat UI enhancements. Subsequently, a significant redesign of category headers, including dynamic styling, image management, and gradient overlays, was completed with numerous iterations based on user feedback. The Alertes icon received complex animations. Navigation underwent a major overhaul, transitioning from traditional tabs to a single, top-left hamburger menu. Core functionalities like the Premium page, unread alerts badge, and legal consent on registration were implemented, iteratively refined, and translated. Despite extensive testing, a persistent bug regarding the Profile page defaulting to English after registration has emerged, indicating a need for deeper investigation into the language persistence or redirection logic. The engineer has diligently addressed all user requests, often testing and reiterating, but this specific issue remains open.
+</analysis>
+
+<product_requirements>
+The Allô Services CI mobile application is designed for Côte d’Ivoire and its diaspora, offering essential services in five languages (FR, EN, ES, IT, AR). It provides free access to core utilities (emergencies, pharmacies) and a premium subscription (1200 FCFA/year) integrated with CinetPay. Users can publish geo-localized alerts with images. Key categories like Urgence, Santé, Éducation are displayed via a carousel and have dynamic header visuals. User profiles manage personal data. The app uses an Expo frontend, FastAPI backend, and MongoDB. Core functionalities include user registration, CinetPay integration, push notifications, and basic alert creation. Recent development focused on UI/UX, including an animated splash screen, refined category headers, and a fully functional Allô IA assistant with advanced chat features. The app emphasizes a native-feeling, thumb-friendly, and glanceable user experience with comprehensive navigation and localized content.
+</product_requirements>
+
+<key_technical_concepts>
+-   **Mobile Framework:** Expo, React Native.
+-   **Frontend Libraries:** Expo Router (file-based routing), React Navigation, React Context, , , .
+-   **Backend:** FastAPI (Python), MongoDB, Server-Sent Events (SSE).
+-   **AI Integration:** Emergent Integrations (LLM).
+-   **Payment:** CinetPay.
+-   **Deployment:** EAS Build, OTA Updates.
+</key_technical_concepts>
+
+<code_architecture>
+The application follows a full-stack architecture: Expo for the frontend, FastAPI for the backend, and MongoDB as the database.
+
+
+
+-   : The main FastAPI backend. It handles category endpoints, user profiles, payment history, AI chat with streaming SSE. Recent additions include  for dynamic alert badges and  to mark alerts as read.
+-   : Expo configuration file, branding Allô Services CI and Expo Router plugins.
+-   : EAS build configuration.
+-   : Manages frontend dependencies.
+-   : The primary navigation layout. Modified to hide tab bars () and integrate global contexts.
+-   : Home screen. Now includes the  hamburger icon, a clickable language selector, and dynamically ordered category tiles (Urgence → Santé → Pharmacies → Alertes). Pharmacies and Alertes are marked premium with a padlock and ribbon, and Alertes features a dynamic unread badge from backend API. Header margins increased.
+-   : Dedicated Alertes screen. Now includes Mark as read buttons on each alert item, which updates global unread counters immediately.
+-   : Dynamic category screen. Configured with full-cover images, dynamic gradients, and customizable Crisp overlay titles. Restored from a previous issue.
+-   : AI chat screen, enhanced with error messages, typing indicators, stop, copy, and temperature settings.
+-   : Premium page. Features a 2-column grid with larger icons (36px) and short descriptions. Pharmacies and Alertes are at the top, pointing to their respective category pages. Has a dynamic unread badge for Alertes. Titles like Fonctionnalités Premium and Premium 1200 FCFA / an are now i18n-enabled. Margins adjusted.
+-   : Registration screen. Now includes mandatory legal consent checkbox, red error message, visually disabled button until accepted, and clickable links to CGU/Confidentialité pages. Navigation icons removed. After successful registration, it attempts to force French and redirect to Profile, but this has a persistent bug.
+-    (NEW): Placeholder for General Terms of Use, now contains user-provided text.
+-    (NEW): Placeholder for Privacy Policy, contains a summary.
+-   : Multi-language translations (FR, EN, ES, IT, AR). Handles dynamic splitting of titles, stores , , , , , ,  with translations. Configured for FR default at first launch, respecting user's manual choice.
+-    (NEW): Global hamburger menu component, positioned top-left on the Home page. Displays 5 main sections (Home, Alerts, Pharmacies, Premium, Profile) with animated Alertes bell and dynamic unread badge.
+-   : Profile screen. Content is now centered, header margins increased, and the Allô Services CI logo is enlarged to match the Premium page. Displays Bienvenue and a Créer mon compte button if not connected.
+
+</code_architecture>
+
+<pending_tasks>
+-   **Profile Page Language Bug:** The Profile page still displays in English after account creation, despite repeated attempts to force French. This is a critical blocking issue.
+-   **EAS Build Preparation:** The final configuration steps for an Android EAS build (e.g., confirming the Android package, handling custom font assets) are still pending user input.
+</pending_tasks>
+
+<current_work>
+The application is in a highly developed state, with extensive UI/UX refinements across most screens. The primary focus immediately prior to this summary was on ensuring consistent language display, particularly setting French as the default.
+
+Specifically, the AI engineer was working on a persistent bug where the Profile page () would display in English, even after registration, despite multiple attempts to force the language to French within the  file upon successful account creation.
+
+The last action taken was another attempt to secure the French display on the Profile page post-registration by ensuring  with persistence and a localized alert Bienvenue, votre profil est prêt were executed before redirection. However, the user reported that the text *still* appears in English after registration.
+
+This indicates an underlying issue with how language persistence or immediate language application works, potentially a caching problem or a race condition between navigation and language setting. The  file is configured for FR default at first launch, with user choice persistence, but this specific flow seems to bypass or override it.
+</current_work>
+
+<optional_next_step>
+Troubleshoot the persistent bug where the Profile page shows English after registration, despite forcing French.
+</optional_next_step>
