@@ -4,6 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useI18n } from '../i18n/i18n';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAuth } from '../context/AuthContext';
+import { useNotificationsCenter } from '../context/NotificationsContext';
+import { apiFetch } from '../utils/api';
 
 function RingingBellIcon({ size = 22, color = '#F59E0B' }: { size?: number; color?: string }) {
   const rotate = React.useRef(new Animated.Value(0)).current;
@@ -32,6 +35,30 @@ export default function NavMenu() {
   const router = useRouter();
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
+  const { user } = useAuth();
+  const { items: notifItems } = useNotificationsCenter();
+  const [unread, setUnread] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    let mounted = true;
+    const fetchUnread = async () => {
+      try {
+        const url = user?.id ? `/api/alerts/unread_count?user_id=${user.id}` : '/api/alerts/unread_count';
+        const res = await apiFetch(url);
+        const json = await res.json().catch(() => ({}));
+        if (mounted && res.ok && typeof json.count === 'number') {
+          setUnread(json.count);
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+    fetchUnread();
+    const id = setInterval(fetchUnread, 20000);
+    return () => { mounted = false; clearInterval(id); };
+  }, [user?.id]);
+
+  const totalUnread = unread > 0 ? unread : (notifItems?.length || 0);
 
   const items = [
     { key: 'home', label: t('tabHome'), icon: <Ionicons name="home" size={22} color="#0A7C3A" />, onPress: () => router.push('/(tabs)/home') },
@@ -62,7 +89,12 @@ export default function NavMenu() {
           <View style={styles.grid}>
             {items.map((it) => (
               <TouchableOpacity key={it.key} style={styles.item} onPress={() => { setOpen(false); setTimeout(it.onPress, 10); }}>
-                <View style={styles.itemIcon}>{it.icon}</View>
+                <View style={styles.itemIcon}>
+                  {it.icon}
+                  {it.key === 'alerts' && totalUnread > 0 && (
+                    <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{totalUnread > 99 ? '99+' : String(totalUnread)}</Text></View>
+                  )}
+                </View>
                 <Text style={styles.itemLabel} numberOfLines={1}>{it.label}</Text>
               </TouchableOpacity>
             ))}
@@ -103,6 +135,9 @@ const styles = StyleSheet.create({
   sheetTitle: { fontSize: 16, fontWeight: '800', color: '#0A7C3A', marginBottom: 12, textAlign: 'center' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
   item: { width: '30%', alignItems: 'center', marginBottom: 16 },
-  itemIcon: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#F3F7F5', alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
+  itemIcon: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#F3F7F5', alignItems: 'center', justifyContent: 'center', marginBottom: 6, position: 'relative' },
   itemLabel: { fontSize: 12, color: '#0F5132', textAlign: 'center' },
+  // Badge for alerts in menu
+  badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
+  badgeText: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
 });
