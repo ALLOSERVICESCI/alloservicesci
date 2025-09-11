@@ -23,9 +23,7 @@ export default function Subscribe() {
   const [loading, setLoading] = useState(false);
   const [refreshingStatus, setRefreshingStatus] = useState(false);
   const router = useRouter();
-  const { t, setLang, lang } = useI18n();
-  // Force FR on this page
-  if (lang !== 'fr') setLang('fr');
+  const { t } = useI18n();
 
   const startPayment = async () => {
     if (!user?.id) { router.push('/auth/register'); return; }
@@ -248,7 +246,6 @@ const styles = StyleSheet.create({
   expiryText: { fontSize: 14, color: '#B8D8C0', marginBottom: 16 },
   refreshButton: { backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 8, borderRadius: 20, minHeight: 36, justifyContent: 'center' },
   refreshButtonText: { color: '#0A7C3A', fontWeight: '600', fontSize: 14 },
-
   featuresSection: { paddingHorizontal: H_PADDING, marginBottom: 30 },
   sectionTitle: { fontSize: 22, fontWeight: '700', color: '#0F5132', textAlign: 'center', marginBottom: 20 },
   tilesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
@@ -257,10 +254,12 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center', marginBottom: GAP,
     shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3,
     paddingHorizontal: 6,
+    position: 'relative',
   },
+  badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
+  badgeText: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
   tileIcon: { fontSize: 36, marginBottom: 8 },
   tileTitle: { fontSize: 12, fontWeight: '600', color: '#0F5132', textAlign: 'center' },
-
   ctaSection: { paddingHorizontal: H_PADDING, alignItems: 'center' },
   ctaText: { fontSize: 16, color: '#333', textAlign: 'center', marginBottom: 20, lineHeight: 22 },
   button: {
@@ -273,26 +272,4 @@ const styles = StyleSheet.create({
   buttonSecondaryText: { color: '#fff', fontSize: 16, fontWeight: '600' },
   buttonOutlineText: { color: '#fff', fontSize: 16, fontWeight: '700' },
   paymentNote: { fontSize: 14, color: '#666', textAlign: 'center', marginTop: 12, fontStyle: 'italic' },
-  
-  // Badge styles for notifications
-  badgeNotifs: {
-    position: 'absolute',
-    top: -6,
-    right: -6,
-    backgroundColor: '#FF4444',
-    borderRadius: 10,
-    minWidth: 20,
-    height: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#fff',
-    zIndex: 10,
-  },
-  badgeText: {
-    color: '#fff',
-    fontSize: 11,
-    fontWeight: '700',
-    textAlign: 'center',
-  },
 });
