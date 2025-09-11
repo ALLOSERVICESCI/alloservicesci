@@ -273,6 +273,9 @@ async def list_alerts(limit: int = 50):
     async for a in cur:
         a['id'] = str(a['_id'])
         del a['_id']
+        # Convert ObjectId objects in read_by to strings for JSON serialization
+        if 'read_by' in a and isinstance(a['read_by'], list):
+            a['read_by'] = [str(obj_id) for obj_id in a['read_by']]
         out.append(a)
     return out
 
