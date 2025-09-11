@@ -631,6 +631,18 @@ frontend:
         agent: "testing"
         comment: "✅ LAYAH FAB SIZE UPDATE VALIDATION COMPLETE: Comprehensive testing completed on both iPhone 14 (390x844) and Galaxy S21 (360x800) after size update. DETAILED FINDINGS: 1) ✅ FAB wrapper dimensions confirmed: iPhone 14: 63.5x63.5px, Galaxy S21: 61.2x61.2px (close to expected 60x60). 2) ✅ AI image wrapper (aiImgWrapLg) confirmed as 52x52 with white background and green border (#0A7C3A). 3) ⚠️ AI image (aiImgLg) dimensions: iPhone 14: 46.6x46.6px, Galaxy S21: 44.9x44.9px (slightly smaller than expected 49x49, likely due to resizeMode: 'contain' scaling in web environment). 4) ✅ Tooltip 'Layah (Agent IA)' shows correctly on first load with green background and proper positioning. 5) ✅ Tooltip hides immediately when tapping the FAB as expected. 6) ✅ Navigation to /ai/chat works perfectly on both devices - chat screen loads with 'Layah — Assistant IA' header. 7) ✅ Pulsing animation present in code implementation. 8) ✅ Screenshots captured: initial state (tooltip visible), chat screen, and after tap (tooltip hidden) for both devices. Minor size variance likely due to web rendering vs native mobile environment. All core functionality validated successfully - size update working as intended."
 
+  - task: "Mobile UI Testing - Profile Edit, Header Language, Premium CinetPay (Review Request)"
+    implemented: true
+    working: false
+    file: "/app/frontend/app/profile/edit.tsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL MOBILE UI TESTING ISSUES FOUND: Executed comprehensive mobile UI testing on iPhone 14 (390x844) and Galaxy S21 (360x800) as requested, but discovered multiple critical issues requiring immediate attention. DETAILED FINDINGS: 1) ❌ PROFILE EDIT: Authentication required ('Vous devez créer un compte') prevents testing camera button, French fields (Téléphone, Email (optionnel), Ville), and city dropdown with search functionality. Code analysis confirms elements should be present but cannot verify functionality. 2) ❌ HEADER LANGUAGE SELECTOR: Language pill (.langPill) completely missing (count: 0) - critical failure as FR/EN/ES/IT/TR/ZH selector not rendering in header. 3) ❌ PREMIUM PAGE: French CinetPay text 'Paiement sécurisé par CinetPay' NOT FOUND (count: False) - major localization issue. 4) ❌ NOTIFICATIONS CENTER: Logo missing (count: 0) but brand text 'Allô Services CI' and French title 'Centre de notifications' found correctly. 5) ❌ PAYMENT HISTORY: Complete failure - logo, brand text, and French title 'Historique des paiements' all missing (counts: 0). 6) ✅ HOME PAGE: Correctly shows no language list under user name, but user greeting also missing. 7) ✅ PROFILE PAGE: Avatar logic confirmed in code - user.avatar replaces logo when present. URGENT FIXES REQUIRED: Header language selector not rendering, Premium CinetPay text missing, Payment history page not loading properly, multiple logo elements missing. App loads correctly with splash screen but critical UI components failing to render."
+
 frontend:
   - task: "Home layout - carousel centered and description below"
     implemented: true
