@@ -555,6 +555,9 @@ test_plan:
     - "Profile edit functionality (city/lang selection)"
   test_all: false
   test_priority: "high_first"
+agent_communication:
+  - agent: "main"
+    message: "User confirmed language behavior: FR by default then respect user selection. Implementing i18n hydration and applying chosen language after registration before navigating to Profile. Requesting backend + automated frontend E2E tests (registration → profile language)."
 
 frontend:
   - task: "Home FAB Layah: size, tooltip, drag, persistence, navigation"
