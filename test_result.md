@@ -884,6 +884,32 @@ frontend:
     status_history:
       - working: "NA"
 
+# --- General UI Test Plan: Core screens (FR default, layout, navigation) ---
+
+test_plan:
+  current_focus:
+    - "Home: FR by default; header padding increased; hamburger left + language pill right on same row; tiles order; alerts badge"
+    - "Premium: French headings; Pharmacies+Alertes first; 2-column grid; tiles navigate to /category/pharmacies and /category/alertes; alerts badge"
+    - "Profile: header padding increased; centered content; logo size 190/170 like Premium; welcome + create account (logged out)"
+    - "Alerts: list renders; 'Marquer comme lu' updates list and badges immediately"
+    - "Register: FR texts; mandatory CGU checkbox with red error; legal links OK; no bottom nav"
+    - "Categories: headers render for alertes and pharmacies; overlay title rules respected"
+  test_all: true
+  test_priority: "high_first"
+
+frontend:
+  - task: "Run general UI pass and capture screenshots on iPhone 14 and Galaxy S21"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Archive the current FR-default state and layout adjustments across screens; validate navigation and dynamic badges."
+
 # --- Full UI Test Plan: Archive FR-by-default state with screenshots ---
 
 test_plan:
