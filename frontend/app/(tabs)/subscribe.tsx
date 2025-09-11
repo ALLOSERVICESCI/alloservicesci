@@ -271,4 +271,26 @@ const styles = StyleSheet.create({
   buttonSecondaryText: { color: '#fff', fontSize: 16, fontWeight: '600' },
   buttonOutlineText: { color: '#fff', fontSize: 16, fontWeight: '700' },
   paymentNote: { fontSize: 14, color: '#666', textAlign: 'center', marginTop: 12, fontStyle: 'italic' },
+  
+  // Badge styles for notifications
+  badgeNotifs: {
+    position: 'absolute',
+    top: -6,
+    right: -6,
+    backgroundColor: '#FF4444',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
+    zIndex: 10,
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
 });
