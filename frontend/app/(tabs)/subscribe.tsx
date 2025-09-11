@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking, Alert, Image, ScrollView, Dimensions, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
+import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
 import { SafeAreaView } from 'react-native-safe-area-context';
