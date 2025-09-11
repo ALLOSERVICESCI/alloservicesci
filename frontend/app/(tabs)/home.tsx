@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   logoSection: { alignItems: 'center', marginBottom: 16 },
   logoContainer: { width: 140, height: 140, borderRadius: 70, borderWidth: 4, borderColor: '#0A7C3A', backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 6 },
   logo: { width: 120, height: 120, borderRadius: 60, borderWidth: 3, borderColor: '#ffffff' },
-  brandSection: { alignItems: 'center' },
+  brandSection: { alignItems: 'center', marginTop: 8 },
   brand: { fontSize: 32, fontWeight: '800', color: '#0A7C3A' },
   slogan: { fontSize: 18, color: '#666', marginTop: 4, textAlign: 'center' },
   greeting: { fontSize: 20, color: '#0F5132', marginTop: 8, fontWeight: '700', textAlign: 'center' },
