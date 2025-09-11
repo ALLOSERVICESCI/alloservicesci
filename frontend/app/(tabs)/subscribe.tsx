@@ -100,7 +100,7 @@ export default function Subscribe() {
         </View>
 
         {isPremium ? (
-          <LinearGradient colors={['#0A7C3A', '#0F5132']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.statusCard, styles.statusCardPremium, { marginBottom: 28 }]}>
+          <LinearGradient colors={['#0A7C3A', '#0F5132']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.statusCard, styles.statusCardPremium, { marginBottom: 28 }]}> 
             <Text style={[styles.statusTitle, styles.statusTitlePremium]}>
               {t('premiumActive')}
             </Text>
@@ -123,8 +123,8 @@ export default function Subscribe() {
         ) : (
           <View style={[styles.statusCard, styles.statusCardFree]}>
             <Text style={[styles.statusTitle, styles.statusTitleFree, { fontSize: 20 }]}>{t('premiumAnnualTitle')}</Text>
-            <View style={styles.subscriptionInfo}>
-            </View>
+            <View style={styles.subscriptionInfo} />
+            {/* Positionner le texte CinetPay sous le CTA pour le rendre visible au-dessus du pli */}
           </View>
         )}
 
@@ -158,8 +158,11 @@ export default function Subscribe() {
             <>
               <Text style={styles.ctaText}>{t('premiumCallToAction')}</Text>
               <TouchableOpacity onPress={startPayment} style={styles.button} disabled={loading} accessibilityRole="button">
-                {loading ? (<ActivityIndicator color="#fff" />) : (<Text style={styles.buttonText}>{t('subscribePremium')}</Text>)}
+                {loading ? (<ActivityIndicator color="#fff" />) : (
+                  <Text style={styles.buttonText}>{t('subscribePremium')}</Text>
+                )}
               </TouchableOpacity>
+              {/* Texte CinetPay immédiatement sous le bouton pour être visible */}
               <Text style={styles.paymentNote}>{t('securePaymentByCinetPay')}</Text>
             </>
           )}
