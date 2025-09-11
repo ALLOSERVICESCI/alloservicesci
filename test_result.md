@@ -884,6 +884,29 @@ frontend:
   - task: "Alertes page header loader"
     implemented: true
 
+# --- Backend Test Plan: /api/alerts/unread_count ---
+
+test_plan:
+  current_focus:
+    - "GET /api/alerts/unread_count returns {count}"
+    - "With user_id param and without user_id param"
+  test_all: false
+  test_priority: "high_first"
+
+backend:
+  - task: "Unread alerts count endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Add /api/alerts/unread_count and validate 200 + integer count response; no seed alerts expected so count >=0."
+
+
 # --- Mini UI Test: Home tiles order + navigation (Alertes/Pharmacies) ---
 
 test_plan:
