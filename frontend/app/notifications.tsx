@@ -9,8 +9,8 @@ export default function NotificationsCenter() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.brand}>{t('brand')}</Text>
-      <Text style={styles.title}>{t('notifCenter')}</Text>
+      {/* Titre principal en plus grand, sans brand au-dessus */}
+      <Text style={styles.titleXL}>{t('notifCenter')}</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
         <TouchableOpacity onPress={clear} style={styles.btn}><Text style={styles.btnText}>{t('clearHistory')}</Text></TouchableOpacity>
       </View>
@@ -38,10 +38,9 @@ export default function NotificationsCenter() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  brand: { fontSize: 18, fontWeight: '800', color: '#0A7C3A' },
-  title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A', marginTop: 6 },
-  btn: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8, marginTop: 8 },
+  container: { flex: 1, backgroundColor: '#fff', padding: 16, paddingTop: 56 },
+  titleXL: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', textAlign: 'left' },
+  btn: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8, marginTop: 12 },
   btnText: { color: '#fff', fontWeight: '700' },
   empty: { marginTop: 20, color: '#666' },
   card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginTop: 12, borderWidth: 1, borderColor: '#E8F0E8' },
