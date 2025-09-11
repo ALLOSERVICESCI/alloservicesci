@@ -24,8 +24,8 @@ export default function Register() {
     setLoading(true);
     try {
       await register({ first_name, last_name, email, phone, preferred_lang: prefLang });
-      // Forcer le FR par défaut après création de compte
-      await setLang('fr');
+      // Appliquer la langue choisie par l'utilisateur (FR par défaut si non modifiée)
+      await setLang(prefLang);
       // Message de bienvenue localisé
       setTimeout(() => Alert.alert(t('profileReady')), 50);
       // Aller directement au profil
