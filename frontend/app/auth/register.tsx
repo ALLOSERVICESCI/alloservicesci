@@ -16,6 +16,7 @@ export default function Register() {
   const [prefLang, setPrefLang] = useState<Lang>('fr');
   const [loading, setLoading] = useState(false);
   const [acceptLegal, setAcceptLegal] = useState(false);
+  const [showLegalError, setShowLegalError] = useState(false);
 
   const onSubmit = async () => {
     if (!first_name || !last_name || !phone) { Alert.alert(t('requiredFields'), t('requiredMsg')); return; }
