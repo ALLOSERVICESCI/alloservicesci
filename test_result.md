@@ -549,12 +549,18 @@ metadata:
 
 test_plan:
   current_focus:
-    - "CinetPay: clic 'S’abonner à Premium' ouvre l’URL de paiement (vérif de wiring)"
-    - "Profil: libellé 'Devenir Premium' en FR par défaut quand non premium"
-    - "Premium: texte 'Paiement sécurisé par CinetPay' visible"
+    - "RETEX COMPLET FRONT+BACK: flux paiement CinetPay, i18n FR par défaut, menu seulement Accueil"
+    - "Paiement: clic 'S’abonner à Premium' ouvre l’URL via /api/payments/cinetpay/initiate"
+    - "Profil: afficher 'Devenir Premium' en FR si non premium"
+    - "Profil/Edit: caméra, téléphone/email FR, ville + recherche 'Abidjan'"
+    - "Notifications & Paiements: logo + titres FR en haut"
+    - "Langues: TR/ZH présents, AR supprimée"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+agent_communication:
+  - agent: "main"
+    message: "Lancer un re-test complet backend puis frontend (iPhone 14 + Galaxy S21) pour valider CinetPay, 'Devenir Premium' FR, visibilité NavMenu (uniquement Accueil), i18n FR par défaut, UI profil/notifications/paiements."
 agent_communication:
   - agent: "main"
     message: "Vérifier que le menu hamburger et la pastille langue (FR) n'apparaissent que sur / (tabs)/home et sont absents sur toutes les autres pages: /profile, /profile/edit, /notifications, /payments/history, / (tabs)/subscribe, / (tabs)/alerts, / (tabs)/pharmacies. Devices: iPhone 14 + Galaxy S21."
