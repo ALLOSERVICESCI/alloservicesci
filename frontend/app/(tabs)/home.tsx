@@ -151,7 +151,11 @@ export default function Home() {
                   styles.categoryCard,
                   category.isPremium && styles.categoryCardPremium
                 ]}
-                onPress={() => category.slug === 'ai' ? router.push('/ai/chat') : router.push(`/category/${category.slug}`)}
+                onPress={() => {
+                  if (category.slug === 'alerts_tab') return router.push('/(tabs)/alerts');
+                  if (category.slug === 'pharmacies_tab') return router.push('/(tabs)/pharmacies');
+                  return router.push(`/category/${category.slug}`);
+                }}
               >
                 {category.isPremium && (
                   <View style={styles.premiumBadge}>
