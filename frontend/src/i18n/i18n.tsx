@@ -42,6 +42,7 @@ const dicts: Record<Lang, Dict> = {
     // Profile
     editProfile: 'Modifier mon profil', notifCenter: 'Centre de notifications', paymentHistory: 'Historique des paiements',
     activeUntil: "actif jusqu'au", inactive: 'inactif', language: 'Langue', actions: 'Actions', logout: 'Se déconnecter',
+    becomePremium: 'Devenir Premium',
     needAccount: 'Vous devez créer un compte', city: 'Ville', save: 'Sauvegarder', saved: 'Sauvegardé', profileUpdated: 'Profil mis à jour',
     select: 'Sélectionner', searchCity: 'Rechercher une ville',
     // Notifications
