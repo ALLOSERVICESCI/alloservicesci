@@ -70,7 +70,7 @@ export default function NavMenu() {
   ];
 
   // Position slightly below slogan area
-  const topOffset = insets.top + 60;
+  const topOffset = insets.top + 48; // aligned row for hamburger and language pill
 
   const LANGS: { code: 'fr'|'en'|'es'|'it'|'ar'; label: string }[] = [
     { code: 'fr', label: 'Français' },
