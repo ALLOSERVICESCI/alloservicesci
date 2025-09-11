@@ -24,6 +24,8 @@ export default function Subscribe() {
   const [refreshingStatus, setRefreshingStatus] = useState(false);
   const router = useRouter();
   const { t, setLang, lang } = useI18n();
+  // Force FR on this page
+  if (lang !== 'fr') setLang('fr');
 
   const startPayment = async () => {
     if (!user?.id) { router.push('/auth/register'); return; }
