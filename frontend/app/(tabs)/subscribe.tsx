@@ -155,7 +155,7 @@ export default function Subscribe() {
 
         {/* Features Grid: categories side-by-side (2 columns) */}
         <View style={styles.featuresSection}>
-          <Text style={styles.sectionTitle}>{t('premiumFeatures')}</Text>
+          <Text style={styles.sectionTitle}>Fonctionnalités Premium</Text>
           <View style={styles.tilesGrid}>
             {premiumFeatures.map((feature) => (
               <TouchableOpacity key={feature.key} style={styles.tile} onPress={() => openCategory(feature.slug)} accessibilityRole="button">
