@@ -11,10 +11,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width } = Dimensions.get('window');
 
-// Layout constants (8pt grid)
-const H_PADDING = 20; // horizontal page padding
-const GAP = 16;       // gap between grid tiles
-const COLS = 2;       // 2 columns grid for side-by-side categories
+const H_PADDING = 20;
+const GAP = 16;
+const COLS = 2;
 const TILE_WIDTH = (width - (H_PADDING * 2) - (GAP * (COLS - 1))) / COLS;
 
 export default function Subscribe() {
@@ -58,16 +57,11 @@ export default function Subscribe() {
 
   const refreshStatus = async () => {
     setRefreshingStatus(true);
-    try {
-      await refreshUserData?.();
-    } finally {
-      setRefreshingStatus(false);
-    }
+    try { await refreshUserData?.(); } finally { setRefreshingStatus(false); }
   };
 
   const goRegister = () => router.push('/auth/register');
 
-  // Feature tiles + routing targets
   const premiumFeatures = [
     { key: 'pharmacies', icon: '💊', title: t('tabPharm'), description: '', slug: 'pharmacies' },
     { key: 'alerts', icon: '🔔', title: t('cat_alertes'), description: '', slug: 'alertes' },
@@ -82,19 +76,16 @@ export default function Subscribe() {
   ];
 
   const isPremium = user?.is_premium;
-
   const openCategory = (slug: string) => router.push(`/category/${slug}`);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
       <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
-        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.brand}>{t('brand')}</Text>
           <Text style={styles.slogan}>{t('slogan')}</Text>
         </View>
 
-        {/* Logo & Status */}
         <View style={styles.logoSection}>
           <View style={styles.logoWrapper}>
             <View style={styles.logoContainer}>
@@ -102,19 +93,14 @@ export default function Subscribe() {
             </View>
             {isPremium && (
               <View style={styles.premiumBadge}>
-                <Text style={styles.premiumBadgeText}>✨ {'Premium 1200 FCFA / an'}</Text>
+                <Text style={styles.premiumBadgeText}>✨ {t('premiumAnnualTitle')}</Text>
               </View>
             )}
           </View>
         </View>
 
-        {/* Premium Status Card */}
         {isPremium ? (
-          <LinearGradient
-            colors={['#0A7C3A', '#0F5132']}
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-            style={[styles.statusCard, styles.statusCardPremium]}
-          >
+          <LinearGradient colors={['#0A7C3A', '#0F5132']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.statusCard, styles.statusCardPremium]}>
             <Text style={[styles.statusTitle, styles.statusTitlePremium]}>
               {t('premiumActive')}
             </Text>
@@ -125,17 +111,8 @@ export default function Subscribe() {
                   {t('expiresOn')} {new Date(user.premium_expires_at).toLocaleDateString('fr-FR')}
                 </Text>
               )}
-              <TouchableOpacity
-                onPress={refreshStatus}
-                style={styles.refreshButton}
-                disabled={refreshingStatus}
-                accessibilityRole="button"
-              >
-                {refreshingStatus ? (
-                  <ActivityIndicator size="small" color="#0A7C3A" />
-                ) : (
-                  <Text style={styles.refreshButtonText}>{t('refreshStatus')}</Text>
-                )}
+              <TouchableOpacity onPress={refreshStatus} style={styles.refreshButton} disabled={refreshingStatus} accessibilityRole="button">
+                {refreshingStatus ? (<ActivityIndicator size="small" color="#0A7C3A" />) : (<Text style={styles.refreshButtonText}>{t('refreshStatus')}</Text>)}
               </TouchableOpacity>
               <View style={{ height: 8 }} />
               <TouchableOpacity onPress={startPayment} style={[styles.button, styles.buttonOutline]}>
@@ -145,21 +122,17 @@ export default function Subscribe() {
           </LinearGradient>
         ) : (
           <View style={[styles.statusCard, styles.statusCardFree]}>
-            {/* Smaller title as requested */}
-            <Text style={[styles.statusTitle, styles.statusTitleFree, { fontSize: 20 }]}>Premium 1200 FCFA / an</Text>
+            <Text style={[styles.statusTitle, styles.statusTitleFree, { fontSize: 20 }]}>{t('premiumAnnualTitle')}</Text>
             <View style={styles.subscriptionInfo}>
-              {/* per request: removed price block and perYear text */}
             </View>
           </View>
         )}
 
-        {/* Features Grid: categories side-by-side (2 columns) */}
         <View style={styles.featuresSection}>
-          <Text style={styles.sectionTitle}>Fonctionnalités Premium</Text>
+          <Text style={styles.sectionTitle}>{t('premiumFeatures')}</Text>
           <View style={styles.tilesGrid}>
             {premiumFeatures.map((feature) => (
               <TouchableOpacity key={feature.key} style={styles.tile} onPress={() => openCategory(feature.slug)} accessibilityRole="button">
-                {/* Badge non lues pour Alertes */}
                 {feature.key === 'alerts' && !!notifItems?.length && (
                   <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{notifItems.length > 99 ? '99+' : String(notifItems.length)}</Text></View>
                 )}
@@ -170,7 +143,6 @@ export default function Subscribe() {
           </View>
         </View>
 
-        {/* Call to Action */}
         <View style={styles.ctaSection}>
           {!user?.id ? (
             <>
@@ -185,24 +157,14 @@ export default function Subscribe() {
           ) : (
             <>
               <Text style={styles.ctaText}>{t('premiumCallToAction')}</Text>
-              <TouchableOpacity
-                onPress={startPayment}
-                style={styles.button}
-                disabled={loading}
-                accessibilityRole="button"
-              >
-                {loading ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text style={styles.buttonText}>{t('subscribePremium')}</Text>
-                )}
+              <TouchableOpacity onPress={startPayment} style={styles.button} disabled={loading} accessibilityRole="button">
+                {loading ? (<ActivityIndicator color="#fff" />) : (<Text style={styles.buttonText}>{t('subscribePremium')}</Text>)}
               </TouchableOpacity>
               <Text style={styles.paymentNote}>{t('securePaymentByCinetPay')}</Text>
             </>
           )}
         </View>
 
-        {/* Bottom spacer for safe scroll */}
         <View style={{ height: Platform.select({ ios: 24, android: 16, default: 16 }) }} />
       </ScrollView>
     </SafeAreaView>
@@ -210,10 +172,7 @@ export default function Subscribe() {
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#F8FAF9',
-  },
+  safe: { flex: 1, backgroundColor: '#F8FAF9' },
   container: { flex: 1 },
   scrollContent: { paddingBottom: 40 },
   header: { alignItems: 'center', paddingTop: 20, paddingHorizontal: H_PADDING, paddingBottom: 10 },
@@ -221,24 +180,17 @@ const styles = StyleSheet.create({
   slogan: { fontSize: 16, color: '#666', textAlign: 'center', marginTop: 4 },
   logoSection: { alignItems: 'center', paddingVertical: 20 },
   logoWrapper: { position: 'relative' },
-  logoContainer: {
-    width: 190, height: 190, borderRadius: 95, borderWidth: 4, borderColor: '#0A7C3A', backgroundColor: '#ffffff',
-    alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 6,
-  },
+  logoContainer: { width: 190, height: 190, borderRadius: 95, borderWidth: 4, borderColor: '#0A7C3A', backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 6 },
   logo: { width: 170, height: 170, borderRadius: 85, borderWidth: 3, borderColor: '#ffffff' },
   premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: '#FFD700', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 2, borderColor: '#fff' },
   premiumBadgeText: { fontSize: 12, fontWeight: '700', color: '#8B7000' },
-  statusCard: {
-    marginHorizontal: H_PADDING, marginTop: 8, marginBottom: 20, borderRadius: 16, padding: 24,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 8,
-  },
+  statusCard: { marginHorizontal: H_PADDING, marginTop: 8, marginBottom: 20, borderRadius: 16, padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 8 },
   statusCardFree: { backgroundColor: '#fff', borderWidth: 2, borderColor: '#E8F0E8' },
   statusCardPremium: { overflow: 'hidden' },
   statusTitle: { fontSize: 24, fontWeight: '800', textAlign: 'center', marginBottom: 12 },
   statusTitleFree: { color: '#0A7C3A' },
   statusTitlePremium: { color: '#fff' },
   subscriptionInfo: { alignItems: 'center' },
-  description: { fontSize: 16, color: '#666', textAlign: 'center', lineHeight: 22 },
   premiumInfo: { alignItems: 'center' },
   premiumDescription: { fontSize: 16, color: '#E8F0E8', textAlign: 'center', lineHeight: 22, marginBottom: 8 },
   expiryText: { fontSize: 14, color: '#B8D8C0', marginBottom: 16 },
@@ -247,23 +199,14 @@ const styles = StyleSheet.create({
   featuresSection: { paddingHorizontal: H_PADDING, marginBottom: 30 },
   sectionTitle: { fontSize: 22, fontWeight: '700', color: '#0F5132', textAlign: 'center', marginBottom: 20 },
   tilesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  tile: {
-    width: TILE_WIDTH, height: TILE_WIDTH, borderRadius: 16, backgroundColor: '#fff',
-    alignItems: 'center', justifyContent: 'center', marginBottom: GAP,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3,
-    paddingHorizontal: 6,
-    position: 'relative',
-  },
+  tile: { width: TILE_WIDTH, height: TILE_WIDTH, borderRadius: 16, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', marginBottom: GAP, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3, paddingHorizontal: 6, position: 'relative' },
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
   badgeText: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
   tileIcon: { fontSize: 36, marginBottom: 8 },
   tileTitle: { fontSize: 12, fontWeight: '600', color: '#0F5132', textAlign: 'center' },
   ctaSection: { paddingHorizontal: H_PADDING, alignItems: 'center' },
   ctaText: { fontSize: 16, color: '#333', textAlign: 'center', marginBottom: 20, lineHeight: 22 },
-  button: {
-    backgroundColor: '#0A7C3A', paddingVertical: 16, paddingHorizontal: 40, borderRadius: 12, minWidth: 250,
-    alignItems: 'center', shadowColor: '#0A7C3A', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 8,
-  },
+  button: { backgroundColor: '#0A7C3A', paddingVertical: 16, paddingHorizontal: 40, borderRadius: 12, minWidth: 250, alignItems: 'center', shadowColor: '#0A7C3A', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 8 },
   buttonSecondary: { backgroundColor: '#0F5132' },
   buttonOutline: { backgroundColor: 'transparent', borderWidth: 2, borderColor: '#ffffff', shadowColor: 'transparent', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0, shadowRadius: 0, elevation: 0 },
   buttonText: { color: '#fff', fontSize: 18, fontWeight: '700' },
