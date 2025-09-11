@@ -933,9 +933,14 @@ class BackendTester:
 if __name__ == "__main__":
     tester = BackendTester()
     
-    # Check if we should run focused Emergent AI tests only
-    if len(sys.argv) > 1 and sys.argv[1] == "--emergent-only":
-        success = tester.run_emergent_ai_tests()
+    # Check command line arguments for specific test modes
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--emergent-only":
+            success = tester.run_emergent_ai_tests()
+        elif sys.argv[1] == "--alerts-unread-only":
+            success = tester.run_alerts_unread_tests_only()
+        else:
+            success = tester.run_all_tests()
     else:
         success = tester.run_all_tests()
     
