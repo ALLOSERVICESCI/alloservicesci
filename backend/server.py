@@ -295,6 +295,9 @@ async def mark_alert_read(alert_id: str, payload: MarkReadInput):
     a = await db.alerts.find_one({'_id': aid})
     a['id'] = str(a['_id'])
     del a['_id']
+    # Convert ObjectId objects in read_by to strings for JSON serialization
+    if 'read_by' in a and isinstance(a['read_by'], list):
+        a['read_by'] = [str(obj_id) for obj_id in a['read_by']]
     return a
 
 @api.get('/alerts/unread_count')
