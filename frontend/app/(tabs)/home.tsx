@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import { useI18n } from '../../src/i18n/i18n';
+import { apiFetch } from '../../src/utils/api';
 
 import NavMenu from '../../src/components/NavMenu';
 const APP_ICON = require('../../assets/icons/icons/icon.png');
@@ -19,6 +20,26 @@ export default function Home() {
   const { items: notifItems } = useNotificationsCenter();
   const router = useRouter();
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
+
+  const [unreadAlerts, setUnreadAlerts] = React.useState<number>(0);
+  useEffect(() => {
+    let mounted = true;
+    const run = async () => {
+      try {
+        const url = user?.id ? `/api/alerts/unread_count?user_id=${user.id}` : '/api/alerts/unread_count';
+        const res = await apiFetch(url);
+        const json = await res.json().catch(() => ({}));
+        if (mounted && res.ok && typeof json.count === 'number') {
+          setUnreadAlerts(json.count);
+        }
+      } catch (e) {
+        // ignore network errors
+      }
+    };
+    run();
+    const id = setInterval(run, 20000);
+    return () => { mounted = false; clearInterval(id); };
+  }, [user?.id]);
 
   const categories = useMemo(() => [
     { slug: 'urgence', label: t('cat_urgence'), icon: '🚨', isPremium: false },
@@ -146,7 +167,9 @@ export default function Home() {
             contentContainerStyle={styles.carousel}
             style={styles.carouselContainer}
           >
-            {categories.map((category) => (
+            {categories.map((category) => {
+              const totalUnread = (typeof unreadAlerts === 'number' && unreadAlerts > 0) ? unreadAlerts : (notifItems?.length || 0);
+              return (
               <TouchableOpacity 
                 key={category.slug} 
                 style={[
@@ -166,9 +189,9 @@ export default function Home() {
                 )}
 
                 {/* Pastille non lues pour Alertes */}
-                {category.slug === 'alerts_tab' && !!notifItems?.length && (
+                {category.slug === 'alerts_tab' && totalUnread > 0 && (
                   <View style={styles.badgeNotifs}>
-                    <Text style={styles.badgeText}>{notifItems.length > 99 ? '99+' : String(notifItems.length)}</Text>
+                    <Text style={styles.badgeText}>{totalUnread > 99 ? '99+' : String(totalUnread)}</Text>
                   </View>
                 )}
                 
@@ -185,7 +208,7 @@ export default function Home() {
                   <Text style={styles.premiumText}>Premium</Text>
                 )}
               </TouchableOpacity>
-            ))}
+            )})}
           </ScrollView>
         </View>
 
@@ -427,25 +450,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#0A7C3A',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 6,
   },
   aiHalo: {
-    ...Platform.select({
-      ios: { shadowColor: '#0A7C3A', shadowOpacity: 0.35, shadowRadius: 14, shadowOffset: { width: 0, height: 0 } },
-      android: { elevation: 10 },
-      default: { },
-    }),
+    shadowColor: '#0A7C3A',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 10,
   },
   aiMask: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#fff',
     overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: '#fff',
   },
   aiImgCover: {
     width: '100%',
@@ -455,59 +474,25 @@ const styles = StyleSheet.create({
   tooltip: {
     position: 'absolute',
     bottom: 70,
-    right: -10,
+    right: 0,
     alignItems: 'center',
   },
   tooltipBubble: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E5E5E5',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    backgroundColor: '#0A7C3A',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 4,
   },
-  tooltipText: {
-    color: '#111',
-    fontSize: 12,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
+  tooltipText: { color: '#fff', fontWeight: '700' },
   tooltipArrow: {
     width: 0,
     height: 0,
     borderLeftWidth: 6,
-    borderRightWidth: 6,
+    borderRightWidth: 0,
     borderTopWidth: 6,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
     borderTopColor: '#0A7C3A',
-    marginTop: -1,
-  },
-  
-  // Notification badge styles
-  badgeNotifs: {
-    position: 'absolute',
-    top: -8,
-    left: -8,
-    backgroundColor: '#FF4444',
-    borderRadius: 12,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderWidth: 2,
-    borderColor: '#fff',
-    minWidth: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  badgeText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: '#fff',
-    textAlign: 'center',
+    alignSelf: 'flex-end',
   },
 });

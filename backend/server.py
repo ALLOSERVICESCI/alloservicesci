@@ -40,7 +40,7 @@ TEMPERATURE_DEFAULT = float(os.environ.get('AI_TEMPERATURE', '0.5'))
 MAX_TOKENS_DEFAULT = int(os.environ.get('AI_MAX_TOKENS', '1200'))
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.7.0")
+app = FastAPI(title="Allô Services CI API", version="0.7.1")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -122,6 +122,7 @@ async def ensure_indexes():
     await db.pharmacies.create_index([('location', '2dsphere')])
     await db.pharmacies.create_index('name')
     await db.alerts.create_index([('status', 1), ('created_at', -1)])
+    await db.alerts.create_index('read_by')
     await db.categories.create_index('slug', unique=True)
     await db.locations.create_index([('parent_id', 1), ('name', 1)])
     await db.jobs.create_index([('posted_at', -1)])
@@ -250,6 +251,32 @@ async def cinetpay_initiate(payload: PaymentInitInput):
         return {"transaction_id": transaction_id, "provider": "cinetpay", "payment_url": payment_url}
     except Exception as e:
         logger.exception("CinetPay init error")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ---------- ALERTS: Unread Count ----------
+@api.get('/alerts/unread_count')
+async def alerts_unread_count(user_id: Optional[str] = None):
+    """
+    Returns unread alerts count for the user.
+    Policy: count alerts with status in ['new','unread'] and NOT read by this user (read_by doesn't contain user_id).
+    If user_id not provided or invalid, returns total of 'new'/'unread' alerts.
+    """
+    criteria: Dict[str, Any] = { 'status': { '$in': ['new', 'unread'] } }
+    if user_id:
+        try:
+            uid = ObjectId(user_id)
+            criteria['$or'] = [
+                { 'read_by': { '$exists': False } },
+                { 'read_by': { '$ne': uid } },
+            ]
+        except Exception:
+            # ignore invalid id; fallback to global count
+            pass
+    try:
+        count = await db.alerts.count_documents(criteria)
+        return { 'count': int(count) }
+    except Exception as e:
+        logger.exception('unread_count failed')
         raise HTTPException(status_code=500, detail=str(e))
 
 # ---------- AI: Allô IA (Emergent Integrations) ----------
