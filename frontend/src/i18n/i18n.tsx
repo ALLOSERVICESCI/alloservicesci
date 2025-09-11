@@ -6,7 +6,7 @@ type Dict = Record<string, string>;
 
 type I18nCtx = {
   t: (k: string) => string;
-  setLang: (l: Lang) => Promise&lt;void&gt;;
+  setLang: (l: Lang) => Promise<void>;
   lang: Lang;
   isRTL: boolean;
   ready: boolean;
@@ -17,7 +17,7 @@ export type Lang = 'fr' | 'en' | 'es' | 'it' | 'ar';
 const STORAGE_KEY = 'app_lang_v1';
 
 // Note: Keep keys consistent across languages. Add new keys here as needed.
-const dicts: Record&lt;Lang, Dict&gt; = {
+const dicts: Record<Lang, Dict> = {
   fr: {
     brand: 'Allô Services CI',
     slogan: 'Tous les services essentiels en un clic',
@@ -52,8 +52,8 @@ const dicts: Record&lt;Lang, Dict&gt; = {
     cat_services_publics: 'Services publics',
     cat_services_utiles: 'Services utiles',
     cat_agriculture: 'Agriculture',
-    cat_loisirs: 'Loisirs &amp; Tourisme',
-    cat_examens: 'Examens &amp; Concours',
+    cat_loisirs: 'Loisirs & Tourisme',
+    cat_examens: 'Examens & Concours',
     cat_transport: 'Transport',
     cat_alertes: 'Alertes',
     premiumLabel: 'Premium',
@@ -117,8 +117,8 @@ const dicts: Record&lt;Lang, Dict&gt; = {
     cat_services_publics: 'Public Services',
     cat_services_utiles: 'Useful Services',
     cat_agriculture: 'Agriculture',
-    cat_loisirs: 'Leisure &amp; Tourism',
-    cat_examens: 'Exams &amp; Contests',
+    cat_loisirs: 'Leisure & Tourism',
+    cat_examens: 'Exams & Contests',
     cat_transport: 'Transport',
     cat_alertes: 'Alerts',
     premiumLabel: 'Premium',
@@ -341,14 +341,14 @@ const dicts: Record&lt;Lang, Dict&gt; = {
   },
 };
 
-const I18nContext = createContext&lt;I18nCtx&gt;({ t: (k) =&gt; k, setLang: async () =&gt; {}, lang: 'fr', isRTL: false, ready: false });
+const I18nContext = createContext<I18nCtx>({ t: (k) => k, setLang: async () => {}, lang: 'fr', isRTL: false, ready: false });
 
-export const I18nProvider: React.FC&lt;{ children: React.ReactNode }&gt; = ({ children }) =&gt; {
-  const [lang, _setLang] = useState&lt;Lang&gt;('fr');
+export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [lang, _setLang] = useState<Lang>('fr');
   const [ready, setReady] = useState(false);
 
-  useEffect(() =&gt; {
-    (async () =&gt; {
+  useEffect(() => {
+    (async () => {
       try {
         const saved = await AsyncStorage.getItem(STORAGE_KEY);
         if (saved) {
@@ -362,17 +362,26 @@ export const I18nProvider: React.FC&lt;{ children: React.ReactNode }&gt; = ({ ch
     })();
   }, []);
 
-  const setLang = async (l: Lang) =&gt; {
+  const setLang = async (l: Lang) => {
     _setLang(l);
     try { await AsyncStorage.setItem(STORAGE_KEY, l); } catch {}
   };
 
   const dict = dicts[lang];
   const isRTL = lang === 'ar';
-  const t = (k: string) =&gt; dict[k] || k;
+  const t = (k: string) => dict[k] || k;
 
-  const value = useMemo(() =&gt; ({ t, setLang, lang, isRTL, ready }), [t, lang, isRTL, ready]);
-  return &lt;I18nContext.Provider value={value}&gt;{children}&lt;/I18nContext.Provider&gt;;
+  const value = useMemo(() => ({ t, setLang, lang, isRTL, ready }), [t, lang, isRTL, ready]);
+
+  if (!ready) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 };
 
-export const useI18n = () =&gt; useContext(I18nContext);
+export const useI18n = () => useContext(I18nContext);
