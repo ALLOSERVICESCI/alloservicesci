@@ -549,8 +549,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "NavMenu & pastille langue visibles UNIQUEMENT sur Accueil"
-    - "Absence de menu et pastille langue sur: Profil, Profil/Edit, Premium, Notifications, Historique paiements, Alertes, Pharmacies"
+    - "CinetPay: clic 'S’abonner à Premium' ouvre l’URL de paiement (vérif de wiring)"
+    - "Profil: libellé 'Devenir Premium' en FR par défaut quand non premium"
+    - "Premium: texte 'Paiement sécurisé par CinetPay' visible"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
