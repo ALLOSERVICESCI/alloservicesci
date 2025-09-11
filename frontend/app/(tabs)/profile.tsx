@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Linking, ActivityIndicator, Alert, AppState, AppStateStatus, ScrollView, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, ActivityIndicator, Alert, AppState, AppStateStatus, ScrollView, Dimensions, Image, Platform } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n, Lang } from '../../src/i18n/i18n';
-import NavMenu from '../../src/components/NavMenu';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width } = Dimensions.get('window');
@@ -48,6 +48,20 @@ export default function Profile() {
   const goNotifCenter = () => router.push('/notifications');
   const goPaymentHistory = () => router.push('/payments/history');
 
+  const openExternal = async (url: string) => {
+    try {
+      if (Platform.OS === 'web') {
+        await WebBrowser.openBrowserAsync(url);
+      } else {
+        const supported = await Linking.canOpenURL(url);
+        if (supported) await Linking.openURL(url);
+        else Alert.alert('Paiement', t('notAvailable'));
+      }
+    } catch (e: any) {
+      Alert.alert('Paiement', e?.message || 'Impossible d\'ouvrir la page de paiement');
+    }
+  };
+
   const startPayment = async () => {
     if (!user?.id) { router.push('/auth/register'); return; }
     setPayLoading(true);
@@ -59,7 +73,7 @@ export default function Profile() {
       const json = await res.json().catch(() => ({}));
       if (res.ok && (json as any).payment_url) {
         setPayInProgress(true);
-        Linking.openURL((json as any).payment_url);
+        await openExternal((json as any).payment_url);
       } else {
         Alert.alert('Paiement', ((json as any).detail || `Erreur HTTP ${res.status}`));
       }
@@ -70,19 +84,13 @@ export default function Profile() {
     }
   };
 
-  const LangButton = ({ code, label }: { code: Lang; label: string }) => (
-    <TouchableOpacity onPress={() => setLang(code)} style={[styles.langBtn, lang === code && styles.langBtnActive]}>
-      <Text style={[styles.langText, lang === code && styles.langTextActive]}>{label}</Text>
-    </TouchableOpacity>
-  );
-
   const profileActions = [
     { key: 'edit', title: t('editProfile'), icon: '✏️', onPress: goEdit, color: '#0A7C3A' },
     { key: 'notifications', title: t('notifCenter'), icon: '🔔', onPress: goNotifCenter, color: '#0A7C3A' },
     { key: 'payments', title: t('paymentHistory'), icon: '💳', onPress: goPaymentHistory, color: '#0A7C3A' },
   ];
 
-  const avatarSource = user?.avatar ? { uri: `data:image/jpeg;base64,${user.avatar}` } : APP_ICON;
+  const avatarSource = (user as any)?.avatar ? { uri: `data:image/jpeg;base64,${(user as any).avatar}` } : APP_ICON;
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
@@ -124,16 +132,16 @@ export default function Profile() {
                 <Text style={styles.detailIcon}>📱</Text>
                 <Text style={styles.detailText}>{user.phone}</Text>
               </View>
-              {user.email && (
+              {(user as any).email && (
                 <View style={styles.detailRow}>
                   <Text style={styles.detailIcon}>✉️</Text>
-                  <Text style={styles.detailText}>{user.email}</Text>
+                  <Text style={styles.detailText}>{(user as any).email}</Text>
                 </View>
               )}
-              {user.city && (
+              {(user as any).city && (
                 <View style={styles.detailRow}>
                   <Text style={styles.detailIcon}>📍</Text>
-                  <Text style={styles.detailText}>{user.city}</Text>
+                  <Text style={styles.detailText}>{(user as any).city}</Text>
                 </View>
               )}
               <View style={styles.detailRow}>
@@ -145,19 +153,6 @@ export default function Profile() {
                   }
                 </Text>
               </View>
-            </View>
-          </View>
-
-          {/* Language Selection Card */}
-          <View style={styles.languageCard}>
-            <Text style={styles.sectionTitle}>{t('language')}</Text>
-            <View style={styles.languageGrid}>
-              <LangButton code="fr" label="Français" />
-              <LangButton code="en" label="English" />
-              <LangButton code="es" label="Español" />
-              <LangButton code="it" label="Italiano" />
-              <LangButton code="tr" label="Türkçe" />
-              <LangButton code="zh" label="中文" />
             </View>
           </View>
 
@@ -346,53 +341,12 @@ const styles = StyleSheet.create({
     color: '#333',
     flex: 1,
   },
-  languageCard: {
-    margin: 20,
-    marginTop: 10,
-    borderRadius: 16,
-    padding: 20,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 4,
-  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
     color: '#0F5132',
     marginBottom: 16,
     textAlign: 'center',
-  },
-  languageGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  langBtn: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#E8F0E8',
-    marginRight: 8,
-    marginBottom: 8,
-    minWidth: 80,
-    alignItems: 'center',
-  },
-  langBtnActive: {
-    backgroundColor: '#0A7C3A',
-    borderColor: '#0A7C3A',
-  },
-  langText: {
-    color: '#0A7C3A',
-    textAlign: 'center',
-    lineHeight: 22,
-    fontSize: 16,
-  },
-  langTextActive: {
-    color: '#fff',
   },
   actionsSection: {
     margin: 20,

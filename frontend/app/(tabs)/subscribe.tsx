@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Linking, Alert, Image, ScrollView, Dimensions, Platform } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { useNotificationsCenter } from '../../src/context/NotificationsContext';
@@ -17,47 +18,50 @@ const COLS = 2;
 const TILE_WIDTH = (width - (H_PADDING * 2) - (GAP * (COLS - 1))) / COLS;
 
 export default function Subscribe() {
-  const { user, refreshUserData } = useAuth();
+  const { user } = useAuth();
   const { items: notifItems } = useNotificationsCenter();
   const [loading, setLoading] = useState(false);
   const [refreshingStatus, setRefreshingStatus] = useState(false);
   const router = useRouter();
   const { t } = useI18n();
 
+  const openExternal = async (url: string) => {
+    try {
+      if (Platform.OS === 'web') {
+        await WebBrowser.openBrowserAsync(url);
+      } else {
+        const supported = await Linking.canOpenURL(url);
+        if (supported) await Linking.openURL(url);
+        else Alert.alert('Paiement', t('notAvailable'));
+      }
+    } catch (e: any) {
+      Alert.alert('Paiement', e?.message || 'Impossible d\'ouvrir la page de paiement');
+    }
+  };
+
   const startPayment = async () => {
-    if (!user?.id) { router.push('/auth/register'); return; }
+    if (!user?.id) {
+      Alert.alert('Paiement', t('loginRequired'));
+      router.push('/auth/register');
+      return;
+    }
     setLoading(true);
     try {
       const res = await apiFetch('/api/payments/cinetpay/initiate', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.id, amount_fcfa: 1200 })
       });
-      const json = await res.json().catch(() => ({}));
-      if (res.ok && (json as any).payment_url) {
-        await Linking.openURL((json as any).payment_url);
-        setTimeout(() => {
-          Alert.alert(
-            t('paymentComplete'),
-            t('refreshStatusQuestion'),
-            [
-              { text: t('later'), style: 'cancel' },
-              { text: t('refreshStatus'), onPress: refreshStatus }
-            ]
-          );
-        }, 2000);
+      const json: any = await res.json().catch(() => ({}));
+      if (res.ok && json.payment_url) {
+        await openExternal(json.payment_url);
       } else {
-        Alert.alert('Paiement', ((json as any).detail || `Erreur HTTP ${res.status}`));
+        Alert.alert('Paiement', json?.detail ? String(json.detail) : `Erreur HTTP ${res.status}`);
       }
     } catch (e: any) {
-      Alert.alert(t('network'), e?.message || 'Erreur réseau');
+      Alert.alert('Paiement', e?.message || 'Erreur réseau');
     } finally {
       setLoading(false);
     }
-  };
-
-  const refreshStatus = async () => {
-    setRefreshingStatus(true);
-    try { await refreshUserData?.(); } finally { setRefreshingStatus(false); }
   };
 
   const goRegister = () => router.push('/auth/register');
@@ -75,7 +79,7 @@ export default function Subscribe() {
     { key: 'transport', icon: '🚌', title: t('cat_transport'), description: t('premiumFeature_transport'), slug: 'transport' },
   ];
 
-  const isPremium = user?.is_premium;
+  const isPremium = (user as any)?.is_premium;
   const openCategory = (slug: string) => router.push(`/category/${slug}`);
 
   return (
@@ -106,16 +110,13 @@ export default function Subscribe() {
             </Text>
             <View style={styles.premiumInfo}>
               <Text style={styles.premiumDescription}>{t('premiumActiveDescription')}</Text>
-              {user?.premium_expires_at && (
+              {(user as any)?.premium_expires_at && (
                 <Text style={styles.expiryText}>
-                  {t('expiresOn')} {new Date(user.premium_expires_at).toLocaleDateString('fr-FR')}
+                  {t('expiresOn')} {new Date((user as any).premium_expires_at).toLocaleDateString('fr-FR')}
                 </Text>
               )}
-              <TouchableOpacity onPress={refreshStatus} style={styles.refreshButton} disabled={refreshingStatus} accessibilityRole="button">
-                {refreshingStatus ? (<ActivityIndicator size="small" color="#0A7C3A" />) : (<Text style={styles.refreshButtonText}>{t('refreshStatus')}</Text>)}
-              </TouchableOpacity>
               <View style={{ height: 8 }} />
-              <TouchableOpacity onPress={startPayment} style={[styles.button, styles.buttonOutline]}>
+              <TouchableOpacity onPress={startPayment} style={[styles.button, styles.buttonOutline]} accessibilityRole="button">
                 <Text style={styles.buttonOutlineText}>{t('renewPremium')}</Text>
               </TouchableOpacity>
             </View>
@@ -123,8 +124,6 @@ export default function Subscribe() {
         ) : (
           <View style={[styles.statusCard, styles.statusCardFree]}>
             <Text style={[styles.statusTitle, styles.statusTitleFree, { fontSize: 20 }]}>{t('premiumAnnualTitle')}</Text>
-            <View style={styles.subscriptionInfo} />
-            {/* Positionner le texte CinetPay sous le CTA pour le rendre visible au-dessus du pli */}
           </View>
         )}
 
@@ -162,7 +161,6 @@ export default function Subscribe() {
                   <Text style={styles.buttonText}>{t('subscribePremium')}</Text>
                 )}
               </TouchableOpacity>
-              {/* Texte CinetPay immédiatement sous le bouton pour être visible */}
               <Text style={styles.paymentNote}>{t('securePaymentByCinetPay')}</Text>
             </>
           )}
@@ -197,8 +195,6 @@ const styles = StyleSheet.create({
   premiumInfo: { alignItems: 'center' },
   premiumDescription: { fontSize: 16, color: '#E8F0E8', textAlign: 'center', lineHeight: 22, marginBottom: 8 },
   expiryText: { fontSize: 14, color: '#B8D8C0', marginBottom: 16 },
-  refreshButton: { backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 8, borderRadius: 20, minHeight: 36, justifyContent: 'center' },
-  refreshButtonText: { color: '#0A7C3A', fontWeight: '600', fontSize: 14 },
   featuresSection: { paddingHorizontal: H_PADDING, marginBottom: 30 },
   sectionTitle: { fontSize: 22, fontWeight: '700', color: '#0F5132', textAlign: 'center', marginBottom: 20 },
   tilesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
