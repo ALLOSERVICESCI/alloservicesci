@@ -1151,6 +1151,8 @@ if __name__ == "__main__":
             success = tester.run_emergent_ai_tests()
         elif sys.argv[1] == "--alerts-unread-only":
             success = tester.run_alerts_unread_tests_only()
+        elif sys.argv[1] == "--retex-backend":
+            success = tester.run_retex_backend_tests()
         else:
             success = tester.run_all_tests()
     else:
