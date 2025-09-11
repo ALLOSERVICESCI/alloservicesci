@@ -319,8 +319,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   userDetails: {
-    alignItems: 'center',
     marginTop: 8,
+    alignItems: 'center',
   },
   detailRow: {
     flexDirection: 'row',
