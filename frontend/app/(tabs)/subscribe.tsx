@@ -23,7 +23,7 @@ export default function Subscribe() {
   const [loading, setLoading] = useState(false);
   const [refreshingStatus, setRefreshingStatus] = useState(false);
   const router = useRouter();
-  const { t } = useI18n();
+  const { t, setLang, lang } = useI18n();
 
   const startPayment = async () => {
     if (!user?.id) { router.push('/auth/register'); return; }
