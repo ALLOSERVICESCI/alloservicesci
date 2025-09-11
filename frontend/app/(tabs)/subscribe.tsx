@@ -160,6 +160,10 @@ export default function Subscribe() {
           <View style={styles.tilesGrid}>
             {premiumFeatures.map((feature) => (
               <TouchableOpacity key={feature.key} style={styles.tile} onPress={() => openCategory(feature.slug)} accessibilityRole="button">
+                {/* Badge non lues pour Alertes */}
+                {feature.key === 'alerts' && !!notifItems?.length && (
+                  <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{notifItems.length > 99 ? '99+' : String(notifItems.length)}</Text></View>
+                )}
                 <Text style={styles.tileIcon}>{feature.icon}</Text>
                 <Text style={styles.tileTitle} numberOfLines={2}>{feature.title}</Text>
               </TouchableOpacity>
