@@ -166,9 +166,9 @@ export default function Home() {
                 )}
 
                 {/* Pastille non lues pour Alertes */}
-                {category.slug === 'alerts_tab' && (
+                {category.slug === 'alerts_tab' && !!notifItems?.length && (
                   <View style={styles.badgeNotifs}>
-                    <Text style={styles.badgeText}>9+</Text>
+                    <Text style={styles.badgeText}>{notifItems.length > 99 ? '99+' : String(notifItems.length)}</Text>
                   </View>
                 )}
                 
