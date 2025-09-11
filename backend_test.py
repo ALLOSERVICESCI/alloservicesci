@@ -635,6 +635,247 @@ class BackendTester:
         
         return passed == total
 
+    def test_alerts_unread_count_and_mark_read(self):
+        """Test alerts unread count and mark-as-read functionality (Review Request)"""
+        print("\n" + "=" * 60)
+        print("🔔 ALERTS UNREAD COUNT & MARK-AS-READ TESTS (Review Request)")
+        print("=" * 60)
+        
+        # Step 1: Create seed alert
+        alert_id = None
+        try:
+            alert_data = {
+                "title": "Test A",
+                "type": "other",
+                "description": "seed",
+                "city": "Abidjan"
+            }
+            response = self.make_request('POST', '/alerts', json=alert_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'id' in data:
+                    alert_id = data['id']
+                    self.log_test("Step 1: Create seed alert", True, f"Alert created with ID: {alert_id}")
+                else:
+                    self.log_test("Step 1: Create seed alert", False, f"No alert ID in response: {data}")
+                    return
+            else:
+                self.log_test("Step 1: Create seed alert", False, f"Status code: {response.status_code}, Response: {response.text}")
+                return
+        except Exception as e:
+            self.log_test("Step 1: Create seed alert", False, f"Exception: {str(e)}")
+            return
+        
+        # Step 2: GET /api/alerts/unread_count (no user_id) → expect 200, count >= 1
+        global_unread_count = 0
+        try:
+            response = self.make_request('GET', '/alerts/unread_count')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int) and data['count'] >= 1:
+                    global_unread_count = data['count']
+                    self.log_test("Step 2: Global unread count", True, f"Global unread count: {global_unread_count}")
+                else:
+                    self.log_test("Step 2: Global unread count", False, f"Expected count >= 1, got: {data}")
+                    return
+            else:
+                self.log_test("Step 2: Global unread count", False, f"Status code: {response.status_code}")
+                return
+        except Exception as e:
+            self.log_test("Step 2: Global unread count", False, f"Exception: {str(e)}")
+            return
+        
+        # Step 3: Register user for testing
+        test_user_id = None
+        try:
+            user_data = {
+                "first_name": "Koffi",
+                "last_name": "Yao",
+                "phone": "+225 07 88 99 00 11"
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                user = response.json()
+                if 'id' in user:
+                    test_user_id = user['id']
+                    self.log_test("Step 3: Register test user", True, f"User registered with ID: {test_user_id}")
+                else:
+                    self.log_test("Step 3: Register test user", False, f"No user ID in response: {user}")
+                    return
+            else:
+                self.log_test("Step 3: Register test user", False, f"Status code: {response.status_code}, Response: {response.text}")
+                return
+        except Exception as e:
+            self.log_test("Step 3: Register test user", False, f"Exception: {str(e)}")
+            return
+        
+        # Step 4: GET /api/alerts/unread_count?user_id=<id> → expect 200, count >= 1
+        user_unread_count_before = 0
+        try:
+            response = self.make_request('GET', f'/alerts/unread_count?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int) and data['count'] >= 1:
+                    user_unread_count_before = data['count']
+                    self.log_test("Step 4: User unread count (before)", True, f"User unread count before: {user_unread_count_before}")
+                else:
+                    self.log_test("Step 4: User unread count (before)", False, f"Expected count >= 1, got: {data}")
+                    return
+            else:
+                self.log_test("Step 4: User unread count (before)", False, f"Status code: {response.status_code}")
+                return
+        except Exception as e:
+            self.log_test("Step 4: User unread count (before)", False, f"Exception: {str(e)}")
+            return
+        
+        # Step 5: Mark alert as read
+        try:
+            mark_read_data = {
+                "user_id": test_user_id
+            }
+            response = self.make_request('PATCH', f'/alerts/{alert_id}/read', json=mark_read_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'read_by' in data and 'status' in data:
+                    # Check if user_id is in read_by array and status is 'read'
+                    read_by = data.get('read_by', [])
+                    status = data.get('status')
+                    if test_user_id in [str(uid) for uid in read_by] and status == 'read':
+                        self.log_test("Step 5: Mark alert as read", True, f"Alert marked as read. Status: {status}, Read by: {len(read_by)} users")
+                    else:
+                        self.log_test("Step 5: Mark alert as read", False, f"Alert not properly marked. Status: {status}, Read by: {read_by}")
+                        return
+                else:
+                    self.log_test("Step 5: Mark alert as read", False, f"Missing read_by or status in response: {data}")
+                    return
+            else:
+                self.log_test("Step 5: Mark alert as read", False, f"Status code: {response.status_code}, Response: {response.text}")
+                return
+        except Exception as e:
+            self.log_test("Step 5: Mark alert as read", False, f"Exception: {str(e)}")
+            return
+        
+        # Step 6: GET /api/alerts/unread_count?user_id=<id> → expect count decreased by 1
+        try:
+            response = self.make_request('GET', f'/alerts/unread_count?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int):
+                    user_unread_count_after = data['count']
+                    expected_count = user_unread_count_before - 1
+                    if user_unread_count_after == expected_count:
+                        self.log_test("Step 6: User unread count (after)", True, f"Count decreased correctly: {user_unread_count_before} → {user_unread_count_after}")
+                    else:
+                        self.log_test("Step 6: User unread count (after)", False, f"Expected {expected_count}, got {user_unread_count_after}")
+                        return
+                else:
+                    self.log_test("Step 6: User unread count (after)", False, f"Invalid count in response: {data}")
+                    return
+            else:
+                self.log_test("Step 6: User unread count (after)", False, f"Status code: {response.status_code}")
+                return
+        except Exception as e:
+            self.log_test("Step 6: User unread count (after)", False, f"Exception: {str(e)}")
+            return
+        
+        # Step 7: Idempotency test - mark same alert as read again
+        try:
+            mark_read_data = {
+                "user_id": test_user_id
+            }
+            response = self.make_request('PATCH', f'/alerts/{alert_id}/read', json=mark_read_data)
+            if response.status_code == 200:
+                # Check that count remains unchanged
+                response2 = self.make_request('GET', f'/alerts/unread_count?user_id={test_user_id}')
+                if response2.status_code == 200:
+                    data2 = response2.json()
+                    if 'count' in data2 and data2['count'] == user_unread_count_after:
+                        self.log_test("Step 7: Idempotency test", True, f"Count unchanged after second mark: {data2['count']}")
+                    else:
+                        self.log_test("Step 7: Idempotency test", False, f"Count changed unexpectedly: {user_unread_count_after} → {data2.get('count')}")
+                else:
+                    self.log_test("Step 7: Idempotency test", False, f"Failed to get count after second mark: {response2.status_code}")
+            else:
+                self.log_test("Step 7: Idempotency test", False, f"Second mark failed: {response.status_code}")
+        except Exception as e:
+            self.log_test("Step 7: Idempotency test", False, f"Exception: {str(e)}")
+        
+        # Step 8: Invalid IDs test
+        # Test with invalid alert_id
+        try:
+            mark_read_data = {
+                "user_id": test_user_id
+            }
+            response = self.make_request('PATCH', '/alerts/badid/read', json=mark_read_data)
+            if response.status_code == 400:
+                self.log_test("Step 8a: Invalid alert_id", True, "Correctly returned 400 for invalid alert_id")
+            else:
+                self.log_test("Step 8a: Invalid alert_id", False, f"Expected 400, got {response.status_code}")
+        except Exception as e:
+            self.log_test("Step 8a: Invalid alert_id", False, f"Exception: {str(e)}")
+        
+        # Test with invalid user_id
+        try:
+            mark_read_data = {
+                "user_id": "badid"
+            }
+            response = self.make_request('PATCH', f'/alerts/{alert_id}/read', json=mark_read_data)
+            if response.status_code == 400:
+                self.log_test("Step 8b: Invalid user_id", True, "Correctly returned 400 for invalid user_id")
+            else:
+                self.log_test("Step 8b: Invalid user_id", False, f"Expected 400, got {response.status_code}")
+        except Exception as e:
+            self.log_test("Step 8b: Invalid user_id", False, f"Exception: {str(e)}")
+        
+        # Step 9: List alerts with limit
+        try:
+            response = self.make_request('GET', '/alerts?limit=5')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list) and len(data) > 0:
+                    # Check that all alerts have 'id' field
+                    all_have_id = all('id' in alert for alert in data)
+                    if all_have_id:
+                        self.log_test("Step 9: List alerts with limit", True, f"Found {len(data)} alerts, all have 'id' field")
+                    else:
+                        self.log_test("Step 9: List alerts with limit", False, "Some alerts missing 'id' field")
+                else:
+                    self.log_test("Step 9: List alerts with limit", False, f"Expected array with alerts, got: {type(data)}")
+            else:
+                self.log_test("Step 9: List alerts with limit", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Step 9: List alerts with limit", False, f"Exception: {str(e)}")
+
+    def run_alerts_unread_tests_only(self):
+        """Run only the alerts unread count and mark-as-read tests (Review Request)"""
+        print(f"🔔 ALERTS UNREAD COUNT & MARK-AS-READ TESTS (Review Request)")
+        print(f"Base URL: {self.base_url}")
+        print("=" * 60)
+        
+        # Run the specific test
+        self.test_alerts_unread_count_and_mark_read()
+        
+        # Summary
+        print("\n" + "=" * 60)
+        print("📊 ALERTS UNREAD TESTS SUMMARY")
+        print("=" * 60)
+        
+        passed = sum(1 for result in self.test_results if result['success'])
+        total = len(self.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        
+        if passed < total:
+            print("\n❌ FAILED TESTS:")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['details']}")
+        
+        return passed == total
+
     def run_all_tests(self):
         """Run all tests in sequence"""
         print(f"🚀 Starting Backend API Tests")
@@ -664,6 +905,9 @@ class BackendTester:
         self.test_ai_chat_streaming()
         self.test_ai_chat_non_streaming()
         self.test_existing_routes_unaffected()
+        
+        # Alerts unread count and mark-as-read tests
+        self.test_alerts_unread_count_and_mark_read()
         
         # Summary
         print("\n" + "=" * 60)
