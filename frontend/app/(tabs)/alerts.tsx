@@ -5,12 +5,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
-
+import { useAuth } from '../../src/context/AuthContext';
+import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 
 export default function Alerts() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { t } = useI18n();
+  const { user } = useAuth();
+  const { refreshAlertsUnread } = useNotificationsCenter();
 
   // Robust header image handling (prefetch + fallback local)
   const REMOTE_ALERTS_BG = 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/aiwoflhn_alerte_gb.png';
@@ -47,6 +50,22 @@ export default function Alerts() {
     }
   };
 
+  const markAsRead = async (alertId: string) => {
+    try {
+      if (!user?.id) { Alert.alert(t('error'), t('loginRequired')); return; }
+      const res = await apiFetch(`/api/alerts/${alertId}/read`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.id })
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      // Optimistically remove the alert from list or flag it
+      setData((prev) => prev.filter((a) => a.id !== alertId));
+      // Refresh unread count globally for immediate badge update
+      await refreshAlertsUnread(user.id);
+    } catch (e: any) {
+      Alert.alert(t('error'), e?.message || 'Erreur');
+    }
+  };
+
   useEffect(() => { fetchAlerts(); }, []);
 
   if (loading) return <View style={styles.center}><ActivityIndicator /></View>;
@@ -79,6 +98,12 @@ export default function Alerts() {
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.desc}>{item.description}</Text>
             <Text style={styles.meta}>{item.type} • {item.city || t('notAvailable')}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 8 }}>
+              <TouchableOpacity onPress={() => markAsRead(item.id)} style={styles.readBtn} accessibilityRole="button">
+                <Ionicons name="checkmark-done" size={16} color="#0A7C3A" />
+                <Text style={styles.readBtnText}>{t('markAsRead')}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
         onRefresh={fetchAlerts}
@@ -93,7 +118,6 @@ export default function Alerts() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   header: { height: 260, justifyContent: 'flex-end' },
-  // Fine-tune framing: small downward shift to reveal more of the top subject
   headerImage: { transform: [{ translateY: -14 }] },
   overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   headerBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingBottom: 20, paddingTop: 40 },
@@ -107,4 +131,6 @@ const styles = StyleSheet.create({
   meta: { fontSize: 12, color: '#666', marginTop: 8 },
   btn: { backgroundColor: '#0F5132', padding: 10, borderRadius: 10 },
   btnText: { color: '#fff', fontWeight: '700' },
+  readBtn: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, backgroundColor: '#fff', borderWidth: 1, borderColor: '#0A7C3A' },
+  readBtnText: { color: '#0A7C3A', fontWeight: '700', marginLeft: 6 },
 });
