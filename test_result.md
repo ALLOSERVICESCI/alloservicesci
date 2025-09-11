@@ -883,6 +883,31 @@ frontend:
     needs_retesting: true
     status_history:
       - working: "NA"
+
+# --- UI Test Plan: Language persistence + Premium respects user language ---
+
+test_plan:
+  current_focus:
+    - "Default FR on first run when no saved language; persists to AsyncStorage"
+    - "After user changes language (EN), Premium page reflects EN (no local FR forcing)"
+    - "Home, Alerts, NavMenu labels reflect selected language"
+    - "Premium badge label uses i18n (premiumLabel)"
+  test_all: false
+  test_priority: "high_first"
+
+frontend:
+  - task: "Language change reflected across Premium/Home/Alerts"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/i18n/i18n.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Remove FR forcing from Premium; ensure i18n persists user choice and reflects on all key screens."
+
         agent: "main"
         comment: "Agriculture image applied; several headers updated. Validate 280dp height, gradient overlay, Crisp text style, per-language line breaks, and hidden titles for Santé & Éducation."
   - task: "Alerts icon animations (tabs and bottom shortcuts)"
