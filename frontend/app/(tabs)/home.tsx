@@ -16,6 +16,7 @@ const FAB_MARGIN = 20;
 export default function Home() {
   const { user } = useAuth();
   const { t } = useI18n();
+  const { items: notifItems } = useNotificationsCenter();
   const router = useRouter();
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
