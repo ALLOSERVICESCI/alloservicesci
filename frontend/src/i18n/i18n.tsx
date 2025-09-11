@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo, useState, useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Dict = Record<string, string>;
