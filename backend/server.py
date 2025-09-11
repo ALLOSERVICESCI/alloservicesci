@@ -307,10 +307,10 @@ async def mark_alert_read(alert_id: str, payload: MarkReadInput):
 async def alerts_unread_count(user_id: Optional[str] = None):
     """
     Returns unread alerts count for the user.
-    Policy: count alerts with status in ['new','unread'] and NOT read by this user (read_by doesn't contain user_id).
-    If user_id not provided or invalid, returns total of 'new'/'unread' alerts.
+    Policy: count alerts NOT read by this user (read_by doesn't contain user_id).
+    If user_id not provided or invalid, returns total count of all alerts.
     """
-    criteria: Dict[str, Any] = { 'status': { '$in': ['new', 'unread'] } }
+    criteria: Dict[str, Any] = {}
     if user_id:
         try:
             uid = ObjectId(user_id)
