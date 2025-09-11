@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import { apiFetch } from '../utils/api';
 
@@ -21,6 +22,7 @@ type AuthContextType = {
   register: (input: { first_name: string; last_name: string; email?: string; phone: string; preferred_lang?: string }) => Promise<void>;
   updateProfile: (input: Partial<User>) => Promise<User>;
   logout: () => Promise<void>;
+  refreshUserData?: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -42,7 +44,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })();
   }, []);
 
+  // Skip Expo Go Android remote notifications to avoid SDK 53 error
+  const canInitRemotePush = !(Platform.OS === 'android' && Constants.appOwnership === 'expo');
+
   useEffect(() => {
+    if (!canInitRemotePush) return;
     (async () => {
       try {
         if (Platform.OS === 'android') {
@@ -56,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('Notifications init error', e);
       }
     })();
-  }, []);
+  }, [canInitRemotePush]);
 
   useEffect(() => {
     (async () => {
@@ -82,30 +88,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const u = await res.json();
     setUser(u);
     await AsyncStorage.setItem('auth_user', JSON.stringify(u));
-    if (expoPushToken) {
-      try {
-        await apiFetch('/api/notifications/register', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: expoPushToken, user_id: u.id, platform: Platform.OS, city: u.city })
-        });
-      } catch {}
-    }
+  };
+
+  const refreshUserData = async () => {
+    try {
+      const raw = await AsyncStorage.getItem('auth_user');
+      if (raw) setUser(JSON.parse(raw));
+    } catch {}
   };
 
   const updateProfile = async (input: Partial<User>) => {
     if (!user?.id) throw new Error('Not logged in');
     const res = await apiFetch(`/api/users/${user.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
     const updated = await res.json();
-    // Merge local input in case backend ignores unknown fields like avatar
     const merged = { ...updated, ...input } as User;
     setUser(merged);
     await AsyncStorage.setItem('auth_user', JSON.stringify(merged));
-    // re-register token in case city/lang changes for segmentation
-    if (expoPushToken) {
-      try {
-        await apiFetch('/api/notifications/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: expoPushToken, user_id: merged.id, platform: Platform.OS, city: merged.city }) });
-      } catch {}
-    }
     return merged;
   };
 
@@ -114,7 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await AsyncStorage.removeItem('auth_user');
   };
 
-  const value = useMemo(() => ({ user, expoPushToken, register, updateProfile, logout }), [user, expoPushToken]);
+  const value = useMemo(() => ({ user, expoPushToken, register, updateProfile, logout, refreshUserData }), [user, expoPushToken]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

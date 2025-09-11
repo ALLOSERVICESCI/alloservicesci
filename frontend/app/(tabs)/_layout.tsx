@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 import { Platform, Animated, Easing } from 'react-native';
 import { useI18n } from '../../src/i18n/i18n';
+
+const canUseNotif = !(Platform.OS === 'android' && Constants.appOwnership === 'expo');
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -39,6 +42,7 @@ export default function Layout() {
   const { t } = useI18n();
 
   useEffect(() => {
+    if (!canUseNotif) return;
     (async () => {
       try {
         if (Platform.OS === 'android') {
