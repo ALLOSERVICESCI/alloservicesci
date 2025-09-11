@@ -19,6 +19,7 @@ const TILE_WIDTH = (width - (H_PADDING * 2) - (GAP * (COLS - 1))) / COLS;
 
 export default function Subscribe() {
   const { user, refreshUserData } = useAuth();
+  const { items: notifItems } = useNotificationsCenter();
   const [loading, setLoading] = useState(false);
   const [refreshingStatus, setRefreshingStatus] = useState(false);
   const router = useRouter();
