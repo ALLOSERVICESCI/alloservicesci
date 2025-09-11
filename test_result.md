@@ -549,15 +549,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Profile page i18n actions (FR default, user choice persistence)"
-    - "E2E Registration → Profile language application"
-  stuck_tasks:
-    - "Profile edit functionality (city/lang selection)"
+    - "Profile Edit: FR par défaut, suppression sélecteur de langue et barre nav bas"
+    - "Centre de notifications: FR par défaut, suppression barre nav bas"
+    - "Historique des paiements: FR par défaut, suppression barre nav bas"
+    - "i18n langues: retirer AR, ajouter TR et ZH (profil et inscription)"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 agent_communication:
   - agent: "main"
-    message: "User confirmed language behavior: FR by default then respect user selection. Implementing i18n hydration and applying chosen language after registration before navigating to Profile. Requesting backend + automated frontend E2E tests (registration → profile language)."
+    message: "MAJ UI: Profil/Edit FR par défaut + sans sélecteur de langue + sans barre nav; Notifications FR + sans barre nav; Historique paiements FR + sans barre nav; i18n: suppression AR, ajout TR & ZH. Merci de lancer des tests frontend mobiles pour valider."
   - agent: "testing"
     message: "✅ COMPREHENSIVE LANGUAGE FLOW TESTING COMPLETE: Successfully executed backend tests (14/14 passed, 100% success rate) and frontend implementation validation (8/8 passed, 100% success rate). BACKEND VALIDATION: All 3 test scenarios working perfectly - Case A (FR registration), Case B (EN→FR switch), Case C (cold start FR default). User registration with language preferences fully functional, language updates via PATCH /api/users/{id} working, all 5 languages supported (FR/EN/ES/IT/AR), alerts functionality unaffected by language changes, AI chat working in French context. FRONTEND IMPLEMENTATION VALIDATION: Complete i18n system properly implemented with ActivityIndicator hydration gate, registration form applies setLang(prefLang) before navigation to Profile, all Profile actions use t() for localization (editProfile, notifCenter, paymentHistory, premiumActive, becomePremium, renewPremium), tab titles use t() for localization, language persistence via AsyncStorage working, French set as default language. All requirements from review request satisfied - language flow working end-to-end from registration to Profile page with immediate language application and no English flicker."
 
