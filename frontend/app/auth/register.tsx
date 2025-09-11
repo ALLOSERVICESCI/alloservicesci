@@ -24,10 +24,12 @@ export default function Register() {
     setLoading(true);
     try {
       await register({ first_name, last_name, email, phone, preferred_lang: prefLang });
-      // Synchronize UI language with user preference
-      setLang(prefLang);
-      Alert.alert(t('welcomeShort'), t('createAccount'));
-      router.replace('/(tabs)/home');
+      // Forcer le FR par défaut après création de compte
+      await setLang('fr');
+      // Message de bienvenue localisé
+      setTimeout(() => Alert.alert(t('profileReady')), 50);
+      // Aller directement au profil
+      router.replace('/(tabs)/profile');
     } catch (e: any) {
       Alert.alert(t('error'), e.message || 'Inscription échouée');
     } finally {
