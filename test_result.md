@@ -883,6 +883,52 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Verify tab bar uses simplified warning icon. Bottom shortcuts use animated 'danger panel' (pulse ~1.25, halo, red ring, orange disk)."
+
+# --- Mini UI Test Plan: Premium + Home badges + NavMenu + Register cleanup ---
+
+test_plan:
+  current_focus:
+    - "Premium: ensure Pharmacies and Alertes tiles are first; alerts tile shows unread badge (>0), navigation to tabs works"
+    - "Home: alerts tile shows unread badge (>0), periodic refresh ~20s"
+    - "Hamburger menu (Home): alerts item shows unread badge and swinging bell"
+    - "Register: no bottom nav icons, CGU checkbox required with red error, legal links navigate"
+  test_all: false
+  test_priority: "high_first"
+
+frontend:
+  - task: "Validate Premium tiles order + alerts badge + navigation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/subscribe.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+  - task: "Home alerts badge + refresh"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+  - task: "NavMenu alerts badge"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/NavMenu.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+  - task: "Register cleanup + legal checks"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/auth/register.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+
+agent_communication:
+  - agent: "main"
+    message: "User requested mini UI test now: Premium leading tiles Pharmacies+Alertes with badge, Home alerts badge+refresh, NavMenu alerts badge, and Register page cleanup with mandatory CGU and legal links. Proceeding to run targeted UI tests."
+
   - task: "Alertes page header loader"
     implemented: true
 
