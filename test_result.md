@@ -640,6 +640,17 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ AI ENDPOINT TESTING COMPLETE: All 5 tests passed (100% success rate). 1) ✅ Health endpoint (/api/health) returns 200 OK with {status: ok}. 2) ✅ AI chat endpoint (/api/ai/chat) correctly returns 500 with 'EMERGENT_API_KEY not configured' error when API key is missing (as expected for current configuration). 3) ✅ Existing routes remain unaffected: GET /api/alerts responds gracefully (404 - not implemented), POST /api/auth/register works correctly (user registration successful), GET /api/payments/history responds gracefully (404). All requirements from review request satisfied. AI endpoint implementation is production-ready with proper error handling."
+  - task: "Backend Language Flow Support (Review Request)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ BACKEND LANGUAGE FLOW TESTING COMPLETE: All 14 tests passed (100% success rate). Comprehensive validation of all 3 test scenarios: Case A (User registers with prefLang=fr) - ✅ Working, user registered with FR preference ready for Profile page in FR. Case B (User registers with prefLang=en, switches to FR) - ✅ Working, language switched successfully via PATCH /api/users/{id}, Profile actions would update to French after reload. Case C (Cold start FR default) - ✅ Working, new users default to FR when no preference specified. Additional validations: ✅ All 5 languages supported (FR/EN/ES/IT/AR), ✅ Language preferences persist correctly, ✅ Alerts functionality unaffected by language changes, ✅ AI Chat works in French context. Backend fully supports the language flow requirements."
 
   - task: "Navigation Changes UI Testing (Review Request)"
     implemented: true
