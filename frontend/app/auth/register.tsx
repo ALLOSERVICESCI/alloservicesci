@@ -54,7 +54,8 @@ export default function Register() {
           <LangButton code="en" label="EN" />
           <LangButton code="es" label="ES" />
           <LangButton code="it" label="IT" />
-          <LangButton code="ar" label="AR" />
+          <LangButton code="tr" label="TR" />
+          <LangButton code="zh" label="ZH" />
         </View>
 
         <TextInput placeholder={t('firstName')} value={first_name} onChangeText={setFirst} style={styles.input} />
