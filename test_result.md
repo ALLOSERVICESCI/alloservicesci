@@ -884,6 +884,34 @@ frontend:
     status_history:
       - working: "NA"
 
+# --- General UI Test: Validate all recent FR/i18n, layout and navigation updates ---
+
+test_plan:
+  current_focus:
+    - "FR by default on first run (incognito): Home, Premium, Profile, Register, Alerts, Categories"
+    - "Home: header padding increased; brandSection marginTop +8; hamburger left + language pill right on same row; tiles order; alerts badge"
+    - "Premium: i18n premiumAnnualTitle+premiumFeatures; Pharmacies+Alertes first; 2-col grid; alerts badge; nav to /category/pharmacies and /category/alertes"
+    - "Profile: header paddingTop 56; centered layout; logo 190/170; no 'needAccount' text"
+    - "Register: FR texts; mandatory CGU with red error; legal links OK; no bottom nav"
+    - "Alerts: FR labels; 'Marquer comme lu' updates list and badges instantly"
+    - "NavMenu: visible only on Home; language pill opens modal; language switch persists"
+  test_all: true
+  test_priority: "high_first"
+
+frontend:
+  - task: "Run general UI tests on iPhone 14 and Galaxy S21 and capture screenshots"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Archive screenshots for Home, Premium, Profile, Register, Alerts (pre/post mark), Category pages (alertes, pharmacies), and NavMenu language switching."
+
+
 # --- General UI Test Plan: Core screens (FR default, layout, navigation) ---
 
 test_plan:
