@@ -989,13 +989,14 @@ class BackendTester:
         
         # Test CORS headers
         try:
-            response = self.make_request('OPTIONS', '/health')
+            # Use GET request with Origin header to trigger CORS
+            headers = {'Origin': 'https://example.com'}
+            response = self.make_request('GET', '/health', headers=headers)
             cors_headers = {
                 'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
-                'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
-                'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+                'Access-Control-Allow-Credentials': response.headers.get('Access-Control-Allow-Credentials')
             }
-            if any(cors_headers.values()):
+            if cors_headers['Access-Control-Allow-Origin']:
                 self.log_test("CORS headers", True, f"✅ Headers CORS présents: {cors_headers}")
             else:
                 self.log_test("CORS headers", False, f"❌ Pas de headers CORS détectés")
