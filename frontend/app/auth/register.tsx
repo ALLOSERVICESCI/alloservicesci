@@ -60,22 +60,27 @@ export default function Register() {
         <TextInput placeholder={t('emailOpt')} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" style={styles.input} />
         <TextInput placeholder={t('phonePh')} value={phone} onChangeText={setPhone} keyboardType="phone-pad" style={styles.input} />
 
-        {/* Bottom Tab Quick Nav (icons) */}
-        <View style={styles.bottomTabs}>
-          <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
-          <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
-          <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
-          <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
-          <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
-        </View>
-
-        <View style={styles.disclaimerWrap}>
-          <Text style={styles.disclaimerText}>
-            En vous inscrivant, vous acceptez nos <Text style={styles.link} onPress={() => router.push('/legal/cgu')}>CGU</Text> et notre <Text style={styles.link} onPress={() => router.push('/legal/confidentialite')}>Politique de confidentialité</Text>.
+        {/* Consentement légal obligatoire */}
+        <View style={styles.legalRow}>
+          <TouchableOpacity
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: acceptLegal }}
+            onPress={() => { setAcceptLegal(!acceptLegal); if (showLegalError) setShowLegalError(false); }}
+            style={[styles.checkbox, acceptLegal && styles.checkboxChecked]}
+          >
+            {acceptLegal && <Ionicons name="checkmark" size={16} color="#fff" />}
+          </TouchableOpacity>
+          <Text style={styles.legalLabel}>
+            {t('legalConsentPrefix')} <Text style={styles.link} onPress={() => router.push('/legal/cgu')}>{t('legalCGU')}</Text> {t('legalAnd')} <Text style={styles.link} onPress={() => router.push('/legal/confidentialite')}>{t('legalPolicy')}</Text>.
           </Text>
         </View>
+        {showLegalError && !acceptLegal && (
+          <Text style={styles.legalError}>{t('legalRequiredError')}</Text>
+        )}
 
-        <TouchableOpacity disabled={loading} onPress={onSubmit} style={styles.btn}><Text style={styles.btnText}>{loading ? '...' : t('submit')}</Text></TouchableOpacity>
+        <TouchableOpacity disabled={!acceptLegal || loading} onPress={onSubmit} style={[styles.btn, (!acceptLegal || loading) && { opacity: 0.5 }]}>
+          <Text style={styles.btnText}>{loading ? '...' : t('submit')}</Text>
+        </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );
