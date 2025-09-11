@@ -100,7 +100,7 @@ export default function Subscribe() {
         </View>
 
         {isPremium ? (
-          <LinearGradient colors={['#0A7C3A', '#0F5132']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.statusCard, styles.statusCardPremium]}>
+          <LinearGradient colors={['#0A7C3A', '#0F5132']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.statusCard, styles.statusCardPremium, { marginBottom: 28 }]}>
             <Text style={[styles.statusTitle, styles.statusTitlePremium]}>
               {t('premiumActive')}
             </Text>
