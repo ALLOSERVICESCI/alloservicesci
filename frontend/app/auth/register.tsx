@@ -20,6 +20,7 @@ export default function Register() {
 
   const onSubmit = async () => {
     if (!first_name || !last_name || !phone) { Alert.alert(t('requiredFields'), t('requiredMsg')); return; }
+    if (!acceptLegal) { setShowLegalError(true); return; }
     setLoading(true);
     try {
       await register({ first_name, last_name, email, phone, preferred_lang: prefLang });
