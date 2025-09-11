@@ -148,7 +148,8 @@ export default function Profile() {
               <LangButton code="en" label="English" />
               <LangButton code="es" label="Español" />
               <LangButton code="it" label="Italiano" />
-              <LangButton code="ar" label="العربية" />
+              <LangButton code="tr" label="Türkçe" />
+              <LangButton code="zh" label="中文" />
             </View>
           </View>
 

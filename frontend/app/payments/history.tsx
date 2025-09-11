@@ -1,25 +1,12 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, RefreshControl, Share, Alert, Linking, Switch, Platform } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, RefreshControl, Share, Alert, Linking, Switch } from 'react-native';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
 
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-
-function TabIcon({ label, icon, onPress }: { label: string; icon: any; onPress: () => void }) {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.tabItem}>
-      <Ionicons name={icon} size={22} color="#0A7C3A" />
-      <Text style={styles.tabLabel} numberOfLines={1}>{label}</Text>
-    </TouchableOpacity>
-  );
-}
-
 export default function PaymentHistory() {
   const { user } = useAuth();
   const { t } = useI18n();
-  const router = useRouter();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -57,7 +44,7 @@ export default function PaymentHistory() {
     const color = status === 'ACCEPTED' ? '#0A7C3A' : status === 'REFUSED' ? '#B00020' : '#9A6700';
     const bg = status === 'ACCEPTED' ? '#E6F4EA' : status === 'REFUSED' ? '#FDE7E9' : '#FFF4CC';
     return (
-      <View style={[styles.chip, { backgroundColor: bg, borderColor: color }]}>
+      <View style={[styles.chip, { backgroundColor: bg, borderColor: color }]}> 
         <Text style={[styles.chipText, { color }]}>{label}</Text>
       </View>
     );
@@ -99,7 +86,7 @@ export default function PaymentHistory() {
 
   if (!user) {
     return (
-      <View style={styles.center}> 
+      <View style={styles.center}>
         <Text>{t('needAccount')}</Text>
       </View>
     );
@@ -130,15 +117,6 @@ export default function PaymentHistory() {
           contentContainerStyle={{ paddingVertical: 12 }}
         />
       )}
-
-      {/* Bottom Tab Quick Nav (icons) */}
-      <View style={styles.bottomTabs}>
-        <TabIcon label={t('tabHome')} icon="home" onPress={() => router.push('/(tabs)/home')} />
-        <TabIcon label={t('tabAlerts')} icon="megaphone" onPress={() => router.push('/(tabs)/alerts')} />
-        <TabIcon label={t('tabPharm')} icon="medkit" onPress={() => router.push('/(tabs)/pharmacies')} />
-        <TabIcon label={t('tabPremium')} icon="card" onPress={() => router.push('/(tabs)/subscribe')} />
-        <TabIcon label={t('tabProfile')} icon="person" onPress={() => router.push('/(tabs)/profile')} />
-      </View>
     </View>
   );
 }
@@ -159,27 +137,4 @@ const styles = StyleSheet.create({
   btnMini: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8, marginRight: 8 },
   btnMiniAlt: { backgroundColor: '#0F5132', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8 },
   btnMiniText: { color: '#fff', fontWeight: '700' },
-  bottomTabs: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#E5E5E5',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 8,
-      },
-    }),
-  },
-  tabItem: { alignItems: 'center', justifyContent: 'center', paddingVertical: 4, minWidth: 50 },
-  tabLabel: { fontSize: 10, color: '#0A7C3A', marginTop: 2, textAlign: 'center', fontWeight: '600' },
 });
