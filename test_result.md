@@ -883,6 +883,30 @@ frontend:
         comment: "Verify tab bar uses simplified warning icon. Bottom shortcuts use animated 'danger panel' (pulse ~1.25, halo, red ring, orange disk)."
   - task: "Alertes page header loader"
     implemented: true
+
+# --- Mini UI Test: Home tiles order + navigation (Alertes/Pharmacies) ---
+
+test_plan:
+  current_focus:
+    - "Home order: Urgence, Santé, Alertes, Pharmacies at top of carousel"
+    - "Tap Alertes -> navigate to /(tabs)/alerts"
+    - "Tap Pharmacies -> navigate to /(tabs)/pharmacies"
+  test_all: false
+  test_priority: "high_first"
+
+frontend:
+  - task: "Validate Home tiles order + navigation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Ensure Alertes and Pharmacies tiles appear immediately after Urgence and Santé and navigate to proper tabs."
+
     working: "NA"
     file: "/app/frontend/app/(tabs)/alerts.tsx"
     stuck_count: 0
