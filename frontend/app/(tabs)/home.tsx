@@ -162,6 +162,13 @@ export default function Home() {
                     <Text style={styles.premiumBadgeText}>🔒</Text>
                   </View>
                 )}
+
+                {/* Pastille non lues pour Alertes */}
+                {category.slug === 'alerts_tab' && (
+                  <View style={styles.badgeNotifs}>
+                    <Text style={styles.badgeText}>9+</Text>
+                  </View>
+                )}
                 
                 <Text style={styles.categoryIcon}>{category.icon}</Text>
                 
