@@ -549,10 +549,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "NavMenu Visibility Scope Testing (Review Request)"
-    - "Profile edit functionality (city/lang selection)"
+    - "Profile page i18n actions (FR default, user choice persistence)"
+    - "E2E Registration → Profile language application"
   stuck_tasks:
-    - "NavMenu Visibility Scope Testing (Review Request)"
     - "Profile edit functionality (city/lang selection)"
   test_all: false
   test_priority: "high_first"
