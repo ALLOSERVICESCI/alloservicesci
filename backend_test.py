@@ -846,6 +846,218 @@ class BackendTester:
         except Exception as e:
             self.log_test("Step 9: List alerts with limit", False, f"Exception: {str(e)}")
 
+    def test_retex_backend_complet(self):
+        """RETEX Backend Complet - Test des APIs clés selon la demande de révision"""
+        print("\n" + "=" * 80)
+        print("🔍 RETEX BACKEND COMPLET - VALIDATION DES APIs CLÉS")
+        print("=" * 80)
+        
+        # 1) Test Paiement CinetPay
+        print("\n1️⃣ TEST PAIEMENT CINETPAY")
+        print("-" * 40)
+        
+        # Créer un utilisateur test d'abord
+        test_user_id = None
+        try:
+            user_data = {
+                "first_name": "Serge",
+                "last_name": "Angoua", 
+                "phone": "+225 07 63 63 20 22",
+                "email": "sergeangoua@icloud.com",
+                "preferred_lang": "fr",
+                "accept_terms": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                user = response.json()
+                test_user_id = user.get('id')
+                self.log_test("Création utilisateur test", True, f"Utilisateur créé: {test_user_id}")
+            else:
+                self.log_test("Création utilisateur test", False, f"Status: {response.status_code}")
+                return
+        except Exception as e:
+            self.log_test("Création utilisateur test", False, f"Exception: {str(e)}")
+            return
+        
+        # Test POST /api/payments/cinetpay/initiate
+        try:
+            payment_data = {
+                "user_id": test_user_id,
+                "amount_fcfa": 1200
+            }
+            response = self.make_request('POST', '/payments/cinetpay/initiate', json=payment_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if 'payment_url' in data and 'transaction_id' in data:
+                    payment_url = data['payment_url']
+                    transaction_id = data['transaction_id']
+                    self.log_test("CinetPay initiate", True, f"✅ 200 avec payment_url: {payment_url[:50]}... et transaction_id: {transaction_id}")
+                else:
+                    self.log_test("CinetPay initiate", False, f"❌ 200 mais manque payment_url ou transaction_id: {data}")
+            elif response.status_code in [400, 500]:
+                try:
+                    error_data = response.json()
+                    detail = error_data.get('detail', 'Pas de détail')
+                    self.log_test("CinetPay initiate", False, f"❌ {response.status_code} - Erreur: {detail}")
+                except:
+                    self.log_test("CinetPay initiate", False, f"❌ {response.status_code} - Réponse: {response.text}")
+            else:
+                self.log_test("CinetPay initiate", False, f"❌ Status inattendu: {response.status_code}")
+        except Exception as e:
+            self.log_test("CinetPay initiate", False, f"❌ Exception: {str(e)}")
+        
+        # 2) Test Utilisateurs PATCH
+        print("\n2️⃣ TEST UTILISATEURS PATCH")
+        print("-" * 40)
+        
+        try:
+            update_data = {
+                "city": "Yamoussoukro",
+                "email": "serge.updated@example.ci",
+                "phone": "+225 01 02 03 04 05"
+            }
+            response = self.make_request('PATCH', f'/users/{test_user_id}', json=update_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('city') == 'Yamoussoukro' and data.get('email') == 'serge.updated@example.ci':
+                    self.log_test("PATCH users", True, f"✅ 200 + utilisateur mis à jour: city={data.get('city')}, email={data.get('email')}")
+                else:
+                    self.log_test("PATCH users", False, f"❌ 200 mais données non mises à jour: {data}")
+            else:
+                self.log_test("PATCH users", False, f"❌ Status: {response.status_code}, Réponse: {response.text}")
+        except Exception as e:
+            self.log_test("PATCH users", False, f"❌ Exception: {str(e)}")
+        
+        # 3) Test Notifications unread_count
+        print("\n3️⃣ TEST NOTIFICATIONS UNREAD_COUNT")
+        print("-" * 40)
+        
+        # Test sans user_id
+        try:
+            response = self.make_request('GET', '/alerts/unread_count')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int):
+                    count = data['count']
+                    self.log_test("Unread count (sans user_id)", True, f"✅ 200 + count: {count}")
+                else:
+                    self.log_test("Unread count (sans user_id)", False, f"❌ Format invalide: {data}")
+            else:
+                self.log_test("Unread count (sans user_id)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Unread count (sans user_id)", False, f"❌ Exception: {str(e)}")
+        
+        # Test avec user_id
+        try:
+            response = self.make_request('GET', f'/alerts/unread_count?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int):
+                    count = data['count']
+                    self.log_test("Unread count (avec user_id)", True, f"✅ 200 + count: {count}")
+                else:
+                    self.log_test("Unread count (avec user_id)", False, f"❌ Format invalide: {data}")
+            else:
+                self.log_test("Unread count (avec user_id)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Unread count (avec user_id)", False, f"❌ Exception: {str(e)}")
+        
+        # 4) Test Subscriptions check
+        print("\n4️⃣ TEST SUBSCRIPTIONS CHECK")
+        print("-" * 40)
+        
+        try:
+            response = self.make_request('GET', f'/subscriptions/check?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'is_premium' in data:
+                    is_premium = data['is_premium']
+                    expires_at = data.get('expires_at')
+                    self.log_test("Subscriptions check", True, f"✅ 200 + is_premium: {is_premium}, expires_at: {expires_at}")
+                else:
+                    self.log_test("Subscriptions check", False, f"❌ Manque is_premium: {data}")
+            else:
+                self.log_test("Subscriptions check", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Subscriptions check", False, f"❌ Exception: {str(e)}")
+        
+        # 5) Test CORS et routes /api
+        print("\n5️⃣ TEST CORS ET ROUTES /api")
+        print("-" * 40)
+        
+        # Test CORS headers
+        try:
+            response = self.make_request('OPTIONS', '/health')
+            cors_headers = {
+                'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+            }
+            if any(cors_headers.values()):
+                self.log_test("CORS headers", True, f"✅ Headers CORS présents: {cors_headers}")
+            else:
+                self.log_test("CORS headers", False, f"❌ Pas de headers CORS détectés")
+        except Exception as e:
+            self.log_test("CORS headers", False, f"❌ Exception: {str(e)}")
+        
+        # Test que les routes commencent par /api
+        try:
+            response = self.make_request('GET', '/health')
+            if response.status_code == 200:
+                self.log_test("Routes /api", True, f"✅ Route /api/health accessible (Status: {response.status_code})")
+            else:
+                self.log_test("Routes /api", False, f"❌ Route /api/health inaccessible (Status: {response.status_code})")
+        except Exception as e:
+            self.log_test("Routes /api", False, f"❌ Exception: {str(e)}")
+        
+        # Test statut backend (vérification que le serveur répond)
+        try:
+            response = self.make_request('GET', '/')
+            if response.status_code == 200:
+                data = response.json()
+                if 'message' in data:
+                    self.log_test("Statut backend", True, f"✅ Backend répond: {data.get('message')}")
+                else:
+                    self.log_test("Statut backend", True, f"✅ Backend répond (Status: {response.status_code})")
+            else:
+                self.log_test("Statut backend", False, f"❌ Backend ne répond pas correctement (Status: {response.status_code})")
+        except Exception as e:
+            self.log_test("Statut backend", False, f"❌ Exception: {str(e)}")
+
+    def run_retex_backend_tests(self):
+        """Run RETEX Backend tests only (Review Request)"""
+        print(f"🔍 RETEX BACKEND COMPLET - VALIDATION DES APIs CLÉS")
+        print(f"Base URL: {self.base_url}")
+        print("=" * 80)
+        
+        # Run the specific RETEX test
+        self.test_retex_backend_complet()
+        
+        # Summary
+        print("\n" + "=" * 80)
+        print("📊 RÉSUMÉ RETEX BACKEND")
+        print("=" * 80)
+        
+        passed = sum(1 for result in self.test_results if result['success'])
+        total = len(self.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Réussis: {passed}")
+        print(f"Échoués: {total - passed}")
+        print(f"Taux de réussite: {(passed/total)*100:.1f}%")
+        
+        if passed < total:
+            print("\n❌ TESTS ÉCHOUÉS:")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['details']}")
+        else:
+            print("\n✅ TOUS LES TESTS SONT PASSÉS!")
+        
+        return passed == total
+
     def run_alerts_unread_tests_only(self):
         """Run only the alerts unread count and mark-as-read tests (Review Request)"""
         print(f"🔔 ALERTS UNREAD COUNT & MARK-AS-READ TESTS (Review Request)")
