@@ -82,6 +82,8 @@ export default function Profile() {
     { key: 'payments', title: t('paymentHistory'), icon: '💳', onPress: goPaymentHistory, color: '#0A7C3A' },
   ];
 
+  const avatarSource = user?.avatar ? { uri: `data:image/jpeg;base64,${user.avatar}` } : APP_ICON;
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {/* Header */}
@@ -93,7 +95,7 @@ export default function Profile() {
       {/* User Avatar */}
       <View style={styles.avatarSection}>
         <View style={styles.logoContainer}>
-          <Image source={APP_ICON} style={styles.avatar} />
+          <Image source={avatarSource} style={styles.avatar} />
           {premium?.is_premium && (
             <View style={styles.premiumBadge}>
               <Text style={styles.premiumBadgeText}>✨ {t('premium')}</Text>
@@ -122,6 +124,12 @@ export default function Profile() {
                 <Text style={styles.detailIcon}>📱</Text>
                 <Text style={styles.detailText}>{user.phone}</Text>
               </View>
+              {user.email && (
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailIcon}>✉️</Text>
+                  <Text style={styles.detailText}>{user.email}</Text>
+                </View>
+              )}
               {user.city && (
                 <View style={styles.detailRow}>
                   <Text style={styles.detailIcon}>📍</Text>

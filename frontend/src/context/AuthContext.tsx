@@ -12,6 +12,7 @@ export type User = {
   phone: string;
   preferred_lang?: string;
   city?: string;
+  avatar?: string; // base64 without data: prefix
 };
 
 type AuthContextType = {
@@ -95,15 +96,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user?.id) throw new Error('Not logged in');
     const res = await apiFetch(`/api/users/${user.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
     const updated = await res.json();
-    setUser(updated);
-    await AsyncStorage.setItem('auth_user', JSON.stringify(updated));
+    // Merge local input in case backend ignores unknown fields like avatar
+    const merged = { ...updated, ...input } as User;
+    setUser(merged);
+    await AsyncStorage.setItem('auth_user', JSON.stringify(merged));
     // re-register token in case city/lang changes for segmentation
     if (expoPushToken) {
       try {
-        await apiFetch('/api/notifications/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: expoPushToken, user_id: updated.id, platform: Platform.OS, city: updated.city }) });
+        await apiFetch('/api/notifications/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: expoPushToken, user_id: merged.id, platform: Platform.OS, city: merged.city }) });
       } catch {}
     }
-    return updated;
+    return merged;
   };
 
   const logout = async () => {
