@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, RefreshControl, Share, Alert, Linking, Switch } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, RefreshControl, Share, Alert, Linking, Switch, Image } from 'react-native';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
+
+const APP_ICON = require('../../assets/icons/icons/icon.png');
 
 export default function PaymentHistory() {
   const { user } = useAuth();
@@ -86,7 +88,7 @@ export default function PaymentHistory() {
 
   if (!user) {
     return (
-      <View style={styles.center}>
+      <View style={styles.center}> 
         <Text>{t('needAccount')}</Text>
       </View>
     );
@@ -98,6 +100,12 @@ export default function PaymentHistory() {
 
   return (
     <View style={styles.container}>
+      {/* Logo au-dessus du brand et du titre */}
+      <View style={styles.logoWrap}>
+        <View style={styles.logoContainer}>
+          <Image source={APP_ICON} style={styles.logo} />
+        </View>
+      </View>
       <Text style={styles.brand}>{t('brand')}</Text>
       <Text style={styles.title}>{t('paymentHistory')}</Text>
 
@@ -122,10 +130,13 @@ export default function PaymentHistory() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  brand: { fontSize: 18, fontWeight: '800', color: '#0A7C3A' },
-  title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A', marginTop: 6 },
-  filterRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 },
+  container: { flex: 1, backgroundColor: '#fff', padding: 16, paddingTop: 56 },
+  logoWrap: { alignItems: 'center', marginBottom: 8 },
+  logoContainer: { width: 120, height: 120, borderRadius: 60, borderWidth: 4, borderColor: '#0A7C3A', backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center' },
+  logo: { width: 100, height: 100, borderRadius: 50, borderWidth: 3, borderColor: '#ffffff' },
+  brand: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', marginTop: 8, textAlign: 'center' },
+  title: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', marginTop: 4, textAlign: 'center' },
+  filterRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 },
   filterLabel: { color: '#333', fontWeight: '600' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   empty: { marginTop: 20, color: '#666' },

@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { useNotificationsCenter } from '../src/context/NotificationsContext';
 import { useI18n } from '../src/i18n/i18n';
+
+const APP_ICON = require('../assets/icons/icons/icon.png');
 
 export default function NotificationsCenter() {
   const { items, clear, removeAt } = useNotificationsCenter();
@@ -9,8 +11,15 @@ export default function NotificationsCenter() {
 
   return (
     <View style={styles.container}>
-      {/* Titre principal en plus grand, sans brand au-dessus */}
-      <Text style={styles.titleXL}>{t('notifCenter')}</Text>
+      {/* Logo au-dessus du brand et du titre */}
+      <View style={styles.logoWrap}>
+        <View style={styles.logoContainer}>
+          <Image source={APP_ICON} style={styles.logo} />
+        </View>
+      </View>
+      <Text style={styles.brand}>{t('brand')}</Text>
+      <Text style={styles.title}>{t('notifCenter')}</Text>
+
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
         <TouchableOpacity onPress={clear} style={styles.btn}><Text style={styles.btnText}>{t('clearHistory')}</Text></TouchableOpacity>
       </View>
@@ -39,7 +48,11 @@ export default function NotificationsCenter() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16, paddingTop: 56 },
-  titleXL: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', textAlign: 'left' },
+  logoWrap: { alignItems: 'center', marginBottom: 8 },
+  logoContainer: { width: 120, height: 120, borderRadius: 60, borderWidth: 4, borderColor: '#0A7C3A', backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center' },
+  logo: { width: 100, height: 100, borderRadius: 50, borderWidth: 3, borderColor: '#ffffff' },
+  brand: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', marginTop: 8, textAlign: 'center' },
+  title: { fontSize: 24, fontWeight: '800', color: '#0A7C3A', marginTop: 4, textAlign: 'center' },
   btn: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8, marginTop: 12 },
   btnText: { color: '#fff', fontWeight: '700' },
   empty: { marginTop: 20, color: '#666' },

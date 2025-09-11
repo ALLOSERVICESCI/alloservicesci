@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { useI18n, Lang } from '../../src/i18n/i18n';
+import { useI18n } from '../../src/i18n/i18n';
 import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import NavMenu from '../../src/components/NavMenu';
 
@@ -14,7 +14,7 @@ const FAB_MARGIN = 20;
 
 export default function Home() {
   const { user } = useAuth();
-  const { t, lang, setLang } = useI18n();
+  const { t } = useI18n();
   const { alertsUnreadCount, refreshAlertsUnread } = useNotificationsCenter();
   const router = useRouter();
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
@@ -78,12 +78,6 @@ export default function Home() {
     return () => pulse.stopAnimation();
   }, [pulse]);
 
-  const LangButton = ({ code, label }: { code: Lang; label: string }) => (
-    <TouchableOpacity onPress={() => setLang(code)} style={[styles.langBtn, lang === code && styles.langBtnActive]}> 
-      <Text style={[styles.langText, lang === code && styles.langTextActive]}>{label}</Text>
-    </TouchableOpacity>
-  );
-
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
@@ -97,14 +91,6 @@ export default function Home() {
             <View style={styles.brandSection}>
               <Text style={styles.brand}>{t('brand')}</Text>
               <Text style={styles.slogan}>{t('slogan')}</Text>
-              <View style={styles.langRow}>
-                <LangButton code="fr" label="FR" />
-                <LangButton code="en" label="EN" />
-                <LangButton code="es" label="ES" />
-                <LangButton code="it" label="IT" />
-                <LangButton code="tr" label="TR" />
-                <LangButton code="zh" label="ZH" />
-              </View>
               <Text style={styles.greeting}>{greeting}</Text>
             </View>
           </View>
@@ -173,11 +159,6 @@ const styles = StyleSheet.create({
   brand: { fontSize: 32, fontWeight: '800', color: '#0A7C3A' },
   slogan: { fontSize: 18, color: '#666', marginTop: 4, textAlign: 'center' },
   greeting: { fontSize: 20, color: '#0F5132', marginTop: 8, fontWeight: '700', textAlign: 'center' },
-  langRow: { flexDirection: 'row', marginTop: 10 },
-  langBtn: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 16, borderWidth: 1, borderColor: '#E8F0E8', marginHorizontal: 4 },
-  langBtnActive: { backgroundColor: '#0A7C3A', borderColor: '#0A7C3A' },
-  langText: { color: '#0A7C3A', fontWeight: '700' },
-  langTextActive: { color: '#fff' },
   categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 24, marginTop: -8 },
   carouselContainer: { paddingLeft: 20 },
   carousel: { paddingRight: 20, paddingVertical: 8 },

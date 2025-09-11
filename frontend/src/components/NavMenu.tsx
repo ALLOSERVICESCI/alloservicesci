@@ -72,18 +72,19 @@ export default function NavMenu() {
   // Position slightly below slogan area
   const topOffset = insets.top + 48; // aligned row for hamburger and language pill
 
-  const LANGS: { code: 'fr'|'en'|'es'|'it'|'ar'; label: string }[] = [
+  const LANGS: { code: 'fr'|'en'|'es'|'it'|'tr'|'zh'; label: string }[] = [
     { code: 'fr', label: 'Français' },
     { code: 'en', label: 'English' },
     { code: 'es', label: 'Español' },
     { code: 'it', label: 'Italiano' },
-    { code: 'ar', label: 'العربية' },
+    { code: 'tr', label: 'Türkçe' },
+    { code: 'zh', label: '中文' },
   ];
 
   return (
     <>
       {/* Simple hamburger (left) */}
-      <View pointerEvents="box-none" style={[styles.hambWrap, { top: topOffset }]}>
+      <View pointerEvents="box-none" style={[styles.hambWrap, { top: topOffset }]}> 
         <TouchableOpacity onPress={() => setOpen(true)} activeOpacity={0.7} style={styles.hambTouch} accessibilityRole="button">
           <View style={styles.bar} />
           <View style={[styles.bar, { width: 28 }]} />
@@ -92,7 +93,7 @@ export default function NavMenu() {
       </View>
 
       {/* Language pill (right) */}
-      <View pointerEvents="box-none" style={[styles.langWrap, { top: topOffset }]}>
+      <View pointerEvents="box-none" style={[styles.langWrap, { top: topOffset }]}> 
         <TouchableOpacity onPress={() => setOpenLang(true)} activeOpacity={0.8} style={styles.langPill} accessibilityRole="button">
           <Text style={styles.langPillText}>{(lang || 'fr').toUpperCase()}</Text>
         </TouchableOpacity>
