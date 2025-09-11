@@ -3,8 +3,6 @@ import { Stack } from 'expo-router';
 import { AuthProvider } from '../src/context/AuthContext';
 import { NotificationsProvider } from '../src/context/NotificationsContext';
 import { I18nProvider } from '../src/i18n/i18n';
-import NavMenu from '../src/components/NavMenu';
-import { View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TEST_USER = {
@@ -33,10 +31,7 @@ export default function RootLayout() {
     <I18nProvider>
       <AuthProvider>
         <NotificationsProvider>
-          {/* NavMenu rendu globalement pour afficher la pastille langue partout */}
-          <View style={{ position: 'absolute', left: 0, right: 0, top: 0, zIndex: 100 }} pointerEvents="box-none">
-            <NavMenu />
-          </View>
+          {/* NavMenu n'est plus global afin d'être visible uniquement sur la page d'accueil (ajouté dans home.tsx) */}
           <Stack screenOptions={{ headerShown: false }} />
         </NotificationsProvider>
       </AuthProvider>
