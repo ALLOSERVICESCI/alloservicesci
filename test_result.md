@@ -1324,16 +1324,18 @@ frontend:
 agent_communication:
   - agent: "main"
     message: "Proceeding with focused UI tests for hamburger menu and hidden navigation bars across all pages."
+  - agent: "testing"
+    message: "❌ CRITICAL MOBILE UI TESTING RESULTS - REVIEW REQUEST VALIDATION: Executed comprehensive mobile UI testing on iPhone 14 (390x844) and Galaxy S21 (360x800) as requested. DETAILED FINDINGS: 1) ✅ PREMIUM PAGE /(tabs)/subscribe: CinetPay security text 'Paiement sécurisé par CinetPay' is VISIBLE under the button on both devices as required. Subscribe button 'S'abonner à Premium' found and clickable - payment flow can be triggered successfully. 2) ❌ PROFILE PAGE /(tabs)/profile: 'Devenir Premium' text is NOT FOUND on both devices when user is not premium. Profile shows user info with 'inactif' status instead of the required French label. This is a critical localization issue. 3) ❌ HOME PAGE NAVMENU REGRESSION: Hamburger menu (3 green bars) is NOT VISIBLE on home page (0 bars found on both devices) - critical navigation failure. FR language pill is correctly visible on home page. 4) ❌ NAVMENU SCOPE VIOLATION: FR language pill incorrectly appears on pharmacies and profile pages when it should only be on home page. Hamburger menu correctly absent on other pages. CRITICAL ISSUES REQUIRING IMMEDIATE ATTENTION: (a) Missing hamburger menu on home page breaks primary navigation, (b) Missing 'Devenir Premium' text on profile page, (c) FR pill showing on wrong pages. Screenshots captured: premium_test_iphone14.png, premium_test_galaxy_s21.png, profile_test_iphone14.png, profile_test_galaxy_s21.png, home_test_iphone14.png, home_test_galaxy_s21.png. Only 3/7 requirements passed - major fixes needed."
 
 # --- Latest Test Plan (NavMenu top-left + no nav bars) ---
 
 test_plan:
   current_focus:
-    - "Hide all navigation bars (tab bar + category bottom bars)"
-    - "Show only global NavMenu button at top-left on all main tabs and category pages"
-    - "Open menu shows 5 icons with FR labels; Alerts icon is a swinging bell"
-    - "Navigation from menu items to correct screens"
-    - "Premium grid regression: 2 columns, ~32px icons, descriptions, tile navigation"
+    - "CinetPay: clic 'S'abonner à Premium' ouvre l'URL de paiement (vérif de wiring)"
+    - "Profil: libellé 'Devenir Premium' en FR par défaut quand non premium"
+    - "Premium: texte 'Paiement sécurisé par CinetPay' visible"
+    - "NavMenu: hamburger menu missing on home page - CRITICAL"
+    - "NavMenu: FR pill incorrectly showing on other pages - CRITICAL"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
