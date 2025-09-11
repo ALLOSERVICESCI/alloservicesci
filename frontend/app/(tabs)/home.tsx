@@ -486,4 +486,26 @@ const styles = StyleSheet.create({
     borderTopColor: '#0A7C3A',
     marginTop: -1,
   },
+  
+  // Notification badge styles
+  badgeNotifs: {
+    position: 'absolute',
+    top: -8,
+    left: -8,
+    backgroundColor: '#FF4444',
+    borderRadius: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderWidth: 2,
+    borderColor: '#fff',
+    minWidth: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#fff',
+    textAlign: 'center',
+  },
 });
