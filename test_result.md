@@ -884,6 +884,35 @@ frontend:
     status_history:
       - working: "NA"
 
+# --- Full UI Test Plan: Archive FR-by-default state with screenshots ---
+
+test_plan:
+  current_focus:
+    - "Fresh session (incognito): app defaults to FR; labels visible in FR on all key pages"
+    - "Home: FR labels (Accueil, Alertes, Pharmacies, Premium, Profil), tiles order, Alerts badge if any"
+    - "Premium: heading 'Fonctionnalités Premium' in FR, tiles Pharmacies/Alertes first, FR CTA"
+    - "Profile (logged out): FR brand/slogan, 'Bienvenue' and 'Créer mon compte'"
+    - "Register: FR labels, CGU/Politique links, mandatory checkbox error in FR"
+    - "Alerts: FR labels 'Nouvelle alerte', 'Marquer comme lu'; after marking, badges update"
+    - "NavMenu: FR items, alerts badge if any"
+    - "Categories: FR headings render correctly"
+  test_all: true
+  test_priority: "high_first"
+
+frontend:
+  - task: "Capture FR-by-default screenshots across core flows"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Use fresh browser context; capture Home, Premium, Profile, Register, Alerts (before/after mark-as-read), NavMenu opened, and a Category page."
+
+
 # --- Quick UI Test: Premium & Profile French by default ---
 
 test_plan:
