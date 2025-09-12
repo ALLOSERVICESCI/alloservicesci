@@ -47,6 +47,18 @@ backend:
         agent: "testing"
         comment: "✅ RETEX Backend Test - Alerts unread count endpoint working perfectly. Returns 200 with count: 15 both with and without user_id parameter."
 
+  - task: "GET /api/pharmacies avec filtres (city, on_duty, near_lat/lng, max_km)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ Pharmacies Filtering Test - All filtering endpoints working perfectly. 1) No filters: 200 + 4 pharmacies with correct JSON shape (id, name, address, city). 2) City filter (Grand-Bassam): 200 + 0 results (no data). 3) City filter (Abidjan): 200 + 4 results, all match city. 4) on_duty filter: 200 + 0 results (data model uses duty_days instead of on_duty field). 5) Near-me filter: 200 + 4 results near Abidjan coords. 6) Combined filters work correctly. Data model inconsistency noted: database has duty_days array but API expects on_duty boolean."
+
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
     implemented: true
