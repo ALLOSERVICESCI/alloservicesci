@@ -116,6 +116,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "FRONTEND E2E: Pharmacies filtering UI (header, colors, badges, search auto-completion)"
     - "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
     - "FRONTEND E2E: 'Devenir Premium' en FR par défaut sur Profil (non premium)"
     - "FRONTEND E2E UI: Accueil (menu/pastille FR seulement), Notifications & Paiements (logo + titres FR), Modifier profil"
