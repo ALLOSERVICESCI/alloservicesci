@@ -1,80 +1,198 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, ImageBackground, Dimensions } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, ImageBackground, Dimensions, TextInput } from 'react-native';
 import * as Location from 'expo-location';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
 
 const HEADER_IMG = require('../../assets/headers/pharmacies_header.png');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const CI_CITIES = [
+  'Abengourou','Abidjan','Aboisso','Agboville','Anyama','Bangolo','Bingerville','Bondoukou','Bouaké','Boundiali','Daloa','Danané','Dimbokro','Divo','Ferkessédougou','Gagnoa','Issia','Korhogo','Lakota','Man','Mankono','Odienné','Sassandra','San-Pédro','Séguéla','Sinfra','Soubré','Tabou','Toumodi','Yamoussoukro'
+];
 
 export default function Pharmacies() {
-  const [data, setData] = useState<any[]>([]);
+  const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [onDuty, setOnDuty] = useState(false);
+  const [nearMe, setNearMe] = useState(false);
+  const [city, setCity] = useState<string>('');
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const { t } = useI18n();
 
-  const askPermissionAndFetch = async () => {
-    setError(null);
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') { setError(t('locationDenied')); return; }
-    setLoading(true);
+  const sortedCities = useMemo(() => CI_CITIES.slice().sort((a,b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })), []);
+  const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const filteredCities = useMemo(() => {
+    const q = normalize(query);
+    if (!q) return sortedCities;
+    return sortedCities.filter((c) => normalize(c).includes(q));
+  }, [sortedCities, query]);
+
+  const getLocation = async () => {
     try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') { throw new Error('denied'); }
       const loc = await Location.getCurrentPositionAsync({});
-      const lat = loc.coords.latitude; const lng = loc.coords.longitude;
-      const res = await apiFetch(`/api/pharmacies/nearby?lat=${lat}&lng=${lng}&max_km=5`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      setData(json);
-    } catch (e: any) {
-      setError(t('fetchError'));
-      Alert.alert(t('error'), t('fetchError'));
-    } finally {
-      setLoading(false);
+      return { lat: loc.coords.latitude, lng: loc.coords.longitude };
+    } catch (e) {
+      throw new Error('denied');
     }
   };
 
-  useEffect(() => { askPermissionAndFetch(); }, []);
+  const buildUrl = async () => {
+    const p: string[] = [];
+    if (onDuty || nearMe) p.push('on_duty=true');
+    if (!nearMe && city) p.push(`city=${encodeURIComponent(city)}`);
+    if (nearMe) {
+      const c = coords || await getLocation();
+      if (!c) throw new Error('denied');
+      setCoords(c);
+      p.push(`near_lat=${c.lat}`); p.push(`near_lng=${c.lng}`); p.push('max_km=5');
+    }
+    const q = p.length ? `?${p.join('&')}` : '';
+    return `/api/pharmacies${q}`;
+  };
+
+  const load = async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      const url = await buildUrl();
+      const res = await apiFetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      setItems(json);
+    } catch (e: any) {
+      if (e.message === 'denied') { setError(t('locationDenied')); Alert.alert(t('error'), t('locationDenied')); }
+      else { setError(t('fetchError')); Alert.alert(t('error'), t('fetchError')); }
+    } finally { setLoading(false); }
+  };
+
+  // initial load: all pharmacies
+  useEffect(() => { load(); }, []);
+
+  // Auto-enable onDuty when nearMe is toggled on
+  useEffect(() => { if (nearMe && !onDuty) setOnDuty(true); }, [nearMe]);
+
+  const toggleOnDuty = () => { setOnDuty((v) => !v); };
+  const toggleNearMe = () => { setNearMe((v) => !v); };
+
+  const CityButton = ({ name }: { name: string }) => (
+    <TouchableOpacity onPress={() => { setCity(name); setOpen(false); }} style={[styles.cityItem, city === name && styles.cityItemActive]}>
+      <Text style={[styles.cityText, city === name && styles.cityTextActive]}>{name}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
       <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
-        {/* Overlay rétabli pour lisibilité */}
         <View pointerEvents="none" style={styles.headerOverlay} />
         <View style={styles.titleWrap}>
           <Text style={styles.headerTitle}>{t('tabPharm')}</Text>
         </View>
       </ImageBackground>
 
+      {/* Filtres */}
+      <View style={styles.filters}>
+        <View style={styles.rowBetween}>
+          <TouchableOpacity onPress={toggleOnDuty} style={[styles.toggle, onDuty && styles.toggleOn]}
+            accessibilityRole="switch" accessibilityState={{ checked: onDuty }}>
+            <Text style={[styles.toggleText, onDuty && styles.toggleTextOn]}>{t('onDuty')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleNearMe} style={[styles.toggle, nearMe && styles.toggleOn]}
+            accessibilityRole="switch" accessibilityState={{ checked: nearMe }}>
+            <Text style={[styles.toggleText, nearMe && styles.toggleTextOn]}>{t('nearMe')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Sélecteur de ville */}
+        <View style={styles.selectBlock}>
+          <Text style={styles.selectLabel}>{t('city')}</Text>
+          <TouchableOpacity disabled={nearMe} style={[styles.select, nearMe && styles.selectDisabled]} onPress={() => setOpen((v) => !v)}>
+            <Text style={[styles.selectText, !city && styles.placeholderText]}>{city || t('selectCity')}</Text>
+            <Text style={styles.chev}>▾</Text>
+          </TouchableOpacity>
+          {open && !nearMe && (
+            <View style={styles.dropdown}>
+              <View style={styles.searchWrap}>
+                <TextInput
+                  value={query}
+                  onChangeText={setQuery}
+                  placeholder={t('searchCity')}
+                  style={styles.searchInput}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </View>
+              <View style={{ maxHeight: 220 }}>
+                {filteredCities.map((c) => (<CityButton key={c} name={c} />))}
+              </View>
+            </View>
+          )}
+        </View>
+
+        <TouchableOpacity onPress={load} style={styles.btn}><Text style={styles.btnText}>{t('refresh')}</Text></TouchableOpacity>
+      </View>
+
+      {/* Contenu */}
       <View style={styles.content}>
         {error && <Text style={styles.error}>{error}</Text>}
         {loading && <ActivityIndicator />}
-        {data.map((p) => (
+        {items.map((p) => (
           <View key={p.id} style={styles.card}>
             <Text style={styles.title}>{p.name}</Text>
             <Text style={styles.meta}>{p.address} • {p.city}</Text>
-            <Text style={styles.meta}>{p.phone}</Text>
+            {p.phone && <Text style={styles.meta}>{p.phone}</Text>}
+            {p.opening_hours && <Text style={styles.meta}>{p.opening_hours}</Text>}
+            {p.on_duty && <Text style={[styles.badge, styles.badgeOnDuty]}>De garde</Text>}
           </View>
         ))}
-        <TouchableOpacity onPress={askPermissionAndFetch} style={styles.btn}><Text style={styles.btnText}>{t('refresh')}</Text></TouchableOpacity>
       </View>
     </View>
   );
 }
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   header: { height: Math.min(240, Math.max(180, SCREEN_WIDTH * 0.42)), justifyContent: 'flex-end' },
   headerImg: { resizeMode: 'cover' },
-  // léger ombre dégradé du bas vers le haut
-  headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 90, backgroundColor: 'rgba(0,0,0,0.0)' },
+  headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, top: 0, backgroundColor: 'rgba(0,0,0,0.25)' },
   titleWrap: { paddingHorizontal: 16, paddingBottom: 12, alignItems: 'flex-start' },
   headerTitle: { color: '#fff', fontWeight: '800', fontSize: 26, textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
+
+  filters: { paddingHorizontal: 16, paddingTop: 12 },
+  rowBetween: { flexDirection: 'row', justifyContent: 'space-between' },
+  toggle: { flex: 1, paddingVertical: 10, borderRadius: 10, borderWidth: 1, borderColor: '#E8F0E8', marginRight: 8, alignItems: 'center', backgroundColor: '#fff' },
+  toggleOn: { backgroundColor: '#0A7C3A', borderColor: '#0A7C3A' },
+  toggleText: { color: '#0A7C3A', fontWeight: '700' },
+  toggleTextOn: { color: '#fff' },
+
+  selectBlock: { marginTop: 10 },
+  selectLabel: { color: '#0A7C3A', fontWeight: '700', marginBottom: 6 },
+  select: { minWidth: 200, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, backgroundColor: '#FAFAF8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  selectDisabled: { backgroundColor: '#F0F0F0' },
+  selectText: { color: '#0A7C3A', fontWeight: '600' },
+  placeholderText: { color: '#999' },
+  chev: { color: '#0A7C3A', marginLeft: 8 },
+  dropdown: { marginTop: 6, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#fff', width: 260 },
+  searchWrap: { paddingHorizontal: 10, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#F0F3F0' },
+  searchInput: { height: 36, paddingHorizontal: 8, color: '#0A7C3A' },
+  cityItem: { paddingVertical: 10, paddingHorizontal: 12, borderBottomWidth: 1, borderBottomColor: '#F0F3F0' },
+  cityItemActive: { backgroundColor: '#F3F7F5' },
+  cityText: { color: '#0A7C3A' },
+  cityTextActive: { color: '#0A7C3A', fontWeight: '800' },
+
+  btn: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 12 },
+  btnText: { color: '#fff', fontWeight: '700' },
+
   content: { flex: 1, padding: 16 },
   error: { color: '#B00020', marginBottom: 8 },
   card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E8F0E8' },
   title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A' },
   meta: { fontSize: 13, color: '#555', marginTop: 4 },
-  btn: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },
-  btnText: { color: '#fff', fontWeight: '700' },
+  badge: { marginTop: 6, alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, borderWidth: 1, fontSize: 12, fontWeight: '700' },
+  badgeOnDuty: { color: '#0A7C3A', borderColor: '#0A7C3A', backgroundColor: '#E6F4EA' },
 });
