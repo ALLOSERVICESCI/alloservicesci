@@ -1027,6 +1027,301 @@ class BackendTester:
         except Exception as e:
             self.log_test("Statut backend", False, f"❌ Exception: {str(e)}")
 
+    def test_pharmacies_filtering_comprehensive(self):
+        """Test comprehensive pharmacies filtering as per review request"""
+        print("\n" + "=" * 80)
+        print("🏥 PHARMACIES FILTERING COMPREHENSIVE TESTS")
+        print("=" * 80)
+        
+        # 1) No filters: GET /api/pharmacies → 200, list array
+        print("\n1️⃣ TEST PHARMACIES - NO FILTERS")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', '/pharmacies')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    self.log_test("Pharmacies (no filters)", True, f"✅ 200 + array with {len(data)} pharmacies")
+                    
+                    # Validate JSON shape for first few items
+                    if len(data) > 0:
+                        sample = data[0]
+                        required_fields = ['id', 'name', 'address', 'city']
+                        optional_fields = ['phone', 'opening_hours', 'on_duty']
+                        
+                        has_required = all(field in sample for field in required_fields)
+                        if has_required:
+                            self.log_test("Pharmacies JSON shape", True, f"✅ Required fields present: {required_fields}")
+                        else:
+                            missing = [f for f in required_fields if f not in sample]
+                            self.log_test("Pharmacies JSON shape", False, f"❌ Missing required fields: {missing}")
+                    else:
+                        self.log_test("Pharmacies JSON shape", False, "❌ No pharmacies to validate structure")
+                else:
+                    self.log_test("Pharmacies (no filters)", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test("Pharmacies (no filters)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Pharmacies (no filters)", False, f"❌ Exception: {str(e)}")
+        
+        # 2) City filter: GET /api/pharmacies?city=Grand-Bassam → 200, each item.city should match
+        print("\n2️⃣ TEST PHARMACIES - CITY FILTER")
+        print("-" * 50)
+        test_city = "Grand-Bassam"
+        try:
+            response = self.make_request('GET', f'/pharmacies?city={test_city}')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        # Check if all items match the city (case-insensitive)
+                        city_matches = all(
+                            item.get('city', '').lower() == test_city.lower() 
+                            for item in data
+                        )
+                        if city_matches:
+                            self.log_test(f"Pharmacies (city={test_city})", True, f"✅ 200 + {len(data)} pharmacies, all match city")
+                        else:
+                            mismatches = [item.get('city') for item in data if item.get('city', '').lower() != test_city.lower()]
+                            self.log_test(f"Pharmacies (city={test_city})", False, f"❌ City mismatches found: {set(mismatches)}")
+                    else:
+                        self.log_test(f"Pharmacies (city={test_city})", True, f"✅ 200 + 0 pharmacies (no data for {test_city})")
+                else:
+                    self.log_test(f"Pharmacies (city={test_city})", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test(f"Pharmacies (city={test_city})", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test(f"Pharmacies (city={test_city})", False, f"❌ Exception: {str(e)}")
+        
+        # 3) On-duty filter: GET /api/pharmacies?on_duty=true → 200, items[].on_duty true
+        print("\n3️⃣ TEST PHARMACIES - ON_DUTY FILTER")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', '/pharmacies?on_duty=true')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        # Check if all items have on_duty=true
+                        on_duty_matches = all(
+                            item.get('on_duty') == True 
+                            for item in data
+                        )
+                        if on_duty_matches:
+                            self.log_test("Pharmacies (on_duty=true)", True, f"✅ 200 + {len(data)} pharmacies, all on_duty=true")
+                        else:
+                            non_duty = [item.get('on_duty') for item in data if item.get('on_duty') != True]
+                            self.log_test("Pharmacies (on_duty=true)", False, f"❌ Non-duty pharmacies found: {non_duty}")
+                    else:
+                        self.log_test("Pharmacies (on_duty=true)", True, f"✅ 200 + 0 pharmacies (no on-duty pharmacies)")
+                else:
+                    self.log_test("Pharmacies (on_duty=true)", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test("Pharmacies (on_duty=true)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Pharmacies (on_duty=true)", False, f"❌ Exception: {str(e)}")
+        
+        # 4) Near me filter: Use Abidjan coords with on_duty=true
+        print("\n4️⃣ TEST PHARMACIES - NEAR ME FILTER")
+        print("-" * 50)
+        abidjan_lat = 5.316667
+        abidjan_lng = -4.016667
+        max_km = 5
+        try:
+            response = self.make_request('GET', f'/pharmacies?on_duty=true&near_lat={abidjan_lat}&near_lng={abidjan_lng}&max_km={max_km}')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    # Check that all returned pharmacies are on_duty=true
+                    if len(data) > 0:
+                        on_duty_matches = all(
+                            item.get('on_duty') == True 
+                            for item in data
+                        )
+                        if on_duty_matches:
+                            self.log_test("Pharmacies (near_me + on_duty)", True, f"✅ 200 + {len(data)} pharmacies near Abidjan, all on_duty=true")
+                        else:
+                            non_duty = [item.get('on_duty') for item in data if item.get('on_duty') != True]
+                            self.log_test("Pharmacies (near_me + on_duty)", False, f"❌ Non-duty pharmacies in results: {non_duty}")
+                    else:
+                        self.log_test("Pharmacies (near_me + on_duty)", True, f"✅ 200 + 0 pharmacies (no on-duty pharmacies near Abidjan)")
+                else:
+                    self.log_test("Pharmacies (near_me + on_duty)", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test("Pharmacies (near_me + on_duty)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Pharmacies (near_me + on_duty)", False, f"❌ Exception: {str(e)}")
+        
+        # 5) City+on_duty combined: GET /api/pharmacies?on_duty=true&city=Abengourou → 200
+        print("\n5️⃣ TEST PHARMACIES - CITY + ON_DUTY COMBINED")
+        print("-" * 50)
+        test_city_combined = "Abengourou"
+        try:
+            response = self.make_request('GET', f'/pharmacies?on_duty=true&city={test_city_combined}')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        # Check both city and on_duty filters
+                        city_and_duty_matches = all(
+                            item.get('city', '').lower() == test_city_combined.lower() and 
+                            item.get('on_duty') == True
+                            for item in data
+                        )
+                        if city_and_duty_matches:
+                            self.log_test(f"Pharmacies (city={test_city_combined} + on_duty)", True, f"✅ 200 + {len(data)} pharmacies match both filters")
+                        else:
+                            mismatches = [(item.get('city'), item.get('on_duty')) for item in data 
+                                        if not (item.get('city', '').lower() == test_city_combined.lower() and item.get('on_duty') == True)]
+                            self.log_test(f"Pharmacies (city={test_city_combined} + on_duty)", False, f"❌ Filter mismatches: {mismatches}")
+                    else:
+                        self.log_test(f"Pharmacies (city={test_city_combined} + on_duty)", True, f"✅ 200 + 0 pharmacies (no on-duty pharmacies in {test_city_combined})")
+                else:
+                    self.log_test(f"Pharmacies (city={test_city_combined} + on_duty)", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test(f"Pharmacies (city={test_city_combined} + on_duty)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test(f"Pharmacies (city={test_city_combined} + on_duty)", False, f"❌ Exception: {str(e)}")
+
+    def test_quick_regression_suite(self):
+        """Quick regression tests on previously validated endpoints"""
+        print("\n" + "=" * 80)
+        print("🔄 QUICK REGRESSION SUITE")
+        print("=" * 80)
+        
+        # Create a test user first for regression tests
+        test_user_id = None
+        try:
+            user_data = {
+                "first_name": "Regression",
+                "last_name": "Tester",
+                "phone": "+225 07 99 88 77 66",
+                "email": "regression.test@example.ci",
+                "preferred_lang": "fr",
+                "accept_terms": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                user = response.json()
+                test_user_id = user.get('id')
+                self.log_test("Regression: Create test user", True, f"User created: {test_user_id}")
+            else:
+                self.log_test("Regression: Create test user", False, f"Status: {response.status_code}")
+                return
+        except Exception as e:
+            self.log_test("Regression: Create test user", False, f"Exception: {str(e)}")
+            return
+        
+        # 1) GET /api/alerts/unread_count?user_id=test-user
+        print("\n1️⃣ REGRESSION: ALERTS UNREAD COUNT")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', f'/alerts/unread_count?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int):
+                    self.log_test("Regression: Alerts unread count", True, f"✅ 200 + count: {data['count']}")
+                else:
+                    self.log_test("Regression: Alerts unread count", False, f"❌ Invalid response format: {data}")
+            else:
+                self.log_test("Regression: Alerts unread count", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Regression: Alerts unread count", False, f"❌ Exception: {str(e)}")
+        
+        # 2) PATCH /api/users/<id> (update phone/email/city)
+        print("\n2️⃣ REGRESSION: USER UPDATE")
+        print("-" * 50)
+        try:
+            update_data = {
+                "phone": "+225 05 44 33 22 11",
+                "email": "regression.updated@example.ci",
+                "city": "Bouaké"
+            }
+            response = self.make_request('PATCH', f'/users/{test_user_id}', json=update_data)
+            if response.status_code == 200:
+                data = response.json()
+                if (data.get('phone') == update_data['phone'] and 
+                    data.get('email') == update_data['email'] and 
+                    data.get('city') == update_data['city']):
+                    self.log_test("Regression: User update", True, f"✅ 200 + fields updated correctly")
+                else:
+                    self.log_test("Regression: User update", False, f"❌ Fields not updated: {data}")
+            else:
+                self.log_test("Regression: User update", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Regression: User update", False, f"❌ Exception: {str(e)}")
+        
+        # 3) GET /api/subscriptions/check?user_id=<id>
+        print("\n3️⃣ REGRESSION: SUBSCRIPTION CHECK")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', f'/subscriptions/check?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'is_premium' in data:
+                    self.log_test("Regression: Subscription check", True, f"✅ 200 + is_premium: {data['is_premium']}, expires_at: {data.get('expires_at')}")
+                else:
+                    self.log_test("Regression: Subscription check", False, f"❌ Missing is_premium: {data}")
+            else:
+                self.log_test("Regression: Subscription check", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Regression: Subscription check", False, f"❌ Exception: {str(e)}")
+        
+        # 4) POST /api/payments/cinetpay/initiate
+        print("\n4️⃣ REGRESSION: CINETPAY INITIATE")
+        print("-" * 50)
+        try:
+            payment_data = {
+                "user_id": test_user_id,
+                "amount_fcfa": 1200
+            }
+            response = self.make_request('POST', '/payments/cinetpay/initiate', json=payment_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'payment_url' in data and 'transaction_id' in data:
+                    self.log_test("Regression: CinetPay initiate", True, f"✅ 200 + payment_url and transaction_id present")
+                else:
+                    self.log_test("Regression: CinetPay initiate", False, f"❌ Missing payment_url or transaction_id: {data}")
+            else:
+                self.log_test("Regression: CinetPay initiate", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Regression: CinetPay initiate", False, f"❌ Exception: {str(e)}")
+
+    def run_pharmacies_and_regression_tests(self):
+        """Run pharmacies filtering tests plus quick regression (Review Request)"""
+        print(f"🏥 PHARMACIES FILTERING + QUICK REGRESSION TESTS")
+        print(f"Base URL: {self.base_url}")
+        print("=" * 80)
+        
+        # Run pharmacies filtering tests
+        self.test_pharmacies_filtering_comprehensive()
+        
+        # Run quick regression tests
+        self.test_quick_regression_suite()
+        
+        # Summary
+        print("\n" + "=" * 80)
+        print("📊 PHARMACIES & REGRESSION TEST SUMMARY")
+        print("=" * 80)
+        
+        passed = sum(1 for result in self.test_results if result['success'])
+        total = len(self.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        
+        if passed < total:
+            print("\n❌ FAILED TESTS:")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['details']}")
+        else:
+            print("\n✅ ALL TESTS PASSED!")
+        
+        return passed == total
+
     def run_retex_backend_tests(self):
         """Run RETEX Backend tests only (Review Request)"""
         print(f"🔍 RETEX BACKEND COMPLET - VALIDATION DES APIs CLÉS")
