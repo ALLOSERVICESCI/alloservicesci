@@ -5,12 +5,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../../src/context/AuthContext';
 import { useRouter } from 'expo-router';
 import { useI18n } from '../../src/i18n/i18n';
+import { CI_CITIES } from '../../src/utils/cities';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
-
-const CI_CITIES = [
-  'Abengourou','Abidjan','Aboisso','Agboville','Anyama','Bangolo','Bingerville','Bondoukou','Bouaké','Boundiali','Daloa','Danané','Dimbokro','Divo','Ferkessédougou','Gagnoa','Issia','Korhogo','Lakota','Man','Mankono','Odienné','Sassandra','San-Pédro','Séguéla','Sinfra','Soubré','Tabou','Toumodi','Yamoussoukro'
-];
 
 export default function ProfileEdit() {
   const { user, updateProfile } = useAuth();
@@ -63,7 +60,8 @@ export default function ProfileEdit() {
     try {
       await updateProfile({ city, email, phone, avatar });
       Alert.alert(t('saved'), t('profileUpdated'));
-      router.back();
+      const routerBack = router.back as unknown as (() => void) | undefined;
+      if (routerBack) routerBack();
     } catch (e: any) {
       Alert.alert(t('error'), e?.message || 'Update failed');
     } finally {

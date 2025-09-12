@@ -3,13 +3,10 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, Ima
 import * as Location from 'expo-location';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
+import { CI_CITIES } from '../../src/utils/cities';
 
 const HEADER_IMG = require('../../assets/headers/pharmacies_header.png');
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-const CI_CITIES = [
-  'Abengourou','Abidjan','Aboisso','Agboville','Anyama','Bangolo','Bingerville','Bondoukou','Bouaké','Boundiali','Daloa','Danané','Dimbokro','Divo','Ferkessédougou','Gagnoa','Issia','Korhogo','Lakota','Man','Mankono','Odienné','Sassandra','San-Pédro','Séguéla','Sinfra','Soubré','Tabou','Toumodi','Yamoussoukro'
-];
 
 export default function Pharmacies() {
   const [items, setItems] = useState<any[]>([]);
@@ -18,7 +15,6 @@ export default function Pharmacies() {
   const [onDuty, setOnDuty] = useState(false);
   const [nearMe, setNearMe] = useState(false);
   const [city, setCity] = useState<string>('');
-  const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const { t } = useI18n();
@@ -74,14 +70,23 @@ export default function Pharmacies() {
   // initial load: all pharmacies
   useEffect(() => { load(); }, []);
 
-  // Auto-enable onDuty when nearMe is toggled on
-  useEffect(() => { if (nearMe && !onDuty) setOnDuty(true); }, [nearMe]);
+  // Auto-enable onDuty when nearMe is toggled on and reset city/query when enabling nearMe
+  useEffect(() => {
+    if (nearMe && !onDuty) setOnDuty(true);
+    if (nearMe) { setCity(''); setQuery(''); }
+  }, [nearMe]);
 
   const toggleOnDuty = () => { setOnDuty((v) => !v); };
   const toggleNearMe = () => { setNearMe((v) => !v); };
 
+  const onSelectSuggestion = async (name: string) => {
+    setCity(name);
+    setQuery(name);
+    await load();
+  };
+
   const CityButton = ({ name }: { name: string }) => (
-    <TouchableOpacity onPress={() => { setCity(name); setOpen(false); }} style={[styles.cityItem, city === name && styles.cityItemActive]}>
+    <TouchableOpacity onPress={() => onSelectSuggestion(name)} style={[styles.cityItem, city === name && styles.cityItemActive]}>
       <Text style={[styles.cityText, city === name && styles.cityTextActive]}>{name}</Text>
     </TouchableOpacity>
   );
@@ -108,27 +113,38 @@ export default function Pharmacies() {
           </TouchableOpacity>
         </View>
 
-        {/* Sélecteur de ville */}
-        <View style={styles.selectBlock}>
+        {/* Barre de recherche ville */}
+        <View style={styles.searchBlock}>
           <Text style={styles.selectLabel}>{t('city')}</Text>
-          <TouchableOpacity disabled={nearMe} style={[styles.select, nearMe && styles.selectDisabled]} onPress={() => setOpen((v) => !v)}>
-            <Text style={[styles.selectText, !city && styles.placeholderText]}>{city || t('selectCity')}</Text>
-            <Text style={styles.chev}>▾</Text>
-          </TouchableOpacity>
-          {open && !nearMe && (
-            <View style={styles.dropdown}>
-              <View style={styles.searchWrap}>
-                <TextInput
-                  value={query}
-                  onChangeText={setQuery}
-                  placeholder={t('searchCity')}
-                  style={styles.searchInput}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
+          <View style={[styles.searchRow, nearMe && styles.searchRowDisabled]}
+            pointerEvents={nearMe ? 'none' : 'auto'}>
+            <TextInput
+              value={query}
+              onChangeText={setQuery}
+              placeholder={t('searchCity')}
+              style={styles.searchInputFlex}
+              autoCapitalize="none"
+              autoCorrect={false}
+              editable={!nearMe}
+              returnKeyType="search"
+              onSubmitEditing={() => {
+                // If user presses enter, try to apply first suggestion
+                if (!nearMe && filteredCities[0]) onSelectSuggestion(filteredCities[0]);
+              }}
+            />
+            {(!!query || !!city) && (
+              <TouchableOpacity onPress={() => { setQuery(''); setCity(''); }} style={styles.clearBtn}>
+                <Text style={styles.clearBtnText}>{t('clear') || 'Effacer'}</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+          {!nearMe && query.length > 0 && (
+            <View style={styles.dropdown}> 
               <View style={{ maxHeight: 220 }}>
                 {filteredCities.map((c) => (<CityButton key={c} name={c} />))}
+                {filteredCities.length === 0 && (
+                  <View style={styles.noResult}><Text style={styles.noResultText}>{t('notAvailable')}</Text></View>
+                )}
               </View>
             </View>
           )}
@@ -170,20 +186,21 @@ const styles = StyleSheet.create({
   toggleText: { color: '#0A7C3A', fontWeight: '700' },
   toggleTextOn: { color: '#fff' },
 
-  selectBlock: { marginTop: 10 },
+  searchBlock: { marginTop: 10 },
   selectLabel: { color: '#0A7C3A', fontWeight: '700', marginBottom: 6 },
-  select: { minWidth: 200, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, backgroundColor: '#FAFAF8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  selectDisabled: { backgroundColor: '#F0F0F0' },
-  selectText: { color: '#0A7C3A', fontWeight: '600' },
-  placeholderText: { color: '#999' },
-  chev: { color: '#0A7C3A', marginLeft: 8 },
-  dropdown: { marginTop: 6, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#fff', width: 260 },
-  searchWrap: { paddingHorizontal: 10, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#F0F3F0' },
-  searchInput: { height: 36, paddingHorizontal: 8, color: '#0A7C3A' },
+  searchRow: { minHeight: 44, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, paddingHorizontal: 8, backgroundColor: '#FAFAF8', flexDirection: 'row', alignItems: 'center' },
+  searchRowDisabled: { backgroundColor: '#F0F0F0' },
+  searchInputFlex: { flex: 1, height: 40, paddingHorizontal: 8, color: '#0A7C3A' },
+  clearBtn: { paddingHorizontal: 10, paddingVertical: 6, alignSelf: 'center' },
+  clearBtnText: { color: '#0A7C3A', fontWeight: '700' },
+
+  dropdown: { marginTop: 6, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#fff' },
   cityItem: { paddingVertical: 10, paddingHorizontal: 12, borderBottomWidth: 1, borderBottomColor: '#F0F3F0' },
   cityItemActive: { backgroundColor: '#F3F7F5' },
   cityText: { color: '#0A7C3A' },
   cityTextActive: { color: '#0A7C3A', fontWeight: '800' },
+  noResult: { paddingVertical: 12, paddingHorizontal: 12 },
+  noResultText: { color: '#666' },
 
   btn: { backgroundColor: '#0A7C3A', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 12 },
   btnText: { color: '#fff', fontWeight: '700' },
