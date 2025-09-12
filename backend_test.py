@@ -1668,6 +1668,9 @@ if __name__ == "__main__":
             success = tester.run_retex_backend_tests()
         elif sys.argv[1] == "--pharmacies-regression":
             success = tester.run_pharmacies_and_regression_tests()
+        elif sys.argv[1] == "--dynamic-on-duty":
+            tester.test_dynamic_on_duty_pharmacies()
+            success = True
         else:
             success = tester.run_all_tests()
     else:
