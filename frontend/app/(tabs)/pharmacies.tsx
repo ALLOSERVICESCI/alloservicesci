@@ -169,8 +169,8 @@ export default function Pharmacies() {
               </TouchableOpacity>
             )}
           </View>
-          {!nearMe && query.length > 0 && (
-            <View style={styles.dropdown}> 
+          {!nearMe && showSuggestions && query.length > 0 && (
+            <View style={styles.dropdown}>
               <View style={{ maxHeight: 220 }}>
                 {filteredCities.map((c) => (<CityButton key={c} name={c} />))}
                 {filteredCities.length === 0 && (
