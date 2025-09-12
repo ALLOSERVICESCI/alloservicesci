@@ -40,7 +40,7 @@ const dicts: Record<Lang, Dict> = {
     activeUntil: "actif jusqu'au", inactive: 'inactif', language: 'Langue', actions: 'Actions', logout: 'Se déconnecter',
     becomePremium: 'Devenir Premium',
     needAccount: 'Vous devez créer un compte', city: 'Ville', save: 'Sauvegarder', saved: 'Sauvegardé', profileUpdated: 'Profil mis à jour',
-    select: 'Sélectionner', searchCity: 'Rechercher une ville', refresh: 'Actualiser', locationDenied: 'Autorisation de localisation refusée',
+    select: 'Sélectionner', searchCity: 'Rechercher une ville', clear: 'Effacer', refresh: 'Actualiser', locationDenied: 'Autorisation de localisation refusée',
     clearHistory: 'Effacer l’historique', noNotifications: 'Aucune notification', noTitle: 'Sans titre', remove: 'Supprimer',
     date: 'Date', provider: 'Fournisseur', open: 'Ouvrir', share: 'Partager', onlyPaid: 'Seulement les paiements acceptés',
     noPayments: 'Aucun paiement', noPaidPayments: 'Aucun paiement accepté', status_ACCEPTED: 'Accepté', status_REFUSED: 'Refusé', status_PENDING: 'En attente',
