@@ -58,6 +58,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Pharmacies Filtering Test - All filtering endpoints working perfectly. 1) No filters: 200 + 4 pharmacies with correct JSON shape (id, name, address, city). 2) City filter (Grand-Bassam): 200 + 0 results (no data). 3) City filter (Abidjan): 200 + 4 results, all match city. 4) on_duty filter: 200 + 0 results (data model uses duty_days instead of on_duty field). 5) Near-me filter: 200 + 4 results near Abidjan coords. 6) Combined filters work correctly. Data model inconsistency noted: database has duty_days array but API expects on_duty boolean."
+      - working: true
+        agent: "testing"
+        comment: "✅ DYNAMIC ON_DUTY BACKEND TEST - Re-run after backend change: dynamic on_duty based on duty_days. All tests PASSED: 1) Baseline: 200 + 4 pharmacies, all have on_duty boolean field (3 on_duty=true). 2) City filter (Abengourou): 200 + 0 results (no data). 3) on_duty=true filter: 200 + 3 pharmacies, all on_duty=true (computed from duty_days). 4) near_me + on_duty (Abidjan coords): 200 + 2 pharmacies, subset validation passed. 5) city + on_duty (Abidjan): 200 + 3 pharmacies, all match filters. 6) on_duty field consistency: All pharmacies have consistent boolean field. 7) Regression alerts unread_count: 200 + count=15. Dynamic computation working: 3 pharmacies on duty today (weekday 4 matches duty_days). No 5xx errors detected."
 
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
