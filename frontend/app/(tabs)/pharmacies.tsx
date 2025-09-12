@@ -99,15 +99,15 @@ export default function Pharmacies() {
       <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
         <View pointerEvents="none" style={styles.headerOverlay} />
         <View style={styles.titleWrap}>
-          <View style={styles.headerRow} testID="pharmaciesHeaderRow">
-            <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
+          <View style={styles.headerRow} testID="pharmaciesHeaderRow" dataSet={{ testid: 'pharmaciesHeaderRow' }}>
+            <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle" dataSet={{ testid: 'pharmaciesHeaderTitle' }} accessibilityLabel="Pharmacies" nativeID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
             {(nearMe || (city && !nearMe)) && (
               <>
-                <Text style={styles.headerDot} testID="headerDot"> • </Text>
+                <Text style={styles.headerDot} testID="headerDot" dataSet={{ testid: 'headerDot' }}> • </Text>
                 {nearMe ? (
-                  <Text style={styles.nearHeader} testID="nearHeaderLabel">{t('nearMe')}</Text>
+                  <Text style={styles.nearHeader} testID="nearHeaderLabel" dataSet={{ testid: 'nearHeaderLabel' }} accessibilityLabel="Autour de moi" nativeID="nearHeaderLabel">{t('nearMe')}</Text>
                 ) : (
-                  <Text style={styles.cityHeader} testID="cityHeaderLabel">{city}</Text>
+                  <Text style={styles.cityHeader} testID="cityHeaderLabel" dataSet={{ testid: 'cityHeaderLabel' }} accessibilityLabel={city} nativeID="cityHeaderLabel">{city}</Text>
                 )}
               </>
             )}
