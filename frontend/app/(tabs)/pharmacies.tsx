@@ -79,7 +79,7 @@ export default function Pharmacies() {
   }, [nearMe]);
 
   const toggleOnDuty = () => { setOnDuty((v) => !v); };
-  const toggleNearMe = () => { setNearMe((v) => !v); };
+  const toggleNearMe = () => { setNearMe((v) => { const next = !v; if (next) { setCity(''); setQuery(''); setShowSuggestions(false);} return next; }); };
 
   const onSelectSuggestion = async (name: string) => {
     setCity(name);
