@@ -127,7 +127,7 @@ frontend:
     implemented: true
     working: false
     file: "frontend/app/(tabs)/pharmacies.tsx"
-    stuck_count: 2
+    stuck_count: 3
     priority: "high"
     needs_retesting: false
     status_history:
@@ -140,6 +140,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ TESTID IMPROVEMENTS RE-TEST FAILED - PERSISTENT CRITICAL ISSUES: 1) ALL TESTIDS STILL MISSING: pharmaciesHeaderTitle, cityHeaderLabel, nearHeaderLabel, headerDot not found in DOM despite code having testID + dataSet + nativeID attributes, 2) DYNAMIC HEADER BROKEN: No 'Pharmacies • Near Me/City' format rendering after toggles, 3) FILTER CHIPS NOT RENDERING: 0 chips found when Near Me/De Garde activated, 4) CITY SUGGESTIONS TESTID MISSING: citySuggestions not found, 5) ✅ SEARCH INPUT WORKS: Correctly disabled with gray background (#F0F0F0) when Near Me ON, 6) ✅ BASIC FUNCTIONALITY: Page loads, toggles clickable, data displays. ROOT CAUSE: React Native Web testID conversion failing, conditional rendering logic broken for header/chips components. VIEWPORT: iPhone 12/13/14 (390x844). Code analysis shows testID attributes present but not converting to DOM data-testid."
+      - working: false
+        agent: "testing"
+        comment: "❌ FALLBACK TEXT DETECTION RE-TEST FAILED - CRITICAL UI ISSUES PERSIST (iPhone 12/13/14: 390x844): 1) DYNAMIC HEADER COMPLETELY BROKEN: No 'Pharmacies • Autour de moi' or 'Pharmacies • City' format rendering - header detection returns massive CSS content instead of text, 2) COLOR SCHEME BROKEN: 0 blue elements (#0D6EFD) and 0 orange elements (#FF8A00) found - expected colors not applied, 3) FILTER CHIPS WRONG COLORS: Visible green chips instead of expected blue (#E3F2FD/#0D6EFD) for Near Me and green (#E6F4EA/#0A7C3A) for De Garde, 4) ✅ CORE FUNCTIONALITY WORKS: Search input correctly disabled when Near Me ON, city suggestions work (Grand-Bassam appears), Enter key selects first suggestion, toggles respond, pharmacy data displays. ROOT CAUSE: Conditional rendering for dynamic header failing, CSS color classes not applied correctly, React Native Web styling issues. This task is STUCK - needs websearch for React Native Web conditional rendering and styling solutions."
 
 metadata:
   created_by: "main_agent"
