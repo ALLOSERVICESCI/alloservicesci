@@ -37,7 +37,7 @@ export default function Pharmacies() {
   return (
     <View style={styles.container}>
       <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
-        {/* Ombre dégradée du bas vers le haut (sans overlay opaque) */}
+        {/* Overlay rétabli pour lisibilité */}
         <View pointerEvents="none" style={styles.headerOverlay} />
         <View style={styles.titleWrap}>
           <Text style={styles.headerTitle}>{t('tabPharm')}</Text>
