@@ -121,13 +121,13 @@ export default function Pharmacies() {
       {(nearMe || onDuty) && (
         <View style={styles.activeFiltersRow}>
           {nearMe && (
-            <View style={[styles.chip, styles.chipNear]}>
+            <View style={[styles.chip, styles.chipNear]} accessible accessibilityLabel="chipNear">
               <Ionicons name="location-outline" size={14} color="#0D6EFD" style={{ marginRight: 6 }} />
               <Text style={styles.chipTextNear}>{t('nearMe')}</Text>
             </View>
           )}
           {onDuty && (
-            <View style={[styles.chip, styles.chipOnDuty]}>
+            <View style={[styles.chip, styles.chipOnDuty]} accessible accessibilityLabel="chipOnDuty">
               <Ionicons name="medkit-outline" size={14} color="#0A7C3A" style={{ marginRight: 6 }} />
               <Text style={styles.chipTextOn}>{t('onDutyShort') || 'De Garde'}</Text>
             </View>
