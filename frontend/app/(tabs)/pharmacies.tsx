@@ -215,9 +215,9 @@ const styles = StyleSheet.create({
   titleWrap: { paddingHorizontal: 16, paddingBottom: 12, alignItems: 'flex-start' },
   headerRow: { flexDirection: 'row', alignItems: 'center' },
   headerTitle: { color: '#fff', fontWeight: '800', fontSize: 26, textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-  headerDot: { color: '#fff', fontSize: 20, fontWeight: '600' },
-  nearHeader: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  cityHeader: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  headerDot: { color: '#fff', fontSize: 20, fontWeight: '600', marginHorizontal: 6 },
+  nearHeader: { color: '#0D6EFD', fontSize: 16, fontWeight: '700' },
+  cityHeader: { color: '#FF8A00', fontSize: 16, fontWeight: '700' },
 
   filters: { paddingHorizontal: 16, paddingTop: 12 },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between' },
