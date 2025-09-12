@@ -105,6 +105,22 @@ export default function Pharmacies() {
       </ImageBackground>
 
       {/* Filtres */}
+
+      {/* Filtres actifs (badges) */}
+      {(nearMe || (city && !nearMe) || onDuty) && (
+        <View style={styles.activeFiltersRow}>
+          {onDuty && (
+            <Text style={[styles.chip, styles.chipOnDuty]}>{t('onDuty')}</Text>
+          )}
+          {nearMe && (
+            <Text style={[styles.chip, styles.chipNear]}>{t('nearMe')}</Text>
+          )}
+          {city && !nearMe && (
+            <Text style={[styles.chip, styles.chipCity]}>{t('city')}: {city}</Text>
+          )}
+        </View>
+      )}
+
       <View style={styles.filters}>
         <View style={styles.rowBetween}>
           <TouchableOpacity onPress={toggleOnDuty} style={[styles.toggle, onDuty && styles.toggleOn]}
