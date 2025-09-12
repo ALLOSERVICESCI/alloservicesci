@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import * as Location from 'expo-location';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
-import NavMenu from '../../src/components/NavMenu';
+
+const HEADER_IMG = { uri: 'https://customer-assets.emergentagent.com/job_service-ci/artifacts/0j8nosbz_background_pharma.png' };
 
 export default function Pharmacies() {
   const [data, setData] = useState<any[]>([]);
@@ -35,26 +36,36 @@ export default function Pharmacies() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.brandBar}><Text style={styles.brand}>{t('brand')}</Text></View>
-      {error && <Text style={styles.error}>{error}</Text>}
-      {loading && <ActivityIndicator />}
-      {data.map((p) => (
-        <View key={p.id} style={styles.card}>
-          <Text style={styles.title}>{p.name}</Text>
-          <Text style={styles.meta}>{p.address} • {p.city}</Text>
-          <Text style={styles.meta}>{p.phone}</Text>
-        </View>
-      ))}
-      <TouchableOpacity onPress={askPermissionAndFetch} style={styles.btn}><Text style={styles.btnText}>{t('refresh')}</Text></TouchableOpacity>
+      <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
+        <View style={styles.headerOverlay} />
+        <Text style={styles.headerBrand}>{t('brand')}</Text>
+        <Text style={styles.headerTitle}>{t('tabPharm')}</Text>
+      </ImageBackground>
 
+      <View style={styles.content}>
+        {error && <Text style={styles.error}>{error}</Text>}
+        {loading && <ActivityIndicator />}
+        {data.map((p) => (
+          <View key={p.id} style={styles.card}>
+            <Text style={styles.title}>{p.name}</Text>
+            <Text style={styles.meta}>{p.address} • {p.city}</Text>
+            <Text style={styles.meta}>{p.phone}</Text>
+          </View>
+        ))}
+        <TouchableOpacity onPress={askPermissionAndFetch} style={styles.btn}><Text style={styles.btnText}>{t('refresh')}</Text></TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  brandBar: { paddingTop: 4, paddingBottom: 8 },
-  brand: { fontSize: 20, fontWeight: '800', color: '#0A7C3A' },
+  container: { flex: 1, backgroundColor: '#fff' },
+  header: { height: 180, alignItems: 'center', justifyContent: 'center' },
+  headerImg: { resizeMode: 'cover' },
+  headerOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.25)' },
+  headerBrand: { color: '#fff', fontWeight: '800', fontSize: 16 },
+  headerTitle: { color: '#fff', fontWeight: '800', fontSize: 24, marginTop: 4 },
+  content: { flex: 1, padding: 16 },
   error: { color: '#B00020', marginBottom: 8 },
   card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E8F0E8' },
   title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A' },
