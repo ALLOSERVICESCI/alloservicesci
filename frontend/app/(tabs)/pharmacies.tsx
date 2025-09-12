@@ -22,8 +22,6 @@ export default function Pharmacies() {
   const sortedCities = useMemo(() => CI_CITIES.slice().sort((a,b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })), []);
   const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const filteredCities = useMemo(() => {
-  const clearText = t('clear');
-
     const q = normalize(query);
     if (!q) return sortedCities;
     return sortedCities.filter((c) => normalize(c).includes(q));
