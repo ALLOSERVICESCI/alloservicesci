@@ -154,7 +154,8 @@ export default function Pharmacies() {
             pointerEvents={nearMe ? 'none' : 'auto'}>
             <TextInput
               value={query}
-              onChangeText={setQuery}
+              onChangeText={(txt) => { setQuery(txt); setShowSuggestions(true); }}
+              onFocus={() => setShowSuggestions(true)}
               placeholder={t('searchCity')}
               style={styles.searchInputFlex}
               autoCapitalize="none"
@@ -164,6 +165,7 @@ export default function Pharmacies() {
               onSubmitEditing={() => {
                 // If user presses enter, try to apply first suggestion
                 if (!nearMe && filteredCities[0]) onSelectSuggestion(filteredCities[0]);
+                setShowSuggestions(false);
               }}
             />
             {(!!query || !!city) && (
