@@ -61,9 +61,11 @@ export default function Pharmacies() {
 }
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  header: { height: 200, justifyContent: 'flex-end' },
+  header: { height: Math.min(240, Math.max(180, SCREEN_WIDTH * 0.42)), justifyContent: 'flex-end' },
+  headerImg: { resizeMode: 'cover' },
   headerImg: { resizeMode: 'cover' },
   // léger ombre dégradé du bas vers le haut
   headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 90, backgroundColor: 'rgba(0,0,0,0.0)' },
