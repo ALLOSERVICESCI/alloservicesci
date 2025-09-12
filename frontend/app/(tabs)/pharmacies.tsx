@@ -99,15 +99,15 @@ export default function Pharmacies() {
       <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
         <View pointerEvents="none" style={styles.headerOverlay} />
         <View style={styles.titleWrap}>
-          <View style={styles.headerRow}>
-            <Text style={styles.headerTitle}>{t('tabPharm')}</Text>
+          <View style={styles.headerRow} testID="pharmaciesHeaderRow">
+            <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
             {(nearMe || (city && !nearMe)) && (
               <>
-                <Text style={styles.headerDot}> • </Text>
+                <Text style={styles.headerDot} testID="headerDot"> • </Text>
                 {nearMe ? (
-                  <Text style={styles.nearHeader}>{t('nearMe')}</Text>
+                  <Text style={styles.nearHeader} testID="nearHeaderLabel">{t('nearMe')}</Text>
                 ) : (
-                  <Text style={styles.cityHeader}>{city}</Text>
+                  <Text style={styles.cityHeader} testID="cityHeaderLabel">{city}</Text>
                 )}
               </>
             )}
