@@ -1438,6 +1438,223 @@ class BackendTester:
         
         return passed == total
 
+    def test_dynamic_on_duty_pharmacies(self):
+        """Test dynamic on_duty computation based on duty_days - Review Request Focus"""
+        print("\n" + "=" * 80)
+        print("🏥 DYNAMIC ON_DUTY PHARMACIES TESTS (Review Request)")
+        print("=" * 80)
+        
+        from datetime import datetime
+        today_weekday = datetime.utcnow().weekday()  # Monday=0 to Sunday=6
+        print(f"Today's weekday: {today_weekday} (Monday=0, Sunday=6)")
+        
+        # Scope A: Pharmacies endpoint tests
+        print("\n📋 SCOPE A: PHARMACIES ENDPOINT BEHAVIOR")
+        print("-" * 60)
+        
+        # 1) Baseline: GET /api/pharmacies → 200 array
+        print("\n1️⃣ BASELINE: GET /api/pharmacies")
+        baseline_pharmacies = []
+        try:
+            response = self.make_request('GET', '/pharmacies')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    baseline_pharmacies = data
+                    self.log_test("Baseline pharmacies", True, f"✅ 200 + array with {len(data)} pharmacies")
+                    
+                    # Validate each item contains on_duty boolean now (computed)
+                    if len(data) > 0:
+                        all_have_on_duty = all('on_duty' in item and isinstance(item['on_duty'], bool) for item in data)
+                        if all_have_on_duty:
+                            on_duty_count = sum(1 for item in data if item['on_duty'])
+                            self.log_test("on_duty field presence", True, f"✅ All {len(data)} pharmacies have on_duty boolean field. {on_duty_count} are on_duty=true")
+                        else:
+                            missing_on_duty = [i for i, item in enumerate(data) if 'on_duty' not in item or not isinstance(item['on_duty'], bool)]
+                            self.log_test("on_duty field presence", False, f"❌ Missing/invalid on_duty field in items: {missing_on_duty}")
+                else:
+                    self.log_test("Baseline pharmacies", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test("Baseline pharmacies", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Baseline pharmacies", False, f"❌ Exception: {str(e)}")
+        
+        # 2) city=Abengourou → 200; validate city matches
+        print("\n2️⃣ CITY FILTER: city=Abengourou")
+        try:
+            response = self.make_request('GET', '/pharmacies?city=Abengourou')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        city_matches = all(item.get('city', '').lower() == 'abengourou' for item in data)
+                        if city_matches:
+                            self.log_test("City filter (Abengourou)", True, f"✅ 200 + {len(data)} pharmacies, all match city=Abengourou")
+                        else:
+                            mismatches = [item.get('city') for item in data if item.get('city', '').lower() != 'abengourou']
+                            self.log_test("City filter (Abengourou)", False, f"❌ City mismatches: {set(mismatches)}")
+                    else:
+                        self.log_test("City filter (Abengourou)", True, f"✅ 200 + 0 pharmacies (no data for Abengourou)")
+                else:
+                    self.log_test("City filter (Abengourou)", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test("City filter (Abengourou)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("City filter (Abengourou)", False, f"❌ Exception: {str(e)}")
+        
+        # 3) on_duty=true → 200; expect non-zero if dataset has any duty_days containing today
+        print("\n3️⃣ ON_DUTY FILTER: on_duty=true")
+        on_duty_pharmacies = []
+        try:
+            response = self.make_request('GET', '/pharmacies?on_duty=true')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    on_duty_pharmacies = data
+                    # All returned pharmacies should have on_duty=true
+                    all_on_duty = all(item.get('on_duty') == True for item in data)
+                    if all_on_duty:
+                        self.log_test("on_duty filter", True, f"✅ 200 + {len(data)} pharmacies, all on_duty=true (computed from duty_days)")
+                        
+                        # Log data limitation if no on-duty pharmacies found
+                        if len(data) == 0:
+                            print(f"   📝 Data limitation: No pharmacies have duty_days containing today's weekday ({today_weekday})")
+                    else:
+                        non_duty = [item.get('on_duty') for item in data if item.get('on_duty') != True]
+                        self.log_test("on_duty filter", False, f"❌ Non-duty pharmacies in results: {non_duty}")
+                else:
+                    self.log_test("on_duty filter", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test("on_duty filter", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("on_duty filter", False, f"❌ Exception: {str(e)}")
+        
+        # 4) near_me + on_duty: GET /api/pharmacies?on_duty=true&near_lat=5.316667&near_lng=-4.016667&max_km=5
+        print("\n4️⃣ COMBINED FILTER: near_me + on_duty (Abidjan coords)")
+        try:
+            response = self.make_request('GET', '/pharmacies?on_duty=true&near_lat=5.316667&near_lng=-4.016667&max_km=5')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    # Should be subset of on-duty pharmacies
+                    all_on_duty = all(item.get('on_duty') == True for item in data)
+                    if all_on_duty:
+                        self.log_test("near_me + on_duty", True, f"✅ 200 + {len(data)} pharmacies near Abidjan, all on_duty=true")
+                        
+                        # Verify it's a subset of the on_duty results
+                        if len(data) <= len(on_duty_pharmacies):
+                            print(f"   📊 Subset validation: {len(data)} near Abidjan ≤ {len(on_duty_pharmacies)} total on-duty")
+                        else:
+                            print(f"   ⚠️  Unexpected: {len(data)} near results > {len(on_duty_pharmacies)} total on-duty")
+                    else:
+                        non_duty = [item.get('on_duty') for item in data if item.get('on_duty') != True]
+                        self.log_test("near_me + on_duty", False, f"❌ Non-duty pharmacies in results: {non_duty}")
+                else:
+                    self.log_test("near_me + on_duty", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test("near_me + on_duty", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("near_me + on_duty", False, f"❌ Exception: {str(e)}")
+        
+        # 5) city + on_duty: GET /api/pharmacies?on_duty=true&city=Abidjan
+        print("\n5️⃣ COMBINED FILTER: city + on_duty (Abidjan)")
+        try:
+            response = self.make_request('GET', '/pharmacies?on_duty=true&city=Abidjan')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    # All items should have city=Abidjan and on_duty=true
+                    city_and_duty_matches = all(
+                        item.get('city', '').lower() == 'abidjan' and 
+                        item.get('on_duty') == True
+                        for item in data
+                    )
+                    if city_and_duty_matches:
+                        self.log_test("city + on_duty (Abidjan)", True, f"✅ 200 + {len(data)} pharmacies, all city=Abidjan and on_duty=true")
+                    else:
+                        mismatches = [(item.get('city'), item.get('on_duty')) for item in data 
+                                    if not (item.get('city', '').lower() == 'abidjan' and item.get('on_duty') == True)]
+                        self.log_test("city + on_duty (Abidjan)", False, f"❌ Filter mismatches: {mismatches}")
+                else:
+                    self.log_test("city + on_duty (Abidjan)", False, f"❌ Expected array, got {type(data)}")
+            else:
+                self.log_test("city + on_duty (Abidjan)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("city + on_duty (Abidjan)", False, f"❌ Exception: {str(e)}")
+        
+        # 6) Validate on_duty field consistency across all requests
+        print("\n6️⃣ ON_DUTY FIELD CONSISTENCY CHECK")
+        try:
+            # Get all pharmacies again and verify on_duty field is always present
+            response = self.make_request('GET', '/pharmacies')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list) and len(data) > 0:
+                    # Check that on_duty field is consistent and boolean
+                    consistency_issues = []
+                    for i, item in enumerate(data):
+                        if 'on_duty' not in item:
+                            consistency_issues.append(f"Item {i}: missing on_duty field")
+                        elif not isinstance(item['on_duty'], bool):
+                            consistency_issues.append(f"Item {i}: on_duty is {type(item['on_duty'])}, not bool")
+                    
+                    if not consistency_issues:
+                        on_duty_count = sum(1 for item in data if item['on_duty'])
+                        self.log_test("on_duty field consistency", True, f"✅ All {len(data)} pharmacies have consistent on_duty boolean. {on_duty_count} are on_duty=true")
+                    else:
+                        self.log_test("on_duty field consistency", False, f"❌ Consistency issues: {consistency_issues[:5]}")  # Show first 5
+                else:
+                    self.log_test("on_duty field consistency", False, f"❌ No data to check consistency")
+            else:
+                self.log_test("on_duty field consistency", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("on_duty field consistency", False, f"❌ Exception: {str(e)}")
+        
+        # Scope B: Quick regression (smoke only)
+        print("\n📋 SCOPE B: QUICK REGRESSION (SMOKE ONLY)")
+        print("-" * 60)
+        
+        # GET /api/alerts/unread_count?user_id=test-user
+        print("\n7️⃣ REGRESSION: ALERTS UNREAD COUNT")
+        try:
+            response = self.make_request('GET', '/alerts/unread_count?user_id=test-user')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int):
+                    self.log_test("Regression: alerts unread_count", True, f"✅ 200 + count: {data['count']}")
+                else:
+                    self.log_test("Regression: alerts unread_count", False, f"❌ Invalid response format: {data}")
+            else:
+                self.log_test("Regression: alerts unread_count", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("Regression: alerts unread_count", False, f"❌ Exception: {str(e)}")
+        
+        # Summary of dynamic on_duty tests
+        print("\n" + "=" * 80)
+        print("📊 DYNAMIC ON_DUTY TEST SUMMARY")
+        print("=" * 80)
+        
+        # Check if we found any on-duty pharmacies
+        total_on_duty = len(on_duty_pharmacies)
+        if total_on_duty > 0:
+            print(f"✅ Dynamic on_duty computation working: {total_on_duty} pharmacies on duty today")
+            print(f"📅 Today's weekday ({today_weekday}) matches duty_days in dataset")
+        else:
+            print(f"📝 Data limitation: No pharmacies have duty_days containing today's weekday ({today_weekday})")
+            print(f"💡 This is expected if sample data doesn't include today in any duty_days arrays")
+        
+        # Check for any 5xx errors
+        has_5xx_errors = any(
+            '5xx' in result['details'] or 'Status: 5' in result['details'] 
+            for result in self.test_results 
+            if not result['success']
+        )
+        
+        if not has_5xx_errors:
+            print("✅ No 5xx server errors detected")
+        else:
+            print("❌ 5xx server errors found - check logs")
+
 if __name__ == "__main__":
     tester = BackendTester()
     
