@@ -127,13 +127,16 @@ frontend:
     implemented: true
     working: false
     file: "frontend/app/(tabs)/pharmacies.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ COMPREHENSIVE E2E TESTING - Pharmacies screen has several UI issues: 1) Header does NOT show 'Pharmacies • Marcory' or 'Pharmacies • Autour de moi' format as expected, 2) City part NOT in orange color (#FF8A00), 3) 'Autour de moi' NOT in blue color (#0D6EFD), 4) Search input NOT disabled when Near Me is ON, 5) Filter chips appear but colors not matching expected blue/green scheme. CORE FUNCTIONALITY: ✅ City search/suggestions work, ✅ Refresh button works, ✅ Filter chips appear, ✅ Data loads correctly. ISSUES: Header styling, color scheme, input disable behavior."
+      - working: false
+        agent: "testing"
+        comment: "❌ RE-TEST WITH NEW TESTIDS - CRITICAL ISSUES FOUND: 1) TestIDs NOT RENDERING: pharmaciesHeaderTitle, cityHeaderLabel, headerDot, nearHeaderLabel all missing from DOM (0 elements found), 2) HEADER STRUCTURE BROKEN: No dynamic header content showing 'Pharmacies • City/Near Me' format, 3) FILTER CHIPS MISSING: No chips render when toggles activated (0 chip elements found), 4) ✅ SEARCH INPUT BEHAVIOR: Correctly disabled (editable=false) when Near Me ON. 5) BASIC LAYOUT WORKS: Page loads, toggles clickable, pharmacy data displays. ROOT CAUSE: TestIDs not converting to DOM attributes in React Native Web, conditional rendering failing for dynamic header/chips. VIEWPORT: iPhone 12/13/14 (390x844) tested."
 
 metadata:
   created_by: "main_agent"
