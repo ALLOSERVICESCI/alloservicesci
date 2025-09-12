@@ -98,7 +98,11 @@ export default function Pharmacies() {
       <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
         <View pointerEvents="none" style={styles.headerOverlay} />
         <View style={styles.titleWrap}>
-          <Text style={styles.headerTitle}>{t('tabPharm')}</Text>
+          <Text style={styles.headerTitle}>
+            {city && !nearMe ? (<Text style={styles.cityHeader}>{city}</Text>) : null}
+            {city && !nearMe ? ' • ' : ''}
+            {t('tabPharm')}
+          </Text>
         </View>
       </ImageBackground>
 
