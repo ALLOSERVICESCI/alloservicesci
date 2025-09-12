@@ -40,7 +40,7 @@ TEMPERATURE_DEFAULT = float(os.environ.get('AI_TEMPERATURE', '0.5'))
 MAX_TOKENS_DEFAULT = int(os.environ.get('AI_MAX_TOKENS', '1200'))
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.7.2")
+app = FastAPI(title="Allô Services CI API", version="0.7.3")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -253,7 +253,52 @@ async def cinetpay_initiate(payload: PaymentInitInput):
         logger.exception("CinetPay init error")
         raise HTTPException(status_code=500, detail=str(e))
 
+# ---------- PHARMACIES ----------
+@api.get('/pharmacies')
+async def list_pharmacies(
+    on_duty: Optional[bool] = Query(None),
+    city: Optional[str] = Query(None),
+    near_lat: Optional[float] = Query(None),
+    near_lng: Optional[float] = Query(None),
+    max_km: float = Query(5.0)
+):
+    """
+    Returns pharmacies with optional filters:
+    - on_duty: only pharmacies de garde
+    - city: exact city (case-insensitive)
+    - near_lat, near_lng, max_km: geospatial filter around a point (meters)
+    """
+    criteria: Dict[str, Any] = {}
+    if on_duty is True:
+        criteria['on_duty'] = True
+    if city:
+        criteria['city'] = { '$regex': f'^{city}$', '$options': 'i' }
+
+    # Build cursor
+    if near_lat is not None and near_lng is not None:
+        try:
+            meters = max(100.0, float(max_km) * 1000.0)
+        except Exception:
+            meters = 5000.0
+        criteria['location'] = {
+            '$near': {
+                '$geometry': { 'type': 'Point', 'coordinates': [float(near_lng), float(near_lat)] },
+                '$maxDistance': meters
+            }
+        }
+
+    cur = db.pharmacies.find(criteria).limit(300)
+    out: List[Dict[str, Any]] = []
+    async for p in cur:
+        p['id'] = str(p['_id'])
+        del p['_id']
+        out.append(p)
+    return out
+
 # ---------- ALERTS: basic CRUD + unread count + read mark ----------
+class MarkReadInput(BaseModel):
+    user_id: str
+
 @api.post('/alerts')
 async def create_alert(payload: AlertCreate):
     doc = payload.model_dump()
@@ -278,9 +323,6 @@ async def list_alerts(limit: int = 50):
             a['read_by'] = [str(obj_id) for obj_id in a['read_by']]
         out.append(a)
     return out
-
-class MarkReadInput(BaseModel):
-    user_id: str
 
 @api.patch('/alerts/{alert_id}/read')
 async def mark_alert_read(alert_id: str, payload: MarkReadInput):
@@ -464,6 +506,10 @@ async def ai_chat(req: ChatRequest):
 app.include_router(api)
 
 # Startup hooks
+@api.on_event('startup')
+async def on_startup_router():
+    pass
+
 @app.on_event('startup')
 async def on_startup():
   try:
