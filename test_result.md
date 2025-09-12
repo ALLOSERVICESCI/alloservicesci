@@ -127,7 +127,7 @@ frontend:
     implemented: true
     working: false
     file: "frontend/app/(tabs)/pharmacies.tsx"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: false
     status_history:
@@ -137,6 +137,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ RE-TEST WITH NEW TESTIDS - CRITICAL ISSUES FOUND: 1) TestIDs NOT RENDERING: pharmaciesHeaderTitle, cityHeaderLabel, headerDot, nearHeaderLabel all missing from DOM (0 elements found), 2) HEADER STRUCTURE BROKEN: No dynamic header content showing 'Pharmacies • City/Near Me' format, 3) FILTER CHIPS MISSING: No chips render when toggles activated (0 chip elements found), 4) ✅ SEARCH INPUT BEHAVIOR: Correctly disabled (editable=false) when Near Me ON. 5) BASIC LAYOUT WORKS: Page loads, toggles clickable, pharmacy data displays. ROOT CAUSE: TestIDs not converting to DOM attributes in React Native Web, conditional rendering failing for dynamic header/chips. VIEWPORT: iPhone 12/13/14 (390x844) tested."
+      - working: false
+        agent: "testing"
+        comment: "❌ TESTID IMPROVEMENTS RE-TEST FAILED - PERSISTENT CRITICAL ISSUES: 1) ALL TESTIDS STILL MISSING: pharmaciesHeaderTitle, cityHeaderLabel, nearHeaderLabel, headerDot not found in DOM despite code having testID + dataSet + nativeID attributes, 2) DYNAMIC HEADER BROKEN: No 'Pharmacies • Near Me/City' format rendering after toggles, 3) FILTER CHIPS NOT RENDERING: 0 chips found when Near Me/De Garde activated, 4) CITY SUGGESTIONS TESTID MISSING: citySuggestions not found, 5) ✅ SEARCH INPUT WORKS: Correctly disabled with gray background (#F0F0F0) when Near Me ON, 6) ✅ BASIC FUNCTIONALITY: Page loads, toggles clickable, data displays. ROOT CAUSE: React Native Web testID conversion failing, conditional rendering logic broken for header/chips components. VIEWPORT: iPhone 12/13/14 (390x844). Code analysis shows testID attributes present but not converting to DOM data-testid."
 
 metadata:
   created_by: "main_agent"
