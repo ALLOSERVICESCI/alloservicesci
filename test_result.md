@@ -153,7 +153,8 @@ metadata:
 test_plan:
   current_focus:
     - "FRONTEND E2E: Pharmacies filtering UI (header, colors, badges, search auto-completion)"
-  stuck_tasks: []
+  stuck_tasks:
+    - "FRONTEND E2E: Pharmacies filtering UI (header, colors, badges, search auto-completion)"
   test_all: false
   test_priority: "high_first"
 
