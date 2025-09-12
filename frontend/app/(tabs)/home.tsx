@@ -132,7 +132,15 @@ export default function Home() {
       <NavMenu />
 
       {/* Floating AI FAB */}
-      <Animated.View style={[styles.aiFab, styles.aiHalo, { transform: [{ scale: pulse }] }, aiPositionStyle, fabXY ? { left: pan.x, top: pan.y } : null]}>
+      <Animated.View style={[
+        styles.aiFab,
+        styles.aiHalo,
+        { transform: [
+            { scale: pulse },
+            ...(fabXY ? [{ translateX: pan.x }, { translateY: pan.y }] : [])
+          ]
+        },
+      ]}>
         {tooltipVisible && (
           <View style={styles.tooltip} pointerEvents="none">
             <View style={styles.tooltipBubble}><Text style={styles.tooltipText}>Allô IA</Text></View>
