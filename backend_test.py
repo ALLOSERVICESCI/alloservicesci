@@ -1449,6 +1449,8 @@ if __name__ == "__main__":
             success = tester.run_alerts_unread_tests_only()
         elif sys.argv[1] == "--retex-backend":
             success = tester.run_retex_backend_tests()
+        elif sys.argv[1] == "--pharmacies-regression":
+            success = tester.run_pharmacies_and_regression_tests()
         else:
             success = tester.run_all_tests()
     else:
