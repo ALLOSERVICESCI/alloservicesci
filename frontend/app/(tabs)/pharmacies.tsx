@@ -84,6 +84,7 @@ export default function Pharmacies() {
   const onSelectSuggestion = async (name: string) => {
     setCity(name);
     setQuery(name);
+    setShowSuggestions(false);
     await load();
   };
 
