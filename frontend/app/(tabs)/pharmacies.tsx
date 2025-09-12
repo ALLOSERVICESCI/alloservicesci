@@ -38,7 +38,7 @@ export default function Pharmacies() {
     <View style={styles.container}>
       <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
         {/* Ombre dégradée du bas vers le haut (sans overlay opaque) */}
-        <View pointerEvents="none" style={styles.bottomFade} />
+        <View pointerEvents="none" style={styles.headerOverlay} />
         <View style={styles.titleWrap}>
           <Text style={styles.headerTitle}>{t('tabPharm')}</Text>
         </View>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   header: { height: 200, justifyContent: 'flex-end' },
   headerImg: { resizeMode: 'cover' },
   // léger ombre dégradé du bas vers le haut
-  bottomFade: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 90, backgroundColor: 'rgba(0,0,0,0.0)' },
+  headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 90, backgroundColor: 'rgba(0,0,0,0.0)' },
   titleWrap: { paddingHorizontal: 16, paddingBottom: 12, alignItems: 'flex-start' },
   headerTitle: { color: '#fff', fontWeight: '800', fontSize: 26, textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
   content: { flex: 1, padding: 16 },
