@@ -97,8 +97,8 @@ export default function Pharmacies() {
         <View pointerEvents="none" style={styles.headerOverlay} />
         <View style={styles.titleWrap}>
           <Text style={styles.headerTitle}>
-            {city && !nearMe ? (<Text style={styles.cityHeader}>{city}</Text>) : null}
-            {city && !nearMe ? ' • ' : ''}
+            {nearMe ? (<Text style={styles.nearHeader}>{t('nearMe')}</Text>) : (city ? (<Text style={styles.cityHeader}>{city}</Text>) : null)}
+            {(nearMe || (city && !nearMe)) ? ' • ' : ''}
             {t('tabPharm')}
           </Text>
         </View>
