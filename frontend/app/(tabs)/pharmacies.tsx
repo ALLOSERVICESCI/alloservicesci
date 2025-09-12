@@ -17,7 +17,7 @@ export default function Pharmacies() {
   const [city, setCity] = useState<string>('');
   const [query, setQuery] = useState('');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
 
   const sortedCities = useMemo(() => CI_CITIES.slice().sort((a,b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })), []);
   const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
