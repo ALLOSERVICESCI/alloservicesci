@@ -264,13 +264,12 @@ async def list_pharmacies(
 ):
     """
     Returns pharmacies with optional filters:
-    - on_duty: only pharmacies de garde
+    - on_duty: only pharmacies de garde (computed dynamically from duty_days or explicit flag)
     - city: exact city (case-insensitive)
     - near_lat, near_lng, max_km: geospatial filter around a point (meters)
     """
     criteria: Dict[str, Any] = {}
-    if on_duty is True:
-        criteria['on_duty'] = True
+    # Do NOT push on_duty into criteria; compute dynamically to support duty_days
     if city:
         criteria['city'] = { '$regex': f'^{city}$', '$options': 'i' }
 
@@ -287,11 +286,32 @@ async def list_pharmacies(
             }
         }
 
+    # Helper to compute dynamic on-duty
+    def compute_on_duty(doc: Dict[str, Any]) -> bool:
+        # Explicit flag wins if present
+        if isinstance(doc.get('on_duty'), bool):
+            return bool(doc['on_duty'])
+        duty_days = doc.get('duty_days') or doc.get('dutyDays')
+        if isinstance(duty_days, list):
+            try:
+                # Python weekday(): Monday=0 .. Sunday=6
+                today = datetime.utcnow().weekday()
+                return any(int(d) == today for d in duty_days)
+            except Exception:
+                return False
+        return False
+
     cur = db.pharmacies.find(criteria).limit(300)
     out: List[Dict[str, Any]] = []
     async for p in cur:
         p['id'] = str(p['_id'])
         del p['_id']
+        # Compute dynamic on_duty and expose it consistently
+        computed = compute_on_duty(p)
+        p['on_duty'] = computed
+        # Apply on_duty filter post-fetch if requested
+        if on_duty is True and not computed:
+            continue
         out.append(p)
     return out
 
