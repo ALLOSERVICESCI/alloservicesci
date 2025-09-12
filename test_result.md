@@ -116,3 +116,5 @@ agent_communication:
     message: "Reprendre tests dans l'ordre: backend paiement CinetPay, puis E2E frontend (Premium & Profil), vérification 'Devenir Premium' FR et UI des pages. Notifications protégées sur Expo Go Android."
   - agent: "testing"
     message: "✅ RETEX Backend étape 1/3 TERMINÉE avec succès! Tous les endpoints clés validés: 1) CinetPay initiate (200 + payment_url + transaction_id), 2) User PATCH (200 + champs mis à jour), 3) Subscription check (200 + is_premium: false), 4) Alerts unread_count (200 + count). Backend prêt pour E2E frontend Premium & Profil. Taux de réussite: 100% (9/9 tests passés)."
+  - agent: "main"
+    message: "Démarrage d'une nouvelle campagne de tests: 1) Backend pharmacies filters (on_duty/city/near_lat&near_lng&max_km=5), 2) Frontend E2E Pharmacies (header: 'Pharmacies • Ville/Autour de moi', couleurs (#FF8A00 ville, #0D6EFD near), badges (ordre: Autour de moi puis De Garde, icônes), recherche avec auto-complétion (disparition après validation), désactivation en mode proximité), 3) Vérifs UI clés (Profil>Edit ville liste partagée, Premium>CinetPay init, Notifications & Paiements headers FR)."
