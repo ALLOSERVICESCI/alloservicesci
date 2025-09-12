@@ -60,6 +60,7 @@ export default function Pharmacies() {
   );
 }
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   header: { height: 200, justifyContent: 'flex-end' },
