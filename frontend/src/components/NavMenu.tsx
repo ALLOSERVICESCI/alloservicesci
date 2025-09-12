@@ -57,15 +57,12 @@ export default function NavMenu() {
         </TouchableOpacity>
       </View>
 
-      {/* Panneau déroulant (seulement icônes: Accueil, Profil, Premium) */}
+      {/* Panneau déroulant (icônes: Profil, Premium) */}
       {open && (
         <>
           <Pressable style={StyleSheet.absoluteFill} onPress={toggleMenu} />
           <Animated.View style={[styles.dropdown, { top: topOffset + 40, transform: [{ translateY }], opacity }]}> 
             <View style={styles.iconRow}>
-              <TouchableOpacity accessibilityLabel={t('tabHome')} onPress={() => go('/(tabs)/home')} style={styles.iconBtn}>
-                <Ionicons name="home" size={22} color="#0A7C3A" />
-              </TouchableOpacity>
               <TouchableOpacity accessibilityLabel={t('tabProfile')} onPress={() => go('/(tabs)/profile')} style={styles.iconBtn}>
                 <Ionicons name="person" size={22} color="#0A7C3A" />
               </TouchableOpacity>

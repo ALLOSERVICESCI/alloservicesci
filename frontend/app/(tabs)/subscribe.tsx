@@ -80,7 +80,10 @@ export default function Subscribe() {
   ];
 
   const isPremium = (user as any)?.is_premium;
-  const openCategory = (slug: string) => router.push(`/category/${slug}`);
+  const openCategory = (slug: string) => {
+    if (slug === 'pharmacies') return router.push('/(tabs)/pharmacies');
+    return router.push(`/category/${slug}`);
+  };
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
@@ -195,6 +198,8 @@ const styles = StyleSheet.create({
   premiumInfo: { alignItems: 'center' },
   premiumDescription: { fontSize: 16, color: '#E8F0E8', textAlign: 'center', lineHeight: 22, marginBottom: 8 },
   expiryText: { fontSize: 14, color: '#B8D8C0', marginBottom: 16 },
+  refreshButton: { backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 8, borderRadius: 20, minHeight: 36, justifyContent: 'center' },
+  refreshButtonText: { color: '#0A7C3A', fontWeight: '600', fontSize: 14 },
   featuresSection: { paddingHorizontal: H_PADDING, marginBottom: 30 },
   sectionTitle: { fontSize: 22, fontWeight: '700', color: '#0F5132', textAlign: 'center', marginBottom: 20 },
   tilesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
