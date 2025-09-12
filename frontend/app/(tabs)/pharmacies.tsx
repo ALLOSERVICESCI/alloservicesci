@@ -118,16 +118,19 @@ export default function Pharmacies() {
       {/* Filtres */}
 
       {/* Filtres actifs (badges) */}
-      {(nearMe || (city && !nearMe) || onDuty) && (
+      {(nearMe || onDuty) && (
         <View style={styles.activeFiltersRow}>
-          {onDuty && (
-            <Text style={[styles.chip, styles.chipOnDuty]}>{t('onDuty')}</Text>
-          )}
           {nearMe && (
-            <Text style={[styles.chip, styles.chipNear]}>{t('nearMe')}</Text>
+            <View style={[styles.chip, styles.chipNear]}>
+              <Ionicons name="location-outline" size={14} color="#0D6EFD" style={{ marginRight: 6 }} />
+              <Text style={styles.chipTextNear}>{t('nearMe')}</Text>
+            </View>
           )}
-          {city && !nearMe && (
-            <Text style={[styles.chip, styles.chipCity]}>{t('city')}: {city}</Text>
+          {onDuty && (
+            <View style={[styles.chip, styles.chipOnDuty]}>
+              <Ionicons name="medkit-outline" size={14} color="#0A7C3A" style={{ marginRight: 6 }} />
+              <Text style={styles.chipTextOn}>{t('onDutyShort') || 'De Garde'}</Text>
+            </View>
           )}
         </View>
       )}
