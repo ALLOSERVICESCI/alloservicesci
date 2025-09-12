@@ -175,7 +175,7 @@ export default function Pharmacies() {
             )}
           </View>
           {!nearMe && showSuggestions && query.length > 0 && (
-            <View style={styles.dropdown}>
+            <View style={styles.dropdown} testID="citySuggestions" dataSet={{ testid: 'citySuggestions' }}>
               <View style={{ maxHeight: 220 }}>
                 {filteredCities.map((c) => (<CityButton key={c} name={c} />))}
                 {filteredCities.length === 0 && (
