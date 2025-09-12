@@ -15,7 +15,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 # Frontend URL
-FRONTEND_URL = "https://service-ci.preview.emergentagent.com"
+FRONTEND_URL = "https://allopharma-ci.preview.emergentagent.com"
 
 class FrontendE2ETester:
     def __init__(self):
