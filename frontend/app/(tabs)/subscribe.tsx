@@ -82,6 +82,7 @@ export default function Subscribe() {
   const isPremium = (user as any)?.is_premium;
   const openCategory = (slug: string) => {
     if (slug === 'pharmacies') return router.push('/(tabs)/pharmacies');
+    if (slug === 'alertes') return router.push('/(tabs)/alerts');
     return router.push(`/category/${slug}`);
   };
 
