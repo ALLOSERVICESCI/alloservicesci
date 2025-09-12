@@ -211,7 +211,11 @@ const styles = StyleSheet.create({
   headerImg: { resizeMode: 'cover' },
   headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, top: 0, backgroundColor: 'rgba(0,0,0,0.25)' },
   titleWrap: { paddingHorizontal: 16, paddingBottom: 12, alignItems: 'flex-start' },
+  headerRow: { flexDirection: 'row', alignItems: 'center' },
   headerTitle: { color: '#fff', fontWeight: '800', fontSize: 26, textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
+  headerDot: { color: '#fff', fontSize: 20, fontWeight: '600' },
+  nearHeader: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  cityHeader: { color: '#fff', fontSize: 16, fontWeight: '600' },
 
   filters: { paddingHorizontal: 16, paddingTop: 12 },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between' },
