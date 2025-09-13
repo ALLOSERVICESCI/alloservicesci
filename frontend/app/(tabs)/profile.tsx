@@ -87,27 +87,6 @@ export default function Profile() {
     }
   };
 
-  const onResetTipsFromProfile = async () => {
-  const bulbScale = useRef(new Animated.Value(1)).current;
-  const animateBulb = () => {
-    Animated.sequence([
-      Animated.timing(bulbScale, { toValue: 1.15, duration: 120, useNativeDriver: true }),
-      Animated.timing(bulbScale, { toValue: 1.0, duration: 120, useNativeDriver: true }),
-    ]).start();
-  };
-
-    try {
-      if (Platform.OS !== 'web') {
-        try { await Haptics.selectionAsync(); } catch {}
-      }
-      await AsyncStorage.removeItem('tip_near_shown');
-      await AsyncStorage.removeItem('tip_duty_shown');
-      await AsyncStorage.setItem('tips_reset_used', '1');
-      Alert.alert('Info', t('tipsReset'));
-    } catch (e: any) {
-      Alert.alert('Info', e?.message || 'Impossible de réinitialiser');
-    }
-  };
 
   const profileActions = [
     { key: 'edit', title: t('editProfile'), icon: '✏️', onPress: goEdit, color: '#0A7C3A' },
