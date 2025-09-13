@@ -108,13 +108,12 @@ export default function Home() {
     const speed = 60; // px/s
     const distance = textW; // with double-buffer, shift by exactly one text width
     const duration = (distance / speed) * 1000;
-    const loop = () => {
-      marqueeX.value = 0;
-      marqueeX.value = withTiming(-distance, { duration, easing: REEasing.linear }, (finished) => {
-        if (finished) loop();
-      });
-    };
-    const id = setTimeout(loop, 100);
+    marqueeX.value = 0;
+    marqueeX.value = withRepeat(
+      withTiming(-distance, { duration, easing: REEasing.linear }),
+      -1, // infinite
+      false, // do not reverse
+    );
     return () => { clearTimeout(id); cancelAnimation(marqueeX); };
   }, [textW, marqueeItems]);
 
