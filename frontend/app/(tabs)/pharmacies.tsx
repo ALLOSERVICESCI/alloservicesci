@@ -118,22 +118,16 @@ export default function Pharmacies() {
       {/* Filtres */}
 
       {/* Filtres actifs (badges) */}
-      {(nearMe || onDuty) && (
-        <View style={styles.activeFiltersRow}>
-          {nearMe && (
-            <View style={[styles.chip, styles.chipNear]} accessible accessibilityLabel="chipNear">
-              <Ionicons name="location-outline" size={14} color="#0D6EFD" style={{ marginRight: 6 }} />
-              <Text style={styles.chipTextNear}>{t('nearMe')}</Text>
-            </View>
-          )}
-          {onDuty && (
-            <View style={[styles.chip, styles.chipOnDuty]} accessible accessibilityLabel="chipOnDuty">
-              <Ionicons name="medkit-outline" size={14} color="#0A7C3A" style={{ marginRight: 6 }} />
-              <Text style={styles.chipTextOn}>{t('onDutyShort') || 'De Garde'}</Text>
-            </View>
-          )}
-        </View>
-      )}
+      <View style={styles.activeFiltersRow}>
+        <TouchableOpacity onPress={toggleNearMe} style={[styles.chip, nearMe ? styles.chipNear : styles.chipInactive]} accessible accessibilityLabel="chipNear">
+          <Ionicons name="location-outline" size={14} color={nearMe ? '#0D6EFD' : '#666'} style={{ marginRight: 6 }} />
+          <Text style={nearMe ? styles.chipTextNear : styles.chipTextInactive}>{t('nearMe')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={toggleOnDuty} style={[styles.chip, onDuty ? styles.chipOnDuty : styles.chipInactive]} accessible accessibilityLabel="chipOnDuty">
+          <Ionicons name="medkit-outline" size={14} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 6 }} />
+          <Text style={onDuty ? styles.chipTextOn : styles.chipTextInactive}>{t('onDutyShort') || 'De Garde'}</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.filters}>
         <View style={styles.rowBetween}>
