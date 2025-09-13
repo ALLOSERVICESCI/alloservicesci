@@ -154,12 +154,12 @@ export default function Pharmacies() {
 
       {/* Filtres actifs (badges) */}
       <View style={styles.activeFiltersRow}>
-        <TouchableOpacity onPress={toggleNearMe} style={[styles.chip, nearMe ? styles.chipNear : styles.chipInactive]} accessible accessibilityLabel="chipNear">
-          <Ionicons name="location-outline" size={14} color={nearMe ? '#0D6EFD' : '#666'} style={{ marginRight: 6 }} />
+        <TouchableOpacity onPress={handleNearPress} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }} style={[styles.chip, nearMe ? styles.chipNear : styles.chipInactive]} accessible accessibilityLabel="chipNear">
+          <Ionicons name="location-outline" size={16} color={nearMe ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
           <Text style={nearMe ? styles.chipTextNear : styles.chipTextInactive}>{t('nearMe')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={toggleOnDuty} style={[styles.chip, onDuty ? styles.chipOnDuty : styles.chipInactive]} accessible accessibilityLabel="chipOnDuty">
-          <Ionicons name="medkit-outline" size={14} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 6 }} />
+        <TouchableOpacity onPress={handleDutyPress} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }} style={[styles.chip, onDuty ? styles.chipOnDuty : styles.chipInactive]} accessible accessibilityLabel="chipOnDuty">
+          <Ionicons name="medkit-outline" size={16} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
           <Text style={onDuty ? styles.chipTextOn : styles.chipTextInactive}>{t('onDutyShort') || 'De Garde'}</Text>
         </TouchableOpacity>
       </View>
