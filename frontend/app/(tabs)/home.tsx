@@ -33,11 +33,8 @@ export default function Home() {
   useEffect(() => {
     let cancelled = false;
     const toPreviewString = (a: any) => {
-      const base = (a?.title || a?.description || '').trim();
-      if (!base) return '';
-      // Laisser tel quel si déjà préfixé (Alerte/Danger/Disparition/Accident/Embouteillage/Inondation)
-      if (/^(Alerte|Danger|Disparition|Accident|Embouteillage|Inondation)\b/i.test(base)) return base;
-      return `Alerte: ${base}`;
+      const title = (a?.title || '').trim();
+      return title;
     };
     const load = async () => {
       try {
