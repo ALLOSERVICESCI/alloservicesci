@@ -68,8 +68,8 @@ export default function Home() {
 
   const colorForKind = (kind: string) => {
     const k = kind.toLowerCase();
-    if (k.startsWith('danger') || k.startsWith('disparition') || k.startsWith('accident')) return '#FF8A00';
-    if (k.startsWith('alerte') || k.startsWith('embouteillage') || k.startsWith('inondation')) return '#FF8A00';
+    if (k.startsWith('danger') || k.startsWith('disparition') || k.startsWith('accident')) return '#D32F2F';
+    if (k.startsWith('alerte') || k.startsWith('embouteillage') || k.startsWith('inondation')) return '#D32F2F';
     return '#0F5132';
   };
 
