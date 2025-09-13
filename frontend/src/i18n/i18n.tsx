@@ -45,7 +45,7 @@ const dicts: Record<Lang, Dict> = {
     date: 'Date', provider: 'Fournisseur', open: 'Ouvrir', share: 'Partager', onlyPaid: 'Seulement les paiements acceptés',
     noPayments: 'Aucun paiement', noPaidPayments: 'Aucun paiement accepté', status_ACCEPTED: 'Accepté', status_REFUSED: 'Refusé', status_PENDING: 'En attente',
     profileReady: 'Bienvenue, votre profil est prêt', expiresOn: 'Expire le', refreshStatus: 'Actualiser le statut', paymentReturnPrompt: 'Êtes-vous revenu du paiement ?',
-    onDuty: 'Pharmacies de garde', onDutyShort: 'De Garde', nearMe: 'Autour de moi', selectCity: 'Choisir une ville',
+    onDuty: 'Pharmacies de garde', onDutyShort: 'De Garde', nearMe: 'Autour de moi', selectCity: 'Choisir une ville', tipNear: 'Afficher les pharmacies proches (dans un rayon de 5 km)', tipDuty: 'Afficher uniquement les pharmacies de garde', gotIt: 'Compris',
   },
   en: {
     brand: 'Allô Services CI', slogan: 'All key services in one tap', hello: 'Hello',
