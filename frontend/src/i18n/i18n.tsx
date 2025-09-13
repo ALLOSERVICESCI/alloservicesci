@@ -67,7 +67,7 @@ const dicts: Record<Lang, Dict> = {
     activeUntil: 'active until', inactive: 'inactive', language: 'Language', actions: 'Actions', logout: 'Log out',
     becomePremium: 'Become Premium',
     needAccount: 'You need to create an account', city: 'City', save: 'Save', saved: 'Saved', profileUpdated: 'Profile updated',
-    select: 'Select', searchCity: 'Search a city', clear: 'Clear', refresh: 'Refresh', locationDenied: 'Location permission denied',
+    select: 'Select', searchCity: 'Search a city', clear: 'Clear', refresh: 'Refresh', locationDenied: 'Location permission denied', resetTips: 'Reset tooltips', tipsReset: 'Tooltips reset. Tap the buttons again to see them.',
     clearHistory: 'Clear history', noNotifications: 'No notifications', noTitle: 'No title', remove: 'Remove',
     date: 'Date', provider: 'Provider', open: 'Open', share: 'Share', onlyPaid: 'Only accepted payments',
     noPayments: 'No payments', noPaidPayments: 'No accepted payments', status_ACCEPTED: 'Accepted', status_REFUSED: 'Refused', status_PENDING: 'Pending',
