@@ -10,6 +10,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RETEX Backend Test - CinetPay initiate endpoint working perfectly. Created user ID: 68c3e244832dcd54f48b0b1a, got payment_url: https://checkout.cinetpay.com/payment/72dae45e9279... et transaction_id: SUB_cc769812dc1a44. Returns 200 with payment_url and transaction_id as expected."
+      - working: true
+        agent: "testing"
+        comment: "✅ FRESH BACKEND REGRESSION CONFIRMED - CinetPay initiate endpoint working perfectly. Created user Jean-Baptiste Kouame, got payment_url: https://checkout.cinetpay.com/payment/1e30fc70edfe... + transaction_id: SUB_8cc5f46ad09a44. Returns 200 with payment_url and transaction_id as expected. Live CinetPay integration working correctly."
 
   - task: "PATCH /api/users/<ID> pour mise à jour utilisateur"
     implemented: true
