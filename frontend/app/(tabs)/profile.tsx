@@ -424,7 +424,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     lineHeight: 22,
-    textAlign: 'center',
     marginBottom: 12,
   },
   premiumTitleActive: {
