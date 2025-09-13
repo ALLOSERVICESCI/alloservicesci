@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
+import { View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams } from 'expo-router';
 import { useI18n } from '../../src/i18n/i18n';
+import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
 const COMMON_HEADER = { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/ce52q6f0_sante_bg.png' };
 const HEADERS: Record<string, any> = {
@@ -22,7 +23,7 @@ const HEADERS: Record<string, any> = {
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams();
   const s = Array.isArray(slug) ? slug[0] : (slug || 'urgence');
-  const { t, lang, isRTL } = useI18n();
+  const { t } = useI18n();
 
   const bg = HEADERS[s] || HEADERS['urgence'];
 
@@ -43,18 +44,9 @@ export default function CategoryPage() {
     return map[s] || s;
   }, [s, t]);
 
-  const lineBreaks: Record<string, Record<string, string>> = {
-    fr: { services_publics: 'Services\npublics', services_utiles: 'Services\nutiles', loisirs_tourisme: 'Loisirs\ntourisme', examens_concours: 'Examens\nconcours' },
-    en: { services_publics: 'Public\nServices', services_utiles: 'Useful\nServices', loisirs_tourisme: 'Leisure &\nTourism', examens_concours: 'Exams &\nContests' },
-    es: { services_publics: 'Servicios\npúblicos', services_utiles: 'Servicios\nútiles', loisirs_tourisme: 'Ocio y\nTurismo', examens_concours: 'Exámenes y\nConcursos' },
-    it: { services_publics: 'Servizi\npubblici', services_utiles: 'Servizi\nutili', loisirs_tourisme: 'Tempo libero e\nTurismo', examens_concours: 'Esami e\nConcorsi' },
-    ar: { services_publics: 'الخدمات\nالعامة', services_utiles: 'الخدمات\nالمفيدة', loisirs_tourisme: 'الترفيه\nوالسياحة', examens_concours: 'الامتحانات\nوالمسابقات' },
-  };
+  const data = CONTENT_BY_CATEGORY[s] || [];
 
-  const displayLabel = lineBreaks[lang]?.[s] ?? catLabel;
-  const titleFontSize = lang === 'en' ? 26 : 25;
-  const titleLetterSpacing = lang === 'ar' ? 0.3 : 0.5;
-  const textAlignValue: 'left' | 'right' = (isRTL ? 'right' : 'left');
+  const openSource = async (url?: string) => { if (!url) return; try { await Linking.openURL(url); } catch (e) {} };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -62,27 +54,53 @@ export default function CategoryPage() {
         <View style={styles.lightOverlay} />
         <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} locations={[0,1]} style={styles.overlay} />
         <View style={styles.headerContent}>
-          {(s === 'education' || s === 'sante') ? null : (
-            <View style={styles.titleWrap}>
-              <Text style={[styles.titleStroke, { fontSize: titleFontSize, letterSpacing: titleLetterSpacing, textAlign: textAlignValue }]}>{displayLabel}</Text>
-              <Text style={[styles.title, { fontSize: titleFontSize, letterSpacing: titleLetterSpacing, textAlign: textAlignValue }]}>{displayLabel}</Text>
-            </View>
-          )}
+          <View style={styles.titleWrap}>
+            <Text style={[styles.titleStroke]}>{catLabel}</Text>
+            <Text style={[styles.title]}>{catLabel}</Text>
+          </View>
         </View>
       </ImageBackground>
-      <View style={{ padding: 16, flex: 1 }}>
-        <Text>{catLabel}</Text>
-      </View>
+
+      <FlatList
+        data={data}
+        keyExtractor={(item, idx) => `${s}_${idx}`}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+              {!!item.tag && (<Text style={styles.badge}>{item.tag}</Text>)}
+              <Text style={styles.itemTitle}>{item.title}</Text>
+            </View>
+            <Text style={styles.itemSummary}>{item.summary}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, alignItems: 'center' }}>
+              <Text style={styles.metaText}>{item.location ? item.location + ' • ' : ''}{item.date || ''}</Text>
+              {item.source && (
+                <TouchableOpacity onPress={() => openSource(item.source)} style={styles.sourceBtn} accessibilityRole="button">
+                  <Text style={styles.sourceBtnText}>{t('open')}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        )}
+        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { height: 280, justifyContent: 'flex-end' },
+  header: { height: 240, justifyContent: 'flex-end' },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
   lightOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(255,255,255,0.08)' },
   headerContent: { paddingTop: 16, paddingRight: 16, paddingBottom: 16, paddingLeft: 20 },
   titleWrap: { position: 'relative', marginTop: -2 },
-  titleStroke: { color: 'transparent', fontSize: 30, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase', textAlign: 'left', textShadowColor: 'rgba(0,0,0,0.6)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 1.5, position: 'absolute', left: 0, top: 0 },
-  title: { color: '#fff', fontSize: 30, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase', textAlign: 'left', textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 6 },
+  titleStroke: { color: 'transparent', fontSize: 26, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase', textAlign: 'left', textShadowColor: 'rgba(0,0,0,0.6)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 1.5, position: 'absolute', left: 0, top: 0 },
+  title: { color: '#fff', fontSize: 26, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase', textAlign: 'left', textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 6 },
+
+  card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E8F0E8' },
+  badge: { backgroundColor: '#0A7C3A', color: '#fff', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginRight: 8, fontSize: 11, fontWeight: '800' },
+  itemTitle: { color: '#0A7C3A', fontWeight: '800', fontSize: 16, flex: 1 },
+  itemSummary: { color: '#333', fontSize: 14, marginTop: 2 },
+  metaText: { color: '#666', fontSize: 12 },
+  sourceBtn: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
+  sourceBtnText: { color: '#fff', fontWeight: '700' },
 });
