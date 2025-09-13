@@ -28,7 +28,7 @@ export default function Home() {
     { slug: 'urgence', label: t('cat_urgence') },
     { slug: 'sante', label: t('cat_sante') },
     { slug: 'education', label: t('cat_education') },
-    { slug: 'examens_concours', label: t('cat_examens') },
+    { slug: 'examens_concours', label: t('examens') },
     { slug: 'services_publics', label: t('cat_services_publics') },
     { slug: 'emplois', label: t('cat_emplois') },
     { slug: 'alertes', label: t('alertes') },
