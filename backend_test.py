@@ -1655,6 +1655,293 @@ class BackendTester:
         else:
             print("❌ 5xx server errors found - check logs")
 
+    def run_fresh_backend_regression(self):
+        """Run fresh full backend regression as per review request"""
+        print(f"🔄 FRESH FULL BACKEND REGRESSION TEST")
+        print(f"Base URL: {self.base_url}")
+        print("=" * 80)
+        
+        # A) Pharmacies Tests
+        print("\n🏥 A) PHARMACIES ENDPOINTS")
+        print("=" * 50)
+        self.test_pharmacies_no_filters()
+        self.test_pharmacies_city_filter()
+        self.test_pharmacies_on_duty_filter()
+        self.test_pharmacies_near_me_combined()
+        
+        # B) Payments & Subscriptions Tests
+        print("\n💳 B) PAYMENTS & SUBSCRIPTIONS")
+        print("=" * 50)
+        self.test_payment_cinetpay_initiate()
+        self.test_subscription_check()
+        
+        # C) Miscellaneous Tests
+        print("\n📋 C) MISCELLANEOUS")
+        print("=" * 50)
+        self.test_alerts_unread_count()
+        
+        # Summary
+        print("\n" + "=" * 80)
+        print("📊 FRESH BACKEND REGRESSION SUMMARY")
+        print("=" * 80)
+        
+        passed = sum(1 for result in self.test_results if result['success'])
+        total = len(self.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        
+        if passed < total:
+            print("\n❌ FAILED TESTS:")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['details']}")
+        else:
+            print("\n✅ ALL TESTS PASSED!")
+        
+        return passed == total
+
+    def test_pharmacies_no_filters(self):
+        """A1) GET /api/pharmacies (no filters) → 200, array"""
+        try:
+            response = self.make_request('GET', '/pharmacies')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        # Validate required fields in first item
+                        sample = data[0]
+                        required_fields = ['id', 'name', 'address', 'city', 'on_duty']
+                        has_all_fields = all(field in sample for field in required_fields)
+                        if has_all_fields:
+                            self.log_test("Pharmacies (no filters)", True, f"200 + array with {len(data)} pharmacies, all required fields present")
+                        else:
+                            missing = [f for f in required_fields if f not in sample]
+                            self.log_test("Pharmacies (no filters)", False, f"Missing required fields: {missing}")
+                    else:
+                        self.log_test("Pharmacies (no filters)", True, "200 + empty array (no pharmacy data)")
+                else:
+                    self.log_test("Pharmacies (no filters)", False, f"Expected array, got {type(data)}")
+            else:
+                self.log_test("Pharmacies (no filters)", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Pharmacies (no filters)", False, f"Exception: {str(e)}")
+
+    def test_pharmacies_city_filter(self):
+        """A2) GET /api/pharmacies?city=Marcory → 200, city match (case-insensitive)"""
+        try:
+            test_city = "Marcory"
+            response = self.make_request('GET', f'/pharmacies?city={test_city}')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        # Check if all items match the city (case-insensitive)
+                        city_matches = all(
+                            item.get('city', '').lower() == test_city.lower() 
+                            for item in data
+                        )
+                        if city_matches:
+                            self.log_test("Pharmacies (city=Marcory)", True, f"200 + {len(data)} pharmacies, all match city case-insensitive")
+                        else:
+                            mismatches = [item.get('city') for item in data if item.get('city', '').lower() != test_city.lower()]
+                            self.log_test("Pharmacies (city=Marcory)", False, f"City mismatches found: {set(mismatches)}")
+                    else:
+                        self.log_test("Pharmacies (city=Marcory)", True, f"200 + 0 results (no pharmacies in {test_city})")
+                else:
+                    self.log_test("Pharmacies (city=Marcory)", False, f"Expected array, got {type(data)}")
+            else:
+                self.log_test("Pharmacies (city=Marcory)", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Pharmacies (city=Marcory)", False, f"Exception: {str(e)}")
+
+    def test_pharmacies_on_duty_filter(self):
+        """A3) GET /api/pharmacies?on_duty=true → 200, items[].on_duty = true (computed via duty_days or flag)"""
+        try:
+            response = self.make_request('GET', '/pharmacies?on_duty=true')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        # Check if all items have on_duty=true
+                        on_duty_matches = all(
+                            item.get('on_duty') == True 
+                            for item in data
+                        )
+                        if on_duty_matches:
+                            self.log_test("Pharmacies (on_duty=true)", True, f"200 + {len(data)} pharmacies, all on_duty=true (computed from duty_days)")
+                        else:
+                            non_duty = [item.get('on_duty') for item in data if item.get('on_duty') != True]
+                            self.log_test("Pharmacies (on_duty=true)", False, f"Non-duty pharmacies found: {non_duty}")
+                    else:
+                        self.log_test("Pharmacies (on_duty=true)", True, "200 + 0 results (no on-duty pharmacies today)")
+                else:
+                    self.log_test("Pharmacies (on_duty=true)", False, f"Expected array, got {type(data)}")
+            else:
+                self.log_test("Pharmacies (on_duty=true)", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Pharmacies (on_duty=true)", False, f"Exception: {str(e)}")
+
+    def test_pharmacies_near_me_combined(self):
+        """A4) GET /api/pharmacies?on_duty=true&near_lat=5.316667&near_lng=-4.016667&max_km=5 → 200, near Abidjan"""
+        try:
+            abidjan_lat = 5.316667
+            abidjan_lng = -4.016667
+            max_km = 5
+            response = self.make_request('GET', f'/pharmacies?on_duty=true&near_lat={abidjan_lat}&near_lng={abidjan_lng}&max_km={max_km}')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    # Check that all returned pharmacies are on_duty=true and have required fields
+                    if len(data) > 0:
+                        on_duty_matches = all(item.get('on_duty') == True for item in data)
+                        has_required_fields = all(
+                            all(field in item for field in ['id', 'name', 'address', 'city', 'on_duty'])
+                            for item in data
+                        )
+                        if on_duty_matches and has_required_fields:
+                            self.log_test("Pharmacies (near Abidjan + on_duty)", True, f"200 + {len(data)} pharmacies near Abidjan, all on_duty=true with required fields")
+                        else:
+                            issues = []
+                            if not on_duty_matches:
+                                issues.append("some not on_duty")
+                            if not has_required_fields:
+                                issues.append("missing required fields")
+                            self.log_test("Pharmacies (near Abidjan + on_duty)", False, f"Issues: {', '.join(issues)}")
+                    else:
+                        self.log_test("Pharmacies (near Abidjan + on_duty)", True, "200 + 0 results (no on-duty pharmacies near Abidjan)")
+                else:
+                    self.log_test("Pharmacies (near Abidjan + on_duty)", False, f"Expected array, got {type(data)}")
+            else:
+                self.log_test("Pharmacies (near Abidjan + on_duty)", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Pharmacies (near Abidjan + on_duty)", False, f"Exception: {str(e)}")
+
+    def test_payment_cinetpay_initiate(self):
+        """B1) POST /api/payments/cinetpay/initiate → 200 + payment_url + transaction_id"""
+        # Create a test user first
+        test_user_id = None
+        try:
+            user_data = {
+                "first_name": "Jean-Baptiste",
+                "last_name": "Kouame",
+                "phone": "+225 07 12 34 56 78",
+                "email": "jb.kouame@example.ci",
+                "preferred_lang": "fr",
+                "accept_terms": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                user = response.json()
+                test_user_id = user.get('id')
+            else:
+                self.log_test("CinetPay initiate (user creation)", False, f"Failed to create user: {response.status_code}")
+                return
+        except Exception as e:
+            self.log_test("CinetPay initiate (user creation)", False, f"Exception creating user: {str(e)}")
+            return
+
+        # Test payment initiation
+        try:
+            payment_data = {
+                "user_id": test_user_id,
+                "amount_fcfa": 1200
+            }
+            response = self.make_request('POST', '/payments/cinetpay/initiate', json=payment_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'payment_url' in data and 'transaction_id' in data:
+                    payment_url = data['payment_url']
+                    transaction_id = data['transaction_id']
+                    self.log_test("CinetPay initiate", True, f"200 + payment_url: {payment_url[:50]}... + transaction_id: {transaction_id}")
+                else:
+                    self.log_test("CinetPay initiate", False, f"Missing payment_url or transaction_id: {data}")
+            else:
+                self.log_test("CinetPay initiate", False, f"Status code: {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("CinetPay initiate", False, f"Exception: {str(e)}")
+
+    def test_subscription_check(self):
+        """B2) GET /api/subscriptions/check?user_id=test-user → 200"""
+        # Create a test user first
+        test_user_id = None
+        try:
+            user_data = {
+                "first_name": "Marie",
+                "last_name": "Diabate",
+                "phone": "+225 05 98 76 54 32",
+                "email": "marie.diabate@example.ci",
+                "preferred_lang": "fr",
+                "accept_terms": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                user = response.json()
+                test_user_id = user.get('id')
+            else:
+                self.log_test("Subscription check (user creation)", False, f"Failed to create user: {response.status_code}")
+                return
+        except Exception as e:
+            self.log_test("Subscription check (user creation)", False, f"Exception creating user: {str(e)}")
+            return
+
+        # Test subscription check
+        try:
+            response = self.make_request('GET', f'/subscriptions/check?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'is_premium' in data:
+                    is_premium = data['is_premium']
+                    expires_at = data.get('expires_at')
+                    self.log_test("Subscription check", True, f"200 + is_premium: {is_premium}, expires_at: {expires_at}")
+                else:
+                    self.log_test("Subscription check", False, f"Missing is_premium field: {data}")
+            else:
+                self.log_test("Subscription check", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Subscription check", False, f"Exception: {str(e)}")
+
+    def test_alerts_unread_count(self):
+        """C1) GET /api/alerts/unread_count?user_id=test-user → 200"""
+        # Create a test user first
+        test_user_id = None
+        try:
+            user_data = {
+                "first_name": "Koffi",
+                "last_name": "Yao",
+                "phone": "+225 07 88 99 00 11",
+                "email": "koffi.yao@example.ci",
+                "preferred_lang": "fr",
+                "accept_terms": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                user = response.json()
+                test_user_id = user.get('id')
+            else:
+                self.log_test("Alerts unread count (user creation)", False, f"Failed to create user: {response.status_code}")
+                return
+        except Exception as e:
+            self.log_test("Alerts unread count (user creation)", False, f"Exception creating user: {str(e)}")
+            return
+
+        # Test alerts unread count
+        try:
+            response = self.make_request('GET', f'/alerts/unread_count?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int):
+                    count = data['count']
+                    self.log_test("Alerts unread count", True, f"200 + count: {count}")
+                else:
+                    self.log_test("Alerts unread count", False, f"Invalid count format: {data}")
+            else:
+                self.log_test("Alerts unread count", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Alerts unread count", False, f"Exception: {str(e)}")
+
 if __name__ == "__main__":
     tester = BackendTester()
     
