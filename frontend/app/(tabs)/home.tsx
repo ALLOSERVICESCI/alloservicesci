@@ -181,7 +181,7 @@ export default function Home() {
                           <Text key={idx}>
 <Text style={{ color: '#0F5132' }}>{it.text}</Text>
                             <Text style={{ color: '#0F5132' }}>{it.text}</Text>
-                            {idx < marqueeItems.length - 1 ? <Text> • </Text> : null}
+                            {idx < marqueeItems.length - 1 ? <Text> . </Text> : null}
                           </Text>
                         ))}
                       </Animated.Text>
