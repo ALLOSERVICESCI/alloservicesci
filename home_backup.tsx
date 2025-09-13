@@ -108,7 +108,7 @@ export default function Home() {
     const duration = (distance / speed) * 1000;
     const loop = () => {
       marqueeX.setValue(marqueeW);
-      Animated.timing(marqueeX, { toValue: -textW, duration, easing: Easing.linear, useNativeDriver: true }).start(() => loop());
+      RNAnimated.timing(marqueeX, { toValue: -textW, duration, easing: Easing.linear, useNativeDriver: true }).start(() => loop());
     };
     const id = setTimeout(loop, 100);
     return () => { clearTimeout(id); marqueeX.stopAnimation(); };
