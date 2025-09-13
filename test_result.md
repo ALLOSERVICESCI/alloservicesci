@@ -37,6 +37,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RETEX Backend Test - Subscription check endpoint working perfectly. Returns 200 with is_premium: false, expires_at: null for non-premium user as expected."
+      - working: true
+        agent: "testing"
+        comment: "✅ FRESH BACKEND REGRESSION CONFIRMED - Subscription check endpoint working perfectly. Created user Marie Diabate, returns 200 + is_premium: False, expires_at: None for non-premium user as expected. Subscription validation logic working correctly."
 
   - task: "GET /api/alerts/unread_count?user_id=<ID> pour compteur notifications"
     implemented: true
