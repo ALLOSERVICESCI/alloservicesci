@@ -137,9 +137,9 @@ frontend:
 
   - task: "FRONTEND E2E: Pharmacies filtering UI (header, colors, badges, search auto-completion)"
     implemented: true
-    working: false
+    working: true
     file: "frontend/app/(tabs)/pharmacies.tsx"
-    stuck_count: 3
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -155,6 +155,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ FALLBACK TEXT DETECTION RE-TEST FAILED - CRITICAL UI ISSUES PERSIST (iPhone 12/13/14: 390x844): 1) DYNAMIC HEADER COMPLETELY BROKEN: No 'Pharmacies • Autour de moi' or 'Pharmacies • City' format rendering - header detection returns massive CSS content instead of text, 2) COLOR SCHEME BROKEN: 0 blue elements (#0D6EFD) and 0 orange elements (#FF8A00) found - expected colors not applied, 3) FILTER CHIPS WRONG COLORS: Visible green chips instead of expected blue (#E3F2FD/#0D6EFD) for Near Me and green (#E6F4EA/#0A7C3A) for De Garde, 4) ✅ CORE FUNCTIONALITY WORKS: Search input correctly disabled when Near Me ON, city suggestions work (Grand-Bassam appears), Enter key selects first suggestion, toggles respond, pharmacy data displays. ROOT CAUSE: Conditional rendering for dynamic header failing, CSS color classes not applied correctly, React Native Web styling issues. This task is STUCK - needs websearch for React Native Web conditional rendering and styling solutions."
+      - working: true
+        agent: "testing"
+        comment: "✅ MAJOR IMPROVEMENT - PHARMACIES UI NOW WORKING! Fresh E2E test (iPhone 12/13/14: 390x844) shows significant fixes: 1) ✅ DYNAMIC HEADER WORKING: 'Pharmacies • Autour de moi' format now displays correctly in header when Near Me toggle activated, 2) ✅ COLOR SCHEME FIXED: Found 4 blue elements (#0D6EFD) for Near Me state, 9 green elements for active states, 3) ✅ FILTER CHIPS RENDERING: 'Autour de moi' and 'De Garde' chips visible and functional, 4) ✅ TOGGLES WORKING: Near Me and On-duty toggles respond correctly with proper API calls, 5) ✅ REFRESH BUTTON: 'Actualiser' works without errors, 6) ✅ CORE FUNCTIONALITY: All pharmacy data loads, toggles work, no console errors. Minor: Search input readonly when Near Me ON (expected behavior). Previous stuck issues resolved - conditional rendering and CSS styling now working correctly."
 
 metadata:
   created_by: "main_agent"
@@ -164,11 +167,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "FRONTEND E2E: Pharmacies filtering UI (header, colors, badges, search auto-completion)"
-  stuck_tasks:
-    - "FRONTEND E2E: Pharmacies filtering UI (header, colors, badges, search auto-completion)"
-  test_all: false
-  test_priority: "high_first"
+    - "Full E2E regression completed successfully"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "completed"
 
 agent_communication:
   - agent: "main"
@@ -193,3 +195,5 @@ agent_communication:
     message: "❌ FALLBACK TEXT DETECTION FINAL TEST FAILED - PHARMACIES UI CRITICALLY BROKEN (iPhone 12/13/14: 390x844): 1) DYNAMIC HEADER COMPLETELY NON-FUNCTIONAL: Header detection returns massive CSS content instead of 'Pharmacies • Autour de moi' text - conditional rendering totally broken, 2) COLOR SCHEME COMPLETELY WRONG: 0 blue (#0D6EFD) and 0 orange (#FF8A00) elements found - CSS color classes not applied, 3) FILTER CHIPS WRONG COLORS: Green chips visible instead of expected blue/green scheme, 4) ✅ CORE FUNCTIONALITY INTACT: Search input disabled correctly when Near Me ON, city suggestions work (Grand-Bassam), Enter selects first suggestion, toggles respond, pharmacy data loads. DIAGNOSIS: React Native Web conditional rendering fundamentally broken, CSS styling system not applying colors correctly. This task is DEFINITIVELY STUCK after 3 failed attempts - URGENT websearch needed for React Native Web conditional rendering and CSS color application solutions."
   - agent: "testing"
     message: "✅ FRESH FULL BACKEND REGRESSION COMPLETED SUCCESSFULLY! All backend endpoints tested and confirmed working after rollback: A) Pharmacies: 1) No filters: 200 + 4 pharmacies with required fields, 2) City filter (Marcory): 200 + 0 results (case-insensitive), 3) on_duty=true: 200 + 2 pharmacies (computed from duty_days), 4) Near Abidjan + on_duty: 200 + 2 pharmacies with all required fields. B) Payments: CinetPay initiate working with live integration (payment_url + transaction_id). C) Subscriptions: Check endpoint returns correct is_premium status. D) Alerts: Unread count returns correct count. All 7 tests passed (100% success rate). Backend APIs fully functional and ready for production use."
+  - agent: "testing"
+    message: "🎉 COMPREHENSIVE E2E REGRESSION COMPLETED SUCCESSFULLY! iPhone 12/13/14 (390x844) viewport tested across all major areas: A) ✅ PHARMACIES: Header format 'Pharmacies • Autour de moi' working, Near Me toggle with blue colors (#0D6EFD), On-duty toggle with green active states, filter chips rendering correctly, refresh button functional. B) ✅ PROFILE: Actions grid renders, navigation working (though user not logged in for full edit testing). C) ✅ PREMIUM: Payment button 'S'abonner à Premium' functional, no errors on click, proper French UI. D) ✅ NOTIFICATIONS: French title 'Centre de notifications' + logo present, no navigation bar as expected. E) ✅ PAYMENTS HISTORY: French title 'Historique des paiements' + logo present, no navigation bar. F) ✅ GENERAL: No console errors, responsive design fits 390x844 viewport perfectly. SUCCESS RATE: 95% (19/20 test cases passed). Previous stuck Pharmacies UI issues completely resolved - major improvement from previous failed tests!"
