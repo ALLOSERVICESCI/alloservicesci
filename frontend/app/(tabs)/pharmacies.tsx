@@ -83,8 +83,38 @@ export default function Pharmacies() {
     if (nearMe) { setCity(''); setQuery(''); }
   }, [nearMe]);
 
+  const triggerHaptic = async () => {
+    if (Platform.OS !== 'web') {
+      try { await Haptics.selectionAsync(); } catch {}
+    }
+  };
+
   const toggleOnDuty = () => { setOnDuty((v) => !v); };
   const toggleNearMe = () => { setNearMe((v) => { const next = !v; if (next) { setCity(''); setQuery(''); setShowSuggestions(false);} return next; }); };
+
+  const handleNearPress = async () => {
+    await triggerHaptic();
+    toggleNearMe();
+    try {
+      const seen = await AsyncStorage.getItem('tip_near_shown');
+      if (!seen) {
+        setShowNearTip(true);
+        await AsyncStorage.setItem('tip_near_shown', '1');
+      }
+    } catch {}
+  };
+
+  const handleDutyPress = async () => {
+    await triggerHaptic();
+    toggleOnDuty();
+    try {
+      const seen = await AsyncStorage.getItem('tip_duty_shown');
+      if (!seen) {
+        setShowDutyTip(true);
+        await AsyncStorage.setItem('tip_duty_shown', '1');
+      }
+    } catch {}
+  };
 
   const onSelectSuggestion = async (name: string) => {
     setCity(name);
