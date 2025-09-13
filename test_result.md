@@ -163,7 +163,7 @@ frontend:
     implemented: false
     working: false
     file: "frontend/app/(tabs)/profile.tsx"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: true
     status_history:
@@ -173,6 +173,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL ISSUE CONFIRMED AGAIN - Re-run focused E2E UI regression (iPhone 12/13/14: 390x844) after supposed removal shows: 1) ✅ Profile page accessible with user 'Serge Angoua' logged in, 2) ✅ All 3 expected actions present: 'Modifier mon profil', 'Centre de notifications', 'Historique des paiements', 3) ❌ CRITICAL: 'Réinitialiser les infobulles' action STILL PRESENT as 4th tile, 4) ✅ 'Se déconnecter' button exists and works, 5) ✅ French texts regression OK on Home ('Tous les services essentiels en un clic'), Notifications ('Centre de notifications'), Subscribe ('S'abonner à Premium'). ISSUE: Actions grid shows 4 tiles instead of expected 3. The tooltip reset action has NOT been removed despite task being marked for implementation. Code analysis shows onResetTipsFromProfile function still exists in profile.tsx but is not being used in profileActions array - there must be another source adding this action."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE PERSISTS - FOCUSED E2E PROFILE ACTIONS TEST (iPhone 12/13/14: 390x844): 1) ✅ Profile page accessible with user 'Serge Angoua' logged in, 2) ✅ Actions section present with title 'Actions', 3) ✅ All 3 expected actions found: 'Modifier mon profil' (✏️), 'Centre de notifications' (🔔), 'Historique des paiements' (💳), 4) ❌ CRITICAL: 'Réinitialiser les infobulles' action STILL PRESENT as 4th tile, 5) ✅ 'Se déconnecter' button confirmed. MYSTERY: Code analysis shows profileActions array contains only 3 items and onResetTipsFromProfile function is unused. Yet UI renders 4 tiles. Possible causes: caching issue, build artifact, or dynamic injection from unknown source. URGENT investigation needed - this discrepancy between code and UI suggests deeper issue."
 
 metadata:
   created_by: "main_agent"
