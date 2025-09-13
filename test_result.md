@@ -52,6 +52,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RETEX Backend Test - Alerts unread count endpoint working perfectly. Returns 200 with count: 15 both with and without user_id parameter."
+      - working: true
+        agent: "testing"
+        comment: "✅ FRESH BACKEND REGRESSION CONFIRMED - Alerts unread count endpoint working perfectly. Created user Koffi Yao, returns 200 + count: 15. Unread count logic working correctly for both with and without user_id parameter."
 
   - task: "GET /api/pharmacies avec filtres (city, on_duty, near_lat/lng, max_km)"
     implemented: true
