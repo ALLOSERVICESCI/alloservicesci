@@ -146,11 +146,6 @@ export default function Home() {
                     <TouchableOpacity onPress={() => router.push('/(tabs)/alerts')} style={styles.infoPill} accessibilityRole="button">
                       <Text style={styles.infoPillText}>Infos</Text>
                     </TouchableOpacity>
-                    <View style={styles.ticksRow} pointerEvents="none">
-                      {Array.from({ length: 16 }).map((_, i) => (
-                        <View key={i} style={styles.tick} />
-                      ))}
-                    </View>
                     <View style={styles.marqueeClip} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
                       <Animated.Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={[styles.marqueeText, { transform: [{ translateX: marqueeX }] }]} numberOfLines={1}>
                         {marqueeItems.map((it, idx) => (
