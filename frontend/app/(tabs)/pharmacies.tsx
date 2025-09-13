@@ -154,15 +154,43 @@ export default function Pharmacies() {
 
       {/* Filtres actifs (badges) */}
       <View style={styles.activeFiltersRow}>
-        <TouchableOpacity onPress={handleNearPress} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }} style={[styles.chip, nearMe ? styles.chipNear : styles.chipInactive]} accessible accessibilityLabel="chipNear">
-          <Ionicons name="location-outline" size={16} color={nearMe ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+        <TouchableOpacity onPress={handleNearPress} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={[styles.chip, nearMe ? styles.chipNear : styles.chipInactive]} accessible accessibilityLabel="chipNear">
+          <Ionicons name="location-outline" size={18} color={nearMe ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
           <Text style={nearMe ? styles.chipTextNear : styles.chipTextInactive}>{t('nearMe')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleDutyPress} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }} style={[styles.chip, onDuty ? styles.chipOnDuty : styles.chipInactive]} accessible accessibilityLabel="chipOnDuty">
-          <Ionicons name="medkit-outline" size={16} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+        <TouchableOpacity onPress={handleDutyPress} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={[styles.chip, onDuty ? styles.chipOnDuty : styles.chipInactive]} accessible accessibilityLabel="chipOnDuty">
+          <Ionicons name="medkit-outline" size={18} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
           <Text style={onDuty ? styles.chipTextOn : styles.chipTextInactive}>{t('onDutyShort') || 'De Garde'}</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Tips (premier usage) */}
+      {(showNearTip || showDutyTip) && (
+        <View style={styles.tipsWrap}>
+          {showNearTip && (
+            <View style={[styles.tipBox, styles.tipNear]}>
+              <View style={styles.tipRow}>
+                <Ionicons name="location-outline" size={16} color="#0D6EFD" style={{ marginRight: 6 }} />
+                <Text style={styles.tipText}>{t('tipNear')}</Text>
+              </View>
+              <TouchableOpacity onPress={() => setShowNearTip(false)} style={styles.tipBtn}>
+                <Text style={styles.tipBtnText}>{t('gotIt') || 'Compris'}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {showDutyTip && (
+            <View style={[styles.tipBox, styles.tipDuty]}>
+              <View style={styles.tipRow}>
+                <Ionicons name="medkit-outline" size={16} color="#0A7C3A" style={{ marginRight: 6 }} />
+                <Text style={styles.tipText}>{t('tipDuty')}</Text>
+              </View>
+              <TouchableOpacity onPress={() => setShowDutyTip(false)} style={styles.tipBtn}>
+                <Text style={styles.tipBtnText}>{t('gotIt') || 'Compris'}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      )}
 
       <View style={styles.filters}>
         <View />
