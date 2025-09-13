@@ -142,19 +142,19 @@ export default function Home() {
               <Text style={styles.greeting}>{greeting}</Text>
               {!!marqueeItems.length && (
                 <View style={[styles.marqueeOuter, { width: sloganW ? sloganW : Math.min(width * 0.86, 340) }]}>
-                  <View style={[styles.marqueeRounded, styles.inputLike]} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
+                  <View style={[styles.marqueeRounded, styles.inputLike]}>
                     <TouchableOpacity onPress={() => router.push('/(tabs)/alerts')} style={styles.infoBtn} accessibilityRole="button"><Text style={styles.infoBtnText}>Infos</Text></TouchableOpacity>
-                    <Animated.Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={[styles.marqueeText, { transform: [{ translateX: marqueeX }] }]} numberOfLines={1}>
-                      {marqueeItems.map((it, idx) => (
-                        <Text key={idx}>
-                          <Text style={{ color: colorForKind(it.kind), fontWeight: '800' }}>{it.kind}{it.text ? ': ' : ''}</Text>
-                          <Text style={{ color: '#0F5132' }}>{it.text}</Text>
-                          {idx < marqueeItems.length - 1 ? <Text> • </Text> : null}
-                        </Text>
-                      ))}
-                    </Animated.Text>
-                    <LinearGradient pointerEvents="none" colors={["#F8FAF9", "#F8FAF900"]} style={[styles.fadeLeft]} />
-                    <LinearGradient pointerEvents="none" colors={["#F8FAF900", "#F8FAF9"]} style={[styles.fadeRight]} />
+                    <View style={styles.marqueeClip} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
+                      <Animated.Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={[styles.marqueeText, { transform: [{ translateX: marqueeX }] }]} numberOfLines={1}>
+                        {marqueeItems.map((it, idx) => (
+                          <Text key={idx}>
+                            <Text style={{ color: colorForKind(it.kind), fontWeight: '800' }}>{it.kind}{it.text ? ': ' : ''}</Text>
+                            <Text style={{ color: '#0F5132' }}>{it.text}</Text>
+                            {idx < marqueeItems.length - 1 ? <Text> • </Text> : null}
+                          </Text>
+                        ))}
+                      </Animated.Text>
+                    </View>
                   </View>
                 </View>
               )}
