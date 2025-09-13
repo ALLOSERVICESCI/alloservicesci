@@ -102,13 +102,14 @@ export default function Home() {
   useEffect(() => {
     if (!marqueeW || !textW || marqueeItems.length === 0) return;
     marqueeX.stopAnimation();
-    marqueeX.setValue(marqueeW);
     const speed = 60; // px/s
-    const distance = marqueeW + textW;
+    const distance = textW; // with double-buffer, shift by exactly one text width
     const duration = (distance / speed) * 1000;
     const loop = () => {
-      marqueeX.setValue(marqueeW);
-      Animated.timing(marqueeX, { toValue: -textW, duration, easing: Easing.linear, useNativeDriver: true }).start(() => loop());
+      marqueeX.setValue(0);
+      Animated.timing(marqueeX, { toValue: -distance, duration, easing: Easing.linear, useNativeDriver: true }).start(({ finished }) => {
+        if (finished) loop();
+      });
     };
     const id = setTimeout(loop, 100);
     return () => { clearTimeout(id); marqueeX.stopAnimation(); };
