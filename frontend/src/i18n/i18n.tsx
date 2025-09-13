@@ -42,6 +42,79 @@ const translations: Record<LangKey, Dict> = {
     notifCenter: 'Centre de notifications',
     paymentHistory: 'Historique des paiements',
 
+    // Tabs & sections
+    tabHome: 'Accueil',
+    tabAlerts: 'Alertes',
+    tabPharm: 'Pharmacies',
+    tabPremium: 'Premium',
+    tabProfile: 'Profil',
+
+    // Categories (labels initiaux)
+    urgence: 'Urgence',
+    sante: 'Santé',
+    alertes: 'Alertes',
+    education: 'Éducation',
+    examens: 'Examens & Concours',
+    services_publics: 'Services publics',
+    emplois: 'Emplois',
+    services_utiles: 'Services utiles',
+    agriculture: 'Agriculture',
+    loisirs_tourisme: 'Loisirs & Tourisme',
+    transport: 'Transport',
+
+    // Pharmacies
+    onDuty: 'Pharmacies de garde',
+    onDutyShort: 'De Garde',
+    nearMe: 'Autour de moi',
+    select: 'Sélectionner',
+    searchCity: 'Rechercher une ville',
+    clear: 'Effacer',
+    refresh: 'Actualiser',
+    locationDenied: 'Autorisation de localisation refusée',
+
+    city: 'Ville',
+    phonePh: 'Téléphone',
+    emailOpt: 'Email (optionnel)',
+
+    // Paiements / Historique
+    date: 'Date',
+    provider: 'Fournisseur',
+    open: 'Ouvrir',
+    share: 'Partager',
+    onlyPaid: 'Payés uniquement',
+    noPaidPayments: 'Aucun paiement accepté',
+    noPayments: 'Aucun paiement',
+
+    // Auth / Inscription
+    createTitle: 'Créer votre compte',
+    firstName: 'Prénom',
+    lastName: 'Nom',
+    submit: 'Valider',
+    requiredFields: 'Champs requis',
+    requiredMsg: 'Veuillez renseigner tous les champs obligatoires',
+    profileReady: 'Profil créé avec succès !',
+    loginRequired: 'Connexion requise',
+    needAccount: 'Veuillez créer un compte pour accéder à cette page',
+
+    // Tooltips Pharmacies
+    tipNear: 'Afficher les pharmacies proches (dans un rayon de 5 km)',
+    tipDuty: 'Afficher uniquement les pharmacies de garde',
+    gotIt: 'Compris',
+    resetTips: 'Réinitialiser les infobulles',
+    tipsReset: 'Infobulles réinitialisées. Appuyez sur les boutons pour les revoir.',
+    resetTipsHint: 'Pour réafficher les astuces sur la page Pharmacies',
+
+    // Premium feature descriptions (facultatif)
+    premiumFeature_exams: 'Accès rapide aux examens et concours',
+    premiumFeature_education: 'Ressources et informations éducatives',
+    premiumFeature_jobs: 'Offres d’emplois et opportunités',
+    premiumFeature_services: 'Démarches et services publics',
+    premiumFeature_utilities: 'Services utiles du quotidien',
+    premiumFeature_agriculture: 'Infos et services pour l’agriculture',
+    premiumFeature_leisure: 'Loisirs et tourisme à proximité',
+    premiumFeature_transport: 'Transports et itinéraires',
+  },
+
     tabPharm: 'Pharmacies',
     onDuty: 'Pharmacies de garde',
     onDutyShort: 'De Garde',
