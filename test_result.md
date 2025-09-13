@@ -180,6 +180,18 @@ frontend:
         agent: "testing"
         comment: "✅ PROFILE ACTIONS GRID FULLY FIXED - COMPREHENSIVE E2E TEST PASSED (iPhone 12/13/14: 390x844)! Final validation confirms complete success: 1) ✅ Profile page accessible with user 'Serge Angoua' logged in, 2) ✅ Actions section present with title 'Actions', 3) ✅ ALL 3 expected actions found: 'Modifier mon profil' (✏️), 'Centre de notifications' (🔔), 'Historique des paiements' (💳), 4) ✅ CRITICAL SUCCESS: 'Réinitialiser les infobulles' action NOT FOUND - completely removed as requested, 5) ✅ Actions grid shows exactly 3 tiles (not 4), 6) ✅ 'Se déconnecter' button present and functional, 7) ✅ No console errors detected. The previous mystery has been resolved - the reset code and imports have been fully removed from profile.tsx. All requirements met successfully."
 
+  - task: "FRONTEND E2E: Home page marquee scrolling summary with fallback examples when notifications empty"
+    implemented: true
+    working: false
+    file: "frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "⚠️ MARQUEE SCROLLING SUMMARY E2E TEST RESULTS (iPhone 12/13/14: 390x844): MIXED FINDINGS for Home page marquee with fallback examples when notifications empty: ✅ WORKING ELEMENTS: 1) App loads correctly with splash screen handling, 2) Notifications page accessible with 'Centre de notifications' title, 3) Clear history button 'Effacer l'historique' functional, 4) Empty state 'Aucune notification' confirmed, 5) Home page accessible with French greeting 'Bonjour Serge', 6) French slogan 'Tous les services essentiels en un clic' present. ❌ MARQUEE ISSUES: 1) Fallback phrases NOT VISUALLY RENDERED: Expected phrases like 'Alerte sécurité: circulation difficile à Cocody', 'Pharmacie de garde: Abobo – 24h/24' not visible in UI, 2) Marquee area NOT VISIBLE: No scrolling text area detected below greeting despite code structure present, 3) Fade effects NOT DETECTED: LinearGradient fades not rendering. 🔍 TECHNICAL FINDINGS: Marquee structure elements detected (overflow hidden, transforms), 'Examens & Concours' content found in DOM (22 matches), but visual rendering failing. CONCLUSION: Marquee logic implemented but CSS/visual rendering has issues - text not displaying properly on screen."
+
 metadata:
   created_by: "main_agent"
   version: "1.3"
