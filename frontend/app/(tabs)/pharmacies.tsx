@@ -83,6 +83,12 @@ export default function Pharmacies() {
     if (nearMe) { setCity(''); setQuery(''); }
   }, [nearMe]);
 
+
+  // Recharger automatiquement quand filtres changent
+  useEffect(() => {
+    load();
+  }, [nearMe, onDuty]);
+
   const triggerHaptic = async () => {
     if (Platform.OS !== 'web') {
       try { await Haptics.selectionAsync(); } catch {}
