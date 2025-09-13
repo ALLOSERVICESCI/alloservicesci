@@ -163,13 +163,16 @@ frontend:
     implemented: false
     working: false
     file: "frontend/app/(tabs)/profile.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: true
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL REGRESSION FOUND - Profile actions grid still contains 'Réinitialiser les infobulles' action that should be removed. E2E test (iPhone 12/13/14: 390x844) confirmed: 1) ✅ Profile page accessible with user data, 2) ✅ All 3 expected actions present: 'Modifier mon profil', 'Centre de notifications', 'Historique des paiements', 3) ❌ CRITICAL: 'Réinitialiser les infobulles' action STILL PRESENT (count: 1), 4) Actions grid shows 4 tiles instead of expected 3. URGENT: Code shows onResetTipsFromProfile function and related logic still present in profile.tsx. This action must be completely removed from profileActions array and all related code cleaned up."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE CONFIRMED AGAIN - Re-run focused E2E UI regression (iPhone 12/13/14: 390x844) after supposed removal shows: 1) ✅ Profile page accessible with user 'Serge Angoua' logged in, 2) ✅ All 3 expected actions present: 'Modifier mon profil', 'Centre de notifications', 'Historique des paiements', 3) ❌ CRITICAL: 'Réinitialiser les infobulles' action STILL PRESENT as 4th tile, 4) ✅ 'Se déconnecter' button exists and works, 5) ✅ French texts regression OK on Home ('Tous les services essentiels en un clic'), Notifications ('Centre de notifications'), Subscribe ('S'abonner à Premium'). ISSUE: Actions grid shows 4 tiles instead of expected 3. The tooltip reset action has NOT been removed despite task being marked for implementation. Code analysis shows onResetTipsFromProfile function still exists in profile.tsx but is not being used in profileActions array - there must be another source adding this action."
 
 metadata:
   created_by: "main_agent"
