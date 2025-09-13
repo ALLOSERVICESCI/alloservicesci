@@ -13,6 +13,7 @@ type Ctx = {
   setAlertsUnreadCount: (n: number) => void;
   refreshAlertsUnread: (userId?: string) => Promise<void>;
   addLocal: (n: Omit<NotifItem, 'id' | 'receivedAt'> & Partial<Pick<NotifItem, 'id' | 'receivedAt'>>) => Promise<void>;
+  refreshLocal: () => Promise<void>;
 };
 
 const NotificationsContext = createContext<Ctx>({
@@ -23,6 +24,7 @@ const NotificationsContext = createContext<Ctx>({
   setAlertsUnreadCount: () => {},
   refreshAlertsUnread: async () => {},
   addLocal: async () => {},
+  refreshLocal: async () => {},
 });
 
 const STORAGE_KEY = 'notif_history_list_v1';
@@ -34,20 +36,24 @@ export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [items, setItems] = useState<NotifItem[]>([]);
   const [alertsUnreadCount, setAlertsUnreadCount] = useState<number | null>(null);
 
+  const loadFromStorage = async () => {
+    const raw = await AsyncStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      try {
+        const parsed: NotifItem[] = JSON.parse(raw);
+        const pruned = pruneOlderThan24h(parsed);
+        if (pruned.length !== parsed.length) {
+          await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(pruned));
+        }
+        setItems(pruned);
+      } catch {}
+    } else {
+      setItems([]);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      const raw = await AsyncStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        try {
-          const parsed: NotifItem[] = JSON.parse(raw);
-          const pruned = pruneOlderThan24h(parsed);
-          if (pruned.length !== parsed.length) {
-            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(pruned));
-          }
-          setItems(pruned);
-        } catch {}
-      }
-    })();
+    (async () => { await loadFromStorage(); })();
   }, []);
 
   useEffect(() => {
@@ -107,7 +113,11 @@ export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  const value = useMemo(() => ({ items, clear, removeAt, alertsUnreadCount, setAlertsUnreadCount, refreshAlertsUnread, addLocal }), [items, alertsUnreadCount]);
+  const refreshLocal = async () => {
+    await loadFromStorage();
+  };
+
+  const value = useMemo(() => ({ items, clear, removeAt, alertsUnreadCount, setAlertsUnreadCount, refreshAlertsUnread, addLocal, refreshLocal }), [items, alertsUnreadCount]);
   return <NotificationsContext.Provider value={value}>{children}</NotificationsContext.Provider>;
 };
 

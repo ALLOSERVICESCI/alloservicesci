@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, Platform, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, Platform, Animated, Easing, RefreshControl } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
@@ -20,6 +20,7 @@ export default function Home() {
   const { alertsUnreadCount, refreshAlertsUnread, items } = useNotificationsCenter();
   const [sloganW, setSloganW] = useState(0);
   const [alertsPreview, setAlertsPreview] = useState<string[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
@@ -30,28 +31,28 @@ export default function Home() {
   }, [user?.id]);
 
   // Charger un aperçu récent des publications (pour alimenter la capsule)
-  useEffect(() => {
-    let cancelled = false;
+  const loadPreviews = async () => {
+    let cancelled = false; // local guard not used across calls here
     const toPreviewString = (a: any) => {
       const title = (a?.title || '').trim();
       return title;
     };
-    const load = async () => {
-      try {
-        const res = await apiFetch('/api/alerts');
-        const json = await res.json().catch(() => []);
-        if (cancelled) return;
-        const previews = (json || [])
-          .slice(0, 10)
-          .map(toPreviewString)
-          .filter((s: string) => !!s)
-          .slice(0, 6);
-        setAlertsPreview(previews);
-      } catch (e) {}
-    };
-    load();
-    const iv = setInterval(load, 60000);
-    return () => { cancelled = true; clearInterval(iv); };
+    try {
+      const res = await apiFetch('/api/alerts');
+      const json = await res.json().catch(() => []);
+      const previews = (json || [])
+        .slice(0, 10)
+        .map(toPreviewString)
+        .filter((s: string) => !!s)
+        .slice(0, 6);
+      if (!cancelled) setAlertsPreview(previews);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    loadPreviews();
+    const iv = setInterval(loadPreviews, 60000);
+    return () => { clearInterval(iv); };
   }, []);
 
   const categories = useMemo(() => [
@@ -117,6 +118,18 @@ export default function Home() {
     return () => { clearTimeout(id); marqueeX.stopAnimation(); };
   }, [marqueeW, textW, marqueeItems]);
 
+  const onRefresh = async () => {
+    try {
+      setRefreshing(true);
+      await Promise.all([
+        refreshAlertsUnread(user?.id),
+        loadPreviews(),
+      ]);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   const [aiPos] = React.useState<'bottom-right'|'bottom-left'|'top-right'|'top-left'>('bottom-right');
   const aiPositionStyle = React.useMemo(() => ({ bottom: 30, right: 20 }), []);
   const [tooltipVisible, setTooltipVisible] = React.useState(false);
@@ -157,7 +170,9 @@ export default function Home() {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
+      >
         <View style={styles.pageWrapper}>
           <View style={styles.header}>
             <View style={styles.logoSection}>
@@ -265,10 +280,10 @@ const styles = StyleSheet.create({
   infoBarContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 22, borderWidth: 1, borderColor: '#FFA64D', height: 48, paddingRight: 10, overflow: 'hidden' },
   infoPill: { height: '100%', paddingHorizontal: 20, backgroundColor: '#FF8A00', justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 22, borderBottomLeftRadius: 22 },
   infoPillText: { color: '#fff', fontWeight: '800', fontSize: 16 },
-  ticksRow: { position: 'absolute', left: 70, right: 14, top: 8, height: 8, flexDirection: 'row', justifyContent: 'space-between' },
-  tick: { width: 2, height: 8, backgroundColor: '#B0B0B0', borderRadius: 1, opacity: 0.7 },
   marqueeText: { color: '#0F5132', fontSize: 18, fontWeight: '700' },
   marqueeClip: { flex: 1, overflow: 'hidden' },
+  fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 36 },
+  fadeRight: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 36 },
 
   categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 12, marginTop: -6 },
   carouselContainer: { paddingLeft: 12 },

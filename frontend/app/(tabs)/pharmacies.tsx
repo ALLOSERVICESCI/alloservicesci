@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, ImageBackground, Dimensions, TextInput, Platform } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, ImageBackground, Dimensions, TextInput, Platform, ScrollView, RefreshControl } from 'react-native';
 import * as Location from 'expo-location';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,6 +23,7 @@ export default function Pharmacies() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showNearTip, setShowNearTip] = useState(false);
   const [showDutyTip, setShowDutyTip] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [showResetLink, setShowResetLink] = useState(false);
 
@@ -84,7 +85,7 @@ export default function Pharmacies() {
     if (nearMe && !onDuty) setOnDuty(true);
     if (nearMe) { setCity(''); setQuery(''); }
   }, [nearMe]);
-  // Affichage conditionnel du lien de réinitialisation des infobulles (masqué après première utilisation)
+
   useEffect(() => {
     (async () => {
       try {
@@ -96,8 +97,6 @@ export default function Pharmacies() {
     })();
   }, []);
 
-
-
   // Recharger automatiquement quand filtres changent
   useEffect(() => {
     load();
@@ -106,6 +105,15 @@ export default function Pharmacies() {
   const triggerHaptic = async () => {
     if (Platform.OS !== 'web') {
       try { await Haptics.selectionAsync(); } catch {}
+    }
+  };
+
+  const onRefresh = async () => {
+    try {
+      setRefreshing(true);
+      await load();
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -151,150 +159,149 @@ export default function Pharmacies() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
-        <View pointerEvents="none" style={styles.headerOverlay} />
-        <View style={styles.titleWrap}>
-          <View style={styles.headerRow} testID="pharmaciesHeaderRow" dataSet={{ testid: 'pharmaciesHeaderRow' }}>
-            <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle" dataSet={{ testid: 'pharmaciesHeaderTitle' }} accessibilityLabel="Pharmacies" nativeID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
-            {(nearMe || (city && !nearMe)) && (
-              <>
-                <Text style={styles.headerDot} testID="headerDot" dataSet={{ testid: 'headerDot' }}> • </Text>
-                {nearMe ? (
-                  <Text style={styles.nearHeader} testID="nearHeaderLabel" dataSet={{ testid: 'nearHeaderLabel' }} accessibilityLabel="Autour de moi" nativeID="nearHeaderLabel">{t('nearMe')}</Text>
-                ) : (
-                  <Text style={styles.cityHeader} testID="cityHeaderLabel" dataSet={{ testid: 'cityHeaderLabel' }} accessibilityLabel={city} nativeID="cityHeaderLabel">{city}</Text>
-                )}
-              </>
-            )}
+      <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}> 
+        <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
+          <View pointerEvents="none" style={styles.headerOverlay} />
+          <View style={styles.titleWrap}>
+            <View style={styles.headerRow} testID="pharmaciesHeaderRow" dataSet={{ testid: 'pharmaciesHeaderRow' }}>
+              <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle" dataSet={{ testid: 'pharmaciesHeaderTitle' }} accessibilityLabel="Pharmacies" nativeID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
+              {(nearMe || (city && !nearMe)) && (
+                <>
+                  <Text style={styles.headerDot} testID="headerDot" dataSet={{ testid: 'headerDot' }}> • </Text>
+                  {nearMe ? (
+                    <Text style={styles.nearHeader} testID="nearHeaderLabel" dataSet={{ testid: 'nearHeaderLabel' }} accessibilityLabel="Autour de moi" nativeID="nearHeaderLabel">{t('nearMe')}</Text>
+                  ) : (
+                    <Text style={styles.cityHeader} testID="cityHeaderLabel" dataSet={{ testid: 'cityHeaderLabel' }} accessibilityLabel={city} nativeID="cityHeaderLabel">{city}</Text>
+                  )}
+                </>
+              )}
+            </View>
           </View>
-        </View>
-      </ImageBackground>
+        </ImageBackground>
 
-      {/* Filtres */}
-
-      {/* Filtres actifs (badges) */}
-      <View style={styles.activeFiltersRow}>
-        <TouchableOpacity onPress={handleNearPress} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={[styles.chip, nearMe ? styles.chipNear : styles.chipInactive]} accessible accessibilityLabel="chipNear">
-          <Ionicons name="location-outline" size={18} color={nearMe ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
-          <Text style={nearMe ? styles.chipTextNear : styles.chipTextInactive}>{t('nearMe')}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleDutyPress} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={[styles.chip, onDuty ? styles.chipOnDuty : styles.chipInactive]} accessible accessibilityLabel="chipOnDuty">
-          <Ionicons name="medkit-outline" size={18} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
-          <Text style={onDuty ? styles.chipTextOn : styles.chipTextInactive}>{t('onDutyShort') || 'De Garde'}</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Tips (premier usage) */}
-      {(showNearTip || showDutyTip) && (
-        <View style={styles.tipsWrap}>
-          {showNearTip && (
-            <View style={[styles.tipBox, styles.tipNear]}>
-              <View style={styles.tipRow}>
-                <Ionicons name="location-outline" size={16} color="#0D6EFD" style={{ marginRight: 6 }} />
-                <Text style={styles.tipText}>{t('tipNear')}</Text>
-              </View>
-              <TouchableOpacity onPress={() => setShowNearTip(false)} style={styles.tipBtn}>
-                <Text style={styles.tipBtnText}>{t('gotIt') || 'Compris'}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          {showDutyTip && (
-            <View style={[styles.tipBox, styles.tipDuty]}>
-              <View style={styles.tipRow}>
-                <Ionicons name="medkit-outline" size={16} color="#0A7C3A" style={{ marginRight: 6 }} />
-                <Text style={styles.tipText}>{t('tipDuty')}</Text>
-              </View>
-              <TouchableOpacity onPress={() => setShowDutyTip(false)} style={styles.tipBtn}>
-                <Text style={styles.tipBtnText}>{t('gotIt') || 'Compris'}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-      )}
-
-      {/* Action: Réinitialiser les infobulles (affiché une seule fois) */}
-      {showResetLink && (
-        <View style={{ paddingHorizontal: 16 }}>
-          <TouchableOpacity
-            onPress={async () => {
-              try {
-                await AsyncStorage.removeItem('tip_near_shown');
-                await AsyncStorage.removeItem('tip_duty_shown');
-                await AsyncStorage.setItem('tips_reset_used', '1');
-                setShowNearTip(false);
-                setShowDutyTip(false);
-                setShowResetLink(false);
-                Alert.alert('Info', t('tipsReset'));
-              } catch (e) {
-                // silencieux
-              }
-            }}
-            style={styles.resetLink}
-          >
-            <Text style={styles.resetLinkText}>{t('resetTips') || 'Réinitialiser les infobulles'}</Text>
+        {/* Filtres actifs (badges) */}
+        <View style={styles.activeFiltersRow}>
+          <TouchableOpacity onPress={handleNearPress} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={[styles.chip, nearMe ? styles.chipNear : styles.chipInactive]} accessible accessibilityLabel="chipNear">
+            <Ionicons name="location-outline" size={18} color={nearMe ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+            <Text style={nearMe ? styles.chipTextNear : styles.chipTextInactive}>{t('nearMe')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleDutyPress} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={[styles.chip, onDuty ? styles.chipOnDuty : styles.chipInactive]} accessible accessibilityLabel="chipOnDuty">
+            <Ionicons name="medkit-outline" size={18} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+            <Text style={onDuty ? styles.chipTextOn : styles.chipTextInactive}>{t('onDutyShort') || 'De Garde'}</Text>
           </TouchableOpacity>
         </View>
-      )}
 
-      <View style={styles.filters}>
-        <View />
-
-        {/* Barre de recherche ville */}
-        <View style={styles.searchBlock}>
-          <Text style={styles.selectLabel}>{t('city')}</Text>
-          <View style={[styles.searchRow, nearMe && styles.searchRowDisabled]}
-            pointerEvents={nearMe ? 'none' : 'auto'}>
-            <TextInput
-              value={query}
-              onChangeText={(txt) => { setQuery(txt); setShowSuggestions(true); }}
-              onFocus={() => setShowSuggestions(true)}
-              placeholder={t('searchCity')}
-              style={styles.searchInputFlex}
-              autoCapitalize="none"
-              autoCorrect={false}
-              editable={!nearMe}
-              returnKeyType="search"
-              onSubmitEditing={() => {
-                // If user presses enter, try to apply first suggestion
-                if (!nearMe && filteredCities[0]) onSelectSuggestion(filteredCities[0]);
-                setShowSuggestions(false);
-              }}
-            />
-            {(!!query || !!city) && (
-              <TouchableOpacity onPress={() => { setQuery(''); setCity(''); }} style={styles.clearBtn}>
-                <Text style={styles.clearBtnText}>{t('clear') || 'Effacer'}</Text>
-              </TouchableOpacity>
+        {/* Tips (premier usage) */}
+        {(showNearTip || showDutyTip) && (
+          <View style={styles.tipsWrap}>
+            {showNearTip && (
+              <View style={[styles.tipBox, styles.tipNear]}>
+                <View style={styles.tipRow}>
+                  <Ionicons name="location-outline" size={16} color="#0D6EFD" style={{ marginRight: 6 }} />
+                  <Text style={styles.tipText}>{t('tipNear')}</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowNearTip(false)} style={styles.tipBtn}>
+                  <Text style={styles.tipBtnText}>{t('gotIt') || 'Compris'}</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {showDutyTip && (
+              <View style={[styles.tipBox, styles.tipDuty]}>
+                <View style={styles.tipRow}>
+                  <Ionicons name="medkit-outline" size={16} color="#0A7C3A" style={{ marginRight: 6 }} />
+                  <Text style={styles.tipText}>{t('tipDuty')}</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowDutyTip(false)} style={styles.tipBtn}>
+                  <Text style={styles.tipBtnText}>{t('gotIt') || 'Compris'}</Text>
+                </TouchableOpacity>
+              </View>
             )}
           </View>
-          {!nearMe && showSuggestions && query.length > 0 && (
-            <View style={styles.dropdown} testID="citySuggestions" dataSet={{ testid: 'citySuggestions' }}>
-              <View style={{ maxHeight: 220 }}>
-                {filteredCities.map((c) => (<CityButton key={c} name={c} />))}
-                {filteredCities.length === 0 && (
-                  <View style={styles.noResult}><Text style={styles.noResultText}>{t('notAvailable')}</Text></View>
-                )}
-              </View>
+        )}
+
+        {/* Action: Réinitialiser les infobulles */}
+        {showResetLink && (
+          <View style={{ paddingHorizontal: 16 }}>
+            <TouchableOpacity
+              onPress={async () => {
+                try {
+                  await AsyncStorage.removeItem('tip_near_shown');
+                  await AsyncStorage.removeItem('tip_duty_shown');
+                  await AsyncStorage.setItem('tips_reset_used', '1');
+                  setShowNearTip(false);
+                  setShowDutyTip(false);
+                  setShowResetLink(false);
+                  Alert.alert('Info', t('tipsReset'));
+                } catch (e) {}
+              }}
+              style={styles.resetLink}
+            >
+              <Text style={styles.resetLinkText}>{t('resetTips') || 'Réinitialiser les infobulles'}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        <View style={styles.filters}>
+          <View />
+
+          {/* Barre de recherche ville */}
+          <View style={styles.searchBlock}>
+            <Text style={styles.selectLabel}>{t('city')}</Text>
+            <View style={[styles.searchRow, nearMe && styles.searchRowDisabled]}
+              pointerEvents={nearMe ? 'none' : 'auto'}>
+              <TextInput
+                value={query}
+                onChangeText={(txt) => { setQuery(txt); setShowSuggestions(true); }}
+                onFocus={() => setShowSuggestions(true)}
+                placeholder={t('searchCity')}
+                style={styles.searchInputFlex}
+                autoCapitalize="none"
+                autoCorrect={false}
+                editable={!nearMe}
+                returnKeyType="search"
+                onSubmitEditing={() => {
+                  if (!nearMe && filteredCities[0]) onSelectSuggestion(filteredCities[0]);
+                  setShowSuggestions(false);
+                }}
+              />
+              {(!!query || !!city) && (
+                <TouchableOpacity onPress={() => { setQuery(''); setCity(''); }} style={styles.clearBtn}>
+                  <Text style={styles.clearBtnText}>{t('clear') || 'Effacer'}</Text>
+                </TouchableOpacity>
+              )}
             </View>
-          )}
+            {!nearMe && showSuggestions && query.length > 0 && (
+              <View style={styles.dropdown} testID="citySuggestions" dataSet={{ testid: 'citySuggestions' }}>
+                <View style={{ maxHeight: 220 }}>
+                  {filteredCities.map((c) => (<CityButton key={c} name={c} />))}
+                  {filteredCities.length === 0 && (
+                    <View style={styles.noResult}><Text style={styles.noResultText}>{t('notAvailable')}</Text></View>
+                  )}
+                </View>
+              </View>
+            )}
+          </View>
         </View>
 
-        <TouchableOpacity onPress={load} style={styles.btn}><Text style={styles.btnText}>{t('refresh')}</Text></TouchableOpacity>
-      </View>
+        <View style={styles.filters}>
+          <TouchableOpacity onPress={load} style={styles.btn}><Text style={styles.btnText}>{t('refresh')}</Text></TouchableOpacity>
+        </View>
 
-      {/* Contenu */}
-      <View style={styles.content}>
-        {error && <Text style={styles.error}>{error}</Text>}
-        {loading && <ActivityIndicator />}
-        {items.map((p) => (
-          <View key={p.id} style={styles.card}>
-            <Text style={styles.title}>{p.name}</Text>
-            <Text style={styles.meta}>{p.address} • {p.city}</Text>
-            {p.phone && <Text style={styles.meta}>{p.phone}</Text>}
-            {p.opening_hours && <Text style={styles.meta}>{p.opening_hours}</Text>}
-            {p.on_duty && <Text style={[styles.badge, styles.badgeOnDuty]}>De garde</Text>}
-          </View>
-        ))}
-      </View>
+        {/* Contenu */}
+        <View style={styles.content}>
+          {error && <Text style={styles.error}>{error}</Text>}
+          {loading && <ActivityIndicator />}
+          {items.map((p) => (
+            <View key={p.id} style={styles.card}>
+              <Text style={styles.title}>{p.name}</Text>
+              <Text style={styles.meta}>{p.address} • {p.city}</Text>
+              {p.phone && <Text style={styles.meta}>{p.phone}</Text>}
+              {p.opening_hours && <Text style={styles.meta}>{p.opening_hours}</Text>}
+              {p.on_duty && <Text style={[styles.badge, styles.badgeOnDuty]}>De garde</Text>}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 }

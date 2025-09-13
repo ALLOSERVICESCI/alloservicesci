@@ -1,13 +1,23 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { useNotificationsCenter } from '../src/context/NotificationsContext';
 import { useI18n } from '../src/i18n/i18n';
 
 const APP_ICON = require('../assets/icons/icons/icon.png');
 
 export default function NotificationsCenter() {
-  const { items, clear, removeAt } = useNotificationsCenter();
+  const { items, clear, removeAt, refreshLocal } = useNotificationsCenter();
   const { t } = useI18n();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    try {
+      setRefreshing(true);
+      await refreshLocal();
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -39,6 +49,7 @@ export default function NotificationsCenter() {
               <TouchableOpacity onPress={() => removeAt(index)} style={styles.btnDel}><Text style={styles.btnDelText}>{t('remove')}</Text></TouchableOpacity>
             </View>
           )}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
           contentContainerStyle={{ paddingVertical: 12 }}
         />
       )}
