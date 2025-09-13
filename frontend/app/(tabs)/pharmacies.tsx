@@ -84,6 +84,18 @@ export default function Pharmacies() {
     if (nearMe && !onDuty) setOnDuty(true);
     if (nearMe) { setCity(''); setQuery(''); }
   }, [nearMe]);
+  // Affichage conditionnel du lien de réinitialisation des infobulles (masqué après première utilisation)
+  useEffect(() => {
+    (async () => {
+      try {
+        const used = await AsyncStorage.getItem('tips_reset_used');
+        setShowResetLink(!used);
+      } catch {
+        setShowResetLink(true);
+      }
+    })();
+  }, []);
+
 
 
   // Recharger automatiquement quand filtres changent
