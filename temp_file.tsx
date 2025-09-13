@@ -59,7 +59,7 @@ export default function Subscribe() {
   const goRegister = () => router.push('/auth/register');
 
   const premiumFeatures = [
-    { key: 'exams', icon: '📚', title: t('cat_examens'), description: t('premiumFeature_exams') },
+    { key: 'exams', icon: '📚', title: t('examens'), description: t('premiumFeature_exams') },
     { key: 'education', icon: '🎓', title: t('cat_education'), description: t('premiumFeature_education') },
     { key: 'jobs', icon: '💼', title: t('cat_emplois'), description: t('premiumFeature_jobs') },
     { key: 'services', icon: '🏛️', title: t('cat_services_publics'), description: t('premiumFeature_services') },
