@@ -61,6 +61,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ DYNAMIC ON_DUTY BACKEND TEST - Re-run after backend change: dynamic on_duty based on duty_days. All tests PASSED: 1) Baseline: 200 + 4 pharmacies, all have on_duty boolean field (3 on_duty=true). 2) City filter (Abengourou): 200 + 0 results (no data). 3) on_duty=true filter: 200 + 3 pharmacies, all on_duty=true (computed from duty_days). 4) near_me + on_duty (Abidjan coords): 200 + 2 pharmacies, subset validation passed. 5) city + on_duty (Abidjan): 200 + 3 pharmacies, all match filters. 6) on_duty field consistency: All pharmacies have consistent boolean field. 7) Regression alerts unread_count: 200 + count=15. Dynamic computation working: 3 pharmacies on duty today (weekday 4 matches duty_days). No 5xx errors detected."
+      - working: true
+        agent: "testing"
+        comment: "✅ FRESH FULL BACKEND REGRESSION CONFIRMED - All pharmacies endpoints working perfectly after rollback confirmation: A1) No filters: 200 + 4 pharmacies with all required fields (id, name, address, city, on_duty). A2) City filter (Marcory): 200 + 0 results (case-insensitive matching works). A3) on_duty=true filter: 200 + 2 pharmacies, all on_duty=true (computed dynamically from duty_days). A4) Near Abidjan + on_duty combined: 200 + 2 pharmacies near Abidjan coords, all on_duty=true with required fields. Dynamic on_duty computation working correctly based on current weekday matching duty_days array."
 
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
