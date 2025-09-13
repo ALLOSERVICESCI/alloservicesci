@@ -1,0 +1,5 @@
+  marqueeOuter: { marginTop: 12, marginBottom: 18, alignSelf: 'center' },
+  marqueeRounded: { borderRadius: 14, backgroundColor: '#FFFFFF', paddingHorizontal: 12, height: 32, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderWidth: 1, borderColor: '#E8F0E8' },
+  marqueeText: { color: '#0F5132', fontSize: 16, fontWeight: '700' },
+  fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 36 },
+  fadeRight: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 36 },
