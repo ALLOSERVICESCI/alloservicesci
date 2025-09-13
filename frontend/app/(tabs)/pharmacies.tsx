@@ -244,4 +244,7 @@ const styles = StyleSheet.create({
   chipOnDuty: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
   chipTextNear: { color: '#0D6EFD', fontSize: 12, fontWeight: '600' },
   chipTextOn: { color: '#0A7C3A', fontSize: 12, fontWeight: '600' },
+  chipInactive: { backgroundColor: '#F4F5F6', borderColor: '#DADADA' },
+  chipTextInactive: { color: '#666', fontSize: 12, fontWeight: '600' },
+
 });
