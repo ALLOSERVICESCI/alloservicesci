@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   slogan: { fontSize: 18, color: '#666', marginTop: 4, textAlign: 'center' },
   greeting: { fontSize: 20, color: '#0F5132', marginTop: 8, fontWeight: '700', textAlign: 'center' },
   marqueeOuter: { marginTop: 20, marginBottom: 18, alignSelf: 'center' },
-  infoBarContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 22, borderWidth: 2, borderColor: '#FF8A00', height: 48, paddingRight: 10, overflow: 'hidden' },
+  infoBarContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 22, borderWidth: 1, borderColor: '#FFA64D', height: 48, paddingRight: 10, overflow: 'hidden' },
   infoPill: { height: '100%', paddingHorizontal: 20, backgroundColor: '#D32F2F', justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 22, borderBottomLeftRadius: 22 },
   infoPillText: { color: '#fff', fontWeight: '800', fontSize: 16 },
   ticksRow: { position: 'absolute', left: 70, right: 14, top: 8, height: 8, flexDirection: 'row', justifyContent: 'space-between' },
