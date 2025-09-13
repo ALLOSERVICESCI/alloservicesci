@@ -357,4 +357,13 @@ const styles = StyleSheet.create({
   resetLink: { paddingVertical: 8, paddingHorizontal: 12, backgroundColor: '#F0F3F0', borderRadius: 8, alignItems: 'center' },
   resetLinkText: { color: '#0A7C3A', fontSize: 12, fontWeight: '600' },
 
+  tipsWrap: { paddingHorizontal: 16, paddingVertical: 8 },
+  tipBox: { backgroundColor: '#F8F9FA', borderRadius: 8, padding: 12, marginBottom: 8, borderWidth: 1 },
+  tipNear: { borderColor: '#0D6EFD' },
+  tipDuty: { borderColor: '#0A7C3A' },
+  tipRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  tipText: { flex: 1, fontSize: 12, color: '#333' },
+  tipBtn: { paddingHorizontal: 12, paddingVertical: 6, backgroundColor: '#fff', borderRadius: 6, borderWidth: 1, borderColor: '#ddd' },
+  tipBtnText: { fontSize: 12, fontWeight: '600', color: '#333' },
+
 });
