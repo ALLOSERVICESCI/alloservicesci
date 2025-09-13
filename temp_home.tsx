@@ -100,6 +100,7 @@ export default function Home() {
   const [marqueeW, setMarqueeW] = useState(0);
   const [textW, setTextW] = useState(0);
   const marqueeX = useSharedValue(0);
+  const marqueeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: marqueeX.value }] }));
 
   useEffect(() => {
     if (!textW || marqueeItems.length === 0) return;
