@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
   infoPillText: { color: '#fff', fontWeight: '800', fontSize: 16 },
   marqueeText: { color: '#0F5132', fontSize: 18, fontWeight: '700' },
   marqueeClip: { flex: 1, overflow: 'hidden' },
+  marqueeRow: { flexDirection: 'row', alignItems: 'center' },
   fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 36 },
   fadeRight: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 36 },
 
