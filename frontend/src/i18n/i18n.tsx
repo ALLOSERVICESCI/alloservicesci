@@ -26,6 +26,7 @@ const translations: Record<LangKey, Dict> = {
     premiumFeatures: 'Fonctionnalités Premium',
     premiumActiveDescription: 'Votre abonnement Premium est actif. Merci pour votre soutien !',
     premiumThankYou: 'Merci pour votre confiance !',
+    securePaymentByCinetPay: 'Paiement sécurisé par CinetPay',
     expiresOn: 'Expire le',
     refreshStatus: 'Actualiser le statut',
     paymentReturnPrompt: 'Revenez à l\'application pour vérifier votre statut.',
@@ -33,6 +34,7 @@ const translations: Record<LangKey, Dict> = {
     network: 'Réseau',
     error: 'Erreur',
     saved: 'Enregistré',
+    save: 'Enregistrer',
     profileUpdated: 'Profil mis à jour',
     hello: 'Bonjour',
     welcome: 'Bienvenue !',
@@ -41,6 +43,7 @@ const translations: Record<LangKey, Dict> = {
     editProfile: 'Modifier mon profil',
     notifCenter: 'Centre de notifications',
     paymentHistory: 'Historique des paiements',
+    logout: 'Se déconnecter',
 
     // Tabs & sections
     tabHome: 'Accueil',
@@ -85,6 +88,12 @@ const translations: Record<LangKey, Dict> = {
     noPaidPayments: 'Aucun paiement accepté',
     noPayments: 'Aucun paiement',
 
+    // Notifications
+    clearHistory: 'Effacer l\'historique',
+    noNotifications: 'Aucune notification',
+    noTitle: 'Sans titre',
+    remove: 'Supprimer',
+
     // Auth / Inscription
     createTitle: 'Créer votre compte',
     firstName: 'Prénom',
@@ -123,6 +132,11 @@ const translations: Record<LangKey, Dict> = {
     premiumCallToAction: 'Access all exclusive features by becoming Premium',
     subscribePremium: 'Subscribe to Premium',
     renewPremium: 'Renew Premium',
+    premiumAnnualTitle: 'Premium 1200 FCFA/year',
+    premiumFeatures: 'Premium features',
+    premiumActiveDescription: 'Your Premium subscription is active. Thank you for your support!',
+    premiumThankYou: 'Thank you for your trust!',
+    securePaymentByCinetPay: 'Secure payment by CinetPay',
     expiresOn: 'Expires on',
     refreshStatus: 'Refresh status',
     paymentReturnPrompt: 'Return to the app to check your status.',
@@ -130,6 +144,7 @@ const translations: Record<LangKey, Dict> = {
     network: 'Network',
     error: 'Error',
     saved: 'Saved',
+    save: 'Save',
     profileUpdated: 'Profile updated',
     hello: 'Hello',
     welcome: 'Welcome!',
@@ -138,8 +153,14 @@ const translations: Record<LangKey, Dict> = {
     editProfile: 'Edit my profile',
     notifCenter: 'Notifications center',
     paymentHistory: 'Payments history',
+    logout: 'Log out',
 
+    tabHome: 'Home',
+    tabAlerts: 'Alerts',
     tabPharm: 'Pharmacies',
+    tabPremium: 'Premium',
+    tabProfile: 'Profile',
+
     onDuty: 'On-duty pharmacies',
     onDutyShort: 'On duty',
     nearMe: 'Near me',
@@ -153,6 +174,12 @@ const translations: Record<LangKey, Dict> = {
     phonePh: 'Phone',
     emailOpt: 'Email (optional)',
 
+    // Notifications
+    clearHistory: 'Clear history',
+    noNotifications: 'No notifications',
+    noTitle: 'Untitled',
+    remove: 'Remove',
+
     // Tooltips Pharmacies
     tipNear: 'Show nearby pharmacies (within 5 km)',
     tipDuty: 'Show only on-duty pharmacies',
@@ -161,10 +188,22 @@ const translations: Record<LangKey, Dict> = {
     tipsReset: 'Tooltips reset. Tap the buttons again to see them.',
     resetTipsHint: 'To show the tips again on the Pharmacies page',
   },
-  es: {},
-  it: {},
-  tr: {},
-  zh: {},
+  es: {
+    slogan: 'Todos los servicios esenciales en un solo clic',
+    welcome: '¡Bienvenido!'
+  },
+  it: {
+    slogan: 'Tutti i servizi essenziali in un clic',
+    welcome: 'Benvenuto!'
+  },
+  tr: {
+    slogan: 'Tüm temel hizmetler tek tıkla',
+    welcome: 'Hoş geldiniz!'
+  },
+  zh: {
+    slogan: '一键获取所有基本服务',
+    welcome: '欢迎！'
+  },
 };
 
 const I18nContext = createContext<I18nContextType>({ lang: 'fr', setLang: () => {}, t: (k) => k });

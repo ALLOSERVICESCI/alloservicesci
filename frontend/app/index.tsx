@@ -1,9 +1,27 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Image, StatusBar, Platform, Animated, Easing, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 
 const APP_ICON = require('../assets/icons/icons/icon.png');
+
+const LANGS: ('fr'|'en'|'es'|'it'|'tr'|'zh')[] = ['fr','en','es','it','tr','zh'];
+const WELCOME_MAP: Record<string, string> = {
+  fr: 'Bienvenue',
+  en: 'Welcome',
+  es: '¡Bienvenido!',
+  it: 'Benvenuto',
+  tr: 'Hoş geldiniz',
+  zh: '欢迎',
+};
+const SLOGAN_MAP: Record<string, string> = {
+  fr: 'Tous les services essentiels en un clic',
+  en: 'Your multi-service assistant',
+  es: 'Todos los servicios esenciales en un solo clic',
+  it: 'Tutti i servizi essenziali in un clic',
+  tr: 'Tüm temel hizmetler tek tıkla',
+  zh: '一键获取所有基本服务',
+};
 
 export default function Index() {
   const router = useRouter();
@@ -13,6 +31,12 @@ export default function Index() {
   const logoScale = useRef(new Animated.Value(0.98)).current;
   const logoTranslateY = useRef(new Animated.Value(6)).current;
   const subOpacity = useRef(new Animated.Value(0)).current;
+
+  const [langIdx, setLangIdx] = useState(0);
+  const [welcomeText, setWelcomeText] = useState(WELCOME_MAP[LANGS[0]]);
+  const [sloganText, setSloganText] = useState(SLOGAN_MAP[LANGS[0]]);
+  const welcomeFade = useRef(new Animated.Value(0)).current;
+  const sloganFade = useRef(new Animated.Value(0)).current;
 
   const goHome = () => router.replace('/(tabs)/home');
 
@@ -28,10 +52,37 @@ export default function Index() {
     ]);
     seq.start();
 
-    // Navigation plus robuste selon plateforme pour éviter blocage en web
-    const delay = Platform.OS === 'web' ? 1200 : 2500;
+    // Cycle languages for the two texts
+    const cycle = setInterval(() => {
+      Animated.parallel([
+        Animated.timing(welcomeFade, { toValue: 0, duration: 140, useNativeDriver: true }),
+        Animated.timing(sloganFade, { toValue: 0, duration: 140, useNativeDriver: true }),
+      ]).start(({ finished }) => {
+        if (!finished) return;
+        setLangIdx((prev) => {
+          const next = (prev + 1) % LANGS.length;
+          setWelcomeText(WELCOME_MAP[LANGS[next]]);
+          setSloganText(SLOGAN_MAP[LANGS[next]]);
+          // fade back in
+          Animated.parallel([
+            Animated.timing(welcomeFade, { toValue: 1, duration: 180, useNativeDriver: true }),
+            Animated.timing(sloganFade, { toValue: 1, duration: 180, useNativeDriver: true }),
+          ]).start();
+          return next;
+        });
+      });
+    }, 1200);
+
+    // initial fade-in for texts
+    welcomeFade.setValue(0); sloganFade.setValue(0);
+    Animated.parallel([
+      Animated.timing(welcomeFade, { toValue: 1, duration: 300, useNativeDriver: true }),
+      Animated.timing(sloganFade, { toValue: 1, duration: 300, useNativeDriver: true }),
+    ]).start();
+
+    const delay = Platform.OS === 'web' ? 1500 : 2600;
     const timer = setTimeout(() => { goHome(); }, delay);
-    return () => { clearTimeout(timer); };
+    return () => { clearTimeout(timer); clearInterval(cycle); };
   }, [titleOpacity, logoOpacity, logoScale, logoTranslateY, subOpacity]);
 
   return (
@@ -44,8 +95,8 @@ export default function Index() {
             <Image source={APP_ICON} style={styles.logo} resizeMode="contain" />
           </View>
         </Animated.View>
-        <Animated.Text style={[styles.subtitle, { opacity: subOpacity }]}>Bienvenue</Animated.Text>
-        <Animated.Text style={[styles.tagline, { opacity: subOpacity }]}>Tous les services essentiels en un clic</Animated.Text>
+        <Animated.Text style={[styles.subtitle, { opacity: Animated.multiply(subOpacity, welcomeFade) }]}>{welcomeText}</Animated.Text>
+        <Animated.Text style={[styles.tagline, { opacity: Animated.multiply(subOpacity, sloganFade) }]}>{sloganText}</Animated.Text>
         <Animated.Text style={[styles.motto, { opacity: subOpacity }]}>Union - Discipline - Travail</Animated.Text>
         <Text style={styles.tapHint}>Touchez pour continuer</Text>
       </Pressable>
