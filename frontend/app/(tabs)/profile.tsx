@@ -88,6 +88,14 @@ export default function Profile() {
   };
 
   const onResetTipsFromProfile = async () => {
+  const bulbScale = useRef(new Animated.Value(1)).current;
+  const animateBulb = () => {
+    Animated.sequence([
+      Animated.timing(bulbScale, { toValue: 1.15, duration: 120, useNativeDriver: true }),
+      Animated.timing(bulbScale, { toValue: 1.0, duration: 120, useNativeDriver: true }),
+    ]).start();
+  };
+
     try {
       if (Platform.OS !== 'web') {
         try { await Haptics.selectionAsync(); } catch {}
