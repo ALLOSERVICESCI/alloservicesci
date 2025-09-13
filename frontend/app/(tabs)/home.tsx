@@ -104,7 +104,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!textW || marqueeItems.length === 0) return;
-    marqueeX.stopAnimation();
+    cancelAnimation(marqueeX);
     const speed = 60; // px/s
     const distance = textW; // with double-buffer, shift by exactly one text width
     const duration = (distance / speed) * 1000;
@@ -115,7 +115,7 @@ export default function Home() {
       });
     };
     const id = setTimeout(loop, 100);
-    return () => { clearTimeout(id); marqueeX.stopAnimation(); };
+    return () => { clearTimeout(id); cancelAnimation(marqueeX); };
   }, [textW, marqueeItems]);
 
   const onRefresh = async () => {
