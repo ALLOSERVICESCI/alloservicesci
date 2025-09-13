@@ -87,7 +87,6 @@ export default function Profile() {
     }
   };
 
-  const profileActions = [
   const onResetTipsFromProfile = async () => {
     try {
       if (Platform.OS !== 'web') {
@@ -102,10 +101,12 @@ export default function Profile() {
     }
   };
 
+  const profileActions = [
     { key: 'edit', title: t('editProfile'), icon: '✏️', onPress: goEdit, color: '#0A7C3A' },
     { key: 'notifications', title: t('notifCenter'), icon: '🔔', onPress: goNotifCenter, color: '#0A7C3A' },
     { key: 'payments', title: t('paymentHistory'), icon: '💳', onPress: goPaymentHistory, color: '#0A7C3A' },
-  ];
+    { key: 'resetTips', title: t('resetTips'), subtitle: t('resetTipsHint'), icon: 'custom', onPress: onResetTipsFromProfile, color: '#0A7C3A' },
+  ] as any[];
 
   const avatarSource = (user as any)?.avatar ? { uri: `data:image/jpeg;base64,${(user as any).avatar}` } : APP_ICON;
 
