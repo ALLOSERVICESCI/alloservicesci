@@ -99,7 +99,7 @@ export default function Home() {
 
   const [marqueeW, setMarqueeW] = useState(0);
   const [textW, setTextW] = useState(0);
-  const marqueeX = useRef(new Animated.Value(0)).current;
+  const marqueeX = useSharedValue(0);
 
   useEffect(() => {
     if (!textW || marqueeItems.length === 0) return;
