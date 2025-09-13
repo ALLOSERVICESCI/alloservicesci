@@ -12,6 +12,7 @@ type Ctx = {
   alertsUnreadCount: number | null;
   setAlertsUnreadCount: (n: number) => void;
   refreshAlertsUnread: (userId?: string) => Promise<void>;
+  addLocal: (n: Omit<NotifItem, 'id' | 'receivedAt'> & Partial<Pick<NotifItem, 'id' | 'receivedAt'>>) => Promise<void>;
 };
 
 const NotificationsContext = createContext<Ctx>({
@@ -21,9 +22,13 @@ const NotificationsContext = createContext<Ctx>({
   alertsUnreadCount: null,
   setAlertsUnreadCount: () => {},
   refreshAlertsUnread: async () => {},
+  addLocal: async () => {},
 });
 
 const STORAGE_KEY = 'notif_history_list_v1';
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+const pruneOlderThan24h = (list: NotifItem[]) => list.filter((n) => (Date.now() - (n.receivedAt || 0)) <= DAY_MS);
 
 export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<NotifItem[]>([]);
@@ -33,7 +38,14 @@ export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({
     (async () => {
       const raw = await AsyncStorage.getItem(STORAGE_KEY);
       if (raw) {
-        try { setItems(JSON.parse(raw)); } catch {}
+        try {
+          const parsed: NotifItem[] = JSON.parse(raw);
+          const pruned = pruneOlderThan24h(parsed);
+          if (pruned.length !== parsed.length) {
+            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(pruned));
+          }
+          setItems(pruned);
+        } catch {}
       }
     })();
   }, []);
@@ -48,11 +60,10 @@ export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({
         receivedAt: Date.now(),
       };
       setItems((prev) => {
-        const next = [n, ...prev].slice(0, 200);
+        const next = pruneOlderThan24h([n, ...prev]).slice(0, 200);
         AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {});
         return next;
       });
-      // bump local badge by +1 if we have a count
       setAlertsUnreadCount((prev) => typeof prev === 'number' ? prev + 1 : prev);
     });
     return () => { sub.remove(); };
@@ -81,7 +92,22 @@ export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch {}
   };
 
-  const value = useMemo(() => ({ items, clear, removeAt, alertsUnreadCount, setAlertsUnreadCount, refreshAlertsUnread }), [items, alertsUnreadCount]);
+  const addLocal: Ctx['addLocal'] = async (n) => {
+    const item: NotifItem = {
+      id: n.id || `${Date.now()}`,
+      title: n.title || 'Alerte',
+      body: n.body || '',
+      data: n.data,
+      receivedAt: n.receivedAt || Date.now(),
+    };
+    setItems((prev) => {
+      const next = pruneOlderThan24h([item, ...prev]).slice(0, 200);
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  };
+
+  const value = useMemo(() => ({ items, clear, removeAt, alertsUnreadCount, setAlertsUnreadCount, refreshAlertsUnread, addLocal }), [items, alertsUnreadCount]);
   return <NotificationsContext.Provider value={value}>{children}</NotificationsContext.Provider>;
 };
 

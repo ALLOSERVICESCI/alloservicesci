@@ -42,27 +42,39 @@ export default function Home() {
     { slug: 'transport', label: t('transport'), icon: '🚌', isPremium: true },
   ], [t]);
 
-  // Marquee (défilement) des notifications sous "Bonjour ..."
-  const summary = useMemo(() => {
-    const fromItems = (items || []).slice(0, 6).map((i) => i.title || i.body).filter(Boolean) as string[];
-    if (fromItems.length) return fromItems.join(' • ');
-    // Exemples en français pour tester le défilement si aucune notification n'est encore disponible
-    const fallbackExamples = [
+  // Construire les éléments de résumé (titre coloré selon pertinence)
+  const marqueeItems = useMemo(() => {
+    const base: string[] = (items || []).slice(0, 6).map((i) => (i.title || i.body || '')).filter(Boolean) as string[];
+    const fallback = [
       'Alerte sécurité: circulation difficile à Cocody',
-      'Pharmacie de garde: Abobo – 24h/24',
-      'Info transport: Ligne 81 retard de 15 minutes',
-      'Examens & Concours: Inscriptions ouvertes CEP 2025',
-      'Météo: Pluies attendues cet après-midi à Yopougon',
-      'Services publics: Nouvelle procédure cartes grises',
+      'Danger: Présence de fumée vers Koumassi',
+      'Disparition: Enfant recherché à Yopougon',
+      'Accident: Voiture renversée à Cocody Danga',
+      'Embouteillage: Ligne 81 retard de 15 minutes',
+      'Inondation: Pluies attendues cet après-midi à Yopougon',
     ];
-    return fallbackExamples.join(' • ');
+    const list = base.length ? base : fallback;
+    const parse = (s: string) => {
+      const idx = s.indexOf(':');
+      if (idx > 0) return { kind: s.slice(0, idx).trim(), text: s.slice(idx + 1).trim() };
+      return { kind: 'Info', text: s };
+    };
+    return list.map(parse);
   }, [items]);
+
+  const colorForKind = (kind: string) => {
+    const k = kind.toLowerCase();
+    if (k.startsWith('danger') || k.startsWith('disparition') || k.startsWith('accident')) return '#D32F2F';
+    if (k.startsWith('alerte') || k.startsWith('embouteillage') || k.startsWith('inondation')) return '#FF8A00';
+    return '#0F5132';
+  };
+
   const [marqueeW, setMarqueeW] = useState(0);
   const [textW, setTextW] = useState(0);
   const marqueeX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (!marqueeW || !textW || !summary) return;
+    if (!marqueeW || !textW || marqueeItems.length === 0) return;
     marqueeX.stopAnimation();
     marqueeX.setValue(marqueeW);
     const speed = 60; // px/s
@@ -74,7 +86,7 @@ export default function Home() {
     };
     const id = setTimeout(loop, 100);
     return () => { clearTimeout(id); marqueeX.stopAnimation(); };
-  }, [marqueeW, textW, summary]);
+  }, [marqueeW, textW, marqueeItems]);
 
   const [aiPos] = React.useState<'bottom-right'|'bottom-left'|'top-right'|'top-left'>('bottom-right');
   const aiPositionStyle = React.useMemo(() => ({ bottom: 30, right: 20 }), []);
@@ -128,12 +140,18 @@ export default function Home() {
               <Text style={styles.brand}>{t('brand')}</Text>
               <Text style={styles.slogan} numberOfLines={1} onLayout={(e)=>setSloganW(e.nativeEvent.layout.width)}>{t('slogan')}</Text>
               <Text style={styles.greeting}>{greeting}</Text>
-              {/* Marquee résumé sous Bonjour ... */}
-              {!!summary && (
+              {!!marqueeItems.length && (
                 <View style={[styles.marqueeOuter, { width: sloganW ? sloganW : Math.min(width * 0.86, 340) }]}>
-                  <View style={styles.marqueeRounded} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
+                  <View style={[styles.marqueeRounded, styles.inputLike]} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
+                    <TouchableOpacity onPress={() => router.push('/(tabs)/alerts')} style={styles.infoBtn} accessibilityRole="button"><Text style={styles.infoBtnText}>Infos</Text></TouchableOpacity>
                     <Animated.Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={[styles.marqueeText, { transform: [{ translateX: marqueeX }] }]} numberOfLines={1}>
-                      {summary}
+                      {marqueeItems.map((it, idx) => (
+                        <Text key={idx}>
+                          <Text style={{ color: colorForKind(it.kind), fontWeight: '800' }}>{it.kind}{it.text ? ': ' : ''}</Text>
+                          <Text style={{ color: '#0F5132' }}>{it.text}</Text>
+                          {idx < marqueeItems.length - 1 ? <Text> • </Text> : null}
+                        </Text>
+                      ))}
                     </Animated.Text>
                     <LinearGradient pointerEvents="none" colors={["#F8FAF9", "#F8FAF900"]} style={[styles.fadeLeft]} />
                     <LinearGradient pointerEvents="none" colors={["#F8FAF900", "#F8FAF9"]} style={[styles.fadeRight]} />
@@ -176,10 +194,8 @@ export default function Home() {
         </View>
       </ScrollView>
 
-      {/* Hamburger menu on Home only */}
       <NavMenu />
 
-      {/* Floating AI FAB */}
       <Animated.View style={[
         styles.aiFab,
         styles.aiHalo,
@@ -216,8 +232,11 @@ const styles = StyleSheet.create({
   slogan: { fontSize: 18, color: '#666', marginTop: 4, textAlign: 'center' },
   greeting: { fontSize: 20, color: '#0F5132', marginTop: 8, fontWeight: '700', textAlign: 'center' },
   marqueeOuter: { marginTop: 12, marginBottom: 18, alignSelf: 'center' },
-  marqueeRounded: { borderRadius: 14, backgroundColor: '#FFFFFF', paddingHorizontal: 12, height: 32, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderWidth: 1, borderColor: '#E8F0E8' },
-  marqueeText: { color: '#0F5132', fontSize: 16, fontWeight: '700' },
+  marqueeRounded: { borderRadius: 10, backgroundColor: '#FFFFFF', paddingHorizontal: 8, height: 44, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderWidth: 1, borderColor: '#E8F0E8' },
+  inputLike: { flexDirection: 'row' },
+  infoBtn: { backgroundColor: '#D32F2F', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, marginRight: 8 },
+  infoBtnText: { color: '#fff', fontWeight: '800', fontSize: 12 },
+  marqueeText: { color: '#0F5132', fontSize: 17, fontWeight: '700' },
   fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 36 },
   fadeRight: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 36 },
 

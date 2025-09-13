@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { apiFetch } from '../../src/utils/api';
+import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 
 export default function NewAlert() {
   const [title, setTitle] = useState('');
@@ -9,6 +10,7 @@ export default function NewAlert() {
   const [city, setCity] = useState('Abidjan');
   const [imagesBase64, setImagesBase64] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const { addLocal } = useNotificationsCenter();
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -27,9 +29,11 @@ export default function NewAlert() {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, type: 'other', city, images_base64: imagesBase64 })
       });
-      const json = await res.json();
+      const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.detail || 'Erreur');
       Alert.alert('Alerte publiée', 'Une notification a été envoyée.');
+      // Ajouter dans le centre de notifications local
+      await addLocal({ title, body: description, data: { city } });
       setTitle(''); setDescription(''); setImagesBase64([]);
     } catch (e: any) {
       Alert.alert('Erreur', e.message || 'Impossible de publier');
