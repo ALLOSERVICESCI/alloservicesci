@@ -186,7 +186,8 @@ metadata:
 test_plan:
   current_focus:
     - "FRONTEND CRITICAL: Remove 'Réinitialiser les infobulles' action from Profile actions grid"
-  stuck_tasks: []
+  stuck_tasks:
+    - "FRONTEND CRITICAL: Remove 'Réinitialiser les infobulles' action from Profile actions grid"
   test_all: false
   test_priority: "high_first"
 
