@@ -202,7 +202,7 @@ export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
   const t = (k: string) => translations[lang]?.[k] || translations['fr']?.[k] || k;
 
   const value = useMemo(() => ({ lang, setLang, t }), [lang]);
-  return &lt;I18nContext.Provider value={value}&gt;{children}&lt;/I18nContext.Provider&gt;;
+  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 };
 
 export const useI18n = () => useContext(I18nContext);
