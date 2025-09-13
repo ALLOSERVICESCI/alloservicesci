@@ -184,7 +184,7 @@ frontend:
     implemented: true
     working: false
     file: "frontend/app/(tabs)/home.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "medium"
     needs_retesting: false
     status_history:
@@ -197,6 +197,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ FOCUSED MARQUEE DOUBLE-BUFFER SCROLLING TEST (iPhone 12/13/14: 390x844) - CRITICAL ISSUES FOUND: ✅ STRUCTURE WORKING: 1) Marquee capsule visible with orange Infos pill (#FF8A00 background), 2) Fallback content present ('Agression . ACCIDENT . DISPARITION . Embouteillage'), 3) Animation system active with translateX transforms. ❌ SCROLLING ISSUES: 1) MICRO-CUTS DETECTED: 3 large jumps (~290px) during loop transitions at t=2.5s, t=7.5s, t=13.0s - NOT seamless as required, 2) SPEED TOO SLOW: 18.3 px/s measured vs 60 px/s target - scrolling is 3x slower than expected, 3) LOOP RESETS VISIBLE: Large position jumps from -105px to +185px create visible micro-cuts instead of smooth double-buffer transition. 🔍 ROOT CAUSE: React Native Web animation fallback (useNativeDriver not supported) causing jerky JS-based animation instead of smooth native animation. Console shows 'Animated: useNativeDriver is not supported' warning. CONCLUSION: Double-buffer marquee implemented but animation quality is poor with visible micro-cuts at loop boundaries, failing smooth scrolling requirement."
+      - working: false
+        agent: "testing"
+        comment: "❌ MARQUEE DOUBLE-BUFFER RE-TEST AFTER FIXES (iPhone 12/13/14: 390x844) - PARTIAL SUCCESS: ✅ MAJOR IMPROVEMENTS: 1) Fixed critical 'marqueeX.stopAnimation is not a function' error by replacing with cancelAnimation, 2) Home page now loads correctly with French slogan 'Tous les services essentiels en un clic', 3) Marquee structure fully visible with orange 'Infos' pill (#FF8A00 background), 4) Fallback content present and visible ('Agression . ACCIDENT . DISPARITION . Embouteillage'), 5) No console errors or useNativeDriver warnings for marquee, 6) Added missing marqueeRow style to fix rendering. ❌ REMAINING ISSUE: Animation not active - no translateX transforms detected during measurement, suggesting React Native Reanimated animation may not be running properly in React Native Web environment. 🔍 ROOT CAUSE: React Native Reanimated double-buffer animation implementation may not be compatible with React Native Web, causing animation to not start despite proper setup. CONCLUSION: Marquee structure and content working perfectly, but smooth scrolling animation needs alternative implementation for web compatibility."
 
 metadata:
   created_by: "main_agent"
