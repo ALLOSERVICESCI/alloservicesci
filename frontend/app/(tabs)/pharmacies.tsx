@@ -20,6 +20,10 @@ export default function Pharmacies() {
   const [city, setCity] = useState<string>('');
   const [query, setQuery] = useState('');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showNearTip, setShowNearTip] = useState(false);
+  const [showDutyTip, setShowDutyTip] = useState(false);
+
   const { t, lang } = useI18n();
   const [showSuggestions, setShowSuggestions] = useState(false);
 
