@@ -179,7 +179,6 @@ export default function Home() {
                       <Animated.Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={[styles.marqueeText, { transform: [{ translateX: marqueeX }] }]} numberOfLines={1}>
                         {marqueeItems.map((it, idx) => (
                           <Text key={idx}>
-                            <Text style={{ color: colorForKind(it.kind), fontWeight: '800' }}>{it.kind}{it.text ? ': ' : ''}</Text>
                             <Text style={{ color: '#0F5132' }}>{it.text}</Text>
                             {idx < marqueeItems.length - 1 ? <Text> • </Text> : null}
                           </Text>
