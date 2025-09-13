@@ -130,7 +130,7 @@ export default function Home() {
               <Text style={styles.greeting}>{greeting}</Text>
               {/* Marquee résumé sous Bonjour ... */}
               {!!summary && (
-                <View style={[styles.marqueeOuter, { width: sloganW ? sloganW * 0.72 : '86%' }]}>
+                <View style={[styles.marqueeOuter, { width: sloganW ? sloganW : Math.min(width * 0.86, 340) }]}>
                   <View style={styles.marqueeRounded} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
                     <Animated.Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={[styles.marqueeText, { transform: [{ translateX: marqueeX }] }]} numberOfLines={1}>
                       {summary}
