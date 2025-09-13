@@ -100,7 +100,7 @@ export default function Home() {
   const marqueeX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (!marqueeW || !textW || marqueeItems.length === 0) return;
+    if (!textW || marqueeItems.length === 0) return;
     marqueeX.stopAnimation();
     const speed = 60; // px/s
     const distance = textW; // with double-buffer, shift by exactly one text width
