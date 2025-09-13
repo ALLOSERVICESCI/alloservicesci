@@ -1958,6 +1958,8 @@ if __name__ == "__main__":
         elif sys.argv[1] == "--dynamic-on-duty":
             tester.test_dynamic_on_duty_pharmacies()
             success = True
+        elif sys.argv[1] == "--fresh-regression":
+            success = tester.run_fresh_backend_regression()
         else:
             success = tester.run_all_tests()
     else:
