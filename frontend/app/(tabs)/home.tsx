@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   marqueeText: { color: '#0F5132', fontSize: 17, fontWeight: '700' },
   marqueeClip: { flex: 1, overflow: 'hidden' },
 
-  categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 24, marginTop: -8 },
+  categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 16, marginTop: 0 },
   carouselContainer: { paddingLeft: 20 },
   carousel: { paddingRight: 20, paddingVertical: 8 },
   categoryCard: { width: 160, height: 190, backgroundColor: '#fff', borderRadius: 16, marginRight: 16, alignItems: 'center', justifyContent: 'center', padding: 16, borderWidth: 1, borderColor: '#E8F0E8', position: 'relative' },
