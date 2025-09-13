@@ -43,8 +43,18 @@ export default function Home() {
 
   // Marquee (défilement) des notifications sous "Bonjour ..."
   const summary = useMemo(() => {
-    const texts = (items || []).slice(0, 6).map((i) => i.title || i.body).filter(Boolean) as string[];
-    return texts.length ? texts.join(' • ') : '';
+    const fromItems = (items || []).slice(0, 6).map((i) => i.title || i.body).filter(Boolean) as string[];
+    if (fromItems.length) return fromItems.join(' • ');
+    // Exemples en français pour tester le défilement si aucune notification n'est encore disponible
+    const fallbackExamples = [
+      'Alerte sécurité: circulation difficile à Cocody',
+      'Pharmacie de garde: Abobo – 24h/24',
+      'Info transport: Ligne 81 retard de 15 minutes',
+      'Examens & Concours: Inscriptions ouvertes CEP 2025',
+      'Météo: Pluies attendues cet après-midi à Yopougon',
+      'Services publics: Nouvelle procédure cartes grises',
+    ];
+    return fallbackExamples.join(' • ');
   }, [items]);
   const [marqueeW, setMarqueeW] = useState(0);
   const [textW, setTextW] = useState(0);
