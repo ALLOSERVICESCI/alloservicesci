@@ -97,7 +97,7 @@ export default function Home() {
 
   const [marqueeW, setMarqueeW] = useState(0);
   const [textW, setTextW] = useState(0);
-  const marqueeX = useRef(new Animated.Value(0)).current;
+  const marqueeX = useRef(new RNAnimated.Value(0)).current;
 
   useEffect(() => {
     if (!marqueeW || !textW || marqueeItems.length === 0) return;
