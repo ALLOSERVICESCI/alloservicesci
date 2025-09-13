@@ -6,7 +6,6 @@ import { apiFetch } from '../../src/utils/api';
 export default function NewAlert() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState<'flood'|'missing_person'|'wanted_notice'|'fire'|'accident'|'other'>('flood');
   const [city, setCity] = useState('Abidjan');
   const [imagesBase64, setImagesBase64] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -26,7 +25,7 @@ export default function NewAlert() {
     try {
       const res = await apiFetch('/api/alerts', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description, type, city, images_base64: imagesBase64 })
+        body: JSON.stringify({ title, description, type: 'other', city, images_base64: imagesBase64 })
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.detail || 'Erreur');
@@ -43,7 +42,7 @@ export default function NewAlert() {
         <Text style={styles.title}>Nouvelle alerte</Text>
         <TextInput placeholder="Titre" value={title} onChangeText={setTitle} style={styles.input} />
         <TextInput placeholder="Description" value={description} onChangeText={setDescription} style={[styles.input, { height: 100 }]} multiline />
-        <TextInput placeholder="Type (flood, fire, ...)" value={type} onChangeText={(t)=>setType((t as any)||'flood')} style={styles.input} />
+        {/* Zone 'Type (flood, ...)' supprimée volontairement */}
         <TextInput placeholder="Ville" value={city} onChangeText={setCity} style={styles.input} />
         <TouchableOpacity onPress={pickImage} style={styles.secondary}><Text style={styles.secondaryText}>Ajouter une image</Text></TouchableOpacity>
         <Text style={{ marginTop: 8, color: '#666' }}>{imagesBase64.length} image(s) ajoutée(s)</Text>

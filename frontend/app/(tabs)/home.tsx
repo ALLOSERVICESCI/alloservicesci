@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef } from 'react';
+import React, { useMemo, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, Platform, Animated, Easing } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -6,6 +6,7 @@ import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import NavMenu from '../../src/components/NavMenu';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width, height } = Dimensions.get('window');
@@ -15,7 +16,7 @@ const FAB_MARGIN = 20;
 export default function Home() {
   const { user } = useAuth();
   const { t } = useI18n();
-  const { alertsUnreadCount, refreshAlertsUnread } = useNotificationsCenter();
+  const { alertsUnreadCount, refreshAlertsUnread, items } = useNotificationsCenter();
   const router = useRouter();
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
@@ -39,6 +40,30 @@ export default function Home() {
     { slug: 'loisirs_tourisme', label: t('loisirs_tourisme'), icon: '🏖️', isPremium: true },
     { slug: 'transport', label: t('transport'), icon: '🚌', isPremium: true },
   ], [t]);
+
+  // Marquee (défilement) des notifications sous "Bonjour ..."
+  const summary = useMemo(() => {
+    const texts = (items || []).slice(0, 6).map((i) => i.title || i.body).filter(Boolean) as string[];
+    return texts.length ? texts.join(' • ') : '';
+  }, [items]);
+  const [marqueeW, setMarqueeW] = useState(0);
+  const [textW, setTextW] = useState(0);
+  const marqueeX = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (!marqueeW || !textW || !summary) return;
+    marqueeX.stopAnimation();
+    marqueeX.setValue(marqueeW);
+    const speed = 60; // px/s
+    const distance = marqueeW + textW;
+    const duration = (distance / speed) * 1000;
+    const loop = () => {
+      marqueeX.setValue(marqueeW);
+      Animated.timing(marqueeX, { toValue: -textW, duration, easing: Easing.linear, useNativeDriver: true }).start(() => loop());
+    };
+    const id = setTimeout(loop, 100);
+    return () => { clearTimeout(id); marqueeX.stopAnimation(); };
+  }, [marqueeW, textW, summary]);
 
   const [aiPos] = React.useState<'bottom-right'|'bottom-left'|'top-right'|'top-left'>('bottom-right');
   const aiPositionStyle = React.useMemo(() => ({ bottom: 30, right: 20 }), []);
@@ -92,6 +117,17 @@ export default function Home() {
               <Text style={styles.brand}>{t('brand')}</Text>
               <Text style={styles.slogan}>{t('slogan')}</Text>
               <Text style={styles.greeting}>{greeting}</Text>
+              {/* Marquee résumé sous Bonjour ... */}
+              {!!summary && (
+                <View style={styles.marqueeBox} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
+                  <Animated.Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={[styles.marqueeText, { transform: [{ translateX: marqueeX }] }]} numberOfLines={1}>
+                    {summary}
+                  </Animated.Text>
+                  {/* Fades pour lisibilité et effet d'apparition/disparition */}
+                  <LinearGradient pointerEvents="none" colors={["#F8FAF9", "#F8FAF900"]} style={[styles.fadeLeft]} />
+                  <LinearGradient pointerEvents="none" colors={["#F8FAF900", "#F8FAF9"]} style={[styles.fadeRight]} />
+                </View>
+              )}
             </View>
           </View>
 
@@ -167,6 +203,11 @@ const styles = StyleSheet.create({
   brand: { fontSize: 32, fontWeight: '800', color: '#0A7C3A' },
   slogan: { fontSize: 18, color: '#666', marginTop: 4, textAlign: 'center' },
   greeting: { fontSize: 20, color: '#0F5132', marginTop: 8, fontWeight: '700', textAlign: 'center' },
+  marqueeBox: { marginTop: 10, height: 22, overflow: 'hidden', width: '86%', alignSelf: 'center', position: 'relative' },
+  marqueeText: { color: '#0F5132', fontSize: 14, fontWeight: '600' },
+  fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 24 },
+  fadeRight: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 24 },
+
   categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 24, marginTop: -8 },
   carouselContainer: { paddingLeft: 20 },
   carousel: { paddingRight: 20, paddingVertical: 8 },
