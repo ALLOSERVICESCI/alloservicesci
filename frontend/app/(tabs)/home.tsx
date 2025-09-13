@@ -46,7 +46,9 @@ export default function Home() {
 
   // Construire les éléments de résumé (titre coloré selon pertinence)
   const marqueeItems = useMemo(() => {
-    const base: string[] = (items || []).slice(0, 6).map((i) => (i.title || i.body || '')).filter(Boolean) as string[];
+    const fromCenter = (items || []).slice(0, 6).map((i) => (i.title || i.body || '')).filter(Boolean) as string[];
+    const fromPreview = alertsPreview.slice(0, 6);
+    const combined = (fromPreview.length ? fromPreview : fromCenter);
     const fallback = [
       'Alerte sécurité: circulation difficile à Cocody',
       'Danger: Présence de fumée vers Koumassi',
@@ -55,14 +57,14 @@ export default function Home() {
       'Embouteillage: Ligne 81 retard de 15 minutes',
       'Inondation: Pluies attendues cet après-midi à Yopougon',
     ];
-    const list = base.length ? base : fallback;
+    const list = combined.length ? combined : fallback;
     const parse = (s: string) => {
       const idx = s.indexOf(':');
       if (idx > 0) return { kind: s.slice(0, idx).trim(), text: s.slice(idx + 1).trim() };
       return { kind: 'Info', text: s };
     };
     return list.map(parse);
-  }, [items]);
+  }, [items, alertsPreview]);
 
   const colorForKind = (kind: string) => {
     const k = kind.toLowerCase();
