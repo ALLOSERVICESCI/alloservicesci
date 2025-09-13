@@ -113,7 +113,7 @@ export default function Home() {
     };
     const id = setTimeout(loop, 100);
     return () => { clearTimeout(id); marqueeX.stopAnimation(); };
-  }, [marqueeW, textW, marqueeItems]);
+  }, [textW, marqueeItems]);
 
   const onRefresh = async () => {
     try {
