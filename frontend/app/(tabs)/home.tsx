@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   brand: { fontSize: 32, fontWeight: '800', color: '#0A7C3A' },
   slogan: { fontSize: 18, color: '#666', marginTop: 4, textAlign: 'center' },
   greeting: { fontSize: 20, color: '#0F5132', marginTop: 8, fontWeight: '700', textAlign: 'center' },
-  marqueeOuter: { marginTop: 12, marginBottom: 18, alignSelf: 'center' },
+  marqueeOuter: { marginTop: 20, marginBottom: 18, alignSelf: 'center' },
   marqueeRounded: { borderRadius: 10, backgroundColor: '#FFFFFF', paddingHorizontal: 8, height: 44, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderWidth: 1, borderColor: '#E8F0E8' },
   inputLike: { flexDirection: 'row' },
   infoBtn: { backgroundColor: '#D32F2F', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, marginRight: 8 },
