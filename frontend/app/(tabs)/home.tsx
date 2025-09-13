@@ -29,6 +29,34 @@ export default function Home() {
     return () => clearInterval(id);
   }, [user?.id]);
 
+  // Charger un aperçu récent des publications (pour alimenter la capsule)
+  useEffect(() => {
+    let cancelled = false;
+    const toPreviewString = (a: any) => {
+      const base = (a?.title || a?.description || '').trim();
+      if (!base) return '';
+      // Laisser tel quel si déjà préfixé (Alerte/Danger/Disparition/Accident/Embouteillage/Inondation)
+      if (/^(Alerte|Danger|Disparition|Accident|Embouteillage|Inondation)\b/i.test(base)) return base;
+      return `Alerte: ${base}`;
+    };
+    const load = async () => {
+      try {
+        const res = await apiFetch('/api/alerts');
+        const json = await res.json().catch(() => []);
+        if (cancelled) return;
+        const previews = (json || [])
+          .slice(0, 10)
+          .map(toPreviewString)
+          .filter((s: string) => !!s)
+          .slice(0, 6);
+        setAlertsPreview(previews);
+      } catch (e) {}
+    };
+    load();
+    const iv = setInterval(load, 60000);
+    return () => { cancelled = true; clearInterval(iv); };
+  }, []);
+
   const categories = useMemo(() => [
     { slug: 'urgence', label: t('urgence'), icon: '🚨', isPremium: false },
     { slug: 'sante', label: t('sante'), icon: '🏥', isPremium: false },
