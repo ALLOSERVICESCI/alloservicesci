@@ -160,12 +160,12 @@ frontend:
         comment: "✅ MAJOR IMPROVEMENT - PHARMACIES UI NOW WORKING! Fresh E2E test (iPhone 12/13/14: 390x844) shows significant fixes: 1) ✅ DYNAMIC HEADER WORKING: 'Pharmacies • Autour de moi' format now displays correctly in header when Near Me toggle activated, 2) ✅ COLOR SCHEME FIXED: Found 4 blue elements (#0D6EFD) for Near Me state, 9 green elements for active states, 3) ✅ FILTER CHIPS RENDERING: 'Autour de moi' and 'De Garde' chips visible and functional, 4) ✅ TOGGLES WORKING: Near Me and On-duty toggles respond correctly with proper API calls, 5) ✅ REFRESH BUTTON: 'Actualiser' works without errors, 6) ✅ CORE FUNCTIONALITY: All pharmacy data loads, toggles work, no console errors. Minor: Search input readonly when Near Me ON (expected behavior). Previous stuck issues resolved - conditional rendering and CSS styling now working correctly."
 
   - task: "FRONTEND CRITICAL: Remove 'Réinitialiser les infobulles' action from Profile actions grid"
-    implemented: false
-    working: false
+    implemented: true
+    working: true
     file: "frontend/app/(tabs)/profile.tsx"
-    stuck_count: 2
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
@@ -176,6 +176,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL ISSUE PERSISTS - FOCUSED E2E PROFILE ACTIONS TEST (iPhone 12/13/14: 390x844): 1) ✅ Profile page accessible with user 'Serge Angoua' logged in, 2) ✅ Actions section present with title 'Actions', 3) ✅ All 3 expected actions found: 'Modifier mon profil' (✏️), 'Centre de notifications' (🔔), 'Historique des paiements' (💳), 4) ❌ CRITICAL: 'Réinitialiser les infobulles' action STILL PRESENT as 4th tile, 5) ✅ 'Se déconnecter' button confirmed. MYSTERY: Code analysis shows profileActions array contains only 3 items and onResetTipsFromProfile function is unused. Yet UI renders 4 tiles. Possible causes: caching issue, build artifact, or dynamic injection from unknown source. URGENT investigation needed - this discrepancy between code and UI suggests deeper issue."
+      - working: true
+        agent: "testing"
+        comment: "✅ PROFILE ACTIONS GRID FULLY FIXED - COMPREHENSIVE E2E TEST PASSED (iPhone 12/13/14: 390x844)! Final validation confirms complete success: 1) ✅ Profile page accessible with user 'Serge Angoua' logged in, 2) ✅ Actions section present with title 'Actions', 3) ✅ ALL 3 expected actions found: 'Modifier mon profil' (✏️), 'Centre de notifications' (🔔), 'Historique des paiements' (💳), 4) ✅ CRITICAL SUCCESS: 'Réinitialiser les infobulles' action NOT FOUND - completely removed as requested, 5) ✅ Actions grid shows exactly 3 tiles (not 4), 6) ✅ 'Se déconnecter' button present and functional, 7) ✅ No console errors detected. The previous mystery has been resolved - the reset code and imports have been fully removed from profile.tsx. All requirements met successfully."
 
 metadata:
   created_by: "main_agent"
