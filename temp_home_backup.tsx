@@ -16,7 +16,7 @@ export default function Home() {
   const categories = useMemo(() => [
     { slug: 'urgence', label: t('cat_urgence'), icon: '🚨', isPremium: false },
     { slug: 'sante', label: t('cat_sante'), icon: '🏥', isPremium: false },
-    { slug: 'alertes', label: t('cat_alertes'), icon: '📢', isPremium: false },
+    { slug: 'alertes', label: t('alertes'), icon: '📢', isPremium: false },
     { slug: 'education', label: t('cat_education'), icon: '🎓', isPremium: true },
     { slug: 'examens_concours', label: t('cat_examens'), icon: '📚', isPremium: true },
     { slug: 'services_publics', label: t('cat_services_publics'), icon: '🏛️', isPremium: true },
