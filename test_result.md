@@ -182,7 +182,7 @@ frontend:
 
   - task: "FRONTEND E2E: Home page marquee scrolling summary with fallback examples when notifications empty"
     implemented: true
-    working: true
+    working: false
     file: "frontend/app/(tabs)/home.tsx"
     stuck_count: 0
     priority: "medium"
@@ -194,6 +194,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE E2E FRONTEND REGRESSION COMPLETED (iPhone 12/13/14: 390x844) - MARQUEE CAPSULE NOW WORKING! Final validation confirms complete success: 1) ✅ ACCUEIL: French slogan 'Tous les services essentiels en un clic' working perfectly, marquee fallback phrases confirmed present including 'Alerte sécurité: circulation difficile à Cocody', 'Pharmacie de garde: Abobo – 24h/24', all expected fallback content found in page text, 2) ✅ CENTRE DE NOTIFICATIONS: Title 'Centre de notifications' present, 'Effacer l'historique' button functional, empty state 'Aucune notification' displays correctly after clearing, 3) ✅ ALERTES: Header with 'Publiez' button working, 'Lu' status badges present (23 found), 4) ✅ PUBLIEZ: 'Nouvelle alerte' page with all 4 required fields (Titre, Description, Ville, Publier button), Type field correctly removed as requested, 5) ✅ PROFIL: Exactly 3 action tiles found ('Modifier mon profil', 'Centre de notifications', 'Historique des paiements'), 'Réinitialiser les infobulles' correctly removed, 'Se déconnecter' button in French, 6) ✅ PREMIUM: '1200 FCFA/an' pricing display, 'Fonctionnalités Premium' section, 'Paiement sécurisé par CinetPay' text all present. SUCCESS RATE: 100% (6/6 major areas working). All review requirements met successfully on iPhone 12/13/14 viewport."
+      - working: false
+        agent: "testing"
+        comment: "❌ FOCUSED MARQUEE DOUBLE-BUFFER SCROLLING TEST (iPhone 12/13/14: 390x844) - CRITICAL ISSUES FOUND: ✅ STRUCTURE WORKING: 1) Marquee capsule visible with orange Infos pill (#FF8A00 background), 2) Fallback content present ('Agression . ACCIDENT . DISPARITION . Embouteillage'), 3) Animation system active with translateX transforms. ❌ SCROLLING ISSUES: 1) MICRO-CUTS DETECTED: 3 large jumps (~290px) during loop transitions at t=2.5s, t=7.5s, t=13.0s - NOT seamless as required, 2) SPEED TOO SLOW: 18.3 px/s measured vs 60 px/s target - scrolling is 3x slower than expected, 3) LOOP RESETS VISIBLE: Large position jumps from -105px to +185px create visible micro-cuts instead of smooth double-buffer transition. 🔍 ROOT CAUSE: React Native Web animation fallback (useNativeDriver not supported) causing jerky JS-based animation instead of smooth native animation. Console shows 'Animated: useNativeDriver is not supported' warning. CONCLUSION: Double-buffer marquee implemented but animation quality is poor with visible micro-cuts at loop boundaries, failing smooth scrolling requirement."
 
 metadata:
   created_by: "main_agent"
