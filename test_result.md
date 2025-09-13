@@ -159,6 +159,18 @@ frontend:
         agent: "testing"
         comment: "✅ MAJOR IMPROVEMENT - PHARMACIES UI NOW WORKING! Fresh E2E test (iPhone 12/13/14: 390x844) shows significant fixes: 1) ✅ DYNAMIC HEADER WORKING: 'Pharmacies • Autour de moi' format now displays correctly in header when Near Me toggle activated, 2) ✅ COLOR SCHEME FIXED: Found 4 blue elements (#0D6EFD) for Near Me state, 9 green elements for active states, 3) ✅ FILTER CHIPS RENDERING: 'Autour de moi' and 'De Garde' chips visible and functional, 4) ✅ TOGGLES WORKING: Near Me and On-duty toggles respond correctly with proper API calls, 5) ✅ REFRESH BUTTON: 'Actualiser' works without errors, 6) ✅ CORE FUNCTIONALITY: All pharmacy data loads, toggles work, no console errors. Minor: Search input readonly when Near Me ON (expected behavior). Previous stuck issues resolved - conditional rendering and CSS styling now working correctly."
 
+  - task: "FRONTEND CRITICAL: Remove 'Réinitialiser les infobulles' action from Profile actions grid"
+    implemented: false
+    working: false
+    file: "frontend/app/(tabs)/profile.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL REGRESSION FOUND - Profile actions grid still contains 'Réinitialiser les infobulles' action that should be removed. E2E test (iPhone 12/13/14: 390x844) confirmed: 1) ✅ Profile page accessible with user data, 2) ✅ All 3 expected actions present: 'Modifier mon profil', 'Centre de notifications', 'Historique des paiements', 3) ❌ CRITICAL: 'Réinitialiser les infobulles' action STILL PRESENT (count: 1), 4) Actions grid shows 4 tiles instead of expected 3. URGENT: Code shows onResetTipsFromProfile function and related logic still present in profile.tsx. This action must be completely removed from profileActions array and all related code cleaned up."
+
 metadata:
   created_by: "main_agent"
   version: "1.2"
