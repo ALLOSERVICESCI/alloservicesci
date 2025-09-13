@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Linking, ActivityIndicator, Alert, AppState, AppStateStatus, ScrollView, Dimensions, Image, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, ActivityIndicator, Alert, AppState, AppStateStatus, ScrollView, Dimensions, Image, Platform, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as WebBrowser from 'expo-web-browser';
+import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
