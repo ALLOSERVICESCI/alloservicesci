@@ -28,16 +28,16 @@ export default function CategoryPage() {
 
   const catLabel = useMemo(() => {
     const map: Record<string, string> = {
-      urgence: t('cat_urgence'),
-      sante: t('cat_sante'),
-      education: t('cat_education'),
-      services_utiles: t('cat_services_utiles'),
-      agriculture: t('cat_agriculture'),
-      loisirs_tourisme: t('cat_loisirs'),
-      services_publics: t('cat_services_publics'),
-      examens_concours: t('cat_examens'),
-      transport: t('cat_transport'),
-      alertes: t('cat_alertes'),
+      urgence: t('urgence'),
+      sante: t('sante'),
+      education: t('education'),
+      services_utiles: t('services_utiles'),
+      agriculture: t('agriculture'),
+      loisirs_tourisme: t('loisirs_tourisme'),
+      services_publics: t('services_publics'),
+      examens_concours: t('examens'),
+      transport: t('transport'),
+      alertes: t('alertes'),
       pharmacies: t('tabPharm'),
     };
     return map[s] || s;
