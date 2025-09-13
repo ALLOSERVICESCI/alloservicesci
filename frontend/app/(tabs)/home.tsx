@@ -19,6 +19,7 @@ export default function Home() {
   const { t } = useI18n();
   const { alertsUnreadCount, refreshAlertsUnread, items } = useNotificationsCenter();
   const [sloganW, setSloganW] = useState(0);
+  const [alertsPreview, setAlertsPreview] = useState<string[]>([]);
   const router = useRouter();
   const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
 
