@@ -354,4 +354,7 @@ const styles = StyleSheet.create({
   chipInactive: { backgroundColor: '#F4F5F6', borderColor: '#DADADA' },
   chipTextInactive: { color: '#666', fontSize: 12, fontWeight: '600' },
 
+  resetLink: { paddingVertical: 8, paddingHorizontal: 12, backgroundColor: '#F0F3F0', borderRadius: 8, alignItems: 'center' },
+  resetLinkText: { color: '#0A7C3A', fontSize: 12, fontWeight: '600' },
+
 });
