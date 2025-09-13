@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, FlatList, Alert, ImageBackground, Image, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, FlatList, Alert, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
@@ -11,19 +11,9 @@ import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 export default function Alerts() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const { t, lang, setLang } = useI18n();
+  const { t } = useI18n();
   const { user } = useAuth();
   const { refreshAlertsUnread } = useNotificationsCenter();
-
-  const LANGS: { code: 'fr'|'en'|'es'|'it'|'tr'|'zh'; label: string }[] = [
-    { code: 'fr', label: 'Français' },
-    { code: 'en', label: 'English' },
-    { code: 'es', label: 'Español' },
-    { code: 'it', label: 'Italiano' },
-    { code: 'tr', label: 'Türkçe' },
-    { code: 'zh', label: '中文' },
-  ];
-  const [openLang, setOpenLang] = useState(false);
 
   const REMOTE_ALERTS_BG = 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/aiwoflhn_alerte_gb.png';
   const LOCAL_ALERTS_BG = require('../../assets/headers/headers/alertes_bg.png');
@@ -49,7 +39,6 @@ export default function Alerts() {
       const res = await apiFetch('/api/alerts');
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      // assure default FR UI (content language depends on backend), normalize read flag
       const normalized = (json || []).map((a: any) => ({ ...a, read: !!a.read }));
       setData(normalized);
     } catch (e: any) {
@@ -67,7 +56,6 @@ export default function Alerts() {
         method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.id })
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      // Flag item as read (do not remove)
       setData((prev) => prev.map((a) => a.id === alertId ? { ...a, read: true } : a));
       await refreshAlertsUnread(user.id);
     } catch (e: any) {
@@ -80,15 +68,10 @@ export default function Alerts() {
   const renderHeader = () => (
     <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} imageStyle={styles.headerImage} resizeMode="cover">
       <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} style={styles.overlay} />
-      <View style={styles.headerBar}>
-        {/* Title removed intentionally */}
+      <View style={styles.headerContent}>
         <Link href="/alerts/new" asChild>
           <TouchableOpacity style={styles.btn} accessibilityRole="button"><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
         </Link>
-        {/* Language pill */}
-        <TouchableOpacity onPress={() => setOpenLang(true)} style={styles.langPill} accessibilityRole="button">
-          <Text style={styles.langPillText}>{lang.toUpperCase()}</Text>
-        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -126,37 +109,19 @@ export default function Alerts() {
         refreshing={loading}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
       />
-
-      {/* Language modal */}
-      <Modal transparent visible={openLang} animationType="fade" onRequestClose={() => setOpenLang(false)}>
-        <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={() => setOpenLang(false)} />
-        <View style={styles.sheet}>
-          <Text style={styles.sheetTitle}>Langue</Text>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-            {LANGS.map((l) => (
-              <TouchableOpacity key={l.code} style={[styles.langItem, l.code === lang && styles.langItemActive]} onPress={async () => { await setLang(l.code as any); setOpenLang(false); }}>
-                <Text style={[styles.langItemText, l.code === lang && styles.langItemTextActive]}>{l.label}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  header: { height: 260, justifyContent: 'flex-end' },
+  header: { height: 260, justifyContent: 'center' },
   headerImage: { transform: [{ translateY: -14 }] },
   overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  headerBar: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingBottom: 20, paddingTop: 40 },
-  // Button aligned left-middle
-  btn: { backgroundColor: '#0F5132', paddingVertical: 10, paddingHorizontal: 16, borderRadius: 10, alignSelf: 'center' },
+  headerContent: { paddingHorizontal: 16, alignItems: 'flex-start' },
+  // Bouton au milieu verticalement, forcé à gauche
+  btn: { backgroundColor: '#0F5132', paddingVertical: 10, paddingHorizontal: 16, borderRadius: 10 },
   btnText: { color: '#fff', fontWeight: '700' },
-  // Language pill
-  langPill: { marginLeft: 'auto', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 14, borderWidth: 1, borderColor: '#fff', backgroundColor: 'rgba(255,255,255,0.2)' },
-  langPillText: { color: '#fff', fontWeight: '800', fontSize: 12 },
 
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginTop: 12, borderWidth: 1, borderColor: '#E8F0E8' },
@@ -172,13 +137,4 @@ const styles = StyleSheet.create({
   badgeText: { fontSize: 12, fontWeight: '700' },
   badgeTextRead: { color: '#0A7C3A' },
   badgeTextUnread: { color: '#777' },
-
-  // Language modal styles
-  backdrop: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.25)' },
-  sheet: { position: 'absolute', left: 16, right: 16, bottom: 80, backgroundColor: '#fff', borderRadius: 16, padding: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.15, shadowRadius: 12, elevation: 12 },
-  sheetTitle: { fontSize: 16, fontWeight: '800', color: '#0A7C3A', marginBottom: 12, textAlign: 'center' },
-  langItem: { paddingVertical: 10, paddingHorizontal: 12, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, marginBottom: 10, width: '48%', alignItems: 'center' },
-  langItemActive: { borderColor: '#0A7C3A', backgroundColor: '#F3F7F5' },
-  langItemText: { color: '#0F5132', fontWeight: '700' },
-  langItemTextActive: { color: '#0A7C3A' },
 });
