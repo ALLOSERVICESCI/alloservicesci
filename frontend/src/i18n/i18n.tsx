@@ -114,29 +114,6 @@ const translations: Record<LangKey, Dict> = {
     premiumFeature_leisure: 'Loisirs et tourisme à proximité',
     premiumFeature_transport: 'Transports et itinéraires',
   },
-
-    tabPharm: 'Pharmacies',
-    onDuty: 'Pharmacies de garde',
-    onDutyShort: 'De Garde',
-    nearMe: 'Autour de moi',
-    select: 'Sélectionner',
-    searchCity: 'Rechercher une ville',
-    clear: 'Effacer',
-    refresh: 'Actualiser',
-    locationDenied: 'Autorisation de localisation refusée',
-
-    city: 'Ville',
-    phonePh: 'Téléphone',
-    emailOpt: 'Email (optionnel)',
-
-    // Tooltips Pharmacies
-    tipNear: 'Afficher les pharmacies proches (dans un rayon de 5 km)',
-    tipDuty: 'Afficher uniquement les pharmacies de garde',
-    gotIt: 'Compris',
-    resetTips: 'Réinitialiser les infobulles',
-    tipsReset: 'Infobulles réinitialisées. Appuyez sur les boutons pour les revoir.',
-    resetTipsHint: 'Pour réafficher les astuces sur la page Pharmacies',
-  },
   en: {
     brand: 'Allô Services CI',
     slogan: 'Your multi-service assistant',
@@ -225,7 +202,7 @@ export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
   const t = (k: string) => translations[lang]?.[k] || translations['fr']?.[k] || k;
 
   const value = useMemo(() => ({ lang, setLang, t }), [lang]);
-  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+  return &lt;I18nContext.Provider value={value}&gt;{children}&lt;/I18nContext.Provider&gt;;
 };
 
 export const useI18n = () => useContext(I18nContext);
