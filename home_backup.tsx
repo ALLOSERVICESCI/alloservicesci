@@ -155,9 +155,9 @@ export default function Home() {
   const pulse = useRef(new RNAnimated.Value(1)).current;
   useEffect(() => {
     const run = () => {
-      Animated.sequence([
-        Animated.timing(pulse, { toValue: 1.06, duration: 900, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
-        Animated.timing(pulse, { toValue: 1.0, duration: 900, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
+      RNAnimated.sequence([
+        RNAnimated.timing(pulse, { toValue: 1.06, duration: 900, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+        RNAnimated.timing(pulse, { toValue: 1.0, duration: 900, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
       ]).start(({ finished }) => { if (finished) run(); });
     };
     run();
