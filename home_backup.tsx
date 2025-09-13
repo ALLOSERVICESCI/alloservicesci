@@ -233,7 +233,7 @@ export default function Home() {
 
       <NavMenu />
 
-      <Animated.View style={[
+      <RNAnimated.View style={[
         styles.aiFab,
         styles.aiHalo,
         { transform: [
@@ -251,7 +251,7 @@ export default function Home() {
         <TouchableOpacity onPress={() => router.push('/ai/chat')} activeOpacity={0.9} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View style={styles.aiMask}><Image source={require('../../assets/ai/logoia.png')} style={styles.aiImgCover} /></View>
         </TouchableOpacity>
-      </Animated.View>
+      </RNAnimated.View>
     </View>
   );
 }
