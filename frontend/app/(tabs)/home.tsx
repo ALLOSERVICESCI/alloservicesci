@@ -190,7 +190,7 @@ export default function Home() {
                       <Text style={styles.infoPillText}>Infos</Text>
                     </TouchableOpacity>
                     <View style={styles.marqueeClip} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
-                      <Reanimated.View style={[styles.marqueeRow, useAnimatedStyle(() => ({ transform: [{ translateX: marqueeX.value }] }))]}>
+                      <Reanimated.View style={[styles.marqueeRow, marqueeStyle]}>
                         <Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={styles.marqueeText} numberOfLines={1}>{marqueeText}     </Text>
                         <Text style={styles.marqueeText} numberOfLines={1}>{marqueeText}     </Text>
                       </Reanimated.View>
