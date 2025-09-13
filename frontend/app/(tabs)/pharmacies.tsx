@@ -130,16 +130,7 @@ export default function Pharmacies() {
       </View>
 
       <View style={styles.filters}>
-        <View style={styles.rowBetween}>
-          <TouchableOpacity onPress={toggleOnDuty} style={[styles.toggle, onDuty && styles.toggleOn]}
-            accessibilityRole="switch" accessibilityState={{ checked: onDuty }}>
-            <Text style={[styles.toggleText, onDuty && styles.toggleTextOn]}>{t('onDuty')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleNearMe} style={[styles.toggle, nearMe && styles.toggleOn]}
-            accessibilityRole="switch" accessibilityState={{ checked: nearMe }}>
-            <Text style={[styles.toggleText, nearMe && styles.toggleTextOn]}>{t('nearMe')}</Text>
-          </TouchableOpacity>
-        </View>
+        <View />
 
         {/* Barre de recherche ville */}
         <View style={styles.searchBlock}>
