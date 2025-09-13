@@ -69,7 +69,7 @@ export default function Subscribe() {
   const premiumFeatures = [
     { key: 'pharmacies', icon: '💊', title: t('tabPharm'), description: '', slug: 'pharmacies' },
     { key: 'alerts', icon: '🔔', title: t('alertes'), description: '', slug: 'alertes' },
-    { key: 'exams', icon: '📚', title: t('cat_examens'), description: t('premiumFeature_exams'), slug: 'examens_concours' },
+    { key: 'exams', icon: '📚', title: t('examens'), description: t('premiumFeature_exams'), slug: 'examens_concours' },
     { key: 'education', icon: '🎓', title: t('cat_education'), description: t('premiumFeature_education'), slug: 'education' },
     { key: 'jobs', icon: '💼', title: t('cat_emplois'), description: t('premiumFeature_jobs'), slug: 'emplois' },
     { key: 'services', icon: '🏛️', title: t('cat_services_publics'), description: t('premiumFeature_services'), slug: 'services_publics' },
