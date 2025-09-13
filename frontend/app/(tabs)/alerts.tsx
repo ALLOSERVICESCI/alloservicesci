@@ -62,7 +62,7 @@ export default function Alerts() {
         method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.id })
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setData((prev) => prev.map((a) => a.id === alertId ? { ...a, read: true } : a));
+      setData((prev) => prev.filter((a) => a.id !== alertId));
       await refreshAlertsUnread(user.id);
     } catch (e: any) {
       Alert.alert(t('error'), e?.message || 'Erreur');
