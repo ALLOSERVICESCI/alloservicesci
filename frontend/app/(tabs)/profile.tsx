@@ -397,10 +397,8 @@ const styles = StyleSheet.create({
   actionTitle: {
     fontSize: 12,
     textAlign: 'center',
-    lineHeight: 22,
-    color: '#0F5132',
-    textAlign: 'center',
     lineHeight: 16,
+    color: '#0F5132',
   },
   premiumSection: {
     marginHorizontal: 12,
