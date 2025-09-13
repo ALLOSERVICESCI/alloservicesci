@@ -149,25 +149,29 @@ export default function Pharmacies() {
     </TouchableOpacity>
   );
 
-      {/* Action: Réinitialiser les infobulles */}
-      <View style={{ paddingHorizontal: 16 }}>
-        <TouchableOpacity
-          onPress={async () => {
-            try {
-              await AsyncStorage.removeItem('tip_near_shown');
-              await AsyncStorage.removeItem('tip_duty_shown');
-              setShowNearTip(false);
-              setShowDutyTip(false);
-              Alert.alert('Info', t('tipsReset'));
-            } catch (e) {
-              // silencieux
-            }
-          }}
-          style={styles.resetLink}
-        >
-          <Text style={styles.resetLinkText}>{t('resetTips') || 'Réinitialiser les infobulles'}</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Action: Réinitialiser les infobulles (affiché une seule fois) */}
+      {showResetLink && (
+        <View style={{ paddingHorizontal: 16 }}>
+          <TouchableOpacity
+            onPress={async () => {
+              try {
+                await AsyncStorage.removeItem('tip_near_shown');
+                await AsyncStorage.removeItem('tip_duty_shown');
+                await AsyncStorage.setItem('tips_reset_used', '1');
+                setShowNearTip(false);
+                setShowDutyTip(false);
+                setShowResetLink(false);
+                Alert.alert('Info', t('tipsReset'));
+              } catch (e) {
+                // silencieux
+              }
+            }}
+            style={styles.resetLink}
+          >
+            <Text style={styles.resetLinkText}>{t('resetTips') || 'Réinitialiser les infobulles'}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
 
   return (
