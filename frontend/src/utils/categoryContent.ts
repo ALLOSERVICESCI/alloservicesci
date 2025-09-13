@@ -5,190 +5,228 @@ export interface CatItem {
   summary: string;
   tag?: string;
   location?: string;
-  date?: string; // ISO or human readable
-  source?: string; // url if any
+  date?: string; // ISO or human readable (peut contenir "Horaires: …")
+  source?: string; // url si disponible
 }
 
 export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   urgence: [
     {
-      title: 'Numéros d\'urgence en Côte d\'Ivoire',
-      summary: 'Police Secours: 170 • Sapeurs-pompiers (GSPM): 180 • SAMU: 185. À appeler selon la nature de l\'urgence.',
+      title: "Numéros d'urgence en Côte d'Ivoire",
+      summary: "Police Secours: 170 • Sapeurs-pompiers (GSPM): 180 • SAMU: 185. À appeler selon la nature de l'urgence.",
       tag: 'Numéros utiles',
       source: 'https://www.gouv.ci/'
     },
     {
-      title: 'Sapeurs-Pompiers (GSPM) — Interventions à Abidjan',
-      summary: 'Composez le 180 pour signaler un incendie, accident ou secours d\'urgence.',
-      tag: 'Urgences',
-      source: 'https://www.facebook.com/GSPMCI/'
+      title: 'Police Secours — Patrouilles et assistance',
+      summary: "Interventions 24h/24 sur l'ensemble du district d'Abidjan et grandes villes.",
+      tag: 'Sécurité',
+      location: 'District Autonome d’Abidjan',
+      date: 'Horaires: 24h/24'
     },
     {
-      title: 'SAMU — Aide médicale urgente',
-      summary: 'Appelez le 185 pour une assistance médicale d\'urgence, 24h/24.',
-      tag: 'Santé',
-      source: 'https://sante.gouv.ci/'
+      title: 'Sapeurs-Pompiers Militaires (GSPM)',
+      summary: "Signalement incendies/accidents/évacuations d'urgence au 180.",
+      tag: 'Urgences',
+      date: 'Horaires: 24h/24',
+      source: 'https://www.facebook.com/GSPMCI/'
     },
   ],
   sante: [
     {
       title: 'CHU de Treichville — Urgences 24/7',
-      summary: 'Accueil des urgences médico-chirurgicales. Adresse: Boulevard de Marseille, Abidjan.',
+      summary: 'Accueil des urgences médico-chirurgicales. Boulevard de Marseille, Abidjan.',
       tag: 'Hôpital',
+      location: 'Treichville (Abidjan)',
+      date: 'Horaires: 24h/24',
       source: 'https://sante.gouv.ci/'
+    },
+    {
+      title: 'CHU de Cocody — Urgences',
+      summary: 'Prise en charge des urgences et spécialités. Accès via Boulevard François Mitterrand.',
+      tag: 'Hôpital',
+      location: 'Cocody (Abidjan)',
+      date: 'Horaires: 24h/24'
     },
     {
       title: 'Programme de vaccination (PNVSI)',
       summary: 'Vaccinations de routine pour enfants et adultes selon le calendrier national.',
       tag: 'Prévention',
+      date: 'Horaires: Lun–Ven 08:00–16:00 (selon centre)',
       source: 'https://sante.gouv.ci/'
-    },
-    {
-      title: 'Centres de santé de proximité',
-      summary: 'Renseignez-vous auprès du centre de santé le plus proche pour les consultations.',
-      tag: 'Infos pratiques'
     },
   ],
   education: [
     {
       title: 'Calendrier scolaire 2024–2025',
-      summary: 'Rentrée, congés et périodes d\'examens (BEPC, BAC).',
+      summary: 'Rentrée, congés et périodes d’examens (BEPC, BAC).',
       tag: 'Officiel',
+      date: 'Publication: selon MEN',
       source: 'https://www.education.gouv.ci/'
     },
     {
       title: 'Orientation et bourses',
-      summary: 'Information sur les procédures d\'orientation et demandes de bourses.',
+      summary: "Procédures d’orientation et demandes de bourses pour élèves et étudiants.",
       tag: 'Études',
+      date: 'Horaires: Lun–Ven 08:00–16:00',
       source: 'https://www.education.gouv.ci/'
     },
     {
-      title: 'Écoles et lycées — Abidjan & intérieur du pays',
-      summary: 'Coordonnées et contacts des établissements publics et privés.',
-      tag: 'Annuaire'
+      title: 'Université F. H. Boigny — Scolarité',
+      summary: 'Inscriptions, réinscriptions et demandes administratives.',
+      tag: 'Université',
+      location: 'Cocody (Abidjan)',
+      date: 'Horaires: Lun–Ven 08:00–15:30'
     },
   ],
   examens_concours: [
     {
-      title: 'Inscriptions en ligne — Examens',
-      summary: 'BEPC, BAC: vérifiez les dates d\'inscription et modalités.',
+      title: 'Inscriptions en ligne — Examens (DECO)',
+      summary: 'BEPC, BAC: vérifiez les dates d’inscription et modalités chaque session.',
       tag: 'Examens',
+      date: 'Période: selon calendrier DECO',
       source: 'https://www.men-deco.org/'
     },
     {
       title: 'Concours de la Fonction Publique',
-      summary: 'Consultez les avis d\'ouverture et les conditions d\'éligibilité.',
+      summary: "Consultez les avis d’ouverture, conditions d’éligibilité et centres d’examen.",
       tag: 'Concours',
+      date: 'Période: selon arrêtés officiels',
       source: 'https://www.fonctionpublique.gouv.ci/'
     },
     {
-      title: 'Concours paramédicaux & professionnels',
-      summary: 'Informations sur les concours des écoles professionnelles.',
+      title: 'ENA — École Nationale d’Administration',
+      summary: 'Concours d’accès aux cycles de formation (annuel).',
       tag: 'Carrière',
+      date: 'Période: session annuelle',
       source: 'https://www.ena.ci/'
     },
   ],
   services_publics: [
     {
-      title: 'e-Impôts Côte d\'Ivoire',
+      title: 'e-Impôts Côte d’Ivoire',
       summary: 'Déclarations et paiements en ligne pour particuliers et entreprises.',
       tag: 'Fiscalité',
+      date: 'Service en ligne 24h/24',
       source: 'https://www.e-impots.gouv.ci/'
     },
     {
-      title: 'État civil — Extrait de naissance',
-      summary: 'Procédures pour l\'obtention ou la régularisation des actes.',
-      tag: 'État civil'
+      title: 'ONECI — Carte nationale d’identité',
+      summary: 'Renouvellement et informations sur les centres d’enrôlement.',
+      tag: 'Identité',
+      location: 'Centres ONECI (Plateau, Abobo, etc.)',
+      date: 'Horaires: Lun–Ven 08:00–16:00',
+      source: 'https://www.oneci.ci/'
     },
     {
-      title: 'Carte nationale d\'identité',
-      summary: 'Renouvellement et informations sur les centres d\'enrôlement.',
-      tag: 'Identité',
-      source: 'https://www.oneci.ci/'
+      title: 'État civil — Extrait de naissance',
+      summary: 'Procédures pour l’obtention ou la régularisation des actes.',
+      tag: 'État civil',
+      date: 'Horaires: selon mairie/centre'
     },
   ],
   services_utiles: [
     {
       title: 'CIE — Signaler une panne',
-      summary: 'Coupure d\'électricité, problème de réseau: contactez le service client ou signalez en ligne.',
+      summary: 'Coupure d’électricité, problème de réseau: service client et signalement en ligne.',
       tag: 'Électricité',
+      date: 'Horaires: 24h/24 (en ligne)',
       source: 'https://www.cie.ci/'
     },
     {
       title: 'SODECI — Déclarer une fuite',
-      summary: 'Coupure d\'eau, fuite sur la voie publique: service en ligne et numéros utiles.',
+      summary: 'Coupure d’eau, fuite sur la voie publique: assistance clients et signalement.',
       tag: 'Eau',
+      date: 'Horaires: 24h/24 (en ligne)',
       source: 'https://www.sodeci.ci/'
     },
     {
-      title: 'Opérateurs mobiles',
-      summary: 'Assistance Orange, MTN, Moov: offres, dépannage, internet.',
-      tag: 'Télécoms'
+      title: 'La Poste de Côte d’Ivoire',
+      summary: 'Services postaux, colis et mandats.',
+      tag: 'Services',
+      location: 'Agences (Plateau, Treichville, etc.)',
+      date: 'Horaires: Lun–Ven 08:00–16:00'
     },
   ],
   agriculture: [
     {
-      title: 'Cacao — Informations officielles',
-      summary: 'Actualités du Conseil du Café-Cacao et campagnes en cours.',
+      title: 'Conseil du Café-Cacao — Informations officielles',
+      summary: 'Actualités de la filière et campagnes en cours.',
       tag: 'Cacao',
+      date: 'Horaires: Lun–Ven 08:00–16:00',
       source: 'https://www.conseilcafecacao.ci/'
     },
     {
-      title: 'Prix indicatifs — filières',
-      summary: 'Suivez les prix indicatifs des principales filières agricoles.',
-      tag: 'Marchés'
+      title: 'Prix indicatifs — Filières',
+      summary: 'Suivez les prix indicatifs des principales cultures.',
+      tag: 'Marchés',
+      date: 'Mises à jour: selon campagne'
     },
     {
-      title: 'Appui aux coopératives',
-      summary: 'Programmes d\'accompagnement et de formation.',
-      tag: 'Programmes'
+      title: 'ANADER — Conseil agricole',
+      summary: 'Appui technique aux producteurs et coopératives.',
+      tag: 'Appui',
+      date: 'Horaires: Lun–Ven 08:00–16:00'
     },
   ],
   loisirs_tourisme: [
     {
       title: 'Parc National du Banco — Abidjan',
-      summary: 'Randonnées et découverte de la forêt primaire aux portes d\'Abidjan.',
-      tag: 'Nature'
+      summary: 'Randonnées et découverte de la forêt primaire.',
+      tag: 'Nature',
+      location: 'Yopougon (Abidjan)',
+      date: 'Horaires: 08:00–17:00'
     },
     {
       title: 'Grand-Bassam — Patrimoine UNESCO',
       summary: 'Visites culturelles, plages et patrimoine historique.',
-      tag: 'Patrimoine'
+      tag: 'Patrimoine',
+      location: 'Grand-Bassam',
+      date: 'Accès: libre (zones publiques)'
     },
     {
-      title: 'Assinie — Lagunes et plages',
-      summary: 'Séjours balnéaires et activités nautiques.',
-      tag: 'Balnéaire'
+      title: 'Musée des Civilisations de Côte d’Ivoire',
+      summary: 'Collections et expositions permanentes.',
+      tag: 'Musée',
+      location: 'Plateau (Abidjan)',
+      date: 'Horaires: Mar–Dim 09:00–18:00 (indicatif)'
     },
   ],
   transport: [
     {
-      title: 'SOTRA — Réseau d\'Abidjan',
-      summary: 'Consultez les lignes et horaires des bus et bateaux-bus.',
+      title: 'SOTRA — Réseau d’Abidjan',
+      summary: 'Lignes de bus et bateaux-bus (horaires et plans).',
       tag: 'Urbain',
+      location: 'Abidjan',
+      date: 'Horaires: 05:30–22:00 (indicatif)',
       source: 'https://www.sotra.ci/'
     },
     {
-      title: 'Aéroport FHB — Vols & infos',
-      summary: 'Renseignements vols, consignes bagages, accès.',
+      title: 'Aéroport FHB — Vols & informations',
+      summary: 'Renseignements vols, bagages et accès.',
       tag: 'Aérien',
+      location: 'Port-Bouët (Abidjan)',
+      date: 'Horaires: 24h/24',
       source: 'https://www.abidjan-airport.com/'
     },
     {
-      title: 'Interurbain — Compagnies & liaisons',
-      summary: 'Informations sur les liaisons routières entre villes.',
-      tag: 'Voyages'
+      title: 'STL — Bateaux-bus lagunaires',
+      summary: 'Liaisons lagunaires Abidjan (selon lignes).',
+      tag: 'Lagunaires',
+      location: 'Abidjan',
+      date: 'Horaires: 06:00–20:00 (indicatif)'
     },
   ],
   alertes: [
     {
       title: 'Publiez une alerte utile',
       summary: 'Signalez un danger, une disparition, un accident ou un embouteillage avec photo et localisation.',
-      tag: 'Communauté'
+      tag: 'Communauté',
+      date: 'Horaires: 24h/24'
     },
     {
       title: 'Astuces de sécurité',
-      summary: 'Gardez les numéros d\'urgence à portée de main et partagez des infos vérifiées.',
+      summary: "Gardez les numéros d'urgence à portée de main et partagez des infos vérifiées.",
       tag: 'Conseils'
     },
   ],
@@ -196,12 +234,14 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'Pharmacies de garde — Abidjan',
       summary: 'Retrouvez rapidement les pharmacies de garde autour de vous ou par ville.',
-      tag: 'De garde'
+      tag: 'De garde',
+      date: 'Horaires: 24h/24'
     },
     {
-      title: 'Médicaments — Bon usage',
-      summary: 'Suivez la prescription et demandez conseil à votre pharmacien.',
-      tag: 'Conseils'
+      title: 'Ordre des Pharmaciens — Infos patients',
+      summary: 'Conseils sur le bon usage des médicaments et vigilance.',
+      tag: 'Conseils',
+      date: 'Horaires: Lun–Ven 08:00–16:00'
     },
   ],
 };
