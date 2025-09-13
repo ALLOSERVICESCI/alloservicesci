@@ -88,6 +88,20 @@ export default function Profile() {
   };
 
   const profileActions = [
+  const onResetTipsFromProfile = async () => {
+    try {
+      if (Platform.OS !== 'web') {
+        try { await Haptics.selectionAsync(); } catch {}
+      }
+      await AsyncStorage.removeItem('tip_near_shown');
+      await AsyncStorage.removeItem('tip_duty_shown');
+      await AsyncStorage.setItem('tips_reset_used', '1');
+      Alert.alert('Info', t('tipsReset'));
+    } catch (e: any) {
+      Alert.alert('Info', e?.message || 'Impossible de réinitialiser');
+    }
+  };
+
     { key: 'edit', title: t('editProfile'), icon: '✏️', onPress: goEdit, color: '#0A7C3A' },
     { key: 'notifications', title: t('notifCenter'), icon: '🔔', onPress: goNotifCenter, color: '#0A7C3A' },
     { key: 'payments', title: t('paymentHistory'), icon: '💳', onPress: goPaymentHistory, color: '#0A7C3A' },
