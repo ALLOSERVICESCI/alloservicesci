@@ -9,7 +9,7 @@ import json
 import sys
 
 # Base URL from frontend environment
-BASE_URL = "https://allopharma-ci.preview.emergentagent.com/api"
+BASE_URL = "https://allo-ci-french.preview.emergentagent.com/api"
 
 class AIEndpointTester:
     def __init__(self):
