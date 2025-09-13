@@ -96,6 +96,12 @@ const translations: Record<LangKey, Dict> = {
     noTitle: 'Sans titre',
     remove: 'Supprimer',
 
+    // Alerts page
+    newAlert: 'Publiez',
+    markAsRead: 'Marquer lu',
+    readLabel: 'Lu',
+    fetchError: 'Impossible de récupérer les alertes',
+
     // Auth / Inscription
     createTitle: 'Créer votre compte',
     firstName: 'Prénom',
@@ -106,6 +112,13 @@ const translations: Record<LangKey, Dict> = {
     profileReady: 'Profil créé avec succès !',
     loginRequired: 'Connexion requise',
     needAccount: 'Veuillez créer un compte pour accéder à cette page',
+
+    // Légal
+    legalConsentPrefix: 'J\'accepte les',
+    legalCGU: 'Conditions Générales d\'Utilisation',
+    legalAnd: 'et',
+    legalPolicy: 'la Politique de confidentialité',
+    legalRequiredError: 'Vous devez accepter les conditions pour continuer',
 
     // Tooltips Pharmacies
     tipNear: 'Afficher les pharmacies proches (dans un rayon de 5 km)',
@@ -183,6 +196,30 @@ const translations: Record<LangKey, Dict> = {
     noNotifications: 'No notifications',
     noTitle: 'Untitled',
     remove: 'Remove',
+
+    // Alerts page
+    newAlert: 'Publish',
+    markAsRead: 'Mark read',
+    readLabel: 'Read',
+    fetchError: 'Failed to fetch alerts',
+
+    // Auth / Registration
+    createTitle: 'Create your account',
+    firstName: 'First name',
+    lastName: 'Last name',
+    submit: 'Submit',
+    requiredFields: 'Required fields',
+    requiredMsg: 'Please fill all required fields',
+    profileReady: 'Profile created successfully!',
+    loginRequired: 'Login required',
+    needAccount: 'Please create an account to access this page',
+
+    // Legal
+    legalConsentPrefix: 'I agree to the',
+    legalCGU: 'Terms of Use',
+    legalAnd: 'and',
+    legalPolicy: 'Privacy Policy',
+    legalRequiredError: 'You must accept the terms to continue',
 
     // Tooltips Pharmacies
     tipNear: 'Show nearby pharmacies (within 5 km)',

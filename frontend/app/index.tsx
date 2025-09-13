@@ -52,22 +52,29 @@ export default function Index() {
     ]);
     seq.start();
 
-    // Cycle languages for the two texts
+    // Cycle languages through all items once, then navigate to Home
+    let cycles = 0;
     const cycle = setInterval(() => {
       Animated.parallel([
-        Animated.timing(welcomeFade, { toValue: 0, duration: 140, useNativeDriver: true }),
-        Animated.timing(sloganFade, { toValue: 0, duration: 140, useNativeDriver: true }),
+        Animated.timing(welcomeFade, { toValue: 0, duration: 180, useNativeDriver: true }),
+        Animated.timing(sloganFade, { toValue: 0, duration: 180, useNativeDriver: true }),
       ]).start(({ finished }) => {
         if (!finished) return;
         setLangIdx((prev) => {
           const next = (prev + 1) % LANGS.length;
           setWelcomeText(WELCOME_MAP[LANGS[next]]);
           setSloganText(SLOGAN_MAP[LANGS[next]]);
-          // fade back in
           Animated.parallel([
-            Animated.timing(welcomeFade, { toValue: 1, duration: 180, useNativeDriver: true }),
-            Animated.timing(sloganFade, { toValue: 1, duration: 180, useNativeDriver: true }),
+            Animated.timing(welcomeFade, { toValue: 1, duration: 220, useNativeDriver: true }),
+            Animated.timing(sloganFade, { toValue: 1, duration: 220, useNativeDriver: true }),
           ]).start();
+          if (next === 0) {
+            cycles += 1;
+            if (cycles >= 1) { // after one full loop over all languages
+              clearInterval(cycle);
+              setTimeout(goHome, 400);
+            }
+          }
           return next;
         });
       });
@@ -80,9 +87,7 @@ export default function Index() {
       Animated.timing(sloganFade, { toValue: 1, duration: 300, useNativeDriver: true }),
     ]).start();
 
-    const delay = Platform.OS === 'web' ? 1500 : 2600;
-    const timer = setTimeout(() => { goHome(); }, delay);
-    return () => { clearTimeout(timer); clearInterval(cycle); };
+    return () => { clearInterval(cycle); };
   }, [titleOpacity, logoOpacity, logoScale, logoTranslateY, subOpacity]);
 
   return (
