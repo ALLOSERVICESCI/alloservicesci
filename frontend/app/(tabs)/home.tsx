@@ -188,12 +188,7 @@ export default function Home() {
                     </TouchableOpacity>
                     <View style={styles.marqueeClip} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
                       <Animated.Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={[styles.marqueeText, { transform: [{ translateX: marqueeX }] }]} numberOfLines={1}>
-                        {marqueeItems.map((it, idx) => (
-                          <Text key={idx}>
-                            <Text style={{ color: '#0F5132' }}>{it.text}</Text>
-                            {idx < marqueeItems.length - 1 ? <Text> . </Text> : null}
-                          </Text>
-                        ))}
+                        {marqueeText}
                       </Animated.Text>
                     </View>
                   </View>
