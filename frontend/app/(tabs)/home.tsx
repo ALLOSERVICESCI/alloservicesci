@@ -114,7 +114,7 @@ export default function Home() {
       -1, // infinite
       false, // do not reverse
     );
-    return () => { clearTimeout(id); cancelAnimation(marqueeX); };
+        return () => { cancelAnimation(marqueeX); };
   }, [textW, marqueeItems]);
 
   const onRefresh = async () => {
