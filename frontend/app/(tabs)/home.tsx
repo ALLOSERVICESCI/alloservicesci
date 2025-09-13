@@ -237,8 +237,7 @@ const styles = StyleSheet.create({
   infoBtn: { backgroundColor: '#D32F2F', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, marginRight: 8 },
   infoBtnText: { color: '#fff', fontWeight: '800', fontSize: 12 },
   marqueeText: { color: '#0F5132', fontSize: 17, fontWeight: '700' },
-  fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 36 },
-  fadeRight: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 36 },
+  marqueeClip: { flex: 1, overflow: 'hidden' },
 
   categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 24, marginTop: -8 },
   carouselContainer: { paddingLeft: 20 },
