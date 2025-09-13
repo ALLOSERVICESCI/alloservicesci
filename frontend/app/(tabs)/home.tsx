@@ -125,7 +125,7 @@ export default function Home() {
             </View>
             <View style={styles.brandSection}>
               <Text style={styles.brand}>{t('brand')}</Text>
-              <Text style={styles.slogan}>{t('slogan')}</Text>
+              <Text style={styles.slogan} numberOfLines={1} onLayout={(e)=>setSloganW(e.nativeEvent.layout.width)}>{t('slogan')}</Text>
               <Text style={styles.greeting}>{greeting}</Text>
               {/* Marquee résumé sous Bonjour ... */}
               {!!summary && (
