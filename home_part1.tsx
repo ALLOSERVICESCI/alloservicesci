@@ -20,7 +20,7 @@ export default function Home() {
     { slug: 'sante', label: t('cat_sante'), icon: '🏥', isPremium: false },
     { slug: 'alertes', label: t('alertes'), icon: '📢', isPremium: false },
     { slug: 'education', label: t('cat_education'), icon: '🎓', isPremium: true },
-    { slug: 'examens_concours', label: t('cat_examens'), icon: '📚', isPremium: true },
+    { slug: 'examens_concours', label: t('examens'), icon: '📚', isPremium: true },
     { slug: 'services_publics', label: t('cat_services_publics'), icon: '🏛️', isPremium: true },
     { slug: 'emplois', label: t('cat_emplois'), icon: '💼', isPremium: true },
     { slug: 'services_utiles', label: t('cat_services_utiles'), icon: '⚡', isPremium: true },
