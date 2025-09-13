@@ -64,7 +64,7 @@ export default function Home() {
 
   const colorForKind = (kind: string) => {
     const k = kind.toLowerCase();
-    if (k.startsWith('danger') || k.startsWith('disparition') || k.startsWith('accident')) return '#D32F2F';
+    if (k.startsWith('danger') || k.startsWith('disparition') || k.startsWith('accident')) return '#FF8A00';
     if (k.startsWith('alerte') || k.startsWith('embouteillage') || k.startsWith('inondation')) return '#FF8A00';
     return '#0F5132';
   };
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   greeting: { fontSize: 20, color: '#0F5132', marginTop: 8, fontWeight: '700', textAlign: 'center' },
   marqueeOuter: { marginTop: 20, marginBottom: 18, alignSelf: 'center' },
   infoBarContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 22, borderWidth: 1, borderColor: '#FFA64D', height: 48, paddingRight: 10, overflow: 'hidden' },
-  infoPill: { height: '100%', paddingHorizontal: 20, backgroundColor: '#D32F2F', justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 22, borderBottomLeftRadius: 22 },
+  infoPill: { height: '100%', paddingHorizontal: 20, backgroundColor: '#FF8A00', justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 22, borderBottomLeftRadius: 22 },
   infoPillText: { color: '#fff', fontWeight: '800', fontSize: 16 },
   ticksRow: { position: 'absolute', left: 70, right: 14, top: 8, height: 8, flexDirection: 'row', justifyContent: 'space-between' },
   tick: { width: 2, height: 8, backgroundColor: '#B0B0B0', borderRadius: 1, opacity: 0.7 },
