@@ -7,6 +7,7 @@ import { useI18n } from '../../src/i18n/i18n';
 import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import NavMenu from '../../src/components/NavMenu';
 import { LinearGradient } from 'expo-linear-gradient';
+import { apiFetch } from '../../src/utils/api';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width, height } = Dimensions.get('window');
