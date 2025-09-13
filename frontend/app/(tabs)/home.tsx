@@ -108,8 +108,8 @@ export default function Home() {
     const distance = textW; // with double-buffer, shift by exactly one text width
     const duration = (distance / speed) * 1000;
     const loop = () => {
-      marqueeX.setValue(0);
-      Animated.timing(marqueeX, { toValue: -distance, duration, easing: Easing.linear, useNativeDriver: true }).start(({ finished }) => {
+      marqueeX.value = 0;
+      marqueeX.value = withTiming(-distance, { duration, easing: REEasing.linear }, (finished) => {
         if (finished) loop();
       });
     };
