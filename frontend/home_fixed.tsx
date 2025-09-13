@@ -31,7 +31,7 @@ export default function Home() {
     { slug: 'examens_concours', label: t('cat_examens') },
     { slug: 'services_publics', label: t('cat_services_publics') },
     { slug: 'emplois', label: t('cat_emplois') },
-    { slug: 'alertes', label: t('cat_alertes') },
+    { slug: 'alertes', label: t('alertes') },
     { slug: 'services_utiles', label: t('cat_services_utiles') },
     { slug: 'agriculture', label: t('cat_agriculture') },
     { slug: 'loisirs_tourisme', label: t('cat_loisirs') },
