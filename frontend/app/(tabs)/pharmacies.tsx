@@ -24,6 +24,8 @@ export default function Pharmacies() {
   const [showNearTip, setShowNearTip] = useState(false);
   const [showDutyTip, setShowDutyTip] = useState(false);
 
+  const [showResetLink, setShowResetLink] = useState(false);
+
   const { t, lang } = useI18n();
 
   const sortedCities = useMemo(() => CI_CITIES.slice().sort((a,b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })), []);
