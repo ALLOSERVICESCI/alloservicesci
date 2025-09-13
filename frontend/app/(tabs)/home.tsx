@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F8FAF9' },
   pageWrapper: { flex: 1, justifyContent: 'flex-start' },
   scrollContent: { paddingBottom: 30, flexGrow: 1 },
-  header: { paddingHorizontal: 20, paddingTop: 56, paddingBottom: 24, alignItems: 'center' },
+  header: { paddingHorizontal: 20, paddingTop: 56, paddingBottom: 18, alignItems: 'center' },
   logoSection: { alignItems: 'center', marginBottom: 16 },
   logoContainer: { width: 140, height: 140, borderRadius: 70, borderWidth: 4, borderColor: '#0A7C3A', backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 6 },
   logo: { width: 120, height: 120, borderRadius: 60, borderWidth: 3, borderColor: '#ffffff' },
