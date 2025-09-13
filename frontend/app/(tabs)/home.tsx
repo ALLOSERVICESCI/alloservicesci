@@ -26,18 +26,18 @@ export default function Home() {
   }, [user?.id]);
 
   const categories = useMemo(() => [
-    { slug: 'urgence', label: t('cat_urgence'), icon: '🚨', isPremium: false },
-    { slug: 'sante', label: t('cat_sante'), icon: '🏥', isPremium: false },
+    { slug: 'urgence', label: t('urgence'), icon: '🚨', isPremium: false },
+    { slug: 'sante', label: t('sante'), icon: '🏥', isPremium: false },
     { slug: 'pharmacies_tab', label: t('tabPharm'), icon: '💊', isPremium: true },
-    { slug: 'alerts_tab', label: t('cat_alertes'), icon: '🔔', isPremium: true },
-    { slug: 'education', label: t('cat_education'), icon: '🎓', isPremium: true },
-    { slug: 'examens_concours', label: t('cat_examens'), icon: '📚', isPremium: true },
-    { slug: 'services_publics', label: t('cat_services_publics'), icon: '🏛️', isPremium: true },
-    { slug: 'emplois', label: t('cat_emplois'), icon: '💼', isPremium: true },
-    { slug: 'services_utiles', label: t('cat_services_utiles'), icon: '⚡', isPremium: true },
-    { slug: 'agriculture', label: t('cat_agriculture'), icon: '🌾', isPremium: true },
-    { slug: 'loisirs_tourisme', label: t('cat_loisirs'), icon: '🏖️', isPremium: true },
-    { slug: 'transport', label: t('cat_transport'), icon: '🚌', isPremium: true },
+    { slug: 'alerts_tab', label: t('alertes'), icon: '🔔', isPremium: true },
+    { slug: 'education', label: t('education'), icon: '🎓', isPremium: true },
+    { slug: 'examens_concours', label: t('examens'), icon: '📚', isPremium: true },
+    { slug: 'services_publics', label: t('services_publics'), icon: '🏛️', isPremium: true },
+    { slug: 'emplois', label: t('emplois'), icon: '💼', isPremium: true },
+    { slug: 'services_utiles', label: t('services_utiles'), icon: '⚡', isPremium: true },
+    { slug: 'agriculture', label: t('agriculture'), icon: '🌾', isPremium: true },
+    { slug: 'loisirs_tourisme', label: t('loisirs_tourisme'), icon: '🏖️', isPremium: true },
+    { slug: 'transport', label: t('transport'), icon: '🚌', isPremium: true },
   ], [t]);
 
   const [aiPos] = React.useState<'bottom-right'|'bottom-left'|'top-right'|'top-left'>('bottom-right');
