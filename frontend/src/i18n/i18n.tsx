@@ -44,6 +44,8 @@ const translations: Record<LangKey, Dict> = {
     notifCenter: 'Centre de notifications',
     paymentHistory: 'Historique des paiements',
     logout: 'Se déconnecter',
+    activeUntil: 'Actif jusqu\'au',
+    inactive: 'Inactif',
 
     // Tabs & sections
     tabHome: 'Accueil',
@@ -52,7 +54,7 @@ const translations: Record<LangKey, Dict> = {
     tabPremium: 'Premium',
     tabProfile: 'Profil',
 
-    // Categories (labels initiaux)
+    // Categories
     urgence: 'Urgence',
     sante: 'Santé',
     alertes: 'Alertes',
@@ -154,6 +156,8 @@ const translations: Record<LangKey, Dict> = {
     notifCenter: 'Notifications center',
     paymentHistory: 'Payments history',
     logout: 'Log out',
+    activeUntil: 'Active until',
+    inactive: 'Inactive',
 
     tabHome: 'Home',
     tabAlerts: 'Alerts',
