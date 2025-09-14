@@ -134,7 +134,7 @@ export default function Home() {
   const [tooltipVisible, setTooltipVisible] = React.useState(false);
   const [fabXY, setFabXY] = React.useState<{x: number; y: number} | null>(null);
   const [dragging, setDragging] = React.useState(false);
-  const pan = useRef(new Animated.ValueXY()).current;
+  const pan = useRef(new RNAnimated.ValueXY()).current;
 
   useEffect(() => {
     (async () => {
