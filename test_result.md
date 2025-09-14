@@ -28,6 +28,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RETEX Backend Test - User update endpoint working perfectly. Successfully updated user with city: 'Yamoussoukro', email: 'serge.updated@example.ci', phone: '+225 01 02 03 04 05'. Returns 200 with updated fields."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - User PATCH endpoint confirmed working in comprehensive regression test. Successfully updated user (ID: 68c72af6917c67e69a63088a) with city: 'Yamoussoukro', email: 'jean.updated@example.ci', phone: '+225 01 02 03 04 05'. Returns 200 with all updated fields correctly applied."
 
   - task: "GET /api/subscriptions/check?user_id=<ID> pour vérifier premium"
     implemented: true
@@ -43,6 +46,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FRESH BACKEND REGRESSION CONFIRMED - Subscription check endpoint working perfectly. Created user Marie Diabate, returns 200 + is_premium: False, expires_at: None for non-premium user as expected. Subscription validation logic working correctly."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - Subscription check endpoint confirmed working in comprehensive regression test. Returns 200 + is_premium: False, expires_at: None for non-premium user (ID: 68c72af6917c67e69a63088a) as expected. Subscription validation logic fully functional."
 
   - task: "GET /api/alerts/unread_count?user_id=<ID> pour compteur notifications"
     implemented: true
@@ -58,6 +64,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FRESH BACKEND REGRESSION CONFIRMED - Alerts unread count endpoint working perfectly. Created user Koffi Yao, returns 200 + count: 15. Unread count logic working correctly for both with and without user_id parameter."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - Alerts unread count endpoint confirmed working in comprehensive regression test. Returns 200 + count: 28 for user (ID: 68c72af6917c67e69a63088a). Unread count logic fully functional for both with and without user_id parameter."
 
   - task: "GET /api/pharmacies avec filtres (city, on_duty, near_lat/lng, max_km)"
     implemented: true
@@ -76,6 +85,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FRESH FULL BACKEND REGRESSION CONFIRMED - All pharmacies endpoints working perfectly after rollback confirmation: A1) No filters: 200 + 4 pharmacies with all required fields (id, name, address, city, on_duty). A2) City filter (Marcory): 200 + 0 results (case-insensitive matching works). A3) on_duty=true filter: 200 + 2 pharmacies, all on_duty=true (computed dynamically from duty_days). A4) Near Abidjan + on_duty combined: 200 + 2 pharmacies near Abidjan coords, all on_duty=true with required fields. Dynamic on_duty computation working correctly based on current weekday matching duty_days array."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - Pharmacies filtering endpoints confirmed working in comprehensive regression test. All filter combinations tested successfully: 1) No filters: 200 + 4 pharmacies with required JSON structure, 2) City filters (Abidjan, Grand-Bassam, Marcory): case-insensitive matching working correctly, 3) on_duty=true filter: 200 + 1 pharmacy, all on_duty=true (dynamic computation from duty_days), 4) Near Abidjan (5km): 200 + 3 pharmacies, 5) Combined city+on_duty (Abidjan): 200 + 1 pharmacy matching both filters. Dynamic on_duty computation based on duty_days array fully functional."
 
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
