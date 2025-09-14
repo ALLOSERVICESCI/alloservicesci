@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
   premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 0, borderColor: 'transparent' },
   premiumBadgeText: { fontSize: 14, fontWeight: '700', color: '#0A7C3A' },
   categoryIcon: { fontSize: 64, marginBottom: 12 },
-  categoryIconImg: { width: 64, height: 64, marginBottom: 12, resizeMode: 'contain' },
+  categoryIconImg: { width: 84, height: 84, marginBottom: 6, resizeMode: 'contain' },
   urgenceStandalone: { width: 220, height: 200, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center', marginRight: 12 },
   urgenceIconWrap: { width: 128, height: 128, borderRadius: 24, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.25, shadowOffset: { width: 0, height: 8 }, shadowRadius: 16, elevation: 12, backgroundColor: '#fff0' },
   categoryLabel: { fontSize: 16, fontWeight: '600', color: '#0F5132', textAlign: 'center', lineHeight: 20 },
