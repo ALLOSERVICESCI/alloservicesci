@@ -136,6 +136,8 @@ export default function Home() {
   const [dragging, setDragging] = React.useState(false);
   const pan = useRef(new RNAnimated.ValueXY()).current;
 
+  const [showSnack, setShowSnack] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
