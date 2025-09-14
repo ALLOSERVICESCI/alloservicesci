@@ -88,7 +88,7 @@ export default function NavMenu() {
               </TouchableOpacity>
             </View>
 
-          </Animated.View>
+          </RNAnimated.View>
         </>
       )}
 
