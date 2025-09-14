@@ -213,6 +213,10 @@ export default function ChatAIA() {
         <View style={styles.lockWrap}>
           <Ionicons name="lock-closed" size={28} color="#0A7C3A" />
           <Text style={styles.lockTitle}>Allô IA — réservé aux membres Premium</Text>
+          <View style={styles.tipWrap}>
+            <View style={styles.tipBubble}><Text style={styles.tipText}>Allô IA nécessite compte premium</Text></View>
+            <View style={styles.tipArrow} />
+          </View>
           <Text style={styles.lockDesc}>Abonnez‑vous à Premium pour accéder à Allô IA et profiter des réponses en français adaptées à la Côte d’Ivoire.</Text>
           <TouchableOpacity onPress={() => router.push('/(tabs)/subscribe')} style={styles.subscribeBtn}>
             <Text style={styles.subscribeBtnText}>Devenir Premium</Text>
