@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   premiumText: { fontSize: 11, fontWeight: '700', color: '#FFD700', backgroundColor: '#8B7000', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginTop: 8, textTransform: 'uppercase' },
   emblemSection: { alignItems: 'center', marginTop: 8, marginBottom: 24 },
   emblemImage: { width: 120, height: 120, resizeMode: 'contain' },
-  emblemRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingHorizontal: 20 },
+  emblemRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' },
   publishInlineBtn: { backgroundColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 6 },
   publishInlineText: { color: '#fff', fontSize: 14, fontWeight: '600' },
   mottoText: { marginTop: 8, color: '#0F5132', fontWeight: '700', fontSize: 16, textAlign: 'center' },
