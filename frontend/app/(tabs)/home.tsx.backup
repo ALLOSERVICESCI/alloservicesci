@@ -10,7 +10,7 @@ import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import NavMenu from '../../src/components/NavMenu';
 import { LinearGradient } from 'expo-linear-gradient';
 import { apiFetch } from '../../src/utils/api';
-import Reanimated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, Easing as REEasing, cancelAnimation } from 'react-native-reanimated';
+import Reanimated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, withSequence, Easing as REEasing, cancelAnimation } from 'react-native-reanimated';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width, height } = Dimensions.get('window');
@@ -176,6 +176,23 @@ export default function Home() {
     return () => pulse.stopAnimation();
   }, [pulse]);
 
+  // Vibration subtile du mégaphone du FAB
+  const megaphoneShake = useSharedValue(-1);
+  const megaphoneAnimStyle = useAnimatedStyle(() => ({
+    transform: [
+      { rotateZ: `${megaphoneShake.value * 2}deg` },
+      { translateX: megaphoneShake.value * 1.5 },
+    ],
+  }));
+  useEffect(() => {
+    megaphoneShake.value = withRepeat(
+      withTiming(1, { duration: 90, easing: REEasing.linear }),
+      -1,
+      true
+    );
+    return () => { cancelAnimation(megaphoneShake); };
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}
@@ -215,7 +232,7 @@ export default function Home() {
               {categories.map((category) => (
                 <TouchableOpacity
                   key={category.slug}
-                  style={[styles.categoryCard, category.isPremium && styles.categoryCardPremium]}
+                  style={category.slug === 'urgence' ? styles.urgenceStandalone : [styles.categoryCard, category.isPremium && styles.categoryCardPremium]}
                   onPress={() => {
                     if (category.slug === 'alerts_tab') return router.push('/(tabs)/alerts');
                     if (category.slug === 'pharmacies_tab') return router.push('/(tabs)/pharmacies');
@@ -228,8 +245,36 @@ export default function Home() {
                   {category.slug === 'alerts_tab' && (typeof alertsUnreadCount === 'number') && alertsUnreadCount > 0 && (
                     <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{alertsUnreadCount > 99 ? '99+' : String(alertsUnreadCount)}</Text></View>
                   )}
-                  <Text style={styles.categoryIcon}>{category.icon}</Text>
-                  <Text style={[styles.categoryLabel, category.isPremium && styles.categoryLabelPremium]}>{category.label}</Text>
+                  {category.slug === 'urgence' ? (
+                    <View style={styles.urgenceIconWrap}>
+                      <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={[styles.categoryIconImg, { width: 112, height: 112, marginBottom: 0, borderRadius: 18 }]} />
+                    </View>
+                  ) : category.slug === 'sante' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/bh94qk6w_Background_sante.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'alerts_tab' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/y128jlhy_Background_alertes.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'agriculture' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pv9ygk7l_Background_agriculture.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'education' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/2v9vzn0s_Background_education.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'emplois' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/vnkjuu6i_Background_emplois.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'examens_concours' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/tzpsx5td_Background_examen.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'loisirs_tourisme' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/26f9vvri_Background_loisir.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'services_publics' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/d40242y4_Background_services_publics.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'services_utiles' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/mggq3vgi_Background_services_utiles.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'transport' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/b0h611zz_Background_transport.png' }} style={styles.categoryIconImg} />
+                  ) : (
+                    <Text style={styles.categoryIcon}>{category.icon}</Text>
+                  )}
+                  {category.slug !== 'urgence' && (
+                    <Text style={[styles.categoryLabel, category.isPremium && styles.categoryLabelPremium]}>{category.label}</Text>
+                  )}
                   {category.isPremium && (<Text style={styles.premiumText}>{t('premiumLabel')}</Text>)}
                 </TouchableOpacity>
               ))}
@@ -255,7 +300,9 @@ export default function Home() {
         onPress={() => router.push('/alerts/new')}
         style={styles.publishFab}
       >
-        <Ionicons name="megaphone" size={22} color="#fff" />
+        <Reanimated.View style={megaphoneAnimStyle}>
+          <Ionicons name="megaphone" size={22} color="#fff" />
+        </Reanimated.View>
       </TouchableOpacity>
 
       <RNAnimated.View style={[
@@ -303,20 +350,23 @@ const styles = StyleSheet.create({
   fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 36 },
   fadeRight: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 36 },
 
-  categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 12, marginTop: -6 },
-  carouselContainer: { paddingLeft: 12 },
-  carousel: { paddingRight: 20, paddingVertical: 8 },
-  categoryCard: { width: 160, height: 190, backgroundColor: '#fff', borderRadius: 16, marginRight: 16, alignItems: 'center', justifyContent: 'center', padding: 16, borderWidth: 1, borderColor: '#E8F0E8', position: 'relative' },
+  categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 12, marginTop: -20 },
+  carouselContainer: { paddingLeft: 8 },
+  carousel: { paddingRight: 12, paddingVertical: 6 },
+  categoryCard: { width: 156, height: 186, backgroundColor: '#fff', borderRadius: 16, marginRight: 12, alignItems: 'center', justifyContent: 'center', padding: 14, borderWidth: 1, borderColor: '#E8F0E8', position: 'relative' },
   categoryCardPremium: { borderColor: 'transparent', borderWidth: 0, backgroundColor: '#fff' },
   premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 0, borderColor: 'transparent' },
   premiumBadgeText: { fontSize: 14, fontWeight: '700', color: '#0A7C3A' },
   categoryIcon: { fontSize: 64, marginBottom: 12 },
+  categoryIconImg: { width: 64, height: 64, marginBottom: 12, resizeMode: 'contain' },
+  urgenceStandalone: { width: 220, height: 200, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  urgenceIconWrap: { width: 128, height: 128, borderRadius: 24, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.25, shadowOffset: { width: 0, height: 8 }, shadowRadius: 16, elevation: 12, backgroundColor: '#fff0' },
   categoryLabel: { fontSize: 16, fontWeight: '600', color: '#0F5132', textAlign: 'center', lineHeight: 20 },
   categoryLabelPremium: { color: '#0A7C3A', fontWeight: '700' },
   premiumText: { fontSize: 11, fontWeight: '700', color: '#FFD700', backgroundColor: '#8B7000', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginTop: 8, textTransform: 'uppercase' },
   emblemSection: { alignItems: 'center', marginTop: 8, marginBottom: 24 },
   emblemImage: { width: 120, height: 120, resizeMode: 'contain' },
-  emblemRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingHorizontal: 20 },
+  emblemRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' },
   publishInlineBtn: { backgroundColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 6 },
   publishInlineText: { color: '#fff', fontSize: 14, fontWeight: '600' },
   mottoText: { marginTop: 8, color: '#0F5132', fontWeight: '700', fontSize: 16, textAlign: 'center' },
@@ -330,6 +380,5 @@ const styles = StyleSheet.create({
   tooltipArrow: { width: 0, height: 0, borderLeftWidth: 6, borderRightWidth: 0, borderTopWidth: 6, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderTopColor: '#0A7C3A', alignSelf: 'flex-end' },
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
   badgeText: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
-  publishFab: { position: 'absolute', bottom: 100, right: 20, backgroundColor: '#FF8A00', borderRadius: 25, paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', shadowColor: '#FF8A00', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 6, elevation: 8 },
-  publishFabText: { color: '#fff', fontWeight: '700', fontSize: 14, marginLeft: 6 },
+  publishFab: { position: 'absolute', bottom: 100, right: 20, backgroundColor: '#FF8A00', width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center', shadowColor: '#FF8A00', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 6, elevation: 8 },
 });
