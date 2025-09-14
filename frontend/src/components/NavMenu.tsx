@@ -19,7 +19,7 @@ export default function NavMenu() {
   const topOffset = insets.top + 48;
 
   // Animation du panneau déroulant
-  const dropAnim = React.useRef(new Animated.Value(0)).current;
+  const dropAnim = React.useRef(new RNAnimated.Value(0)).current;
   const runOpen = React.useCallback((to: number) => {
     Animated.timing(dropAnim, { toValue: to, duration: 180, easing: Easing.out(Easing.cubic), useNativeDriver: true }).start();
   }, [dropAnim]);
