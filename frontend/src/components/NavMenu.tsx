@@ -69,6 +69,9 @@ export default function NavMenu() {
               <TouchableOpacity accessibilityLabel={t('tabPremium')} onPress={() => go('/(tabs)/subscribe')} style={styles.iconBtn}>
                 <Ionicons name="card" size={22} color="#0A7C3A" />
               </TouchableOpacity>
+              <TouchableOpacity accessibilityLabel="Allô IA" onPress={() => go('/ai/chat')} style={styles.iconBtn}>
+                <Ionicons name="chatbubble-ellipses" size={22} color="#0A7C3A" />
+              </TouchableOpacity>
             </View>
           </Animated.View>
         </>
