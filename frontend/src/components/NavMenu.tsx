@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated, Easing, Platform, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated as RNAnimated, Easing, Platform, Pressable, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useI18n } from '../i18n/i18n';
