@@ -82,9 +82,9 @@ export default function Index() {
 
     // initial fade-in for texts
     welcomeFade.setValue(0); sloganFade.setValue(0);
-    RNAnimated.parallel([
-      RNAnimated.timing(welcomeFade, { toValue: 1, duration: 300, useNativeDriver: true }),
-      RNAnimated.timing(sloganFade, { toValue: 1, duration: 300, useNativeDriver: true }),
+    Animated.parallel([
+      Animated.timing(welcomeFade, { toValue: 1, duration: 300, useNativeDriver: true }),
+      Animated.timing(sloganFade, { toValue: 1, duration: 300, useNativeDriver: true }),
     ]).start();
 
     return () => { clearInterval(cycle); };
