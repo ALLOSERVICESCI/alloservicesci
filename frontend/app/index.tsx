@@ -35,7 +35,7 @@ export default function Index() {
   const [langIdx, setLangIdx] = useState(0);
   const [welcomeText, setWelcomeText] = useState(WELCOME_MAP[LANGS[0]]);
   const [sloganText, setSloganText] = useState(SLOGAN_MAP[LANGS[0]]);
-  const welcomeFade = useRef(new Animated.Value(0)).current;
+  const welcomeFade = useRef(new RNAnimated.Value(0)).current;
   const sloganFade = useRef(new Animated.Value(0)).current;
 
   const goHome = () => router.replace('/(tabs)/home');
