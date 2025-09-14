@@ -240,6 +240,18 @@ frontend:
         agent: "testing"
         comment: "✅ MARQUEE NOW ACCESSIBLE AFTER ANIMATION FIXES! E2E test (iPhone 12/13/14: 390x844) confirms: 1) ✅ HOME PAGE LOADS: No more 'Animated is not defined' errors blocking access, 2) ✅ SPLASH SCREEN WORKS: Beautiful orange splash with 'Allô Services CI' and language cycling, 3) ✅ INFOS CAPSULE READY: Home page structure accessible for marquee testing, 4) ✅ ANIMATION SYSTEM: All React Native animation imports fixed in home.tsx and NavMenu.tsx. Marquee functionality can now be properly tested and validated since the blocking animation runtime errors have been resolved. Ready for full marquee scrolling validation."
 
+  - task: "FRONTEND E2E: Home FAB 'Publier' orange rond (testID fab-publier) - suppression bouton vert inline emblème"
+    implemented: true
+    working: true
+    file: "frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE FAB VALIDATION COMPLETED (iPhone 12/13/14: 390x844) - ALL REQUIREMENTS MET! E2E test confirms complete success: 1) ✅ NO GREEN 'PUBLIER' BUTTON: Zero green publish buttons found in emblem row or anywhere on page - inline emblem button successfully removed, 2) ✅ EXACTLY 1 ORANGE FAB: Found perfect FAB with testID='fab-publier', dimensions 56x56px, backgroundColor rgb(255,138,0) (#FF8A00), positioned absolute bottom-right, 3) ✅ ICON ONLY: FAB contains only megaphone icon (Ionicons \\ued4f), no 'Publier' text adjacent - clean icon-only design, 4) ✅ NAVIGATION WORKING: FAB click successfully navigates to /alerts/new, publication form loads with all required fields (Titre, Description, Ville, Publier button), back navigation functional, 5) ✅ REGRESSION PASSED: Allô IA FAB still visible and not masked, marquee capsule (Infos) still visible with 24 elements found, no duplicate Publier buttons elsewhere. PERFECT IMPLEMENTATION: Single orange round FAB replaces green inline button as requested. All 9 success criteria met - FAB design, positioning, functionality, and regression checks all working flawlessly."
+
 metadata:
   created_by: "main_agent"
   version: "1.3"
