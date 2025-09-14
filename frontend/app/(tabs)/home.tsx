@@ -232,7 +232,7 @@ export default function Home() {
               {categories.map((category) => (
                 <TouchableOpacity
                   key={category.slug}
-                  style={styles.urgenceStandalone}
+                  style={[styles.categoryCard, category.isPremium && styles.categoryCardPremium]}
                   onPress={() => {
                     if (category.slug === 'alerts_tab') return router.push('/(tabs)/alerts');
                     if (category.slug === 'pharmacies_tab') return router.push('/(tabs)/pharmacies');
