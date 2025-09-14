@@ -43,7 +43,7 @@ export default function Home() {
   }, [aiPos]);
 
 
-  const pulse = useRef(new Animated.Value(1)).current;
+  const pulse = useRef(new RNAnimated.Value(1)).current;
 
   useEffect(() => {
     const run = () => {
