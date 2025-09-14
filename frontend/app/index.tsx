@@ -41,32 +41,32 @@ export default function Index() {
   const goHome = () => router.replace('/(tabs)/home');
 
   useEffect(() => {
-    const seq = Animated.sequence([
-      Animated.timing(titleOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
-      Animated.parallel([
-        Animated.timing(logoOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
-        Animated.timing(logoScale, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
-        Animated.timing(logoTranslateY, { toValue: 0, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+    const seq = RNAnimated.sequence([
+      RNAnimated.timing(titleOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+      RNAnimated.parallel([
+        RNAnimated.timing(logoOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+        RNAnimated.timing(logoScale, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+        RNAnimated.timing(logoTranslateY, { toValue: 0, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
       ]),
-      Animated.timing(subOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+      RNAnimated.timing(subOpacity, { toValue: 1, duration: 300, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
     ]);
     seq.start();
 
     // Cycle languages through all items once, then navigate to Home
     let cycles = 0;
     const cycle = setInterval(() => {
-      Animated.parallel([
-        Animated.timing(welcomeFade, { toValue: 0, duration: 180, useNativeDriver: true }),
-        Animated.timing(sloganFade, { toValue: 0, duration: 180, useNativeDriver: true }),
+      RNAnimated.parallel([
+        RNAnimated.timing(welcomeFade, { toValue: 0, duration: 180, useNativeDriver: true }),
+        RNAnimated.timing(sloganFade, { toValue: 0, duration: 180, useNativeDriver: true }),
       ]).start(({ finished }) => {
         if (!finished) return;
         setLangIdx((prev) => {
           const next = (prev + 1) % LANGS.length;
           setWelcomeText(WELCOME_MAP[LANGS[next]]);
           setSloganText(SLOGAN_MAP[LANGS[next]]);
-          Animated.parallel([
-            Animated.timing(welcomeFade, { toValue: 1, duration: 220, useNativeDriver: true }),
-            Animated.timing(sloganFade, { toValue: 1, duration: 220, useNativeDriver: true }),
+          RNAnimated.parallel([
+            RNAnimated.timing(welcomeFade, { toValue: 1, duration: 220, useNativeDriver: true }),
+            RNAnimated.timing(sloganFade, { toValue: 1, duration: 220, useNativeDriver: true }),
           ]).start();
           if (next === 0) {
             cycles += 1;
@@ -82,9 +82,9 @@ export default function Index() {
 
     // initial fade-in for texts
     welcomeFade.setValue(0); sloganFade.setValue(0);
-    Animated.parallel([
-      Animated.timing(welcomeFade, { toValue: 1, duration: 300, useNativeDriver: true }),
-      Animated.timing(sloganFade, { toValue: 1, duration: 300, useNativeDriver: true }),
+    RNAnimated.parallel([
+      RNAnimated.timing(welcomeFade, { toValue: 1, duration: 300, useNativeDriver: true }),
+      RNAnimated.timing(sloganFade, { toValue: 1, duration: 300, useNativeDriver: true }),
     ]).start();
 
     return () => { clearInterval(cycle); };
