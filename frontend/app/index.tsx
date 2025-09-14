@@ -26,7 +26,7 @@ const SLOGAN_MAP: Record<string, string> = {
 export default function Index() {
   const router = useRouter();
 
-  const titleOpacity = useRef(new Animated.Value(0)).current;
+  const titleOpacity = useRef(new RNAnimated.Value(0)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoScale = useRef(new Animated.Value(0.98)).current;
   const logoTranslateY = useRef(new Animated.Value(6)).current;
