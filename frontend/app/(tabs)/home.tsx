@@ -245,7 +245,11 @@ export default function Home() {
                   {category.slug === 'alerts_tab' && (typeof alertsUnreadCount === 'number') && alertsUnreadCount > 0 && (
                     <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{alertsUnreadCount > 99 ? '99+' : String(alertsUnreadCount)}</Text></View>
                   )}
-                  <Text style={styles.categoryIcon}>{category.icon}</Text>
+                  {category.slug === 'urgence' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={styles.categoryIconImg} />
+                  ) : (
+                    <Text style={styles.categoryIcon}>{category.icon}</Text>
+                  )}
                   <Text style={[styles.categoryLabel, category.isPremium && styles.categoryLabelPremium]}>{category.label}</Text>
                   {category.isPremium && (<Text style={styles.premiumText}>{t('premiumLabel')}</Text>)}
                 </TouchableOpacity>
