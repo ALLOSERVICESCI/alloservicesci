@@ -180,13 +180,28 @@ frontend:
         agent: "testing"
         comment: "✅ PROFILE ACTIONS GRID FULLY FIXED - COMPREHENSIVE E2E TEST PASSED (iPhone 12/13/14: 390x844)! Final validation confirms complete success: 1) ✅ Profile page accessible with user 'Serge Angoua' logged in, 2) ✅ Actions section present with title 'Actions', 3) ✅ ALL 3 expected actions found: 'Modifier mon profil' (✏️), 'Centre de notifications' (🔔), 'Historique des paiements' (💳), 4) ✅ CRITICAL SUCCESS: 'Réinitialiser les infobulles' action NOT FOUND - completely removed as requested, 5) ✅ Actions grid shows exactly 3 tiles (not 4), 6) ✅ 'Se déconnecter' button present and functional, 7) ✅ No console errors detected. The previous mystery has been resolved - the reset code and imports have been fully removed from profile.tsx. All requirements met successfully."
 
-  - task: "FRONTEND E2E: Home page marquee scrolling summary with fallback examples when notifications empty"
+  - task: "FRONTEND CRITICAL: Fix 'Animated is not defined' runtime errors blocking Home page"
     implemented: true
     working: false
+    file: "frontend/app/index.tsx, frontend/app/(tabs)/home.tsx"
+    stuck_count: 2
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL RUNTIME ERROR FOUND - 'Animated is not defined' blocking app startup. E2E test (iPhone 12/13/14: 390x844) shows red screen errors preventing Home page from loading. Found errors in both index.tsx (splash screen) and home.tsx (main page). Error: 'RNAnimated is not defined' in index.tsx and 'Animated is not defined' in home.tsx. Fixed home.tsx by changing Animated to RNAnimated, but index.tsx still has issues. App cannot load properly due to these animation import errors."
+      - working: false
+        agent: "testing"
+        comment: "❌ PARTIAL FIX APPLIED BUT STILL FAILING - Fixed home.tsx animation imports (Animated -> RNAnimated) but index.tsx still shows 'RNAnimated is not defined' error. App shows red screen on startup preventing access to Home page features. Console shows: 'ReferenceError: RNAnimated is not defined at Index'. Both splash screen (index.tsx) and home page (home.tsx) have animation import issues that need to be resolved for app to function properly. This is blocking all Home page testing including FAB, info capsule, and marquee functionality."
+
+  - task: "FRONTEND E2E: Home page marquee scrolling summary with fallback examples when notifications empty"
+    implemented: true
+    working: "NA"
     file: "frontend/app/(tabs)/home.tsx"
     stuck_count: 1
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: false
         agent: "testing"
@@ -200,6 +215,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ MARQUEE DOUBLE-BUFFER RE-TEST AFTER FIXES (iPhone 12/13/14: 390x844) - PARTIAL SUCCESS: ✅ MAJOR IMPROVEMENTS: 1) Fixed critical 'marqueeX.stopAnimation is not a function' error by replacing with cancelAnimation, 2) Home page now loads correctly with French slogan 'Tous les services essentiels en un clic', 3) Marquee structure fully visible with orange 'Infos' pill (#FF8A00 background), 4) Fallback content present and visible ('Agression . ACCIDENT . DISPARITION . Embouteillage'), 5) No console errors or useNativeDriver warnings for marquee, 6) Added missing marqueeRow style to fix rendering. ❌ REMAINING ISSUE: Animation not active - no translateX transforms detected during measurement, suggesting React Native Reanimated animation may not be running properly in React Native Web environment. 🔍 ROOT CAUSE: React Native Reanimated double-buffer animation implementation may not be compatible with React Native Web, causing animation to not start despite proper setup. CONCLUSION: Marquee structure and content working perfectly, but smooth scrolling animation needs alternative implementation for web compatibility."
+      - working: "NA"
+        agent: "testing"
+        comment: "⚠️ CANNOT TEST MARQUEE - Home page blocked by 'Animated is not defined' runtime errors. Marquee functionality cannot be properly tested until animation import issues are resolved in both index.tsx and home.tsx files. App shows red screen preventing access to Home page elements."
 
 metadata:
   created_by: "main_agent"
