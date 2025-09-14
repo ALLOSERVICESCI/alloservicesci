@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
   fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 36 },
   fadeRight: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 36 },
 
-  categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 12, marginTop: -16 },
+  categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 12, marginTop: -20 },
   carouselContainer: { paddingLeft: 12 },
   carousel: { paddingRight: 20, paddingVertical: 8 },
   categoryCard: { width: 160, height: 190, backgroundColor: '#fff', borderRadius: 16, marginRight: 16, alignItems: 'center', justifyContent: 'center', padding: 16, borderWidth: 1, borderColor: '#E8F0E8', position: 'relative' },
