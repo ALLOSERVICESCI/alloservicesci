@@ -270,7 +270,9 @@ export default function Home() {
                   ) : (
                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                   )}
-                  <Text style={[styles.categoryLabel, category.isPremium && styles.categoryLabelPremium]}>{category.label}</Text>
+                  {category.slug !== 'urgence' && (
+                    <Text style={[styles.categoryLabel, category.isPremium && styles.categoryLabelPremium]}>{category.label}</Text>
+                  )}
                   {category.isPremium && (<Text style={styles.premiumText}>{t('premiumLabel')}</Text>)}
                 </TouchableOpacity>
               ))}
