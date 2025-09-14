@@ -251,6 +251,16 @@ export default function Home() {
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/bh94qk6w_Background_sante.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'alerts_tab' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/y128jlhy_Background_alertes.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'agriculture' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pv9ygk7l_Background_agriculture.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'education' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/2v9vzn0s_Background_education.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'emplois' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/vnkjuu6i_Background_emplois.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'examens_concours' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/tzpsx5td_Background_examen.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'loisirs_tourisme' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/26f9vvri_Background_loisir.png' }} style={styles.categoryIconImg} />
                   ) : (
                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                   )}
