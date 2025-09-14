@@ -55,9 +55,9 @@ export default function Index() {
     // Cycle languages through all items once, then navigate to Home
     let cycles = 0;
     const cycle = setInterval(() => {
-      RNAnimated.parallel([
-        RNAnimated.timing(welcomeFade, { toValue: 0, duration: 180, useNativeDriver: true }),
-        RNAnimated.timing(sloganFade, { toValue: 0, duration: 180, useNativeDriver: true }),
+      Animated.parallel([
+        Animated.timing(welcomeFade, { toValue: 0, duration: 180, useNativeDriver: true }),
+        Animated.timing(sloganFade, { toValue: 0, duration: 180, useNativeDriver: true }),
       ]).start(({ finished }) => {
         if (!finished) return;
         setLangIdx((prev) => {
