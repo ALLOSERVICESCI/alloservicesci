@@ -153,6 +153,12 @@ export default function Home() {
         }
         setTooltipVisible(true);
         setTimeout(() => setTooltipVisible(false), 5000);
+
+        const flag = await AsyncStorage.getItem('home_snack');
+        if (flag === 'ALERT_PUBLISHED') {
+          setShowSnack(true);
+          setTimeout(async () => { setShowSnack(false); try { await AsyncStorage.removeItem('home_snack'); } catch {} }, 3500);
+        }
       } catch (e) {}
     })();
   }, []);
