@@ -64,9 +64,9 @@ export default function Index() {
           const next = (prev + 1) % LANGS.length;
           setWelcomeText(WELCOME_MAP[LANGS[next]]);
           setSloganText(SLOGAN_MAP[LANGS[next]]);
-          RNAnimated.parallel([
-            RNAnimated.timing(welcomeFade, { toValue: 1, duration: 220, useNativeDriver: true }),
-            RNAnimated.timing(sloganFade, { toValue: 1, duration: 220, useNativeDriver: true }),
+          Animated.parallel([
+            Animated.timing(welcomeFade, { toValue: 1, duration: 220, useNativeDriver: true }),
+            Animated.timing(sloganFade, { toValue: 1, duration: 220, useNativeDriver: true }),
           ]).start();
           if (next === 0) {
             cycles += 1;
