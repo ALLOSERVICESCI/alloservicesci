@@ -357,6 +357,7 @@ const styles = StyleSheet.create({
   premiumBadgeText: { fontSize: 14, fontWeight: '700', color: '#0A7C3A' },
   categoryIcon: { fontSize: 64, marginBottom: 12 },
   categoryIconImg: { width: 64, height: 64, marginBottom: 12, resizeMode: 'contain' },
+  urgenceStandalone: { width: 200, height: 186, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center', marginRight: 12 },
   categoryLabel: { fontSize: 16, fontWeight: '600', color: '#0F5132', textAlign: 'center', lineHeight: 20 },
   categoryLabelPremium: { color: '#0A7C3A', fontWeight: '700' },
   premiumText: { fontSize: 11, fontWeight: '700', color: '#FFD700', backgroundColor: '#8B7000', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginTop: 8, textTransform: 'uppercase' },
