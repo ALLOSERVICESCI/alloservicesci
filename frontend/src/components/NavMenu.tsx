@@ -71,7 +71,7 @@ export default function NavMenu() {
       {open && (
         <>
           <Pressable style={StyleSheet.absoluteFill} onPress={toggleMenu} />
-          <Animated.View style={[styles.dropdown, { top: topOffset + 40, transform: [{ translateY }], opacity }]}> 
+          <RNAnimated.View style={[styles.dropdown, { top: topOffset + 40, transform: [{ translateY }], opacity }]}> 
             <View style={styles.iconRow}>
               <TouchableOpacity accessibilityLabel={t('tabProfile')} onPress={() => go('/(tabs)/profile')} style={styles.iconBtn}>
                 <Ionicons name="person" size={22} color="#0A7C3A" />
