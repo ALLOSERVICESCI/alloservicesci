@@ -272,7 +272,9 @@ export default function Home() {
         onPress={() => router.push('/alerts/new')}
         style={styles.publishFab}
       >
-        <Ionicons name="megaphone" size={22} color="#fff" />
+        <Reanimated.View style={megaphoneAnimStyle}>
+          <Ionicons name="megaphone" size={22} color="#fff" />
+        </Reanimated.View>
       </TouchableOpacity>
 
       <RNAnimated.View style={[
