@@ -245,6 +245,18 @@ export default function Home() {
 
       <NavMenu />
 
+      {/* FAB Publier */}
+      <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel="Publier une alerte"
+        testID="fab-publier"
+        onPress={() => router.push('/alerts/new')}
+        style={styles.publishFab}
+      >
+        <Ionicons name="megaphone" size={18} color="#fff" />
+        <Text style={styles.publishFabText}>Publier</Text>
+      </TouchableOpacity>
+
       <RNAnimated.View style={[
         styles.aiFab,
         styles.aiHalo,
