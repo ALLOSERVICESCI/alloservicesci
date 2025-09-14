@@ -84,7 +84,7 @@ export default function NavMenu() {
                 onPress={isPremium ? () => go('/ai/chat') : showPremiumAlert}
                 style={[styles.iconBtn, !isPremium && styles.iconBtnDisabled]}
               >
-                <Ionicons name="chatbubble-ellipses" size={22} color={isPremium ? '#0A7C3A' : '#A0A0A0'} />
+                <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/qn4qcqls_logoia.png' }} style={[styles.aiLogo, { opacity: isPremium ? 1 : 0.6 }]} />
               </TouchableOpacity>
             </View>
 
