@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated, Easing, Platform, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated, Easing, Platform, Pressable, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useI18n } from '../i18n/i18n';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAuth } from '../context/AuthContext';
 
 export default function NavMenu() {
   const [open, setOpen] = React.useState(false);
@@ -11,6 +12,8 @@ export default function NavMenu() {
   const router = useRouter();
   const { t, lang, setLang } = useI18n();
   const insets = useSafeAreaInsets();
+  const { user } = useAuth();
+  const isPremium = (user as any)?.is_premium === true;
 
   // Position alignée avec le header de la Home
   const topOffset = insets.top + 48;
@@ -31,6 +34,13 @@ export default function NavMenu() {
     setOpen(false);
     runOpen(0);
     setTimeout(() => router.push(path), 10);
+  };
+
+  const showPremiumAlert = () => {
+    Alert.alert('Allô IA', 'Fonctionnalité réservée aux membres Premium.', [
+      { text: 'Plus tard', style: 'cancel' },
+      { text: 'Devenir Premium', onPress: () => go('/(tabs)/subscribe') },
+    ]);
   };
 
   // Langues disponibles (ar supprimé; ajout tr, zh)
@@ -57,7 +67,7 @@ export default function NavMenu() {
         </TouchableOpacity>
       </View>
 
-      {/* Panneau déroulant (icônes: Profil, Premium) */}
+      {/* Panneau déroulant (icônes: Profil, Premium, Allô IA) */}
       {open && (
         <>
           <Pressable style={StyleSheet.absoluteFill} onPress={toggleMenu} />
@@ -69,8 +79,12 @@ export default function NavMenu() {
               <TouchableOpacity accessibilityLabel={t('tabPremium')} onPress={() => go('/(tabs)/subscribe')} style={styles.iconBtn}>
                 <Ionicons name="card" size={22} color="#0A7C3A" />
               </TouchableOpacity>
-              <TouchableOpacity accessibilityLabel="Allô IA" onPress={() => go('/ai/chat')} style={styles.iconBtn}>
-                <Ionicons name="chatbubble-ellipses" size={22} color="#0A7C3A" />
+              <TouchableOpacity
+                accessibilityLabel="Allô IA"
+                onPress={isPremium ? () => go('/ai/chat') : showPremiumAlert}
+                style={[styles.iconBtn, !isPremium && styles.iconBtnDisabled]}
+              >
+                <Ionicons name="chatbubble-ellipses" size={22} color={isPremium ? '#0A7C3A' : '#A0A0A0'} />
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -111,6 +125,7 @@ const styles = StyleSheet.create({
   dropdown: { position: 'absolute', left: 12, backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.15, shadowRadius: 12, elevation: 12, borderWidth: 1, borderColor: '#E8F0E8' },
   iconRow: { flexDirection: 'row', alignItems: 'center' },
   iconBtn: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginHorizontal: 4, backgroundColor: '#F3F7F5', borderWidth: 1, borderColor: '#E8F0E8' },
+  iconBtnDisabled: { backgroundColor: '#F2F2F2', borderColor: '#E5E5E5' },
 
   // Language pill
   langWrap: { position: 'absolute', right: 16, zIndex: 50 },

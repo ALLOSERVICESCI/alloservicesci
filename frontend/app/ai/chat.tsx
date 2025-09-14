@@ -1,7 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, FlatList, SafeAreaView, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../../src/context/AuthContext';
+import { useRouter } from 'expo-router';
 
 const QUICK_PROMPTS: string[] = [
   "Rédige une demande d’attestation de travail adressée à mon employeur.",
@@ -29,8 +31,14 @@ const QUICK_PROMPTS: string[] = [
 type Msg = { id: string; role: 'user' | 'assistant' | 'system'; content: string; ts: number };
 
 const IA_DOWN_MSG = 'Service IA indisponible. Réessayez plus tard.';
+const STORAGE_RECENTS = 'ai_quick_prompts_recent';
+const MAX_RECENTS = 10;
 
 export default function ChatAIA() {
+  const { user } = useAuth();
+  const isPremium = (user as any)?.is_premium === true;
+  const router = useRouter();
+
   const [messages, setMessages] = useState<Msg[]>([
     {
       id: 'welcome',
@@ -42,10 +50,27 @@ export default function ChatAIA() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   const [temperature, setTemperature] = useState(0.5);
+  const [recents, setRecents] = useState<string[]>([]);
   const listRef = useRef<FlatList>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem(STORAGE_RECENTS);
+        if (raw) setRecents(JSON.parse(raw));
+      } catch {}
+    })();
+  }, []);
+
+  const pushRecent = async (prompt: string) => {
+    try {
+      const next = [prompt, ...recents.filter((p) => p !== prompt)].slice(0, MAX_RECENTS);
+      setRecents(next);
+      await AsyncStorage.setItem(STORAGE_RECENTS, JSON.stringify(next));
+    } catch {}
+  };
 
   const scrollToEnd = () => setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 50);
 
@@ -56,17 +81,13 @@ export default function ChatAIA() {
 
   const copyMessage = async (text: string) => {
     try {
-      // For web environment, use navigator.clipboard if available
       if (typeof navigator !== 'undefined' && navigator.clipboard) {
         await navigator.clipboard.writeText(text);
         Alert.alert('Copié', 'Le contenu a été copié dans le presse‑papier.');
       } else {
-        // Fallback: just show the alert without actual copying
         Alert.alert('Copié', 'Le contenu a été copié dans le presse‑papier.');
       }
-    } catch (e) {
-      // ignore
-    }
+    } catch (e) {}
   };
 
   const adjustTemp = (delta: number) => {
@@ -84,16 +105,16 @@ export default function ChatAIA() {
     setIsStreaming(false);
   };
 
-  const send = async () => {
-    const text = input.trim();
-    if (!text || sending || isStreaming) return;
+  const sendText = async (text: string) => {
+    const content = text.trim();
+    if (!content || sending || isStreaming) return;
     setSending(true);
-    const userMsg: Msg = { id: String(Date.now()), role: 'user', content: text, ts: Date.now() };
+    const userMsg: Msg = { id: String(Date.now()), role: 'user', content, ts: Date.now() };
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
+    await pushRecent(content);
 
     try {
-      // Try streaming first; if it fails, fallback to non-streaming
       const ok = await tryStream([...messages, userMsg]);
       if (!ok) {
         await tryComplete([...messages, userMsg]);
@@ -105,6 +126,8 @@ export default function ChatAIA() {
       scrollToEnd();
     }
   };
+
+  const send = async () => sendText(input);
 
   const tryStream = async (conv: Msg[]): Promise<boolean> => {
     try {
@@ -127,21 +150,13 @@ export default function ChatAIA() {
       if (!resp.ok) {
         setIsStreaming(false);
         abortRef.current = null;
-        if (resp.status >= 500) {
-          pushAssistant(IA_DOWN_MSG);
-          return true; // handled with explicit message; do not fallback
-        }
-        return false; // allow fallback for non-500
-      }
-      if (!resp.body) {
-        setIsStreaming(false);
-        abortRef.current = null;
+        if (resp.status >= 500) { pushAssistant(IA_DOWN_MSG); return true; }
         return false;
       }
+      if (!resp.body) { setIsStreaming(false); abortRef.current = null; return false; }
 
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
-
       const asst: Msg = { id: String(Date.now() + 2), role: 'assistant', content: '', ts: Date.now() + 2 };
       setMessages((prev) => [...prev, asst]);
 
@@ -155,86 +170,57 @@ export default function ChatAIA() {
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             const data = line.slice(6);
-            if (data === '[DONE]') {
-              setIsStreaming(false);
-              abortRef.current = null;
-              return true;
-            }
+            if (data === '[DONE]') { setIsStreaming(false); abortRef.current = null; return true; }
             try {
               const parsed = JSON.parse(data);
-              if (parsed.error) {
-                asst.content = IA_DOWN_MSG;
-                setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m));
-                setIsStreaming(false);
-                abortRef.current = null;
-                return true;
-              }
-              if (parsed.content) {
-                asst.content += parsed.content;
-                setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m));
-              }
+              if (parsed.error) { asst.content = IA_DOWN_MSG; setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m)); setIsStreaming(false); abortRef.current = null; return true; }
+              if (parsed.content) { asst.content += parsed.content; setMessages((prev) => prev.map(m => m.id === asst.id ? { ...m, content: asst.content } : m)); }
             } catch {}
           }
         }
       }
-      setIsStreaming(false);
-      abortRef.current = null;
-      return true;
+      setIsStreaming(false); abortRef.current = null; return true;
     } catch (e: any) {
-      setIsStreaming(false);
-      abortRef.current = null;
-      if (e?.name === 'AbortError') {
-        // User stopped streaming; keep partial content if any
-        return true;
-      }
-      return false; // fallback to non-streaming
+      setIsStreaming(false); abortRef.current = null; if (e?.name === 'AbortError') { return true; } return false;
     }
   };
 
   const tryComplete = async (conv: Msg[]) => {
     try {
       const resp = await fetch('/api/ai/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: conv.map(m => ({ role: m.role, content: m.content })), stream: false, temperature: temperature, max_tokens: 1000 }),
       });
-
-      if (!resp.ok) {
-        if (resp.status >= 500) {
-          pushAssistant(IA_DOWN_MSG);
-          return;
-        }
-        // Try to parse error detail for non-500
-        let detail = '';
-        try {
-          const err = await resp.json();
-          detail = err?.detail || '';
-        } catch {}
-        pushAssistant(detail || 'Une erreur est survenue.');
-        return;
-      }
-
-      const data = await resp.json();
-      const content = data?.content || data?.detail || '';
-      pushAssistant(content || '');
-    } catch (e) {
-      pushAssistant('Une erreur est survenue.');
-    }
+      if (!resp.ok) { if (resp.status >= 500) { pushAssistant(IA_DOWN_MSG); return; } let detail = ''; try { const err = await resp.json(); detail = err?.detail || ''; } catch {} pushAssistant(detail || 'Une erreur est survenue.'); return; }
+      const data = await resp.json(); const content = data?.content || data?.detail || ''; pushAssistant(content || '');
+    } catch (e) { pushAssistant('Une erreur est survenue.'); }
   };
 
   const renderItem = ({ item }: { item: Msg }) => {
     const isUser = item.role === 'user';
     return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onLongPress={() => !isUser && item.content ? copyMessage(item.content) : undefined}
-      >
+      <TouchableOpacity activeOpacity={0.8} onLongPress={() => !isUser && item.content ? copyMessage(item.content) : undefined}>
         <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
           <Text style={[styles.bubbleText, isUser ? styles.userText : styles.assistantText]}>{item.content}</Text>
         </View>
       </TouchableOpacity>
     );
   };
+
+  if (!isPremium) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#F8FAF9' }}>
+        <View style={styles.lockWrap}>
+          <Ionicons name="lock-closed" size={28} color="#0A7C3A" />
+          <Text style={styles.lockTitle}>Allô IA — réservé aux membres Premium</Text>
+          <Text style={styles.lockDesc}>Abonnez‑vous à Premium pour accéder à Allô IA et profiter des réponses en français adaptées à la Côte d’Ivoire.</Text>
+          <TouchableOpacity onPress={() => router.push('/(tabs)/subscribe')} style={styles.subscribeBtn}>
+            <Text style={styles.subscribeBtnText}>Devenir Premium</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8FAF9' }}>
@@ -247,15 +233,41 @@ export default function ChatAIA() {
           </View>
           <View style={styles.headerActions}>
             <View style={styles.tempPill}>
-              <TouchableOpacity onPress={() => adjustTemp(-0.1)} style={styles.tempBtn}>
+              <TouchableOpacity onPress={() => setTemperature(Math.max(0, parseFloat((temperature - 0.1).toFixed(1))))} style={styles.tempBtn}>
                 <Ionicons name="remove" size={16} color="#0A7C3A" />
               </TouchableOpacity>
               <Text style={styles.tempText}>Temp. {temperature.toFixed(1)}</Text>
-              <TouchableOpacity onPress={() => adjustTemp(0.1)} style={styles.tempBtn}>
+              <TouchableOpacity onPress={() => setTemperature(Math.min(2, parseFloat((temperature + 0.1).toFixed(1))))} style={styles.tempBtn}>
                 <Ionicons name="add" size={16} color="#0A7C3A" />
               </TouchableOpacity>
             </View>
           </View>
+        </View>
+
+        {/* Prompts récents */}
+        {recents.length > 0 && (
+          <View style={{ paddingHorizontal: 12, paddingTop: 10 }}>
+            <Text style={styles.sectionTitle}>Récents</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 6 }}>
+              {recents.map((p, idx) => (
+                <TouchableOpacity key={`r_${idx}`} onPress={() => sendText(p)} style={styles.quickBtn} accessibilityRole="button">
+                  <Text style={styles.quickBtnText} numberOfLines={1}>{p}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
+        {/* Quick prompts */}
+        <View style={{ paddingHorizontal: 12, paddingTop: 10 }}>
+          <Text style={styles.sectionTitle}>Exemples</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 6 }}>
+            {QUICK_PROMPTS.map((p, idx) => (
+              <TouchableOpacity key={idx} onPress={() => sendText(p)} style={styles.quickBtn} accessibilityRole="button">
+                <Text style={styles.quickBtnText} numberOfLines={1}>{p}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
 
         {/* List */}
@@ -321,4 +333,14 @@ const styles = StyleSheet.create({
   input: { flex: 1, minHeight: 40, maxHeight: 120, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, marginRight: 8, backgroundColor: '#F8FAF9' },
   sendBtn: { backgroundColor: '#0A7C3A', paddingHorizontal: 14, paddingVertical: 12, borderRadius: 12 },
   stopBtn: { backgroundColor: '#EF4444', paddingHorizontal: 14, paddingVertical: 12, borderRadius: 12 },
+
+  sectionTitle: { fontSize: 14, fontWeight: '800', color: '#0A7C3A', marginBottom: 4 },
+  quickBtn: { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E8F0E8', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 16, marginRight: 8, maxWidth: 280 },
+  quickBtnText: { color: '#0F5132', fontWeight: '600' },
+
+  lockWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
+  lockTitle: { marginTop: 8, fontSize: 18, fontWeight: '800', color: '#0A7C3A', textAlign: 'center' },
+  lockDesc: { marginTop: 6, color: '#334155', textAlign: 'center' },
+  subscribeBtn: { marginTop: 16, backgroundColor: '#0A7C3A', paddingHorizontal: 20, paddingVertical: 12, borderRadius: 12 },
+  subscribeBtnText: { color: '#fff', fontWeight: '800' },
 });
