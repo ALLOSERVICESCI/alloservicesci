@@ -38,7 +38,8 @@ export default function NewAlert() {
       // Ajouter dans le centre de notifications local
       await addLocal({ title, body: description, data: { city } });
       setTitle(''); setDescription(''); setImagesBase64([]);
-      // Rediriger vers l'accueil
+      // Flag snack et redirection vers l'accueil
+      try { await AsyncStorage.setItem('home_snack', 'ALERT_PUBLISHED'); } catch {}
       setTimeout(() => router.replace('/(tabs)/home'), 150);
     } catch (e: any) {
       Alert.alert('Erreur', e.message || 'Impossible de publier');
