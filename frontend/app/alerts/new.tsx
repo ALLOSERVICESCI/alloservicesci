@@ -6,6 +6,7 @@ import { apiFetch } from '../../src/utils/api';
 import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 
 export default function NewAlert() {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [city, setCity] = useState('Abidjan');
