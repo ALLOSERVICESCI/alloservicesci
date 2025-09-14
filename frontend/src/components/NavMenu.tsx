@@ -87,6 +87,12 @@ export default function NavMenu() {
                 <Ionicons name="chatbubble-ellipses" size={22} color={isPremium ? '#0A7C3A' : '#A0A0A0'} />
               </TouchableOpacity>
             </View>
+            {!isPremium && (
+              <View style={styles.tipWrap}>
+                <View style={styles.tipBubble}><Text style={styles.tipText}>Allô IA nécessite compte premium</Text></View>
+                <View style={styles.tipArrow} />
+              </View>
+            )}
           </Animated.View>
         </>
       )}
