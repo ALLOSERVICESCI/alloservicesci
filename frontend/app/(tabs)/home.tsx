@@ -176,6 +176,23 @@ export default function Home() {
     return () => pulse.stopAnimation();
   }, [pulse]);
 
+  // Vibration subtile du mégaphone du FAB
+  const megaphoneShake = useSharedValue(-1);
+  const megaphoneAnimStyle = useAnimatedStyle(() => ({
+    transform: [
+      { rotateZ: `${megaphoneShake.value * 2}deg` },
+      { translateX: megaphoneShake.value * 1.5 },
+    ],
+  }));
+  useEffect(() => {
+    megaphoneShake.value = withRepeat(
+      withTiming(1, { duration: 90, easing: REEasing.linear }),
+      -1,
+      true
+    );
+    return () => { cancelAnimation(megaphoneShake); };
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}
