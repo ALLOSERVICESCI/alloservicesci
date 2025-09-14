@@ -270,9 +270,7 @@ export default function Home() {
                   ) : (
                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                   )}
-                  {category.slug !== 'urgence' && (
-                    <Text style={[styles.categoryLabel, category.isPremium && styles.categoryLabelPremium]}>{category.label}</Text>
-                  )}
+                  {/* Titre caché pour toutes les catégories comme demandé */}
                   {category.isPremium && (<Text style={styles.premiumText}>{t('premiumLabel')}</Text>)}
                 </TouchableOpacity>
               ))}
