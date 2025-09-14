@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
 
   categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 12, marginTop: -20 },
   carouselContainer: { paddingLeft: 8 },
-  carousel: { paddingRight: 20, paddingVertical: 8 },
+  carousel: { paddingRight: 12, paddingVertical: 6 },
   categoryCard: { width: 160, height: 190, backgroundColor: '#fff', borderRadius: 16, marginRight: 16, alignItems: 'center', justifyContent: 'center', padding: 16, borderWidth: 1, borderColor: '#E8F0E8', position: 'relative' },
   categoryCardPremium: { borderColor: 'transparent', borderWidth: 0, backgroundColor: '#fff' },
   premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 0, borderColor: 'transparent' },
