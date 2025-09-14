@@ -244,7 +244,7 @@ export default function Home() {
 
       <NavMenu />
 
-      <Animated.View style={[
+      <RNAnimated.View style={[
         styles.aiFab,
         styles.aiHalo,
         { transform: [
