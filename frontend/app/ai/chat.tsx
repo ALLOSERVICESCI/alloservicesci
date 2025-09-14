@@ -2,6 +2,28 @@ import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, FlatList, SafeAreaView, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+const QUICK_PROMPTS: string[] = [
+  "Rédige une demande d’attestation de travail adressée à mon employeur.",
+  "Rédige une lettre pour demander un extrait de naissance à la mairie du Plateau.",
+  "Écris un courrier de réclamation à la CIE suite à une coupure prolongée.",
+  "Écris un courrier de réclamation à la SODECI pour une fuite d’eau non réparée.",
+  "Explique les étapes pour renouveler la CNI (ONECI) et les pièces nécessaires.",
+  "Donne les étapes pour créer et activer un compte e-Impôts (DGI).",
+  "Rédige une lettre de motivation pour un poste d’assistant comptable à Abidjan.",
+  "Rédige une lettre de demande de stage (niveau Licence) dans une entreprise à Cocody.",
+  "Écris un CV simple (1 page) pour un technicien réseaux débutant.",
+  "Donne la liste des pièces pour s’inscrire au BAC (DECO) et les échéances clés.",
+  "Donne la procédure pour signaler une panne d’électricité à la CIE (numéros, liens).",
+  "Donne la procédure pour signaler une fuite d’eau à la SODECI (numéros, liens).",
+  "Propose un modèle de message WhatsApp pour prévenir le voisinage d’une inondation.",
+  "Liste les vaccins de routine pour enfants selon le PNVSI (rappel succinct).",
+  "Rédige une alerte \"Embouteillage important à Cocody Riviera 2, évitez la zone\" (courte et claire).",
+  "Rédige une alerte \"Accident sur le Bd Latrille, secours contactés, prudence\" (ton neutre).",
+  "Résume ce texte en 5 points clés (colle le texte ensuite).",
+  "Reformule ce paragraphe en français simple (colle le texte ensuite).",
+  "Traduis ce message du français vers l’anglais (colle le texte ensuite).",
+];
+
 // Simple message type
 type Msg = { id: string; role: 'user' | 'assistant' | 'system'; content: string; ts: number };
 
