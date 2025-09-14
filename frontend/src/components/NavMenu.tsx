@@ -82,7 +82,7 @@ export default function NavMenu() {
               <TouchableOpacity
                 accessibilityLabel="Allô IA"
                 onPress={isPremium ? () => go('/ai/chat') : showPremiumAlert}
-                style={[styles.iconBtn, !isPremium && styles.iconBtnDisabled]}
+                style={styles.iconBtn}
               >
                 <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/qn4qcqls_logoia.png' }} style={[styles.aiLogo, { opacity: isPremium ? 1 : 0.6 }]} />
               </TouchableOpacity>
