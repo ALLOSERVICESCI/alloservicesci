@@ -246,9 +246,7 @@ export default function Home() {
                     <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{alertsUnreadCount > 99 ? '99+' : String(alertsUnreadCount)}</Text></View>
                   )}
                   {category.slug === 'urgence' ? (
-                    <View style={styles.urgenceIconWrap}>
                       <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={[styles.categoryIconImg, { width: 112, height: 112, marginBottom: 0, borderRadius: 18 }]} />
-                    </View>
                   ) : category.slug === 'sante' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/bh94qk6w_Background_sante.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'alerts_tab' ? (
