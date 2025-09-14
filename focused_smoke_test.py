@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Base URL from frontend environment
-BASE_URL = "https://allo-ci-french.preview.emergentagent.com/api"
+BASE_URL = "https://allo-services-2.preview.emergentagent.com/api"
 
 class FocusedSmokeTestRunner:
     def __init__(self):
