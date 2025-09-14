@@ -17,7 +17,7 @@ Notifications.setNotificationHandler({
 });
 
 function BellIcon({ color, size }: { color: string; size: number }) {
-  const rotate = useRef(new Animated.Value(0)).current;
+  const rotate = useRef(new RNAnimated.Value(0)).current;
   useEffect(() => {
     const anim = Animated.loop(
       Animated.sequence([
