@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   tilesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
   tile: { width: TILE_WIDTH, height: TILE_WIDTH, borderRadius: 16, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', marginBottom: GAP, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3, paddingHorizontal: 6, position: 'relative' },
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
-  badgeText: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
+  badgeDot: { position: 'absolute', top: -6, right: -6, width: 14, height: 14, borderRadius: 7, backgroundColor: '#FF4444', borderWidth: 2, borderColor: '#fff' },
   tileIcon: { fontSize: 36, marginBottom: 8 },
   tileTitle: { fontSize: 12, fontWeight: '600', color: '#0F5132', textAlign: 'center' },
   ctaSection: { paddingHorizontal: H_PADDING, alignItems: 'center' },
