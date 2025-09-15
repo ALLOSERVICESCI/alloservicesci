@@ -36,7 +36,8 @@ const MAX_RECENTS = 10;
 
 export default function ChatAIA() {
   const { user } = useAuth();
-  const isPremium = (user as any)?.is_premium === true;
+  // Premium temporairement désactivé: accès pour tous
+  const isPremium = true;
   const router = useRouter();
 
   const [messages, setMessages] = useState<Msg[]>([
