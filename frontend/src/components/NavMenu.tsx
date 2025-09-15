@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   // Dropdown
   dropdown: { position: 'absolute', left: 12, backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.15, shadowRadius: 12, elevation: 12, borderWidth: 1, borderColor: '#E8F0E8' },
   iconRow: { flexDirection: 'row', alignItems: 'center' },
-  iconBtn: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginHorizontal: 4, backgroundColor: '#F3F7F5', borderWidth: 1, borderColor: '#E8F0E8' },
+  iconBtn: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginHorizontal: 0, backgroundColor: 'transparent', borderWidth: 0, borderColor: 'transparent' },
   iconBtnDisabled: { backgroundColor: '#F2F2F2', borderColor: '#E5E5E5' },
 
   // Language pill
