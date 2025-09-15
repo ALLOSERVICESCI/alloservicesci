@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 12, marginTop: -20 },
   carouselContainer: { paddingLeft: 8 },
   carousel: { paddingRight: 12, paddingVertical: 6 },
-  categoryCard: { width: 156, height: 186, backgroundColor: 'transparent', borderRadius: 16, marginRight: 12, alignItems: 'center', justifyContent: 'center', padding: 0, borderWidth: 0, borderColor: '#E8F0E8', position: 'relative' },
+  categoryCard: { width: 156, height: 186, backgroundColor: 'transparent', borderRadius: 16, marginRight: 12, alignItems: 'center', justifyContent: 'center', padding: 0, borderWidth: 0, borderColor: 'transparent', position: 'relative' },
   categoryCardPremium: { borderColor: 'transparent', borderWidth: 0, backgroundColor: '#fff' },
   premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 0, borderColor: 'transparent' },
   premiumBadgeText: { fontSize: 14, fontWeight: '700', color: '#0A7C3A' },
