@@ -239,9 +239,7 @@ export default function Home() {
                     return router.push(`/category/${category.slug}`);
                   }}
                 >
-                  {category.isPremium && (
-                    <View style={styles.premiumBadge}><Text style={styles.premiumBadgeText}>🔒</Text></View>
-                  )}
+                  {/* cadenas premium supprimé comme demandé */}
                   {category.slug === 'alerts_tab' && (typeof alertsUnreadCount === 'number') && alertsUnreadCount > 0 && (
                     <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{alertsUnreadCount > 99 ? '99+' : String(alertsUnreadCount)}</Text></View>
                   )}
