@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
   iconRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 0 },
   iconBtn: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginHorizontal: 0, backgroundColor: 'transparent', borderWidth: 0, borderColor: 'transparent' },
   iconBtnDisabled: { backgroundColor: '#F2F2F2', borderColor: '#E5E5E5' },
+  aiLogo: { width: 26, height: 26, resizeMode: 'contain' },
 
   // Language pill
   langWrap: { position: 'absolute', right: 16, zIndex: 50 },
