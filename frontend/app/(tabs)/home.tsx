@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
 
   categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 8, marginTop: -20 },
   carouselContainer: { paddingLeft: 0 },
-  carousel: { paddingRight: 12, paddingVertical: 6 },
+  carousel: { paddingRight: 0, paddingVertical: 4 },
   categoryCard: { width: 156, height: 186, backgroundColor: 'transparent', borderRadius: 16, marginRight: 12, alignItems: 'center', justifyContent: 'center', padding: 0, borderWidth: 0, borderColor: 'transparent', position: 'relative' },
   categoryCardPremium: { borderColor: 'transparent', borderWidth: 0, backgroundColor: 'transparent' },
   premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: 'transparent', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 0, borderColor: 'transparent' },
