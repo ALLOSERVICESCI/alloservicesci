@@ -268,8 +268,7 @@ export default function Home() {
                   ) : (
                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                   )}
-                  <Text style={[styles.categoryLabel, styles.categoryLabelPremium]}>Premium</Text>
-                  {category.isPremium && (<Text style={styles.premiumText}>{t('premiumLabel')}</Text>)}
+                  {/* titres sous les icônes supprimés comme demandé */}
                 </TouchableOpacity>
               ))}
             </ScrollView>
