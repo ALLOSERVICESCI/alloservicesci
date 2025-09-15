@@ -186,7 +186,7 @@ export default function Home() {
   }));
   useEffect(() => {
     megaphoneShake.value = withRepeat(
-      withTiming(1, { duration: 90, easing: REEasing.linear }),
+      withDelay(600, withTiming(1, { duration: 110, easing: REEasing.linear })),
       -1,
       true
     );
