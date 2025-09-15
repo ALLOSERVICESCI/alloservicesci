@@ -258,7 +258,7 @@ export default function Home() {
           </View>
         )}
         <TouchableOpacity onPress={() => router.push('/ai/chat')} activeOpacity={0.9} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <View style={styles.aiMask}><Image source={require('../../assets/ai/logoia.png')} style={styles.aiImgCover} /></View>
+          <View style={styles.aiMask}><Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/qn4qcqls_logoia.png' }} style={styles.aiImgCover} /></View>
         </TouchableOpacity>
       </RNAnimated.View>
     </View>
