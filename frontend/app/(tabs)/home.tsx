@@ -241,7 +241,7 @@ export default function Home() {
                 >
                   {/* cadenas premium supprimé comme demandé */}
                   {category.slug === 'alerts_tab' && (typeof alertsUnreadCount === 'number') && alertsUnreadCount > 0 && (
-                    <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{alertsUnreadCount > 99 ? '99+' : String(alertsUnreadCount)}</Text></View>
+                    <View style={styles.badgeDot} accessibilityLabel="Alertes non lues" />
                   )}
                   {category.slug === 'urgence' ? (
                       <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={styles.categoryIconImg} />
