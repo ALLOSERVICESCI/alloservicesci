@@ -268,7 +268,7 @@ export default function Home() {
                   ) : (
                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                   )}
-                  {/* Titre caché pour toutes les catégories comme demandé */}
+                  <Text style={[styles.categoryLabel, styles.categoryLabelPremium]}>Premium</Text>
                   {category.isPremium && (<Text style={styles.premiumText}>{t('premiumLabel')}</Text>)}
                 </TouchableOpacity>
               ))}
