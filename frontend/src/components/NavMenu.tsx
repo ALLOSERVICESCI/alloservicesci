@@ -84,7 +84,7 @@ export default function NavMenu() {
                 onPress={() => go('/ai/chat')}
                 style={styles.iconBtn}
               >
-                <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/qn4qcqls_logoia.png' }} style={[styles.aiLogo, { opacity: isPremium ? 1 : 0.6 }]} />
+                <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/qn4qcqls_logoia.png' }} style={styles.aiLogo} />
               </TouchableOpacity>
             </View>
 
