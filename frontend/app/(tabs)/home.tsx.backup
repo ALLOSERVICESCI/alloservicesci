@@ -10,7 +10,7 @@ import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import NavMenu from '../../src/components/NavMenu';
 import { LinearGradient } from 'expo-linear-gradient';
 import { apiFetch } from '../../src/utils/api';
-import Reanimated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, withSequence, Easing as REEasing, cancelAnimation } from 'react-native-reanimated';
+import Reanimated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, withSequence, withDelay, Easing as REEasing, cancelAnimation } from 'react-native-reanimated';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width, height } = Dimensions.get('window');
@@ -186,7 +186,7 @@ export default function Home() {
   }));
   useEffect(() => {
     megaphoneShake.value = withRepeat(
-      withTiming(1, { duration: 90, easing: REEasing.linear }),
+      withDelay(600, withTiming(1, { duration: 110, easing: REEasing.linear })),
       -1,
       true
     );
@@ -232,23 +232,20 @@ export default function Home() {
               {categories.map((category) => (
                 <TouchableOpacity
                   key={category.slug}
-                  style={category.slug === 'urgence' ? styles.urgenceStandalone : [styles.categoryCard, category.isPremium && styles.categoryCardPremium]}
+                  style={[styles.categoryCard, category.isPremium && styles.categoryCardPremium]}
                   onPress={() => {
                     if (category.slug === 'alerts_tab') return router.push('/(tabs)/alerts');
                     if (category.slug === 'pharmacies_tab') return router.push('/(tabs)/pharmacies');
                     return router.push(`/category/${category.slug}`);
                   }}
                 >
-                  {category.isPremium && (
-                    <View style={styles.premiumBadge}><Text style={styles.premiumBadgeText}>🔒</Text></View>
-                  )}
+                  {/* cadenas premium supprimé comme demandé */}
+                  {/* pastille directement sur l'icône d'alerte */}
                   {category.slug === 'alerts_tab' && (typeof alertsUnreadCount === 'number') && alertsUnreadCount > 0 && (
-                    <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{alertsUnreadCount > 99 ? '99+' : String(alertsUnreadCount)}</Text></View>
+                    <View style={styles.badgeDotOnIcon} accessibilityLabel="Alertes non lues" />
                   )}
                   {category.slug === 'urgence' ? (
-                    <View style={styles.urgenceIconWrap}>
-                      <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={[styles.categoryIconImg, { width: 112, height: 112, marginBottom: 0, borderRadius: 18 }]} />
-                    </View>
+                      <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'sante' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/bh94qk6w_Background_sante.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'alerts_tab' ? (
@@ -272,10 +269,7 @@ export default function Home() {
                   ) : (
                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                   )}
-                  {category.slug !== 'urgence' && (
-                    <Text style={[styles.categoryLabel, category.isPremium && styles.categoryLabelPremium]}>{category.label}</Text>
-                  )}
-                  {category.isPremium && (<Text style={styles.premiumText}>{t('premiumLabel')}</Text>)}
+                  {/* titres sous les icônes supprimés comme demandé */}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -353,14 +347,12 @@ const styles = StyleSheet.create({
   categoriesSection: { flex: 1, justifyContent: 'center', paddingVertical: 12, marginTop: -20 },
   carouselContainer: { paddingLeft: 8 },
   carousel: { paddingRight: 12, paddingVertical: 6 },
-  categoryCard: { width: 156, height: 186, backgroundColor: '#fff', borderRadius: 16, marginRight: 12, alignItems: 'center', justifyContent: 'center', padding: 14, borderWidth: 1, borderColor: '#E8F0E8', position: 'relative' },
-  categoryCardPremium: { borderColor: 'transparent', borderWidth: 0, backgroundColor: '#fff' },
-  premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 0, borderColor: 'transparent' },
+  categoryCard: { width: 156, height: 186, backgroundColor: 'transparent', borderRadius: 16, marginRight: 12, alignItems: 'center', justifyContent: 'center', padding: 0, borderWidth: 0, borderColor: 'transparent', position: 'relative' },
+  categoryCardPremium: { borderColor: 'transparent', borderWidth: 0, backgroundColor: 'transparent' },
+  premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: 'transparent', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 0, borderColor: 'transparent' },
   premiumBadgeText: { fontSize: 14, fontWeight: '700', color: '#0A7C3A' },
   categoryIcon: { fontSize: 64, marginBottom: 12 },
-  categoryIconImg: { width: 64, height: 64, marginBottom: 12, resizeMode: 'contain' },
-  urgenceStandalone: { width: 220, height: 200, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center', marginRight: 12 },
-  urgenceIconWrap: { width: 128, height: 128, borderRadius: 24, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.25, shadowOffset: { width: 0, height: 8 }, shadowRadius: 16, elevation: 12, backgroundColor: '#fff0' },
+  categoryIconImg: { width: 128, height: 128, marginBottom: 4, resizeMode: 'contain', borderRadius: 22, shadowColor: '#000', shadowOpacity: 0.12, shadowOffset: { width: 0, height: 3 }, shadowRadius: 4, elevation: 4 },
   categoryLabel: { fontSize: 16, fontWeight: '600', color: '#0F5132', textAlign: 'center', lineHeight: 20 },
   categoryLabelPremium: { color: '#0A7C3A', fontWeight: '700' },
   premiumText: { fontSize: 11, fontWeight: '700', color: '#FFD700', backgroundColor: '#8B7000', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginTop: 8, textTransform: 'uppercase' },
@@ -379,6 +371,7 @@ const styles = StyleSheet.create({
   tooltipText: { color: '#fff', fontWeight: '700' },
   tooltipArrow: { width: 0, height: 0, borderLeftWidth: 6, borderRightWidth: 0, borderTopWidth: 6, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderTopColor: '#0A7C3A', alignSelf: 'flex-end' },
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
-  badgeText: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
+  badgeDot: { position: 'absolute', top: -6, right: -6, width: 14, height: 14, borderRadius: 7, backgroundColor: '#FF4444', borderWidth: 2, borderColor: '#fff' },
+  badgeDotOnIcon: { position: 'absolute', top: -6, right: -6, width: 14, height: 14, borderRadius: 7, backgroundColor: '#FF4444', borderWidth: 2, borderColor: '#fff' },
   publishFab: { position: 'absolute', bottom: 100, right: 20, backgroundColor: '#FF8A00', width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center', shadowColor: '#FF8A00', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 6, elevation: 8 },
 });
