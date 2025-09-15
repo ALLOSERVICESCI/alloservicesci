@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   tooltipText: { color: '#fff', fontWeight: '700' },
   tooltipArrow: { width: 0, height: 0, borderLeftWidth: 6, borderRightWidth: 0, borderTopWidth: 6, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderTopColor: '#0A7C3A', alignSelf: 'flex-end' },
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
-  badgeText: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
+  badgeDot: { position: 'absolute', top: -6, right: -6, width: 14, height: 14, borderRadius: 7, backgroundColor: '#FF4444', borderWidth: 2, borderColor: '#fff' },
   publishFab: { position: 'absolute', bottom: 100, right: 20, backgroundColor: '#FF8A00', borderRadius: 25, paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', shadowColor: '#FF8A00', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 6, elevation: 8 },
   publishFabText: { color: '#fff', fontWeight: '700', fontSize: 14, marginLeft: 6 },
 });
