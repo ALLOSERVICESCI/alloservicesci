@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   premiumBadge: { position: 'absolute', top: -8, right: -8, backgroundColor: 'transparent', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 0, borderColor: 'transparent' },
   premiumBadgeText: { fontSize: 14, fontWeight: '700', color: '#0A7C3A' },
   categoryIcon: { fontSize: 64, marginBottom: 12 },
-  categoryIconImg: { width: 128, height: 128, marginBottom: 0, resizeMode: 'contain', borderRadius: 22 },
+  categoryIconImg: { width: 128, height: 128, marginBottom: 4, resizeMode: 'contain', borderRadius: 22, shadowColor: '#000', shadowOpacity: 0.12, shadowOffset: { width: 0, height: 3 }, shadowRadius: 4, elevation: 4 },
   categoryLabel: { fontSize: 16, fontWeight: '600', color: '#0F5132', textAlign: 'center', lineHeight: 20 },
   categoryLabelPremium: { color: '#0A7C3A', fontWeight: '700' },
   premiumText: { fontSize: 11, fontWeight: '700', color: '#FFD700', backgroundColor: '#8B7000', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginTop: 8, textTransform: 'uppercase' },
