@@ -186,9 +186,13 @@ export default function Home() {
   }));
   useEffect(() => {
     megaphoneShake.value = withRepeat(
-      withDelay(600, withTiming(1, { duration: 110, easing: REEasing.linear })),
+      withSequence(
+        withTiming(1, { duration: 110, easing: REEasing.linear }),
+        withTiming(-1, { duration: 110, easing: REEasing.linear }),
+        withDelay(2000, withTiming(-1, { duration: 0 }))
+      ),
       -1,
-      true
+      false
     );
     return () => { cancelAnimation(megaphoneShake); };
   }, []);
