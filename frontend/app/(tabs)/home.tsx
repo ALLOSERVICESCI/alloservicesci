@@ -106,7 +106,7 @@ export default function Home() {
 
   // FAB Publier déplaçable
   const publishFabX = useSharedValue(width - FAB_SIZE - FAB_MARGIN);
-  const publishFabY = useSharedValue(0);
+  const publishFabY = useSharedValue(height - FAB_SIZE - 140);
   const publishFabStyle = useAnimatedStyle(() => ({ transform: [{ translateX: publishFabX.value }, { translateY: publishFabY.value }] }));
   const publishPanHandler = useAnimatedGestureHandler({
     onStart: (_, ctx: any) => {
