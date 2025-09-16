@@ -104,6 +104,29 @@ export default function Home() {
   const marqueeX = useSharedValue(0);
   const marqueeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: marqueeX.value }] }));
 
+  // FAB Publier déplaçable
+  const pan = useRef(new RNAnimated.ValueXY({ x: 0, y: 0 })).current;
+  const fabXY = useRef({ x: 0, y: 0 }).current;
+  const fabX = useSharedValue(width - FAB_SIZE - FAB_MARGIN);
+  const fabY = useSharedValue(height - 200);
+  const fabStyle = useAnimatedStyle(() => ({ transform: [{ translateX: fabX.value }, { translateY: fabY.value }] }));
+  const panHandler = useAnimatedGestureHandler({
+    onStart: (_, ctx: any) => {
+      ctx.startX = fabX.value; ctx.startY = fabY.value;
+    },
+    onActive: (event, ctx: any) => {
+      fabX.value = ctx.startX + event.translationX;
+      fabY.value = ctx.startY + event.translationY;
+    },
+    onEnd: () => {
+      // Optionnel: aimantation aux bords
+      const minX = 8; const maxX = width - FAB_SIZE - 8;
+      const minY = 80; const maxY = height - FAB_SIZE - 120;
+      fabX.value = withTiming(Math.min(Math.max(fabX.value, minX), maxX), { duration: 160 });
+      fabY.value = withTiming(Math.min(Math.max(fabY.value, minY), maxY), { duration: 160 });
+    },
+  });
+
   useEffect(() => {
     if (!textW || marqueeItems.length === 0) return;
     cancelAnimation(marqueeX);
