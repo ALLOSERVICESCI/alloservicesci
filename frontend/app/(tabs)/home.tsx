@@ -320,7 +320,7 @@ export default function Home() {
 
       {/* FAB Publier - désormais flottant et déplaçable */}
       <PanGestureHandler onGestureEvent={publishPanHandler}>
-        <Reanimated.View style={[styles.publishFab, fabStyle]}>
+        <Reanimated.View style={[styles.publishFab, publishFabStyle]}>
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityLabel="Publier une alerte"
