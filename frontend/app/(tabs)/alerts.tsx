@@ -134,8 +134,9 @@ export default function Alerts() {
         refreshing={loading}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
       />
+    </View>
 
-      {/* Aperçu image plein écran */}
+    {/* Aperçu image plein écran */}
       <Modal visible={!!previewUri} transparent animationType="fade" onRequestClose={() => setPreviewUri(null)}>
         <View style={styles.modalBackdrop}>
           <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setPreviewUri(null)}>
