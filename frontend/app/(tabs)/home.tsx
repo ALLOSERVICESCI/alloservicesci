@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   brandSection: { alignItems: 'center', marginTop: 8 },
   brand: { fontSize: 32, fontWeight: '800', color: '#0A7C3A' },
   slogan: { fontSize: 18, color: '#666', marginTop: 4, textAlign: 'center' },
-  greeting: { fontSize: 20, color: '#0F5132', marginTop: 0, fontWeight: '700', textAlign: 'center' },
+  greeting: { fontSize: 20, color: '#0F5132', marginTop: 8, fontWeight: '700', textAlign: 'center' },
   marqueeOuter: { marginTop: 28, marginBottom: 18, alignSelf: 'center' },
   infoBarContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 22, borderWidth: 1, borderColor: '#FFA64D', height: 48, paddingRight: 10, overflow: 'hidden' },
   infoPill: { height: '100%', paddingHorizontal: 20, backgroundColor: '#FF8A00', justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 22, borderBottomLeftRadius: 22 },
