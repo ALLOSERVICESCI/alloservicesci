@@ -139,7 +139,27 @@ export default function Subscribe() {
                 {feature.key === 'alerts' && !!notifItems?.length && (
                   <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{notifItems.length > 99 ? '99+' : String(notifItems.length)}</Text></View>
                 )}
-                <Text style={styles.tileIcon}>{feature.icon}</Text>
+                {feature.slug === 'pharmacies' ? null : feature.slug === 'alertes' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/y128jlhy_Background_alertes.png' }} style={styles.tileIconImg} />
+                ) : feature.slug === 'education' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/2v9vzn0s_Background_education.png' }} style={styles.tileIconImg} />
+                ) : feature.slug === 'examens_concours' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/tzpsx5td_Background_examen.png' }} style={styles.tileIconImg} />
+                ) : feature.slug === 'services_publics' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/d40242y4_Background_services_publics.png' }} style={styles.tileIconImg} />
+                ) : feature.slug === 'emplois' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/vnkjuu6i_Background_emplois.png' }} style={styles.tileIconImg} />
+                ) : feature.slug === 'services_utiles' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/mggq3vgi_Background_services_utiles.png' }} style={styles.tileIconImg} />
+                ) : feature.slug === 'agriculture' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pv9ygk7l_Background_agriculture.png' }} style={styles.tileIconImg} />
+                ) : feature.slug === 'loisirs_tourisme' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/26f9vvri_Background_loisir.png' }} style={styles.tileIconImg} />
+                ) : feature.slug === 'transport' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/b0h611zz_Background_transport.png' }} style={styles.tileIconImg} />
+                ) : (
+                  <Text style={styles.tileIcon}>{feature.icon}</Text>
+                )}
                 <Text style={styles.tileTitle} numberOfLines={2}>{feature.title}</Text>
               </TouchableOpacity>
             ))}
@@ -208,6 +228,7 @@ const styles = StyleSheet.create({
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
   badgeDot: { position: 'absolute', top: -6, right: -6, width: 14, height: 14, borderRadius: 7, backgroundColor: '#FF4444', borderWidth: 2, borderColor: '#fff' },
   tileIcon: { fontSize: 36, marginBottom: 8 },
+  tileIconImg: { width: 36, height: 36, marginBottom: 8 },
   tileTitle: { fontSize: 12, fontWeight: '600', color: '#0F5132', textAlign: 'center' },
   ctaSection: { paddingHorizontal: H_PADDING, alignItems: 'center' },
   ctaText: { fontSize: 16, color: '#333', textAlign: 'center', marginBottom: 20, lineHeight: 22 },
