@@ -228,7 +228,7 @@ export default function Home() {
                     </TouchableOpacity>
                     <View style={styles.marqueeClip} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
                       <Reanimated.View style={[styles.marqueeRow, marqueeStyle]}>
-                        <Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={styles.marqueeText} numberOfLines={1}>{marqueeText}     </Text>
+                        <Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={styles.marqueeText} numberOfLines={1} ellipsizeMode="clip">{marqueeText}</Text>
                         <Text style={styles.marqueeText} numberOfLines={1} ellipsizeMode="clip">{marqueeText}</Text>
                       </Reanimated.View>
                     </View>
