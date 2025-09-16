@@ -60,10 +60,12 @@ export default function CategoryPage() {
               <Text style={styles.pharmaBtnText}>Pharmacie</Text>
             </TouchableOpacity>
           )}
-          <View style={styles.titleWrap}>
-            <Text style={[styles.titleStroke]}>{catLabel}</Text>
-            <Text style={[styles.title]}>{catLabel}</Text>
-          </View>
+          {s !== 'sante' && (
+            <View style={styles.titleWrap}>
+              <Text style={[styles.titleStroke]}>{catLabel}</Text>
+              <Text style={[styles.title]}>{catLabel}</Text>
+            </View>
+          )}
         </View>
       </ImageBackground>
 
