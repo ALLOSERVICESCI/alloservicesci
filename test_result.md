@@ -19,6 +19,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - CinetPay initiate endpoint confirmed working in final comprehensive regression test. Created user Jean-Baptiste Kouame (ID: 68c94baaea59eeea20bc49cc), received payment_url: https://checkout.cinetpay.com/payment/b3ac9631e3c1... + transaction_id: SUB_824057902d0643. Returns 200 with payment_url and transaction_id as specified. Live CinetPay integration fully functional."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND FINALE RE-VALIDÉE - CinetPay initiate endpoint confirmed working in final regression test suite. Created user (ID: 68c9ea476cdcf7416a61c08e), received payment_url: https://checkout.cinetpay.com/payment/8034bc881b88... + transaction_id: SUB_e791d5eae2ce44. Returns 200 with payment_url and transaction_id as specified. Live CinetPay integration fully functional selon review request."
 
   - task: "PATCH /api/users/<ID> pour mise à jour utilisateur"
     implemented: true
