@@ -40,7 +40,7 @@ export default function NewAlert() {
       setTitle(''); setDescription(''); setImagesBase64([]);
       // Flag snack et redirection vers l'accueil
       try { await AsyncStorage.setItem('home_snack', 'ALERT_PUBLISHED'); } catch {}
-      setTimeout(() => router.replace('/(tabs)/home'), 150);
+      setTimeout(() => router.replace('/(tabs)/alerts'), 150);
     } catch (e: any) {
       Alert.alert('Erreur', e.message || 'Impossible de publier');
     } finally { setLoading(false); }
