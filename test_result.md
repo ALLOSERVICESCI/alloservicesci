@@ -317,15 +317,30 @@ frontend:
 
   - task: "FRONTEND E2E: Home FAB 'Publier' orange rond (testID fab-publier) - suppression bouton vert inline emblème"
     implemented: true
-    working: true
+    working: false
     file: "frontend/app/(tabs)/home.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE FAB VALIDATION COMPLETED (iPhone 12/13/14: 390x844) - ALL REQUIREMENTS MET! E2E test confirms complete success: 1) ✅ NO GREEN 'PUBLIER' BUTTON: Zero green publish buttons found in emblem row or anywhere on page - inline emblem button successfully removed, 2) ✅ EXACTLY 1 ORANGE FAB: Found perfect FAB with testID='fab-publier', dimensions 56x56px, backgroundColor rgb(255,138,0) (#FF8A00), positioned absolute bottom-right, 3) ✅ ICON ONLY: FAB contains only megaphone icon (Ionicons \\ued4f), no 'Publier' text adjacent - clean icon-only design, 4) ✅ NAVIGATION WORKING: FAB click successfully navigates to /alerts/new, publication form loads with all required fields (Titre, Description, Ville, Publier button), back navigation functional, 5) ✅ REGRESSION PASSED: Allô IA FAB still visible and not masked, marquee capsule (Infos) still visible with 24 elements found, no duplicate Publier buttons elsewhere. PERFECT IMPLEMENTATION: Single orange round FAB replaces green inline button as requested. All 9 success criteria met - FAB design, positioning, functionality, and regression checks all working flawlessly."
+      - working: false
+        agent: "testing"
+        comment: "❌ RÉGRESSION CRITIQUE DÉTECTÉE - FAB Publier testID='fab-publier' MANQUANT lors du test complet frontend (iPhone 12/13/14: 390x844). Test exhaustif révèle: 1) ❌ FAB testID='fab-publier': 0 trouvé, 2) ❌ FAB orange background #FF8A00: 0 trouvé, 3) ❌ Navigation FAB impossible car élément non trouvé. Malgré les tests précédents positifs, le FAB Publier semble avoir disparu ou ne pas être rendu correctement dans l'environnement de test actuel. URGENT: Vérifier implémentation FAB dans home.tsx et s'assurer que testID et styles sont correctement appliqués."
+
+  - task: "FRONTEND COMPLET: Test exhaustif viewport iPhone 12/13/14 (390x844) couvrant toutes modifications récentes"
+    implemented: true
+    working: false
+    file: "frontend/app/(tabs)/home.tsx, frontend/app/(tabs)/alerts.tsx, frontend/app/(tabs)/subscribe.tsx, frontend/app/category/[slug].tsx, frontend/src/components/NavMenu.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ TEST COMPLET FRONTEND (iPhone 12/13/14: 390x844) - RAPPORT PASS/FAIL DÉTAILLÉ: 2/7 sections PASS. ✅ SANTÉ: Titre masqué, bouton Pharmacie supprimé. ✅ RÉGRESSIONS: Aucune pastille rouge, greeting visible, pas d'erreurs bloquantes. ❌ ACCUEIL: FAB Publier testID manquant (0), FAB orange manquant (0), greeting manquant (0). ✅ Capsule Infos visible, carrousel 14 images catégories 128x128, emblème + motto OK, Mini-FAB Allô IA présent. ❌ NAVIGATION FAB: Impossible car FAB non trouvé. ❌ ALERTES: Liste vide (0 cartes), bouton Publiez présent. ❌ PREMIUM: Tuiles icônes 120x120 incorrectes, section visible, Pharmacies background OK. ❌ MENU NAV: Hamburger non accessible (0 barres vertes). Issues critiques: FAB Publier manquant, Menu hamburger inaccessible, Liste alertes vide, Tuiles Premium incorrectes."
 
 metadata:
   created_by: "main_agent"
