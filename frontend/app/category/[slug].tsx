@@ -54,6 +54,11 @@ export default function CategoryPage() {
         <View style={styles.lightOverlay} />
         <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} locations={[0,1]} style={styles.overlay} />
         <View style={styles.headerContent}>
+          {s === 'sante' && (
+            <TouchableOpacity onPress={() => Linking.openURL('/(tabs)/pharmacies')} style={styles.pharmaBtn} accessibilityRole="button" accessibilityLabel="Pharmacies">
+              <Text style={styles.pharmaBtnText}>Pharmacie</Text>
+            </TouchableOpacity>
+          )}
           <View style={styles.titleWrap}>
             <Text style={[styles.titleStroke]}>{catLabel}</Text>
             <Text style={[styles.title]}>{catLabel}</Text>
