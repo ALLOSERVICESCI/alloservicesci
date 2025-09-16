@@ -136,9 +136,7 @@ export default function Subscribe() {
           <View style={styles.tilesGrid}>
             {premiumFeatures.map((feature) => (
               <TouchableOpacity key={feature.key} style={styles.tile} onPress={() => openCategory(feature.slug)} accessibilityRole="button">
-                {feature.key === 'alerts' && !!notifItems?.length && (
-                  <View style={styles.badgeNotifs}><Text style={styles.badgeText}>{notifItems.length > 99 ? '99+' : String(notifItems.length)}</Text></View>
-                )}
+                {/* pastille alertes supprimée comme demandé */}
                 {feature.slug === 'pharmacies' ? null : feature.slug === 'alertes' ? (
                   <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/y128jlhy_Background_alertes.png' }} style={styles.tileIconImg} />
                 ) : feature.slug === 'education' ? (
