@@ -10,7 +10,7 @@ import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import NavMenu from '../../src/components/NavMenu';
 import { LinearGradient } from 'expo-linear-gradient';
 import { apiFetch } from '../../src/utils/api';
-import Reanimated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, withSequence, withDelay, Easing as REEasing, cancelAnimation } from 'react-native-reanimated';
+import Reanimated, { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, runOnJS, withTiming, withRepeat, withSequence, withDelay, Easing as REEasing, cancelAnimation } from 'react-native-reanimated';
 
 const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width, height } = Dimensions.get('window');
