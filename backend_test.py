@@ -1942,6 +1942,294 @@ class BackendTester:
         except Exception as e:
             self.log_test("Alerts unread count", False, f"Exception: {str(e)}")
 
+    def run_comprehensive_backend_regression(self):
+        """Run comprehensive backend regression test as per review request"""
+        print(f"🎯 RÉGRESSION BACKEND COMPLÈTE - REVIEW REQUEST")
+        print(f"Base URL: {self.base_url}")
+        print("=" * 80)
+        
+        # Create test user first
+        test_user_id = None
+        try:
+            user_data = {
+                "first_name": "Jean-Baptiste",
+                "last_name": "Kouame",
+                "phone": "+225 07 12 34 56 78",
+                "email": "jean.kouame@example.ci",
+                "preferred_lang": "fr",
+                "accept_terms": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                user = response.json()
+                test_user_id = user.get('id')
+                print(f"✅ Test user created: {test_user_id}")
+            else:
+                print(f"❌ Failed to create test user: {response.status_code}")
+                return False
+        except Exception as e:
+            print(f"❌ Exception creating test user: {str(e)}")
+            return False
+        
+        # 1) POST /api/payments/cinetpay/initiate → 200 + payment_url + transaction_id
+        print("\n1️⃣ POST /api/payments/cinetpay/initiate")
+        print("-" * 50)
+        try:
+            payment_data = {
+                "user_id": test_user_id,
+                "amount_fcfa": 1200
+            }
+            response = self.make_request('POST', '/payments/cinetpay/initiate', json=payment_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if 'payment_url' in data and 'transaction_id' in data:
+                    payment_url = data['payment_url']
+                    transaction_id = data['transaction_id']
+                    self.log_test("1) CinetPay initiate", True, f"✅ 200 + payment_url: {payment_url[:50]}... + transaction_id: {transaction_id}")
+                else:
+                    self.log_test("1) CinetPay initiate", False, f"❌ Missing payment_url or transaction_id: {data}")
+            else:
+                self.log_test("1) CinetPay initiate", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("1) CinetPay initiate", False, f"❌ Exception: {str(e)}")
+        
+        # 2) PATCH /api/users/<id> → 200 + champs mis à jour (city, email, phone)
+        print("\n2️⃣ PATCH /api/users/<id>")
+        print("-" * 50)
+        try:
+            update_data = {
+                "city": "Yamoussoukro",
+                "email": "jean.updated@example.ci",
+                "phone": "+225 01 02 03 04 05"
+            }
+            response = self.make_request('PATCH', f'/users/{test_user_id}', json=update_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if (data.get('city') == 'Yamoussoukro' and 
+                    data.get('email') == 'jean.updated@example.ci' and 
+                    data.get('phone') == '+225 01 02 03 04 05'):
+                    self.log_test("2) User PATCH", True, f"✅ 200 + fields updated: city={data.get('city')}, email={data.get('email')}, phone={data.get('phone')}")
+                else:
+                    self.log_test("2) User PATCH", False, f"❌ Fields not updated correctly: {data}")
+            else:
+                self.log_test("2) User PATCH", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("2) User PATCH", False, f"❌ Exception: {str(e)}")
+        
+        # 3) GET /api/subscriptions/check?user_id=<id> → 200 + is_premium bool
+        print("\n3️⃣ GET /api/subscriptions/check?user_id=<id>")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', f'/subscriptions/check?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'is_premium' in data and isinstance(data['is_premium'], bool):
+                    is_premium = data['is_premium']
+                    expires_at = data.get('expires_at')
+                    self.log_test("3) Subscription check", True, f"✅ 200 + is_premium: {is_premium}, expires_at: {expires_at}")
+                else:
+                    self.log_test("3) Subscription check", False, f"❌ Missing or invalid is_premium: {data}")
+            else:
+                self.log_test("3) Subscription check", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("3) Subscription check", False, f"❌ Exception: {str(e)}")
+        
+        # 4) GET /api/alerts/unread_count?user_id=<id> → 200 + count int
+        print("\n4️⃣ GET /api/alerts/unread_count?user_id=<id>")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', f'/alerts/unread_count?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int):
+                    count = data['count']
+                    self.log_test("4) Alerts unread count", True, f"✅ 200 + count: {count} (int)")
+                else:
+                    self.log_test("4) Alerts unread count", False, f"❌ Missing or invalid count: {data}")
+            else:
+                self.log_test("4) Alerts unread count", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("4) Alerts unread count", False, f"❌ Exception: {str(e)}")
+        
+        # 5) GET /api/alerts → 200 + liste (filtrée <24h)
+        print("\n5️⃣ GET /api/alerts")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', '/alerts')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    self.log_test("5) Alerts list", True, f"✅ 200 + list with {len(data)} alerts")
+                else:
+                    self.log_test("5) Alerts list", False, f"❌ Expected list, got {type(data)}")
+            else:
+                self.log_test("5) Alerts list", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("5) Alerts list", False, f"❌ Exception: {str(e)}")
+        
+        # 6) POST /api/alerts (titre/desc/ville/images_base64) → 200; vérifier accessible via GET
+        print("\n6️⃣ POST /api/alerts + verification via GET")
+        print("-" * 50)
+        alert_id = None
+        try:
+            alert_data = {
+                "title": "Test Régression - Embouteillage",
+                "type": "other",
+                "description": "Circulation difficile sur l'autoroute du Nord suite à un accident. Prévoir itinéraire alternatif.",
+                "city": "Abidjan",
+                "lat": 5.316667,
+                "lng": -4.016667,
+                "images_base64": []
+            }
+            response = self.make_request('POST', '/alerts', json=alert_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'id' in data and data.get('title') == alert_data['title']:
+                    alert_id = data['id']
+                    self.log_test("6a) Create alert", True, f"✅ 200 + alert created with ID: {alert_id}")
+                    
+                    # Verify alert is accessible via GET
+                    get_response = self.make_request('GET', '/alerts')
+                    if get_response.status_code == 200:
+                        alerts_list = get_response.json()
+                        alert_found = any(alert.get('id') == alert_id for alert in alerts_list)
+                        if alert_found:
+                            self.log_test("6b) Verify alert via GET", True, f"✅ Alert {alert_id} accessible via GET /api/alerts")
+                        else:
+                            self.log_test("6b) Verify alert via GET", False, f"❌ Alert {alert_id} not found in GET /api/alerts")
+                    else:
+                        self.log_test("6b) Verify alert via GET", False, f"❌ GET /api/alerts failed: {get_response.status_code}")
+                else:
+                    self.log_test("6a) Create alert", False, f"❌ Invalid alert response: {data}")
+            else:
+                self.log_test("6a) Create alert", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("6a) Create alert", False, f"❌ Exception: {str(e)}")
+        
+        # 7) GET /api/pharmacies (sans et avec filtres) → 200 + on_duty calculé dynamiquement
+        print("\n7️⃣ GET /api/pharmacies (with and without filters)")
+        print("-" * 50)
+        
+        # 7a) No filters
+        try:
+            response = self.make_request('GET', '/pharmacies')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    # Check that all pharmacies have on_duty field (computed dynamically)
+                    has_on_duty = all('on_duty' in pharmacy and isinstance(pharmacy['on_duty'], bool) for pharmacy in data)
+                    if has_on_duty:
+                        on_duty_count = sum(1 for p in data if p.get('on_duty'))
+                        self.log_test("7a) Pharmacies (no filters)", True, f"✅ 200 + {len(data)} pharmacies, {on_duty_count} on_duty (dynamic computation)")
+                    else:
+                        self.log_test("7a) Pharmacies (no filters)", False, f"❌ Some pharmacies missing on_duty field")
+                else:
+                    self.log_test("7a) Pharmacies (no filters)", False, f"❌ Expected list, got {type(data)}")
+            else:
+                self.log_test("7a) Pharmacies (no filters)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("7a) Pharmacies (no filters)", False, f"❌ Exception: {str(e)}")
+        
+        # 7b) City filter
+        try:
+            response = self.make_request('GET', '/pharmacies?city=Abidjan')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    city_matches = all(p.get('city', '').lower() == 'abidjan' for p in data) if data else True
+                    if city_matches:
+                        self.log_test("7b) Pharmacies (city filter)", True, f"✅ 200 + {len(data)} pharmacies in Abidjan")
+                    else:
+                        self.log_test("7b) Pharmacies (city filter)", False, f"❌ City filter not working correctly")
+                else:
+                    self.log_test("7b) Pharmacies (city filter)", False, f"❌ Expected list, got {type(data)}")
+            else:
+                self.log_test("7b) Pharmacies (city filter)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("7b) Pharmacies (city filter)", False, f"❌ Exception: {str(e)}")
+        
+        # 7c) on_duty filter
+        try:
+            response = self.make_request('GET', '/pharmacies?on_duty=true')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    all_on_duty = all(p.get('on_duty') == True for p in data) if data else True
+                    if all_on_duty:
+                        self.log_test("7c) Pharmacies (on_duty filter)", True, f"✅ 200 + {len(data)} pharmacies, all on_duty=true")
+                    else:
+                        self.log_test("7c) Pharmacies (on_duty filter)", False, f"❌ on_duty filter not working correctly")
+                else:
+                    self.log_test("7c) Pharmacies (on_duty filter)", False, f"❌ Expected list, got {type(data)}")
+            else:
+                self.log_test("7c) Pharmacies (on_duty filter)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("7c) Pharmacies (on_duty filter)", False, f"❌ Exception: {str(e)}")
+        
+        # 7d) Near location filter
+        try:
+            abidjan_lat, abidjan_lng = 5.316667, -4.016667
+            response = self.make_request('GET', f'/pharmacies?near_lat={abidjan_lat}&near_lng={abidjan_lng}&max_km=5')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    self.log_test("7d) Pharmacies (near location)", True, f"✅ 200 + {len(data)} pharmacies near Abidjan (5km)")
+                else:
+                    self.log_test("7d) Pharmacies (near location)", False, f"❌ Expected list, got {type(data)}")
+            else:
+                self.log_test("7d) Pharmacies (near location)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("7d) Pharmacies (near location)", False, f"❌ Exception: {str(e)}")
+        
+        # 8) POST /api/ai/chat (stream=false, prompt simple) → 200 + réponse contrôlée
+        print("\n8️⃣ POST /api/ai/chat (stream=false)")
+        print("-" * 50)
+        try:
+            chat_data = {
+                "messages": [{"role": "user", "content": "Dis-moi quelque chose sur Abidjan en une phrase."}],
+                "stream": False,
+                "temperature": 0.3,
+                "max_tokens": 100
+            }
+            response = self.make_request('POST', '/ai/chat', json=chat_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if 'content' in data and isinstance(data['content'], str) and len(data['content']) > 0:
+                    content = data['content'][:100]
+                    self.log_test("8) AI Chat (non-streaming)", True, f"✅ 200 + controlled response: '{content}...'")
+                else:
+                    self.log_test("8) AI Chat (non-streaming)", False, f"❌ Invalid response format: {data}")
+            else:
+                self.log_test("8) AI Chat (non-streaming)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("8) AI Chat (non-streaming)", False, f"❌ Exception: {str(e)}")
+        
+        # Summary
+        print("\n" + "=" * 80)
+        print("📊 RÉGRESSION BACKEND COMPLÈTE - RÉSULTATS")
+        print("=" * 80)
+        
+        passed = sum(1 for result in self.test_results if result['success'])
+        total = len(self.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        
+        if passed < total:
+            print("\n❌ FAILED TESTS:")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['details']}")
+        else:
+            print("\n🎉 ALL TESTS PASSED - NO REGRESSIONS DETECTED!")
+        
+        return passed == total
+
 if __name__ == "__main__":
     tester = BackendTester()
     
@@ -1960,9 +2248,11 @@ if __name__ == "__main__":
             success = True
         elif sys.argv[1] == "--fresh-regression":
             success = tester.run_fresh_backend_regression()
+        elif sys.argv[1] == "--comprehensive-regression":
+            success = tester.run_comprehensive_backend_regression()
         else:
             success = tester.run_all_tests()
     else:
-        success = tester.run_all_tests()
+        success = tester.run_comprehensive_backend_regression()
     
     sys.exit(0 if success else 1)
