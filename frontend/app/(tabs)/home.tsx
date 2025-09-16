@@ -167,11 +167,11 @@ export default function Home() {
         const saved = await AsyncStorage.getItem('layah_fab_pos');
         if (saved) {
           const pos = JSON.parse(saved);
-          setFabXY(pos);
+          setAiFabXY(pos);
           pan.setValue(pos);
         } else {
           const pos = { x: width - FAB_SIZE - FAB_MARGIN, y: height - FAB_SIZE - 140 };
-          setFabXY(pos);
+          setAiFabXY(pos);
           pan.setValue(pos);
         }
         setTooltipVisible(true);
