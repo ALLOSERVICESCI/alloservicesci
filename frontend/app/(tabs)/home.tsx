@@ -105,25 +105,23 @@ export default function Home() {
   const marqueeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: marqueeX.value }] }));
 
   // FAB Publier déplaçable
-  const pan = useRef(new RNAnimated.ValueXY({ x: 0, y: 0 })).current;
-  const fabXY = useRef({ x: 0, y: 0 }).current;
-  const fabX = useSharedValue(width - FAB_SIZE - FAB_MARGIN);
-  const fabY = useSharedValue(height - 200);
-  const fabStyle = useAnimatedStyle(() => ({ transform: [{ translateX: fabX.value }, { translateY: fabY.value }] }));
-  const panHandler = useAnimatedGestureHandler({
+  const publishFabX = useSharedValue(width - FAB_SIZE - FAB_MARGIN);
+  const publishFabY = useSharedValue(height - 200);
+  const publishFabStyle = useAnimatedStyle(() => ({ transform: [{ translateX: publishFabX.value }, { translateY: publishFabY.value }] }));
+  const publishPanHandler = useAnimatedGestureHandler({
     onStart: (_, ctx: any) => {
-      ctx.startX = fabX.value; ctx.startY = fabY.value;
+      ctx.startX = publishFabX.value; ctx.startY = publishFabY.value;
     },
     onActive: (event, ctx: any) => {
-      fabX.value = ctx.startX + event.translationX;
-      fabY.value = ctx.startY + event.translationY;
+      publishFabX.value = ctx.startX + event.translationX;
+      publishFabY.value = ctx.startY + event.translationY;
     },
     onEnd: () => {
       // Optionnel: aimantation aux bords
       const minX = 8; const maxX = width - FAB_SIZE - 8;
       const minY = 80; const maxY = height - FAB_SIZE - 120;
-      fabX.value = withTiming(Math.min(Math.max(fabX.value, minX), maxX), { duration: 160 });
-      fabY.value = withTiming(Math.min(Math.max(fabY.value, minY), maxY), { duration: 160 });
+      publishFabX.value = withTiming(Math.min(Math.max(publishFabX.value, minX), maxX), { duration: 160 });
+      publishFabY.value = withTiming(Math.min(Math.max(publishFabY.value, minY), maxY), { duration: 160 });
     },
   });
 
