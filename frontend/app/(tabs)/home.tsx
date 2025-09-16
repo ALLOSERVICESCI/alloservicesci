@@ -185,11 +185,18 @@ export default function Home() {
     ],
   }));
   useEffect(() => {
+    // Séquence plus rapide (fréquence augmentée) avec pause de 2s entre cycles
     megaphoneShake.value = withRepeat(
       withSequence(
-        withTiming(1, { duration: 110, easing: REEasing.linear }),
-        withTiming(-1, { duration: 110, easing: REEasing.linear }),
-        withDelay(2000, withTiming(-1, { duration: 0 }))
+        withRepeat(
+          withSequence(
+            withTiming(1, { duration: 60, easing: REEasing.linear }),
+            withTiming(-1, { duration: 60, easing: REEasing.linear })
+          ),
+          5, // 5 oscillations rapides par cycle
+          false
+        ),
+        withDelay(2000, withTiming(-1, { duration: 0 })) // pause 2s, revient à la position de repos
       ),
       -1,
       false
