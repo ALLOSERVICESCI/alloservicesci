@@ -85,6 +85,24 @@ export default function CategoryPage() {
                 </TouchableOpacity>
               )}
             </View>
+
+            {!!item.phones?.length && (
+              <View style={styles.phonesWrap}>
+                {item.phones.map((p, idx) => (
+                  <TouchableOpacity
+                    key={`${p.tel}_${idx}`}
+                    onPress={() => Linking.openURL(`tel:${p.tel}`)}
+                    style={styles.phoneBtn}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Appeler ${p.label} au ${p.tel}`}
+                  >
+                    <Ionicons name="call" size={16} color="#fff" />
+                    <Text style={styles.phoneBtnText}>{p.label}</Text>
+                    <Text style={styles.phoneBtnNumber}>{p.tel}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
           </View>
         )}
         contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
