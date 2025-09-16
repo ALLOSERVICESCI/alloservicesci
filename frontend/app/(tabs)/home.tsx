@@ -319,7 +319,7 @@ export default function Home() {
       <NavMenu />
 
       {/* FAB Publier - désormais flottant et déplaçable */}
-      <PanGestureHandler onGestureEvent={panHandler}>
+      <PanGestureHandler onGestureEvent={publishPanHandler}>
         <Reanimated.View style={[styles.publishFab, fabStyle]}>
           <TouchableOpacity
             accessibilityRole="button"
