@@ -13,24 +13,76 @@ export interface CatItem {
 export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   urgence: [
     {
-      title: "Numéros d'urgence en Côte d'Ivoire",
-      summary: "Police Secours: 170 • Sapeurs-pompiers (GSPM): 180 • SAMU: 185. À appeler selon la nature de l'urgence.",
-      tag: 'Numéros utiles',
-      source: 'https://www.gouv.ci/'
+      title: 'En cas d\'incendie',
+      summary: 'Pompier et unités locales en cas d\'incendie.',
+      tag: 'Incendie',
+      phones: [
+        { label: 'Pompiers (GSPM)', tel: '180' },
+        { label: 'Pompiers (GSPM) mobile', tel: '0707811818' },
+        { label: 'Pompiers d\'Indénié', tel: '2720211289' },
+        { label: 'Pompiers de Yopougon', tel: '2723451690' },
+      ],
     },
     {
-      title: 'Police Secours — Patrouilles et assistance',
-      summary: "Interventions 24h/24 sur l'ensemble du district d'Abidjan et grandes villes.",
-      tag: 'Sécurité',
-      location: 'District Autonome d’Abidjan',
-      date: 'Horaires: 24h/24'
+      title: 'Urgences médicales',
+      summary: 'SAMU et urgences hospitalières (CHU)',
+      tag: 'Médical',
+      phones: [
+        { label: 'SAMU (Cocody)', tel: '272722445353' },
+        { label: 'SAMU (numéro abrégé)', tel: '185' },
+        { label: 'CHU de Cocody', tel: '2722481000' },
+        { label: 'CHU de Cocody (ligne 2)', tel: '2722449038' },
+        { label: 'CHU de Treichville', tel: '2721249122' },
+        { label: 'CHU de Yopougon', tel: '2723466454' },
+        { label: 'CHU de Yopougon (ligne 2)', tel: '2723466170' },
+        { label: 'CHU de Grand-Bassam', tel: '2721301036' },
+      ],
     },
     {
-      title: 'Sapeurs-Pompiers Militaires (GSPM)',
-      summary: "Signalement incendies/accidents/évacuations d'urgence au 180.",
-      tag: 'Urgences',
-      date: 'Horaires: 24h/24',
-      source: 'https://www.facebook.com/GSPMCI/'
+      title: 'Police',
+      summary: 'Numéros de secours et directions de la police',
+      tag: 'Police',
+      phones: [
+        { label: 'Police secours', tel: '110' },
+        { label: 'Police secours (ligne 2)', tel: '111' },
+        { label: 'Police secours (numéro abrégé)', tel: '170' },
+        { label: 'Direction générale de la police', tel: '2720222030' },
+        { label: 'Préfecture de police', tel: '2720210022' },
+        { label: 'Police juridique', tel: '2720212300' },
+        { label: 'Police économique', tel: '2720325144' },
+      ],
+    },
+    {
+      title: 'Gendarmerie',
+      summary: 'Contacts de la gendarmerie',
+      tag: 'Gendarmerie',
+      phones: [
+        { label: 'Standard', tel: '2720219758' },
+        { label: 'Standard', tel: '2720210170' },
+        { label: 'Standard', tel: '05825705' },
+      ],
+    },
+    {
+      title: 'État-major de l\'armée',
+      summary: 'Contacts de l\'État-major',
+      tag: 'Armée',
+      phones: [
+        { label: 'État-major', tel: '2720214224' },
+        { label: 'État-major', tel: '2720211283' },
+        { label: 'État-major', tel: '0707835233' },
+        { label: 'État-major', tel: '0505312198' },
+      ],
+    },
+    {
+      title: 'Service de dépannage',
+      summary: 'Électricité, eau et télécoms',
+      tag: 'Dépannage',
+      phones: [
+        { label: 'CIE (électricité)', tel: '179' },
+        { label: 'SODECI (eau)', tel: '175' },
+        { label: 'Côte d\'Ivoire Télécom', tel: '190' },
+        { label: 'Côte d\'Ivoire Télécom (ligne 2)', tel: '120' },
+      ],
     },
   ],
   sante: [
