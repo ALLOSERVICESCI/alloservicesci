@@ -330,7 +330,7 @@ export default function Home() {
             style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
           >
             <Reanimated.View style={megaphoneAnimStyle}>
-              <Ionicons name="megaphone" size={22} color="#fff" />
+              <Ionicons name="mic-circle" size={24} color="#fff" />
             </Reanimated.View>
           </TouchableOpacity>
         </Reanimated.View>
