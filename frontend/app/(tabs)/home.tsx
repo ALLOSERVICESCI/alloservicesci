@@ -341,7 +341,7 @@ export default function Home() {
         styles.aiHalo,
         { transform: [
             { scale: pulse },
-            ...(fabXY ? [{ translateX: pan.x }, { translateY: pan.y }] : [])
+            ...(aiFabXY ? [{ translateX: pan.x }, { translateY: pan.y }] : [])
           ]
         },
       ]}>
