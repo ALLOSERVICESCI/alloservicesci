@@ -33,6 +33,8 @@ export default function Alerts() {
     return () => { mounted = false; };
   }, [SHOW_HEADER_IMAGE]);
 
+  const [previewUri, setPreviewUri] = useState<string | null>(null);
+
   const fetchAlerts = async () => {
     try {
       setLoading(true);
