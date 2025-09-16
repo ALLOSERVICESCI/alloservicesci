@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
   categoryIconImg: { width: 128, height: 128, marginBottom: 0, resizeMode: 'contain', borderRadius: 22 },
   categoryLabel: { fontSize: 16, fontWeight: '600', color: '#0F5132', textAlign: 'center', lineHeight: 20 },
   categoryLabelPremium: { color: '#0A7C3A', fontWeight: '700' },
-  premiumText: { fontSize: 11, fontWeight: '700', color: '#FFD700', backgroundColor: '#8B7000', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginTop: 0, textTransform: 'uppercase' },
+  premiumText: { fontSize: 11, fontWeight: '700', color: '#FFD700', backgroundColor: '#8B7000', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginTop: 8, textTransform: 'uppercase' },
   emblemSection: { alignItems: 'center', marginTop: 0, marginBottom: 24 },
   emblemImage: { width: 120, height: 120, resizeMode: 'contain' },
   emblemRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' },
