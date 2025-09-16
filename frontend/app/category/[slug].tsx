@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useI18n } from '../../src/i18n/i18n';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
