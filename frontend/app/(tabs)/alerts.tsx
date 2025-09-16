@@ -135,6 +135,15 @@ export default function Alerts() {
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
       />
     </View>
+
+      {/* Aperçu image plein écran */}
+      <Modal visible={!!previewUri} transparent animationType="fade" onRequestClose={() => setPreviewUri(null)}>
+        <View style={styles.modalBackdrop}>
+          <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setPreviewUri(null)}>
+            <Image source={{ uri: previewUri || '' }} style={styles.modalImage} resizeMode="contain" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
   );
 }
 
@@ -162,4 +171,8 @@ const styles = StyleSheet.create({
   badgeText: { fontSize: 12, fontWeight: '700' },
   badgeTextRead: { color: '#0A7C3A' },
   badgeTextUnread: { color: '#777' },
+
+  // Modal styles
+  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.9)', justifyContent: 'center', alignItems: 'center' },
+  modalImage: { width: '90%', height: '90%' },
 });
