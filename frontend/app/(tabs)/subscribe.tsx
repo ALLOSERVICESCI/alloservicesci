@@ -138,7 +138,7 @@ export default function Subscribe() {
               <TouchableOpacity key={feature.key} style={styles.tile} onPress={() => openCategory(feature.slug)} accessibilityRole="button">
                 {/* pastille alertes supprimée comme demandé */}
                 {feature.slug === 'pharmacies' ? (
-                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/bh94qk6w_Background_sante.png' }} style={styles.tileIconImg} />
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/i203vtyq_background_pharmacie.png' }} style={styles.tileIconImg} />
                 ) : feature.slug === 'alertes' ? (
                   <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/y128jlhy_Background_alertes.png' }} style={styles.tileIconImg} />
                 ) : feature.slug === 'education' ? (
