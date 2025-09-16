@@ -158,7 +158,7 @@ export default function Subscribe() {
                 ) : (
                   <Text style={styles.tileIcon}>{feature.icon}</Text>
                 )}
-                <Text style={styles.tileTitle} numberOfLines={2}>{feature.title}</Text>
+                {/* titres sous les icônes supprimés comme demandé */}
               </TouchableOpacity>
             ))}
           </View>
