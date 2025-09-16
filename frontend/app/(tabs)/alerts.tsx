@@ -177,5 +177,7 @@ const styles = StyleSheet.create({
 
   // Modal styles
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.9)', justifyContent: 'center', alignItems: 'center' },
+  modalOverlay: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  modalClose: { position: 'absolute', top: 50, right: 20, zIndex: 1000, padding: 10 },
   modalImage: { width: '90%', height: '90%' },
 });
