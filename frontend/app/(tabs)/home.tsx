@@ -258,6 +258,8 @@ export default function Home() {
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/bh94qk6w_Background_sante.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'alerts_tab' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/y128jlhy_Background_alertes.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'pharmacies_tab' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/i203vtyq_background_pharmacie.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'agriculture' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pv9ygk7l_Background_agriculture.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'education' ? (
