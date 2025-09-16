@@ -105,7 +105,7 @@ export default function Home() {
   const marqueeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: marqueeX.value }] }));
 
   // FAB Publier déplaçable
-  const publishFabX = useSharedValue(width - FAB_SIZE - FAB_MARGIN);
+  const publishFabX = useSharedValue(0);
   const publishFabY = useSharedValue(height - 200);
   const publishFabStyle = useAnimatedStyle(() => ({ transform: [{ translateX: publishFabX.value }, { translateY: publishFabY.value }] }));
   const publishPanHandler = useAnimatedGestureHandler({
