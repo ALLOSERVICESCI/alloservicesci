@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
   emblemRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' },
   publishInlineBtn: { backgroundColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 6 },
   publishInlineText: { color: '#fff', fontSize: 14, fontWeight: '600' },
-  mottoText: { marginTop: 0, color: '#0F5132', fontWeight: '700', fontSize: 16, textAlign: 'center' },
+  mottoText: { marginTop: 8, color: '#0F5132', fontWeight: '700', fontSize: 16, textAlign: 'center' },
   aiFab: { position: 'absolute', bottom: 30, right: 20, width: 60, height: 60, borderRadius: 30, backgroundColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center' },
   aiHalo: { shadowColor: '#0A7C3A', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 10 },
   aiMask: { width: 52, height: 52, borderRadius: 26, overflow: 'hidden', borderWidth: 2, borderColor: '#fff' },
