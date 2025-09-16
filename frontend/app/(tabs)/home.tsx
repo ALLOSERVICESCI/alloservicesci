@@ -240,7 +240,7 @@ export default function Home() {
 
           <View style={styles.categoriesSection}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel} style={styles.carouselContainer}>
-              {categories.map((category) => (
+              {categories.filter((c)=>c.slug !== 'pharmacies_tab').map((category) => (
                 <TouchableOpacity
                   key={category.slug}
                   style={[styles.categoryCard, category.isPremium && styles.categoryCardPremium]}
