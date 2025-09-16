@@ -122,7 +122,7 @@ export default function Alerts() {
             {!!item.images_base64?.length && (
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
                 {item.images_base64.map((img: string, idx: number) => (
-                  <TouchableOpacity key={idx} onPress={() => openImage(img)} style={styles.thumbWrap}>
+                  <TouchableOpacity key={idx} onPress={() => setPreviewUri(img)} style={styles.thumbWrap}>
                     <Image source={{ uri: img }} style={styles.thumb} />
                   </TouchableOpacity>
                 ))}
