@@ -297,18 +297,23 @@ export default function Home() {
 
       <NavMenu />
 
-      {/* FAB Publier */}
-      <TouchableOpacity
-        accessibilityRole="button"
-        accessibilityLabel="Publier une alerte"
-        testID="fab-publier"
-        onPress={() => router.push('/alerts/new')}
-        style={styles.publishFab}
-      >
-        <Reanimated.View style={megaphoneAnimStyle}>
-          <Ionicons name="megaphone" size={22} color="#fff" />
+      {/* FAB Publier - désormais flottant et déplaçable */}
+      <PanGestureHandler onGestureEvent={panHandler}>
+        <Reanimated.View style={[styles.publishFab, fabStyle]}>
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Publier une alerte"
+            testID="fab-publier"
+            onPress={() => router.push('/alerts/new')}
+            activeOpacity={0.9}
+            style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Reanimated.View style={megaphoneAnimStyle}>
+              <Ionicons name="megaphone" size={22} color="#fff" />
+            </Reanimated.View>
+          </TouchableOpacity>
         </Reanimated.View>
-      </TouchableOpacity>
+      </PanGestureHandler>
 
       <RNAnimated.View style={[
         styles.aiFab,
