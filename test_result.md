@@ -16,6 +16,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - CinetPay initiate endpoint confirmed working in comprehensive regression test. Created user Jean-Baptiste Kouame (ID: 68c72af6917c67e69a63088a), received payment_url: https://checkout.cinetpay.com/payment/195b42a29aeb... + transaction_id: SUB_519a4569f9d944. Returns 200 with payment_url and transaction_id as specified. Live CinetPay integration fully functional."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - CinetPay initiate endpoint confirmed working in final comprehensive regression test. Created user Jean-Baptiste Kouame (ID: 68c94baaea59eeea20bc49cc), received payment_url: https://checkout.cinetpay.com/payment/b3ac9631e3c1... + transaction_id: SUB_824057902d0643. Returns 200 with payment_url and transaction_id as specified. Live CinetPay integration fully functional."
 
   - task: "PATCH /api/users/<ID> pour mise à jour utilisateur"
     implemented: true
@@ -31,6 +34,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - User PATCH endpoint confirmed working in comprehensive regression test. Successfully updated user (ID: 68c72af6917c67e69a63088a) with city: 'Yamoussoukro', email: 'jean.updated@example.ci', phone: '+225 01 02 03 04 05'. Returns 200 with all updated fields correctly applied."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - User PATCH endpoint confirmed working in final comprehensive regression test. Successfully updated user (ID: 68c94baaea59eeea20bc49cc) with city: 'Yamoussoukro', email: 'jean.updated@example.ci', phone: '+225 01 02 03 04 05'. Returns 200 with all updated fields correctly applied."
 
   - task: "GET /api/subscriptions/check?user_id=<ID> pour vérifier premium"
     implemented: true
@@ -49,6 +55,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - Subscription check endpoint confirmed working in comprehensive regression test. Returns 200 + is_premium: False, expires_at: None for non-premium user (ID: 68c72af6917c67e69a63088a) as expected. Subscription validation logic fully functional."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - Subscription check endpoint confirmed working in final comprehensive regression test. Returns 200 + is_premium: False, expires_at: None for non-premium user (ID: 68c94baaea59eeea20bc49cc) as expected. Subscription validation logic fully functional."
 
   - task: "GET /api/alerts/unread_count?user_id=<ID> pour compteur notifications"
     implemented: true
@@ -67,6 +76,33 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - Alerts unread count endpoint confirmed working in comprehensive regression test. Returns 200 + count: 28 for user (ID: 68c72af6917c67e69a63088a). Unread count logic fully functional for both with and without user_id parameter."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - Alerts unread count endpoint confirmed working in final comprehensive regression test. Returns 200 + count: 33 for user (ID: 68c94baaea59eeea20bc49cc). Unread count logic fully functional for both with and without user_id parameter."
+
+  - task: "GET /api/alerts → 200 + liste (filtrée <24h)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - Alerts list endpoint confirmed working in final comprehensive regression test. Returns 200 + list with 33 alerts. Alert listing functionality fully functional."
+
+  - task: "POST /api/alerts (titre/desc/ville/images_base64) → 200; vérifier accessible via GET"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - Alert creation and verification endpoint confirmed working in final comprehensive regression test. Created alert with ID: 68c94bacea59eeea20bc49ce, successfully verified accessible via GET /api/alerts. Alert creation and retrieval functionality fully functional."
 
   - task: "GET /api/pharmacies avec filtres (city, on_duty, near_lat/lng, max_km)"
     implemented: true
@@ -88,6 +124,21 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE VALIDÉE - Pharmacies filtering endpoints confirmed working in comprehensive regression test. All filter combinations tested successfully: 1) No filters: 200 + 4 pharmacies with required JSON structure, 2) City filters (Abidjan, Grand-Bassam, Marcory): case-insensitive matching working correctly, 3) on_duty=true filter: 200 + 1 pharmacy, all on_duty=true (dynamic computation from duty_days), 4) Near Abidjan (5km): 200 + 3 pharmacies, 5) Combined city+on_duty (Abidjan): 200 + 1 pharmacy matching both filters. Dynamic on_duty computation based on duty_days array fully functional."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - Pharmacies filtering endpoints confirmed working in final comprehensive regression test. All filter combinations tested successfully: 1) No filters: 200 + 4 pharmacies with required JSON structure, 3 on_duty (dynamic computation), 2) City filter (Abidjan): 200 + 4 pharmacies, all match city, 3) on_duty=true filter: 200 + 3 pharmacies, all on_duty=true (dynamic computation from duty_days), 4) Near Abidjan (5km): 200 + 3 pharmacies. Dynamic on_duty computation based on duty_days array fully functional."
+
+  - task: "POST /api/ai/chat (stream=false, prompt simple) → 200 + réponse contrôlée"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE - AI Chat endpoint confirmed working in final comprehensive regression test. POST /api/ai/chat with stream=false returns 200 + controlled response about Abidjan. AI integration with Emergent API fully functional."
 
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
