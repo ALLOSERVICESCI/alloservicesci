@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
   badgeDot: { position: 'absolute', top: -6, right: -6, width: 14, height: 14, borderRadius: 7, backgroundColor: '#FF4444', borderWidth: 2, borderColor: '#fff' },
   tileIcon: { fontSize: 36, marginBottom: 8 },
-  tileIconImg: { width: 36, height: 36, marginBottom: 8 },
+  tileIconImg: { width: 128, height: 128, marginBottom: 0, borderRadius: 22, resizeMode: 'contain' },
   tileTitle: { fontSize: 12, fontWeight: '600', color: '#0F5132', textAlign: 'center' },
   ctaSection: { paddingHorizontal: H_PADDING, alignItems: 'center' },
   ctaText: { fontSize: 16, color: '#333', textAlign: 'center', marginBottom: 20, lineHeight: 22 },
