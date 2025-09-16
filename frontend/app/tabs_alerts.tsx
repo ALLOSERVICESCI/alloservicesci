@@ -171,4 +171,8 @@ const styles = StyleSheet.create({
   badgeText: { fontSize: 12, fontWeight: '700' },
   badgeTextRead: { color: '#0A7C3A' },
   badgeTextUnread: { color: '#777' },
+
+  // Modal styles
+  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.9)', justifyContent: 'center', alignItems: 'center' },
+  modalImage: { width: '90%', height: '90%' },
 });
