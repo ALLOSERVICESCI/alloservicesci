@@ -139,8 +139,11 @@ export default function Alerts() {
       {/* Aperçu image plein écran */}
       <Modal visible={!!previewUri} transparent animationType="fade" onRequestClose={() => setPreviewUri(null)}>
         <View style={styles.modalBackdrop}>
-          <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setPreviewUri(null)}>
+          <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setPreviewUri(null)}>
             <Image source={{ uri: previewUri || '' }} style={styles.modalImage} resizeMode="contain" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.modalClose} onPress={() => setPreviewUri(null)} accessibilityRole="button" accessibilityLabel="Fermer l'aperçu">
+            <Ionicons name="close" size={28} color="#fff" />
           </TouchableOpacity>
         </View>
       </Modal>
