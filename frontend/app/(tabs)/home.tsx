@@ -155,7 +155,7 @@ export default function Home() {
   const [aiPos] = React.useState<'bottom-right'|'bottom-left'|'top-right'|'top-left'>('bottom-right');
   const aiPositionStyle = React.useMemo(() => ({ bottom: 30, right: 20 }), []);
   const [tooltipVisible, setTooltipVisible] = React.useState(false);
-  const [fabXY, setFabXY] = React.useState<{x: number; y: number} | null>(null);
+  const [aiFabXY, setAiFabXY] = React.useState<{x: number; y: number} | null>(null);
   const [dragging, setDragging] = React.useState(false);
   const pan = useRef(new RNAnimated.ValueXY()).current;
 
