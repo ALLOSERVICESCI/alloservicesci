@@ -2558,6 +2558,27 @@ if __name__ == "__main__":
         else:
             success = tester.run_all_tests()
     else:
-        success = tester.run_comprehensive_backend_regression()
+        success = tester.test_backend_regression_complete()
+        
+        # Summary
+        print("\n" + "=" * 80)
+        print("📊 RÉGRESSION BACKEND COMPLÈTE - RÉSULTATS FINAUX")
+        print("=" * 80)
+        
+        passed = sum(1 for result in tester.test_results if result['success'])
+        total = len(tester.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        
+        if passed < total:
+            print("\n❌ FAILED TESTS:")
+            for result in tester.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['details']}")
+        else:
+            print("\n🎉 ALL TESTS PASSED - NO REGRESSIONS DETECTED!")
     
     sys.exit(0 if success else 1)
