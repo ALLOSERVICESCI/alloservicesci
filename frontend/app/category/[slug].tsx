@@ -58,12 +58,18 @@ export default function CategoryPage() {
         <View style={styles.lightOverlay} />
         <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} locations={[0,1]} style={styles.overlay} />
         <View style={styles.headerContent}>
-
-          {s !== 'sante' && (
-            <View style={styles.titleWrap}>
-              <Text style={[styles.titleStroke]}>{catLabel}</Text>
-              <Text style={[styles.title]}>{catLabel}</Text>
+          {s === 'urgence' ? (
+            <View>
+              <Text style={styles.headerNoteTitle}>Services d’urgences ivoiriens</Text>
+              <Text style={styles.headerNoteSub}>Les numéros d’urgence suivants sont donnés sous toute réserve quant à leur fonctionnement ou quant à la qualité des services.</Text>
             </View>
+          ) : (
+            s !== 'sante' && (
+              <View style={styles.titleWrap}>
+                <Text style={[styles.titleStroke]}>{catLabel}</Text>
+                <Text style={[styles.title]}>{catLabel}</Text>
+              </View>
+            )
           )}
         </View>
       </ImageBackground>
