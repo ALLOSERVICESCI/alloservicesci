@@ -8,6 +8,7 @@ export interface CatItem {
   date?: string; // ISO or human readable (peut contenir "Horaires: …")
   source?: string; // url si disponible
   phones?: { label: string; tel: string }[]; // numéros cliquables (tel:)
+  ussd?: { label: string; code: string }[]; // codes USSD
 }
 
 export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
