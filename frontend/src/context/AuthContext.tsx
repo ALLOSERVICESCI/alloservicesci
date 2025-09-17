@@ -81,15 +81,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })();
   }, [expoPushToken, user?.id, user?.city]);
 
-  const register = async (input: { first_name: string; last_name: string; email?: string; phone: string; preferred_lang?: string }) => {
+  const register = async (input: { first_name: string; last_name: string; email?: string; phone: string; preferred_lang?: string; pseudo?: string; show_pseudo?: boolean }) => {
     const res = await apiFetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
     if (!res.ok) {
       const j = await res.json().catch(() => ({} as any));
       throw new Error((j as any).detail || 'Inscription échouée');
     }
     const u = await res.json();
-    setUser(u);
-    await AsyncStorage.setItem('auth_user', JSON.stringify(u));
+    // Merge local pseudo preferences in case backend does not persist them yet
+    const merged = {
+      ...u,
+      pseudo: (input.pseudo ?? (u as any).pseudo),
+      show_pseudo: (input.show_pseudo ?? (u as any).show_pseudo),
+    } as User;
+    setUser(merged);
+    await AsyncStorage.setItem('auth_user', JSON.stringify(merged));
   };
 
   const refreshUserData = async () => {
