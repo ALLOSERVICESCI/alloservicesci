@@ -62,7 +62,7 @@ backend:
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - PATCH /api/users/<id> endpoint confirmed working in final comprehensive regression test. Successfully updated user with city: 'Yamoussoukro', email: 'jean.updated@example.ci', phone: '+225 01 02 03 04 05'. Note: pseudo/show_pseudo fields not supported by current backend implementation - no regression detected as these fields are not implemented in UserUpdate model. Returns 200 with all basic fields correctly applied selon review request."
 
-  - task: "GET /api/subscriptions/check?user_id=<ID> pour vérifier premium"
+  - task: "GET /api/subscriptions/check?user_id=<id> → 200 + is_premium bool"
     implemented: true
     working: true
     file: "backend/server.py"
@@ -85,8 +85,11 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND FINALE RE-VALIDÉE - Subscription check endpoint confirmed working in final regression test suite. Returns 200 + is_premium: False, expires_at: None for non-premium user (ID: 68c9ea476cdcf7416a61c08e) as expected. Subscription validation logic fully functional selon review request."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - GET /api/subscriptions/check endpoint confirmed working in final comprehensive regression test. Returns 200 + is_premium: False, expires_at: None for non-premium user as expected. Subscription validation logic fully functional selon review request."
 
-  - task: "GET /api/alerts/unread_count?user_id=<ID> pour compteur notifications"
+  - task: "GET /api/alerts/unread_count?user_id=<id> → 200 + count int"
     implemented: true
     working: true
     file: "backend/server.py"
@@ -109,8 +112,11 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND FINALE RE-VALIDÉE - Alerts unread count endpoint confirmed working in final regression test suite. Returns 200 + count: 37 for user (ID: 68c9ea476cdcf7416a61c08e). Unread count logic fully functional for both with and without user_id parameter selon review request."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - GET /api/alerts/unread_count endpoint confirmed working in final comprehensive regression test. Returns 200 + count: 38 (int) for user. Unread count logic fully functional selon review request."
 
-  - task: "GET /api/alerts → 200 + liste (filtrée <24h)"
+  - task: "GET /api/alerts → 200 + liste (<24h)"
     implemented: true
     working: true
     file: "backend/server.py"
@@ -124,8 +130,11 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND FINALE RE-VALIDÉE - Alerts list endpoint confirmed working in final regression test suite. Returns 200 + list with 37 alerts. Alert listing functionality fully functional selon review request."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - GET /api/alerts endpoint confirmed working in final comprehensive regression test. Returns 200 + liste avec 38 alerts. Alert listing functionality fully functional selon review request."
 
-  - task: "POST /api/alerts (titre/desc/ville/images_base64) → 200; vérifier accessible via GET"
+  - task: "POST /api/alerts (titre/desc/ville) → 200 puis GET confirme présence"
     implemented: true
     working: true
     file: "backend/server.py"
@@ -139,8 +148,11 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND FINALE RE-VALIDÉE - Alert creation and verification endpoint confirmed working in final regression test suite. Created alert with ID: 68c9ea486cdcf7416a61c090, successfully verified accessible via GET /api/alerts. Alert creation and retrieval functionality fully functional selon review request."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - POST /api/alerts + verification endpoint confirmed working in final comprehensive regression test. Created alert with ID: 68cab3dcea416f044cbf8cbe, successfully verified accessible via GET /api/alerts. Alert creation and retrieval functionality fully functional selon review request."
 
-  - task: "GET /api/pharmacies avec filtres (city, on_duty, near_lat/lng, max_km)"
+  - task: "GET /api/pharmacies (filtres city/on_duty/near) → 200 + on_duty dynamique"
     implemented: true
     working: true
     file: "backend/server.py"
@@ -166,8 +178,11 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND FINALE RE-VALIDÉE - Pharmacies filtering endpoints confirmed working in final regression test suite. All filter combinations tested successfully: 1) No filters: 200 + 4 pharmacies with required JSON structure, 3 on_duty (dynamic computation), 2) City filter (Abidjan): 200 + 4 pharmacies, all match city, 3) on_duty=true filter: 200 + 3 pharmacies, all on_duty=true (dynamic computation from duty_days), 4) Near Abidjan (5km): 200 + 3 pharmacies. Dynamic on_duty computation based on duty_days array fully functional selon review request."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - GET /api/pharmacies filtering endpoints confirmed working in final comprehensive regression test. All filter combinations tested successfully: 1) No filters: 200 + 4 pharmacies, 3 on_duty (dynamic computation), 2) City filter (Abidjan): 200 + 4 pharmacies, all match city, 3) on_duty=true filter: 200 + 3 pharmacies, all on_duty=true (dynamic computation from duty_days), 4) Near Abidjan (5km): 200 + 3 pharmacies. Dynamic on_duty computation based on duty_days array fully functional selon review request."
 
-  - task: "POST /api/ai/chat (stream=false, prompt simple) → 200 + réponse contrôlée"
+  - task: "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
     implemented: true
     working: true
     file: "backend/server.py"
@@ -181,6 +196,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND FINALE RE-VALIDÉE - AI Chat endpoint confirmed working in final regression test suite. POST /api/ai/chat with stream=false returns 200 + controlled response about Abidjan: 'Abidjan, la capitale économique de la Côte d'Ivoire, est une métropole dynamique connue pour son arc...'. AI integration with Emergent API fully functional selon review request."
+      - working: true
+        agent: "testing"
+        comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - POST /api/ai/chat endpoint confirmed working in final comprehensive regression test. POST /api/ai/chat with stream=false returns 200 + controlled response about Abidjan: 'Abidjan, la capitale économique de la Côte d'Ivoire, est une métropole dynamique connue pour son arc...'. AI integration with Emergent API fully functional selon review request."
 
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
