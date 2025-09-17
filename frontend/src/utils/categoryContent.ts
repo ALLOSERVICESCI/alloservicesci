@@ -188,7 +188,6 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'SODECI (Société de Distribution d’Eau de Côte d’Ivoire)',
       summary: 'Eau & Électricité — Assistance eau potable et signalements de fuites',
-      tag: 'Eau & Électricité',
       source: 'https://www.sodeci.ci/',
       phones: [
         { label: 'Service client', tel: '175' },
