@@ -206,7 +206,6 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'Orange Côte d’Ivoire',
       summary: 'Opérateurs télécoms & internet — Services USSD : *144# (forfait), *111# (argent mobile)',
-      tag: 'Opérateurs télécoms & internet',
       source: 'https://www.orange.ci',
       phones: [
         { label: 'Service client (mobile Orange)', tel: '070707' },
