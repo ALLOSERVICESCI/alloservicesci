@@ -14,6 +14,8 @@ export type User = {
   preferred_lang?: string;
   city?: string;
   avatar?: string; // base64 without data: prefix
+  pseudo?: string;
+  show_pseudo?: boolean;
 };
 
 type AuthContextType = {
