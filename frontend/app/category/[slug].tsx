@@ -48,6 +48,7 @@ export default function CategoryPage() {
   }, [s, t]);
 
   const data = CONTENT_BY_CATEGORY[s] || [];
+  const isUrgence = s === 'urgence';
 
   const openSource = async (url?: string) => { if (!url) return; try { await Linking.openURL(url); } catch (e) {} };
 
