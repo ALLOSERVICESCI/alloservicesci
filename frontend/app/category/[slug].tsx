@@ -75,11 +75,11 @@ export default function CategoryPage() {
           <View style={styles.card}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
               {!!item.tag && (<Text style={styles.badge}>{item.tag}</Text>)}
-              <Text style={styles.itemTitle}>{item.title}</Text>
+              <Text style={[styles.itemTitle, isUrgence && styles.urgTitle]}>{item.title}</Text>
             </View>
-            <Text style={styles.itemSummary}>{item.summary}</Text>
+            <Text style={[styles.itemSummary, isUrgence && styles.urgSummary]}>{item.summary}</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, alignItems: 'center' }}>
-              <Text style={styles.metaText}>{item.location ? item.location + ' • ' : ''}{item.date || ''}</Text>
+              <Text style={[styles.metaText, isUrgence && styles.urgMeta]}>{item.location ? item.location + ' • ' : ''}{item.date || ''}</Text>
               {item.source && (
                 <TouchableOpacity onPress={() => openSource(item.source)} style={styles.sourceBtn} accessibilityRole="button">
                   <Text style={styles.sourceBtnText}>{t('open')}</Text>
