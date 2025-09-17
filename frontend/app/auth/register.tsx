@@ -51,6 +51,18 @@ export default function Register() {
         </View>
 
         {/* Inputs */}
+        <TextInput placeholder={t('pseudo') || 'Pseudo (optionnel)'} value={pseudo} onChangeText={setPseudo} style={styles.input} />
+        <View style={styles.checkboxRow}>
+          <TouchableOpacity
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: showPseudo }}
+            onPress={() => setShowPseudo(!showPseudo)}
+            style={[styles.checkbox, showPseudo && styles.checkboxChecked]}
+          >
+            {showPseudo && <Ionicons name="checkmark" size={16} color="#fff" />}
+          </TouchableOpacity>
+          <Text style={styles.legalLabel}>Afficher mon pseudo</Text>
+        </View>
         <TextInput placeholder={t('firstName')} value={first_name} onChangeText={setFirst} style={styles.input} />
         <TextInput placeholder={t('lastName')} value={last_name} onChangeText={setLast} style={styles.input} />
         <TextInput placeholder={t('emailOpt')} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" style={styles.input} />
