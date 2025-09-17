@@ -71,59 +71,41 @@ export default function CategoryPage() {
       <FlatList
         data={data}
         keyExtractor={(item, idx) => `${s}_${idx}`}
-        renderItem={({ item }) => {
-          const colors = isUrgence ? getUrgColors(item.tag, item.title) : null;
-          return (
-            <View style={isUrgence ? [styles.urgCard, styles.cardShadow, { backgroundColor: colors?.bg }] : styles.card}>
-              {isUrgence && (
-                <>
-                  <View style={[styles.blob, { backgroundColor: colors?.blob }]} />
-                  <View style={[styles.blob2, { backgroundColor: colors?.blob }]} />
-                </>
-              )}
-
-              {isUrgence ? (
-                <View style={styles.urgTitleBar}>
-                  {!!item.tag && (<Text style={[styles.badge, { backgroundColor: 'rgba(255,255,255,0.25)' }]}>{item.tag}</Text>)}
-                  <Text style={styles.urgTitleText}>{item.title}</Text>
-                </View>
-              ) : (
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
-                  {!!item.tag && (<Text style={styles.badge}>{item.tag}</Text>)}
-                  <Text style={styles.itemTitle}>{item.title}</Text>
-                </View>
-              )}
-
-              <Text style={[styles.itemSummary, isUrgence && styles.urgSummary]}>{item.summary}</Text>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, alignItems: 'center' }}>
-                <Text style={[styles.metaText, isUrgence && styles.urgMeta]}>{item.location ? item.location + ' • ' : ''}{item.date || ''}</Text>
-                {item.source && (
-                  <TouchableOpacity onPress={() => openSource(item.source)} style={[styles.sourceBtn, isUrgence && styles.urgSourceBtn]} accessibilityRole="button">
-                    <Text style={[styles.sourceBtnText, isUrgence && styles.urgSourceBtnText]}>{t('open')}</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-
-              {!!item.phones?.length && (
-                <View style={styles.phonesWrap}>
-                  {item.phones.map((p, idx) => (
-                    <TouchableOpacity
-                      key={`${p.tel}_${idx}`}
-                      onPress={() => Linking.openURL(`tel:${p.tel}`)}
-                      style={[styles.phoneBtn, isUrgence && styles.urgPhoneBtn]}
-                      accessibilityRole="button"
-                      accessibilityLabel={`Appeler ${p.label} au ${p.tel}`}
-                    >
-                      <Ionicons name="call" size={16} color={isUrgence ? '#0A7C3A' : '#fff'} />
-                      <Text style={[styles.phoneBtnText, isUrgence && styles.urgPhoneBtnText]}>{p.label}</Text>
-                      <Text style={[styles.phoneBtnNumber, isUrgence && styles.urgPhoneBtnText]}>{p.tel}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+              {!!item.tag && (<Text style={styles.badge}>{item.tag}</Text>)}
+              <Text style={[styles.itemTitle, isUrgence && styles.urgTitle]}>{item.title}</Text>
+            </View>
+            <Text style={[styles.itemSummary, isUrgence && styles.urgSummary]}>{item.summary}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, alignItems: 'center' }}>
+              <Text style={[styles.metaText, isUrgence && styles.urgMeta]}>{item.location ? item.location + ' • ' : ''}{item.date || ''}</Text>
+              {item.source && (
+                <TouchableOpacity onPress={() => openSource(item.source)} style={styles.sourceBtn} accessibilityRole="button">
+                  <Text style={styles.sourceBtnText}>{t('open')}</Text>
+                </TouchableOpacity>
               )}
             </View>
-          );
-        }}
+
+            {!!item.phones?.length && (
+              <View style={styles.phonesWrap}>
+                {item.phones.map((p, idx) => (
+                  <TouchableOpacity
+                    key={`${p.tel}_${idx}`}
+                    onPress={() => Linking.openURL(`tel:${p.tel}`)}
+                    style={styles.phoneBtn}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Appeler ${p.label} au ${p.tel}`}
+                  >
+                    <Ionicons name="call" size={16} color="#fff" />
+                    <Text style={styles.phoneBtnText}>{p.label}</Text>
+                    <Text style={styles.phoneBtnNumber}>{p.tel}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+          </View>
+        )}
         contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
       />
     </View>
