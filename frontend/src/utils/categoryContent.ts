@@ -170,18 +170,24 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   ],
   services_utiles: [
     {
-      title: 'CIE — Signaler une panne',
-      summary: 'Coupure d’électricité, problème de réseau: service client et signalement en ligne.',
-      tag: 'Électricité',
-      date: 'Horaires: 24h/24 (en ligne)',
-      source: 'https://www.cie.ci/'
+      title: 'SODECI (Société de Distribution d’Eau de Côte d’Ivoire)',
+      summary: 'Eau & Électricité — Assistance eau potable et signalements de fuites',
+      tag: 'Eau & Électricité',
+      source: 'https://www.sodeci.ci/',
+      phones: [
+        { label: 'Service client', tel: '175' },
+        { label: 'Fixe', tel: '2721230000' },
+      ]
     },
     {
-      title: 'SODECI — Déclarer une fuite',
-      summary: 'Coupure d’eau, fuite sur la voie publique: assistance clients et signalement.',
-      tag: 'Eau',
-      date: 'Horaires: 24h/24 (en ligne)',
-      source: 'https://www.sodeci.ci/'
+      title: 'CIE (Compagnie Ivoirienne d’Électricité)',
+      summary: 'Eau & Électricité — Service client électricité et signalements de pannes',
+      tag: 'Eau & Électricité',
+      source: 'https://www.cie.ci/',
+      phones: [
+        { label: 'Service client', tel: '179' },
+        { label: 'Fixe', tel: '2721233333' },
+      ]
     },
     {
       title: 'La Poste de Côte d’Ivoire',
