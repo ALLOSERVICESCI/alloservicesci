@@ -50,6 +50,17 @@ export default function CategoryPage() {
   const data = CONTENT_BY_CATEGORY[s] || [];
   const isUrgence = s === 'urgence';
 
+  const getUrgColors = (tag?: string, title?: string) => {
+    const key = (tag || title || '').toLowerCase();
+    if (key.includes('incendie') || key.includes('pompi') ) return { bg: '#E85C4A', blob: '#C94A3A' };
+    if (key.includes('médical') || key.includes('samu') ) return { bg: '#1E88E5', blob: '#1669B5' };
+    if (key.includes('police') ) return { bg: '#5E35B1', blob: '#4527A0' };
+    if (key.includes('dépannage') || key.includes('depannage') ) return { bg: '#2E7D32', blob: '#1B5E20' };
+    if (key.includes('gendarmerie') ) return { bg: '#00897B', blob: '#00695C' };
+    if (key.includes("état-major") || key.includes("etat-major") ) return { bg: '#6D4C41', blob: '#4E342E' };
+    return { bg: '#0A7C3A', blob: '#075D2B' };
+  };
+
   const openSource = async (url?: string) => { if (!url) return; try { await Linking.openURL(url); } catch (e) {} };
 
   return (
