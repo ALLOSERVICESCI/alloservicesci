@@ -147,25 +147,40 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   ],
   services_publics: [
     {
-      title: 'e-Impôts Côte d’Ivoire',
-      summary: 'Déclarations et paiements en ligne pour particuliers et entreprises.',
+      title: 'CNPS (Caisse Nationale de Prévoyance Sociale)',
+      summary: 'Protection sociale des travailleurs et prestations (allocations, pensions).',
+      tag: 'CNPS',
+      source: 'https://www.cnps.ci',
+      phones: [
+        { label: 'Service client', tel: '2720251000' }
+      ]
+    },
+    {
+      title: 'CNAM (Couverture Maladie Universelle)',
+      summary: 'Information et prise en charge santé via la CMU (assurance maladie).',
+      tag: 'CNAM',
+      source: 'https://www.cnam.ci',
+      phones: [
+        { label: 'Numéro vert', tel: '143' }
+      ]
+    },
+    {
+      title: 'Impôts Côte d’Ivoire (DGI)',
+      summary: 'Déclarations et paiements en ligne, informations fiscales (particuliers et entreprises).',
       tag: 'Fiscalité',
-      date: 'Service en ligne 24h/24',
-      source: 'https://www.e-impots.gouv.ci/'
+      source: 'https://www.dgi.gouv.ci',
+      phones: [
+        { label: 'Standard', tel: '2720252525' }
+      ]
     },
     {
-      title: 'ONECI — Carte nationale d’identité',
-      summary: 'Renouvellement et informations sur les centres d’enrôlement.',
-      tag: 'Identité',
-      location: 'Centres ONECI (Plateau, Abobo, etc.)',
-      date: 'Horaires: Lun–Ven 08:00–16:00',
-      source: 'https://www.oneci.ci/'
-    },
-    {
-      title: 'État civil — Extrait de naissance',
-      summary: 'Procédures pour l’obtention ou la régularisation des actes.',
-      tag: 'État civil',
-      date: 'Horaires: selon mairie/centre'
+      title: 'Douanes ivoiriennes',
+      summary: 'Renseignements et formalités douanières (import/export).',
+      tag: 'Douanes',
+      source: 'https://www.douanes.ci',
+      phones: [
+        { label: 'Ligne info', tel: '2720210800' }
+      ]
     },
   ],
   services_utiles: [
