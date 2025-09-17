@@ -27,7 +27,7 @@ export default function Register() {
     if (!acceptLegal) { setShowLegalError(true); return; }
     setLoading(true);
     try {
-      await register({ first_name, last_name, email, phone, preferred_lang: prefLang });
+      await register({ first_name, last_name, email, phone, preferred_lang: prefLang, pseudo: pseudo || undefined, show_pseudo: showPseudo });
       await setLang(prefLang);
       setTimeout(() => Alert.alert(t('profileReady')), 50);
       router.replace('/(tabs)/profile');
