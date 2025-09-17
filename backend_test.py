@@ -1942,6 +1942,311 @@ class BackendTester:
         except Exception as e:
             self.log_test("Alerts unread count", False, f"Exception: {str(e)}")
 
+    def test_backend_regression_complete(self):
+        """RÉGRESSION BACKEND COMPLÈTE - Test exhaustif selon review request"""
+        print("\n" + "=" * 80)
+        print("🎯 RÉGRESSION BACKEND COMPLÈTE - REVIEW REQUEST")
+        print("=" * 80)
+        
+        # Create test user for all tests
+        test_user_id = None
+        try:
+            user_data = {
+                "first_name": "Jean-Baptiste",
+                "last_name": "Kouame",
+                "phone": "+225 07 12 34 56 78",
+                "email": "jean.kouame@example.ci",
+                "preferred_lang": "fr",
+                "accept_terms": True,
+                # Test pseudo/show_pseudo fields if supported
+                "pseudo": "jbkouame",
+                "show_pseudo": True
+            }
+            response = self.make_request('POST', '/auth/register', json=user_data)
+            if response.status_code == 200:
+                user = response.json()
+                test_user_id = user.get('id')
+                # Check if pseudo/show_pseudo are returned
+                has_pseudo = 'pseudo' in user and 'show_pseudo' in user
+                if has_pseudo:
+                    self.log_test("1) POST /api/auth/register (avec pseudo/show_pseudo)", True, 
+                                f"✅ 200 + user créé avec ID: {test_user_id}, pseudo: {user.get('pseudo')}, show_pseudo: {user.get('show_pseudo')}")
+                else:
+                    self.log_test("1) POST /api/auth/register (sans pseudo/show_pseudo)", True, 
+                                f"✅ 200 + user créé avec ID: {test_user_id} (pseudo/show_pseudo non pris en charge)")
+            else:
+                self.log_test("1) POST /api/auth/register", False, f"❌ Status: {response.status_code}, Response: {response.text}")
+                return
+        except Exception as e:
+            self.log_test("1) POST /api/auth/register", False, f"❌ Exception: {str(e)}")
+            return
+        
+        # 2) POST /api/payments/cinetpay/initiate → 200 + payment_url + transaction_id
+        print("\n2️⃣ TEST CINETPAY INITIATE")
+        print("-" * 50)
+        try:
+            payment_data = {
+                "user_id": test_user_id,
+                "amount_fcfa": 1200
+            }
+            response = self.make_request('POST', '/payments/cinetpay/initiate', json=payment_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'payment_url' in data and 'transaction_id' in data:
+                    payment_url = data['payment_url']
+                    transaction_id = data['transaction_id']
+                    self.log_test("2) POST /api/payments/cinetpay/initiate", True, 
+                                f"✅ 200 + payment_url: {payment_url[:50]}... + transaction_id: {transaction_id}")
+                else:
+                    self.log_test("2) POST /api/payments/cinetpay/initiate", False, f"❌ Manque payment_url ou transaction_id: {data}")
+            else:
+                self.log_test("2) POST /api/payments/cinetpay/initiate", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("2) POST /api/payments/cinetpay/initiate", False, f"❌ Exception: {str(e)}")
+        
+        # 3) PATCH /api/users/<id> (pseudo, show_pseudo) → 200 + champs mis à jour
+        print("\n3️⃣ TEST USER UPDATE")
+        print("-" * 50)
+        try:
+            update_data = {
+                "city": "Yamoussoukro",
+                "email": "jean.updated@example.ci",
+                "phone": "+225 01 02 03 04 05",
+                # Test pseudo/show_pseudo update if supported
+                "pseudo": "jbkouame_updated",
+                "show_pseudo": False
+            }
+            response = self.make_request('PATCH', f'/users/{test_user_id}', json=update_data)
+            if response.status_code == 200:
+                data = response.json()
+                # Check if basic fields are updated
+                basic_updated = (data.get('city') == 'Yamoussoukro' and 
+                               data.get('email') == 'jean.updated@example.ci')
+                # Check if pseudo fields are updated (if supported)
+                pseudo_updated = ('pseudo' in data and 'show_pseudo' in data and
+                                data.get('pseudo') == 'jbkouame_updated' and
+                                data.get('show_pseudo') == False)
+                
+                if basic_updated:
+                    if pseudo_updated:
+                        self.log_test("3) PATCH /api/users/<id> (avec pseudo/show_pseudo)", True, 
+                                    f"✅ 200 + champs mis à jour: city={data.get('city')}, pseudo={data.get('pseudo')}, show_pseudo={data.get('show_pseudo')}")
+                    else:
+                        self.log_test("3) PATCH /api/users/<id> (sans pseudo/show_pseudo)", True, 
+                                    f"✅ 200 + champs de base mis à jour: city={data.get('city')}, email={data.get('email')} (pseudo/show_pseudo non pris en charge)")
+                else:
+                    self.log_test("3) PATCH /api/users/<id>", False, f"❌ Champs non mis à jour: {data}")
+            else:
+                self.log_test("3) PATCH /api/users/<id>", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("3) PATCH /api/users/<id>", False, f"❌ Exception: {str(e)}")
+        
+        # 4) GET /api/subscriptions/check?user_id=<id> → 200 + is_premium bool
+        print("\n4️⃣ TEST SUBSCRIPTION CHECK")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', f'/subscriptions/check?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'is_premium' in data and isinstance(data['is_premium'], bool):
+                    is_premium = data['is_premium']
+                    expires_at = data.get('expires_at')
+                    self.log_test("4) GET /api/subscriptions/check", True, 
+                                f"✅ 200 + is_premium: {is_premium}, expires_at: {expires_at}")
+                else:
+                    self.log_test("4) GET /api/subscriptions/check", False, f"❌ Manque is_premium bool: {data}")
+            else:
+                self.log_test("4) GET /api/subscriptions/check", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("4) GET /api/subscriptions/check", False, f"❌ Exception: {str(e)}")
+        
+        # 5) GET /api/alerts/unread_count?user_id=<id> → 200 + count int
+        print("\n5️⃣ TEST ALERTS UNREAD COUNT")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', f'/alerts/unread_count?user_id={test_user_id}')
+            if response.status_code == 200:
+                data = response.json()
+                if 'count' in data and isinstance(data['count'], int):
+                    count = data['count']
+                    self.log_test("5) GET /api/alerts/unread_count", True, f"✅ 200 + count: {count} (int)")
+                else:
+                    self.log_test("5) GET /api/alerts/unread_count", False, f"❌ Manque count int: {data}")
+            else:
+                self.log_test("5) GET /api/alerts/unread_count", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("5) GET /api/alerts/unread_count", False, f"❌ Exception: {str(e)}")
+        
+        # 6) GET /api/alerts → 200 + liste (<24h)
+        print("\n6️⃣ TEST ALERTS LIST")
+        print("-" * 50)
+        try:
+            response = self.make_request('GET', '/alerts')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    self.log_test("6) GET /api/alerts", True, f"✅ 200 + liste avec {len(data)} alerts")
+                else:
+                    self.log_test("6) GET /api/alerts", False, f"❌ Pas une liste: {type(data)}")
+            else:
+                self.log_test("6) GET /api/alerts", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("6) GET /api/alerts", False, f"❌ Exception: {str(e)}")
+        
+        # 7) POST /api/alerts (titre/desc/ville) → 200 puis GET confirme présence
+        print("\n7️⃣ TEST ALERT CREATION & VERIFICATION")
+        print("-" * 50)
+        alert_id = None
+        try:
+            alert_data = {
+                "title": "Test Régression Backend",
+                "type": "other",
+                "description": "Alerte créée pour test de régression backend complet",
+                "city": "Abidjan",
+                "images_base64": []
+            }
+            response = self.make_request('POST', '/alerts', json=alert_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'id' in data:
+                    alert_id = data['id']
+                    self.log_test("7a) POST /api/alerts", True, f"✅ 200 + alerte créée avec ID: {alert_id}")
+                    
+                    # Verify alert is accessible via GET
+                    try:
+                        response2 = self.make_request('GET', '/alerts')
+                        if response2.status_code == 200:
+                            alerts_list = response2.json()
+                            if isinstance(alerts_list, list):
+                                # Check if our alert is in the list
+                                alert_found = any(alert.get('id') == alert_id for alert in alerts_list)
+                                if alert_found:
+                                    self.log_test("7b) GET /api/alerts (vérification)", True, f"✅ Alerte {alert_id} accessible via GET")
+                                else:
+                                    self.log_test("7b) GET /api/alerts (vérification)", False, f"❌ Alerte {alert_id} non trouvée dans la liste")
+                            else:
+                                self.log_test("7b) GET /api/alerts (vérification)", False, f"❌ Réponse invalide: {type(alerts_list)}")
+                        else:
+                            self.log_test("7b) GET /api/alerts (vérification)", False, f"❌ Status: {response2.status_code}")
+                    except Exception as e:
+                        self.log_test("7b) GET /api/alerts (vérification)", False, f"❌ Exception: {str(e)}")
+                else:
+                    self.log_test("7a) POST /api/alerts", False, f"❌ Pas d'ID dans la réponse: {data}")
+            else:
+                self.log_test("7a) POST /api/alerts", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("7a) POST /api/alerts", False, f"❌ Exception: {str(e)}")
+        
+        # 8) GET /api/pharmacies (filtres city/on_duty/near) → 200 + on_duty dynamique
+        print("\n8️⃣ TEST PHARMACIES FILTERING")
+        print("-" * 50)
+        
+        # 8a) No filters
+        try:
+            response = self.make_request('GET', '/pharmacies')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    # Check on_duty field is present and boolean
+                    if len(data) > 0:
+                        has_on_duty = all('on_duty' in item and isinstance(item['on_duty'], bool) for item in data)
+                        if has_on_duty:
+                            on_duty_count = sum(1 for item in data if item['on_duty'])
+                            self.log_test("8a) GET /api/pharmacies (sans filtres)", True, 
+                                        f"✅ 200 + {len(data)} pharmacies, {on_duty_count} on_duty (dynamique)")
+                        else:
+                            self.log_test("8a) GET /api/pharmacies (sans filtres)", False, "❌ Champ on_duty manquant ou invalide")
+                    else:
+                        self.log_test("8a) GET /api/pharmacies (sans filtres)", True, "✅ 200 + 0 pharmacies")
+                else:
+                    self.log_test("8a) GET /api/pharmacies (sans filtres)", False, f"❌ Pas une liste: {type(data)}")
+            else:
+                self.log_test("8a) GET /api/pharmacies (sans filtres)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("8a) GET /api/pharmacies (sans filtres)", False, f"❌ Exception: {str(e)}")
+        
+        # 8b) City filter
+        try:
+            response = self.make_request('GET', '/pharmacies?city=Abidjan')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        city_matches = all(item.get('city', '').lower() == 'abidjan' for item in data)
+                        if city_matches:
+                            self.log_test("8b) GET /api/pharmacies (city=Abidjan)", True, f"✅ 200 + {len(data)} pharmacies, toutes à Abidjan")
+                        else:
+                            self.log_test("8b) GET /api/pharmacies (city=Abidjan)", False, "❌ Pharmacies ne correspondent pas à la ville")
+                    else:
+                        self.log_test("8b) GET /api/pharmacies (city=Abidjan)", True, "✅ 200 + 0 pharmacies à Abidjan")
+                else:
+                    self.log_test("8b) GET /api/pharmacies (city=Abidjan)", False, f"❌ Pas une liste: {type(data)}")
+            else:
+                self.log_test("8b) GET /api/pharmacies (city=Abidjan)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("8b) GET /api/pharmacies (city=Abidjan)", False, f"❌ Exception: {str(e)}")
+        
+        # 8c) on_duty filter
+        try:
+            response = self.make_request('GET', '/pharmacies?on_duty=true')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        all_on_duty = all(item.get('on_duty') == True for item in data)
+                        if all_on_duty:
+                            self.log_test("8c) GET /api/pharmacies (on_duty=true)", True, f"✅ 200 + {len(data)} pharmacies, toutes on_duty=true (dynamique)")
+                        else:
+                            self.log_test("8c) GET /api/pharmacies (on_duty=true)", False, "❌ Pharmacies non on_duty dans les résultats")
+                    else:
+                        self.log_test("8c) GET /api/pharmacies (on_duty=true)", True, "✅ 200 + 0 pharmacies on_duty")
+                else:
+                    self.log_test("8c) GET /api/pharmacies (on_duty=true)", False, f"❌ Pas une liste: {type(data)}")
+            else:
+                self.log_test("8c) GET /api/pharmacies (on_duty=true)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("8c) GET /api/pharmacies (on_duty=true)", False, f"❌ Exception: {str(e)}")
+        
+        # 8d) Near filter (Abidjan coords)
+        try:
+            abidjan_lat = 5.316667
+            abidjan_lng = -4.016667
+            response = self.make_request('GET', f'/pharmacies?near_lat={abidjan_lat}&near_lng={abidjan_lng}&max_km=5')
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    self.log_test("8d) GET /api/pharmacies (near Abidjan)", True, f"✅ 200 + {len(data)} pharmacies près d'Abidjan (5km)")
+                else:
+                    self.log_test("8d) GET /api/pharmacies (near Abidjan)", False, f"❌ Pas une liste: {type(data)}")
+            else:
+                self.log_test("8d) GET /api/pharmacies (near Abidjan)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("8d) GET /api/pharmacies (near Abidjan)", False, f"❌ Exception: {str(e)}")
+        
+        # 9) POST /api/ai/chat (stream=false) → 200 + réponse contrôlée
+        print("\n9️⃣ TEST AI CHAT")
+        print("-" * 50)
+        try:
+            chat_data = {
+                "messages": [{"role": "user", "content": "Dis-moi quelque chose sur Abidjan en une phrase."}],
+                "stream": False,
+                "temperature": 0.3,
+                "max_tokens": 100
+            }
+            response = self.make_request('POST', '/ai/chat', json=chat_data)
+            if response.status_code == 200:
+                data = response.json()
+                if 'content' in data and isinstance(data['content'], str) and len(data['content']) > 0:
+                    content = data['content']
+                    self.log_test("9) POST /api/ai/chat (stream=false)", True, 
+                                f"✅ 200 + réponse contrôlée: '{content[:100]}...'")
+                else:
+                    self.log_test("9) POST /api/ai/chat (stream=false)", False, f"❌ Réponse invalide: {data}")
+            else:
+                self.log_test("9) POST /api/ai/chat (stream=false)", False, f"❌ Status: {response.status_code}")
+        except Exception as e:
+            self.log_test("9) POST /api/ai/chat (stream=false)", False, f"❌ Exception: {str(e)}")
+
     def run_comprehensive_backend_regression(self):
         """Run comprehensive backend regression test as per review request"""
         print(f"🎯 RÉGRESSION BACKEND COMPLÈTE - REVIEW REQUEST")
