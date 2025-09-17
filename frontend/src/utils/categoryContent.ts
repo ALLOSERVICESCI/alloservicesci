@@ -210,6 +210,10 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       phones: [
         { label: 'Service client (mobile Orange)', tel: '070707' },
         { label: 'Fixe', tel: '2720221212' }
+      ],
+      ussd: [
+        { label: 'Forfait', code: '*144#' },
+        { label: 'Orange Money', code: '*111#' }
       ]
     },
     {
