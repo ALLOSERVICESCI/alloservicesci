@@ -122,9 +122,9 @@ const styles = StyleSheet.create({
 
   card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E8F0E8' },
   badge: { backgroundColor: '#0A7C3A', color: '#fff', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginRight: 8, fontSize: 11, fontWeight: '800' },
-  itemTitle: { color: '#0A7C3A', fontWeight: '800', fontSize: 16, flex: 1 },
-  itemSummary: { color: '#333', fontSize: 14, marginTop: 2 },
-  metaText: { color: '#666', fontSize: 12 },
+  itemTitle: { color: '#0A7C3A', fontWeight: '900', fontSize: 18, flex: 1 },
+  itemSummary: { color: '#222', fontSize: 16, marginTop: 4, lineHeight: 22 },
+  metaText: { color: '#666', fontSize: 13 },
   sourceBtn: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
   sourceBtnText: { color: '#fff', fontWeight: '700' },
 });
