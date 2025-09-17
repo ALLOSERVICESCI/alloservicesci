@@ -11,6 +11,8 @@ export default function Register() {
   const { register } = useAuth();
   const router = useRouter();
   const { t, setLang, lang } = useI18n();
+  const [pseudo, setPseudo] = useState('');
+  const [showPseudo, setShowPseudo] = useState(false);
   const [first_name, setFirst] = useState('');
   const [last_name, setLast] = useState('');
   const [email, setEmail] = useState('');
