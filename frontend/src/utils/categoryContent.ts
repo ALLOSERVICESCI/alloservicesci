@@ -73,17 +73,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
         { label: 'État-major', tel: '0505312198' },
       ],
     },
-    {
-      title: 'Service de dépannage',
-      summary: 'Électricité, eau et télécoms',
-      tag: 'Dépannage',
-      phones: [
-        { label: 'CIE (électricité)', tel: '179' },
-        { label: 'SODECI (eau)', tel: '175' },
-        { label: 'Côte d\'Ivoire Télécom', tel: '190' },
-        { label: 'Côte d\'Ivoire Télécom (ligne 2)', tel: '120' },
-      ],
-    },
+
   ],
   sante: [
     {
