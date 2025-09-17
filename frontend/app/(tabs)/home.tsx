@@ -26,7 +26,7 @@ export default function Home() {
   const [alertsPreview, setAlertsPreview] = useState<string[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
-  const greeting = user?.first_name ? `${t('hello')} ${user.first_name}` : '';
+  const greeting = user?.show_pseudo && user?.pseudo ? `Bonjour, ${user.pseudo}` : (user?.first_name || user?.last_name ? `Bonjour, ${[user?.first_name, user?.last_name].filter(Boolean).join(' ')}` : '');
 
   useEffect(() => {
     refreshAlertsUnread(user?.id);
