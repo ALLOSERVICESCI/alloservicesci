@@ -197,7 +197,6 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'CIE (Compagnie Ivoirienne d’Électricité)',
       summary: 'Eau & Électricité — Service client électricité et signalements de pannes',
-      tag: 'Eau & Électricité',
       source: 'https://www.cie.ci/',
       phones: [
         { label: 'Service client', tel: '179' },
