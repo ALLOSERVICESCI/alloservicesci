@@ -21,7 +21,7 @@ export type User = {
 type AuthContextType = {
   user: User | null;
   expoPushToken: string | null;
-  register: (input: { first_name: string; last_name: string; email?: string; phone: string; preferred_lang?: string }) => Promise<void>;
+  register: (input: { first_name: string; last_name: string; email?: string; phone: string; preferred_lang?: string; pseudo?: string; show_pseudo?: boolean }) => Promise<void>;
   updateProfile: (input: Partial<User>) => Promise<User>;
   logout: () => Promise<void>;
   refreshUserData?: () => Promise<void>;
