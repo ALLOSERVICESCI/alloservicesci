@@ -205,6 +205,36 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
+      title: 'Orange Côte d’Ivoire',
+      summary: 'Opérateurs télécoms & internet — Services USSD : *144# (forfait), *111# (argent mobile)',
+      tag: 'Opérateurs télécoms & internet',
+      source: 'https://www.orange.ci',
+      phones: [
+        { label: 'Service client (mobile Orange)', tel: '070707' },
+        { label: 'Fixe', tel: '2720221212' }
+      ]
+    },
+    {
+      title: 'MTN Côte d’Ivoire',
+      summary: 'Opérateurs télécoms & internet — Services USSD : *133# (forfait), 13310# (MoMo)',
+      tag: 'Opérateurs télécoms & internet',
+      source: 'https://www.mtn.ci',
+      phones: [
+        { label: 'Service client', tel: '555' },
+        { label: 'Fixe', tel: '2720255555' }
+      ]
+    },
+    {
+      title: 'Moov Africa Côte d’Ivoire',
+      summary: 'Opérateurs télécoms & internet — Services USSD : *155# (forfait), 1554# (Moov Money)',
+      tag: 'Opérateurs télécoms & internet',
+      source: 'https://www.moov-africa.ci',
+      phones: [
+        { label: 'Service client', tel: '1010' },
+        { label: 'Fixe', tel: '2720311010' }
+      ]
+    },
+    {
       title: 'La Poste de Côte d’Ivoire',
       summary: 'Services postaux, colis et mandats.',
       tag: 'Services',
