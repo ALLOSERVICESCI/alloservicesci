@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
   infoBarContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 22, borderWidth: 1, borderColor: '#FFA64D', height: 48, paddingRight: 10, overflow: 'hidden' },
   infoPill: { height: '100%', paddingHorizontal: 20, backgroundColor: '#FF8A00', justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 22, borderBottomLeftRadius: 22 },
   infoPillText: { color: '#fff', fontWeight: '800', fontSize: 16 },
-  marqueeText: { color: '#0F5132', fontSize: 18, fontWeight: '700' },
+  marqueeText: { color: '#666', fontSize: 18, fontWeight: '400' },
   marqueeClip: { flex: 1, overflow: 'hidden' },
   marqueeRow: { flexDirection: 'row', alignItems: 'center' },
   fadeLeft: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 36 },
