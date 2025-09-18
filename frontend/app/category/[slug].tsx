@@ -132,4 +132,6 @@ const styles = StyleSheet.create({
   metaText: { color: '#666', fontSize: 13 },
   sourceBtn: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
   sourceBtnText: { color: '#fff', fontWeight: '700' },
+  headerNoteTitle: { color: '#FFCC33', fontSize: 20, fontWeight: '900', textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
+  headerNoteSub: { color: '#FFE9B3', fontSize: 13, lineHeight: 18, marginTop: 4, maxWidth: '92%' },
 });
