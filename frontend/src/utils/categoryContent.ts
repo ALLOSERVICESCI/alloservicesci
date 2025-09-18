@@ -218,7 +218,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     },
     {
       title: 'MTN Côte d’Ivoire',
-      summary: 'Opérateurs télécoms & internet — Services USSD : *133# (forfait), 13310# (MoMo)',
+      summary: 'Services USSD : *133# (forfait), 13310# (MoMo)',
       tag: 'Opérateurs télécoms & internet',
       source: 'https://www.mtn.ci',
       phones: [
