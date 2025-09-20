@@ -183,12 +183,12 @@ backend:
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - GET /api/pharmacies filtering endpoints confirmed working in final comprehensive regression test. All filter combinations tested successfully: 1) No filters: 200 + 4 pharmacies, 3 on_duty (dynamic computation), 2) City filter (Abidjan): 200 + 4 pharmacies, all match city, 3) on_duty=true filter: 200 + 3 pharmacies, all on_duty=true (dynamic computation from duty_days), 4) Near Abidjan (5km): 200 + 3 pharmacies. Dynamic on_duty computation based on duty_days array fully functional selon review request."
 
   - task: "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
-    implemented: true
-    working: true
+    implemented: false
+    working: false
     file: "backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "testing"
@@ -199,6 +199,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - POST /api/ai/chat endpoint confirmed working in final comprehensive regression test. POST /api/ai/chat with stream=false returns 200 + controlled response about Abidjan: 'Abidjan, la capitale économique de la Côte d'Ivoire, est une métropole dynamique connue pour son arc...'. AI integration with Emergent API fully functional selon review request."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE FOUND - POST /api/ai/chat endpoint returns 404 Not Found. The endpoint is not implemented in backend/server.py despite ChatMessage and ChatRequest models being defined. The AI chat functionality is missing from the API routes. This is a critical missing feature that needs to be implemented."
 
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
