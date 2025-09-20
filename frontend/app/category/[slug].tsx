@@ -107,7 +107,16 @@ export default function CategoryPage() {
       const q = commune ? `&commune=${encodeURIComponent(commune)}` : '';
       const res = await apiFetch(`/health/facilities?city=Abidjan${q}`);
       const data = await res.json();
-      setFacilities(data);
+      // Tri secondaire: Public d'abord puis Clinique, puis alphabétique
+      const sorted = [...data].sort((a: any, b: any) => {
+        const ra = a?.facility_type === 'public' ? 0 : a?.facility_type === 'clinic' ? 1 : 2;
+        const rb = b?.facility_type === 'public' ? 0 : b?.facility_type === 'clinic' ? 1 : 2;
+        if (ra !== rb) return ra - rb;
+        const na = (a?.name || '').toLowerCase();
+        const nb = (b?.name || '').toLowerCase();
+        return na.localeCompare(nb);
+      });
+      setFacilities(sorted);
       if (commune) await AsyncStorage.setItem('health_commune_choice', commune);
     } finally {
       setLoadingHF(false);
