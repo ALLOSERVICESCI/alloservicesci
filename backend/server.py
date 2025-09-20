@@ -215,7 +215,7 @@ async def check_subscription(user_id: str):
     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
     active = False
     expires_at = None
-    if sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow():
+    if sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
         active = True
         expires_at = sub['expires_at']
     return {"is_premium": active, "expires_at": expires_at}
