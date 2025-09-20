@@ -393,6 +393,18 @@ frontend:
         agent: "testing"
         comment: "❌ TEST COMPLET FRONTEND (iPhone 12/13/14: 390x844) - RAPPORT PASS/FAIL DÉTAILLÉ: 2/7 sections PASS. ✅ SANTÉ: Titre masqué, bouton Pharmacie supprimé. ✅ RÉGRESSIONS: Aucune pastille rouge, greeting visible, pas d'erreurs bloquantes. ❌ ACCUEIL: FAB Publier testID manquant (0), FAB orange manquant (0), greeting manquant (0). ✅ Capsule Infos visible, carrousel 14 images catégories 128x128, emblème + motto OK, Mini-FAB Allô IA présent. ❌ NAVIGATION FAB: Impossible car FAB non trouvé. ❌ ALERTES: Liste vide (0 cartes), bouton Publiez présent. ❌ PREMIUM: Tuiles icônes 120x120 incorrectes, section visible, Pharmacies background OK. ❌ MENU NAV: Hamburger non accessible (0 barres vertes). Issues critiques: FAB Publier manquant, Menu hamburger inaccessible, Liste alertes vide, Tuiles Premium incorrectes."
 
+  - task: "FRONTEND E2E: Page Santé (/category/sante) - Interface établissements de santé (copie Pharmacies)"
+    implemented: false
+    working: false
+    file: "frontend/app/category/[slug].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ SANTÉ PAGE NOT IMPLEMENTED - Comprehensive E2E test (Samsung Galaxy S21: 360x800) reveals critical missing implementation. CURRENT STATE: Shows only 'Aucun contenu disponible pour le moment' message with header image. MISSING COMPONENTS: 1) ❌ Header title 'Santé' IS VISIBLE (should be hidden), 2) ❌ Filter chips missing ('Autour de moi' blue #0D6EFD + location-outline icon, 'Par commune' green #0A7C3A + map-outline icon), 3) ❌ Search inputs missing (Label: 'Ville' placeholder: 'Rechercher une ville', Label: 'Commune ou quartier' placeholder: 'Rechercher une commune ou quartier'), 4) ❌ Commune chips missing (Abobo, Adjamé, Anyama, Bingerville, Cocody, Koumassi, Marcory, Plateau, Port‑Bouët, Songon, Treichville, Yopougon), 5) ❌ Health facilities data display missing (should show name, services, address/commune, badges 'Public'/'Clinique', buttons 'Appeler'/'Site'/'Itinéraire'), 6) ❌ Location functionality missing ('Autour de moi' mode with distance sorting). BACKEND READY: GET /api/health/facilities endpoint working (17 facilities, commune filtering, location-based search). URGENT: Complete frontend implementation needed - copy Pharmacies page structure and adapt for health facilities."
+
 metadata:
   created_by: "main_agent"
   version: "1.3"
