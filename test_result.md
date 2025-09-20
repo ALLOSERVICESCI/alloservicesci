@@ -401,8 +401,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "BACKEND REGRESSION COMPLETE - ALL TESTS PASSED"
-  stuck_tasks: []
+    - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
+  stuck_tasks:
+    - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
   test_all: false
   test_priority: "high_first"
 
