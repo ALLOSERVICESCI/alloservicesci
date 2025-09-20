@@ -171,11 +171,13 @@ export default function CategoryPage() {
         <View style={{ padding: 16, paddingBottom: 40 }}>
           {/* Onglets */}
           <View style={styles.tabsRow}>
-            <TouchableOpacity onPress={() => { setMode('nearby'); loadNearby(); }} style={[styles.tabChip, mode==='nearby' && styles.tabChipActive]}>
-              <Text style={[styles.tabChipText, mode==='nearby' && styles.tabChipTextActive]}>Autour de moi</Text>
+            <TouchableOpacity onPress={() => { setMode('nearby'); loadNearby(); }} style={[styles.chip, mode==='nearby' ? styles.chipNear : styles.chipInactive]}>
+              <Ionicons name="location-outline" size={18} color={mode==='nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+              <Text style={mode==='nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setMode('commune'); if (selectedCommune) loadByCommune(selectedCommune); }} style={[styles.tabChip, mode==='commune' && styles.tabChipActive]}>
-              <Text style={[styles.tabChipText, mode==='commune' && styles.tabChipTextActive]}>Par commune</Text>
+            <TouchableOpacity onPress={() => { setMode('commune'); if (selectedCommune) loadByCommune(selectedCommune); }} style={[styles.chip, mode==='commune' ? styles.chipOn : styles.chipInactive]}>
+              <Ionicons name="map-outline" size={18} color={mode==='commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+              <Text style={mode==='commune' ? styles.chipTextOn : styles.chipTextInactive}>Par commune</Text>
             </TouchableOpacity>
           </View>
 
