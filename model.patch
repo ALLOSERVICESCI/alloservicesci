@@ -1,58 +1,63 @@
-diff --git a/frontend/app/category/[slug].tsx b/frontend/app/category/[slug].tsx
-index b8b9329..3221988 100644
---- a/frontend/app/category/[slug].tsx
-+++ b/frontend/app/category/[slug].tsx
-@@ -231,8 +231,6 @@ export default function CategoryPage() {
-                         <Ionicons name="navigate" size={16} color="#0A7C3A" />
-                         <Text style={styles.hfActionAltText}>Itinéraire</Text>
-                       </TouchableOpacity>
--              </>
--
-                     )}
-                     {f._dist!=null && (
-                       <Text style={styles.hfDist}>{f._dist.toFixed(1)} km</Text>
-@@ -240,7 +238,7 @@ export default function CategoryPage() {
-                   </View>
-                 </View>
-               ))}
--              </>
-+            </>
-           )}
-         </View>
-       ) : (
 diff --git a/model.patch b/model.patch
-index 5c629e0..e69de29 100644
+index 2f78e3d..e69de29 100644
 --- a/model.patch
 +++ b/model.patch
-@@ -1,31 +0,0 @@
--diff --git a/backend/server.py b/backend/server.py
--index 84e9e02..42513f6 100644
----- a/backend/server.py
--+++ b/backend/server.py
--@@ -215,14 +215,14 @@ async def check_subscription(user_id: str):
--     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
--     active = False
--     expires_at = None
---    if sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow():
--+    if sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
--         active = True
--         expires_at = sub['expires_at']
--     return {"is_premium": active, "expires_at": expires_at}
-- 
---async def _is_user_premium(uid: ObjectId) -&gt; bool:
--+async def _is_user_premium(uid: ObjectId) -> bool:
--     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
---    return bool(sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow())
--+    return bool(sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow())
-- 
-- # ---------- PAYMENTS (CinetPay) ----------
-- class PaymentInitInput(BaseModel):
--@@ -400,7 +400,7 @@ async def list_health_facilities(
-- 
-- async def seed_health_facilities():
--     count = await db.health_facilities.count_documents({'city': { '$regex': '^Abidjan$', '$options': 'i' }})
---    if count &gt; 0:
--+    if count > 0:
--         return
--     seed = [
--         # COCODY
+@@ -1,58 +0,0 @@
+-diff --git a/frontend/app/category/[slug].tsx b/frontend/app/category/[slug].tsx
+-index b8b9329..3221988 100644
+---- a/frontend/app/category/[slug].tsx
+-+++ b/frontend/app/category/[slug].tsx
+-@@ -231,8 +231,6 @@ export default function CategoryPage() {
+-                         <Ionicons name="navigate" size={16} color="#0A7C3A" />
+-                         <Text style={styles.hfActionAltText}>Itinéraire</Text>
+-                       </TouchableOpacity>
+--              </>
+--
+-                     )}
+-                     {f._dist!=null && (
+-                       <Text style={styles.hfDist}>{f._dist.toFixed(1)} km</Text>
+-@@ -240,7 +238,7 @@ export default function CategoryPage() {
+-                   </View>
+-                 </View>
+-               ))}
+--              </>
+-+            </>
+-           )}
+-         </View>
+-       ) : (
+-diff --git a/model.patch b/model.patch
+-index 5c629e0..e69de29 100644
+---- a/model.patch
+-+++ b/model.patch
+-@@ -1,31 +0,0 @@
+--diff --git a/backend/server.py b/backend/server.py
+--index 84e9e02..42513f6 100644
+----- a/backend/server.py
+--+++ b/backend/server.py
+--@@ -215,14 +215,14 @@ async def check_subscription(user_id: str):
+--     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
+--     active = False
+--     expires_at = None
+---    if sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow():
+--+    if sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
+--         active = True
+--         expires_at = sub['expires_at']
+--     return {"is_premium": active, "expires_at": expires_at}
+-- 
+---async def _is_user_premium(uid: ObjectId) -&gt; bool:
+--+async def _is_user_premium(uid: ObjectId) -> bool:
+--     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
+---    return bool(sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow())
+--+    return bool(sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow())
+-- 
+-- # ---------- PAYMENTS (CinetPay) ----------
+-- class PaymentInitInput(BaseModel):
+--@@ -400,7 +400,7 @@ async def list_health_facilities(
+-- 
+-- async def seed_health_facilities():
+--     count = await db.health_facilities.count_documents({'city': { '$regex': '^Abidjan$', '$options': 'i' }})
+---    if count &gt; 0:
+--+    if count > 0:
+--         return
+--     seed = [
+--         # COCODY
