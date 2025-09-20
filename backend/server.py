@@ -690,5 +690,8 @@ app.include_router(api)
 @app.on_event('startup')
 async def on_startup():
     await ensure_indexes()
-    # Seed health facilities for Abidjan if none
-    await seed_health_facilities()
+    # Clear all health facilities as requested (keeps collection empty)
+    try:
+        await db.health_facilities.delete_many({})
+    except Exception:
+        pass
