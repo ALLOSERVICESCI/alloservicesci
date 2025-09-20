@@ -425,6 +425,7 @@ test_plan:
     - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
   test_all: false
   test_priority: "high_first"
+  backend_health_testing_completed: true
 
 agent_communication:
   - agent: "main"
