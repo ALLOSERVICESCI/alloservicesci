@@ -1,7 +1,15 @@
 #!/usr/bin/env python3
 """
 Backend API Testing Suite for Allô Services CI
-Tests all backend endpoints according to the test plan
+Tests all endpoints specified in the review request:
+1) Auth: POST /api/auth/register 
+2) Users: PATCH /api/users/<id>
+3) Subscriptions: GET /api/subscriptions/check?user_id=<id>
+4) Alerts: GET /api/alerts, POST /api/alerts, GET /api/alerts/unread_count?user_id=<id>
+5) Pharmacies: GET /api/pharmacies (various filters)
+6) Payments: POST /api/payments/cinetpay/initiate
+7) AI: POST /api/ai/chat (stream=false)
+8) Health: GET /api/health/facilities (new APIs)
 """
 
 import requests
