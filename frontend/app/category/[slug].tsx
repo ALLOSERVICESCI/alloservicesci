@@ -136,6 +136,17 @@ export default function CategoryPage() {
 
   const openSource = async (url?: string) => { if (!url) return; try { await Linking.openURL(url); } catch (e) {} };
 
+  const openDirections = async (lat?: number|null, lng?: number|null, label?: string) => {
+    if (lat == null || lng == null) return;
+    const query = encodeURIComponent(label || 'Itinéraire');
+    const url = Platform.select({
+      ios: `http://maps.apple.com/?ll=${lat},${lng}&q=${query}`,
+      android: `geo:${lat},${lng}?q=${lat},${lng}(${query})`,
+      default: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+    }) as string;
+    try { await Linking.openURL(url); } catch (e) {}
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground source={bg} style={styles.header} resizeMode="cover">
