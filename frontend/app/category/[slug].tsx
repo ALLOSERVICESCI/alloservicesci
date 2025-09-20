@@ -51,6 +51,86 @@ export default function CategoryPage() {
     return map[s] || s;
   }, [s, t]);
 
+  // Santé: établissements
+  const COMMUNES = ['Cocody','Treichville','Plateau','Marcory','Koumassi','Port-Bouët','Bingerville','Yopougon','Adjamé'];
+  const [mode, setMode] = React.useState<'nearby'|'commune'>('nearby');
+  const [loadingHF, setLoadingHF] = React.useState(false);
+  const [facilities, setFacilities] = React.useState<any[]>([]);
+  const [selectedCommune, setSelectedCommune] = React.useState<string | null>(null);
+  const [userLat, setUserLat] = React.useState<number | null>(null);
+  const [userLng, setUserLng] = React.useState<number | null>(null);
+
+  const requestLocation = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') return;
+      const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+      setUserLat(pos.coords.latitude);
+      setUserLng(pos.coords.longitude);
+    } catch (e) {}
+  };
+
+  const distanceKm = (aLat?: number|null, aLng?: number|null, bLat?: number|null, bLng?: number|null) => {
+    if (aLat == null || aLng == null || bLat == null || bLng == null) return null;
+    const toRad = (d: number) => d * Math.PI / 180;
+    const R = 6371;
+    const dLat = toRad(bLat - aLat);
+    const dLng = toRad(bLng - aLng);
+    const h = Math.sin(dLat/2)**2 + Math.cos(toRad(aLat))*Math.cos(toRad(bLat))*Math.sin(dLng/2)**2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  };
+
+  const loadNearby = async () => {
+    if (userLat == null || userLng == null) {
+      await requestLocation();
+      if (userLat == null || userLng == null) return;
+    }
+    try {
+      setLoadingHF(true);
+      const res = await apiFetch(`/health/facilities?city=Abidjan&near_lat=${userLat}&near_lng=${userLng}&max_km=20`);
+      const data = await res.json();
+      // sort by distance
+      const withDist = data.map((f: any) => ({...f, _dist: distanceKm(userLat, userLng, f.lat, f.lng)}));
+      withDist.sort((a: any, b: any) => {
+        if (a._dist == null && b._dist == null) return 0; if (a._dist == null) return 1; if (b._dist == null) return -1; return a._dist - b._dist;
+      });
+      setFacilities(withDist);
+    } finally {
+      setLoadingHF(false);
+    }
+  };
+
+  const loadByCommune = async (comm?: string|null) => {
+    try {
+      setLoadingHF(true);
+      const commune = comm || selectedCommune;
+      const q = commune ? `&commune=${encodeURIComponent(commune)}` : '';
+      const res = await apiFetch(`/health/facilities?city=Abidjan${q}`);
+      const data = await res.json();
+      setFacilities(data);
+      if (commune) await AsyncStorage.setItem('health_commune_choice', commune);
+    } finally {
+      setLoadingHF(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (s !== 'sante') return;
+    (async () => {
+      const saved = await AsyncStorage.getItem('health_commune_choice');
+      if (saved) {
+        setMode('commune');
+        setSelectedCommune(saved);
+        loadByCommune(saved);
+      } else {
+        setMode('nearby');
+        await requestLocation();
+        loadNearby();
+      }
+    })();
+  }, [s]);
+
+
   const data = CONTENT_BY_CATEGORY[s] || [];
   const isUrgence = s === 'urgence';
 
