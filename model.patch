@@ -1,0 +1,31 @@
+diff --git a/backend/server.py b/backend/server.py
+index 84e9e02..42513f6 100644
+--- a/backend/server.py
++++ b/backend/server.py
+@@ -215,14 +215,14 @@ async def check_subscription(user_id: str):
+     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
+     active = False
+     expires_at = None
+-    if sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow():
++    if sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
+         active = True
+         expires_at = sub['expires_at']
+     return {"is_premium": active, "expires_at": expires_at}
+ 
+-async def _is_user_premium(uid: ObjectId) -&gt; bool:
++async def _is_user_premium(uid: ObjectId) -> bool:
+     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
+-    return bool(sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow())
++    return bool(sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow())
+ 
+ # ---------- PAYMENTS (CinetPay) ----------
+ class PaymentInitInput(BaseModel):
+@@ -400,7 +400,7 @@ async def list_health_facilities(
+ 
+ async def seed_health_facilities():
+     count = await db.health_facilities.count_documents({'city': { '$regex': '^Abidjan$', '$options': 'i' }})
+-    if count &gt; 0:
++    if count > 0:
+         return
+     seed = [
+         # COCODY
