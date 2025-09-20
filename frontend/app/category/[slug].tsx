@@ -167,46 +167,111 @@ export default function CategoryPage() {
         </View>
       </ImageBackground>
 
-      <FlatList
-        data={data}
-        keyExtractor={(item, idx) => `${s}_${idx}`}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
-              {!!item.tag && (<Text style={styles.badge}>{item.tag}</Text>)}
-              <Text style={[styles.itemTitle, isUrgence && styles.urgTitle]}>{item.title}</Text>
-            </View>
-            <Text style={[styles.itemSummary, isUrgence && styles.urgSummary]}>{item.summary}</Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, alignItems: 'center' }}>
-              <Text style={[styles.metaText, isUrgence && styles.urgMeta]}>{item.location ? item.location + ' • ' : ''}{item.date || ''}</Text>
-              {item.source && (
-                <TouchableOpacity onPress={() => openSource(item.source)} style={styles.sourceBtn} accessibilityRole="button">
-                  <Text style={styles.sourceBtnText}>{t('open')}</Text>
+      {s === 'sante' ? (
+        <View style={{ padding: 16, paddingBottom: 40 }}>
+          {/* Onglets */}
+          <View style={styles.tabsRow}>
+            <TouchableOpacity onPress={() => { setMode('nearby'); loadNearby(); }} style={[styles.tabChip, mode==='nearby' && styles.tabChipActive]}>
+              <Text style={[styles.tabChipText, mode==='nearby' && styles.tabChipTextActive]}>Autour de moi</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setMode('commune'); if (selectedCommune) loadByCommune(selectedCommune); }} style={[styles.tabChip, mode==='commune' && styles.tabChipActive]}>
+              <Text style={[styles.tabChipText, mode==='commune' && styles.tabChipTextActive]}>Par commune</Text>
+            </TouchableOpacity>
+          </View>
+
+          {mode === 'commune' && (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 8 }}>
+              {COMMUNES.map((c) => (
+                <TouchableOpacity key={c} onPress={() => { setSelectedCommune(c); loadByCommune(c); }} style={[styles.commChip, selectedCommune===c && styles.commChipActive]}>
+                  <Text style={[styles.commChipText, selectedCommune===c && styles.commChipTextActive]}>{c}</Text>
                 </TouchableOpacity>
+              ))}
+              <TouchableOpacity onPress={() => { setSelectedCommune(null); loadByCommune(null); }} style={styles.commChip}>
+                <Text style={styles.commChipText}>Tout Abidjan</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          )}
+
+          {loadingHF ? (
+            <View style={{ paddingVertical: 24, alignItems: 'center' }}><ActivityIndicator color="#0A7C3A" /></View>
+          ) : facilities.length === 0 ? (
+            <Text style={{ color: '#666', textAlign: 'center', marginTop: 12 }}>Aucun établissement trouvé.</Text>
+          ) : (
+            facilities.map((f, idx) => (
+              <View key={`${f.id || idx}`} style={styles.hfCard}>
+                <Text style={styles.hfName}>{f.name}</Text>
+                {!!f.services && (<Text style={styles.hfServices}>{f.services}</Text>)}
+                <Text style={styles.hfMeta}>{[f.address, f.commune].filter(Boolean).join(' • ')}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, flexWrap: 'wrap' }}>
+                  {!!f.phones?.length && (
+                    <TouchableOpacity onPress={() => Linking.openURL(`tel:${(f.phones[0]||'').replace(/\s+/g,'')}`)} style={styles.hfAction}>
+                      <Ionicons name="call" size={16} color="#fff" />
+                      <Text style={styles.hfActionText}>Appeler</Text>
+                    </TouchableOpacity>
+                  )}
+                  {!!f.website && (
+                    <TouchableOpacity onPress={() => openSource(f.website)} style={styles.hfActionAlt}>
+                      <Ionicons name="globe" size={16} color="#0A7C3A" />
+                      <Text style={styles.hfActionAltText}>Site</Text>
+                    </TouchableOpacity>
+                  )}
+                  {(f.lat!=null && f.lng!=null) && (
+                    <TouchableOpacity onPress={() => openDirections(f.lat, f.lng, f.name)} style={styles.hfActionAlt}>
+                      <Ionicons name="navigate" size={16} color="#0A7C3A" />
+                      <Text style={styles.hfActionAltText}>Itinéraire</Text>
+                    </TouchableOpacity>
+                  )}
+                  {f._dist!=null && (
+                    <Text style={styles.hfDist}>{f._dist.toFixed(1)} km</Text>
+                  )}
+                </View>
+              </View>
+            ))
+          )}
+        </View>
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={(item, idx) => `${s}_${idx}`}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+                {!!item.tag && (<Text style={styles.badge}>{item.tag}</Text>)}
+                <Text style={[styles.itemTitle, isUrgence && styles.urgTitle]}>{item.title}</Text>
+              </View>
+              <Text style={[styles.itemSummary, isUrgence && styles.urgSummary]}>{item.summary}</Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, alignItems: 'center' }}>
+                <Text style={[styles.metaText, isUrgence && styles.urgMeta]}>{item.location ? item.location + ' • ' : ''}{item.date || ''}</Text>
+                {item.source && (
+                  <TouchableOpacity onPress={() => openSource(item.source)} style={styles.sourceBtn} accessibilityRole="button">
+                    <Text style={styles.sourceBtnText}>{t('open')}</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {!!item.phones?.length && (
+                <View style={styles.phonesWrap}>
+                  {item.phones.map((p, idx) => (
+                    <TouchableOpacity
+                      key={`${p.tel}_${idx}`}
+                      onPress={() => Linking.openURL(`tel:${p.tel}`)}
+                      style={styles.phoneBtn}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Appeler ${p.label} au ${p.tel}`}
+                    >
+                      <Ionicons name="call" size={16} color="#fff" />
+                      <Text style={styles.phoneBtnText}>{p.label}</Text>
+                      <Text style={styles.phoneBtnNumber}>{p.tel}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
               )}
             </View>
+          )}
+          contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        />
+      )}
 
-            {!!item.phones?.length && (
-              <View style={styles.phonesWrap}>
-                {item.phones.map((p, idx) => (
-                  <TouchableOpacity
-                    key={`${p.tel}_${idx}`}
-                    onPress={() => Linking.openURL(`tel:${p.tel}`)}
-                    style={styles.phoneBtn}
-                    accessibilityRole="button"
-                    accessibilityLabel={`Appeler ${p.label} au ${p.tel}`}
-                  >
-                    <Ionicons name="call" size={16} color="#fff" />
-                    <Text style={styles.phoneBtnText}>{p.label}</Text>
-                    <Text style={styles.phoneBtnNumber}>{p.tel}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </View>
-        )}
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
-      />
     </View>
   );
 }
