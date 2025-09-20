@@ -199,8 +199,10 @@ export default function CategoryPage() {
           ) : facilities.length === 0 ? (
             <Text style={{ color: '#666', textAlign: 'center', marginTop: 12 }}>Aucun établissement trouvé.</Text>
           ) : (
-            facilities.map((f, idx) => (
-              <View key={`${f.id || idx}`} style={styles.hfCard}>
+            <>
+              <Text style={styles.countText}>{facilities.length} établissements trouvés</Text>
+              {facilities.map((f, idx) => (
+                <View key={`${f.id || idx}`} style={styles.hfCard}>
                 <Text style={styles.hfName}>{f.name}</Text>
                 {!!f.services && (<Text style={styles.hfServices}>{f.services}</Text>)}
                 <Text style={styles.hfMeta}>{[f.address, f.commune].filter(Boolean).join(' • ')}</Text>
