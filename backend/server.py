@@ -220,7 +220,7 @@ async def check_subscription(user_id: str):
         expires_at = sub['expires_at']
     return {"is_premium": active, "expires_at": expires_at}
 
-async def _is_user_premium(uid: ObjectId) -&gt; bool:
+async def _is_user_premium(uid: ObjectId) -> bool:
     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
     return bool(sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow())
 
