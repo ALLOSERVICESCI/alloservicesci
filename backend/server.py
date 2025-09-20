@@ -40,7 +40,7 @@ TEMPERATURE_DEFAULT = float(os.environ.get('AI_TEMPERATURE', '0.5'))
 MAX_TOKENS_DEFAULT = int(os.environ.get('AI_MAX_TOKENS', '1200'))
 
 # App + Router
-app = FastAPI(title="Allô Services CI API", version="0.7.3")
+app = FastAPI(title="Allô Services CI API", version="0.8.0")
 api = APIRouter(prefix="/api")
 
 # CORS
@@ -117,6 +117,32 @@ class AlertCreate(BaseModel):
     images_base64: List[str] = Field(default_factory=list)
     posted_by: Optional[str] = None
 
+# -------- HEALTH FACILITIES --------
+class HealthFacilityCreate(BaseModel):
+    name: str
+    facility_type: Literal['public','clinic','private','other'] = 'public'
+    services: Optional[str] = None
+    address: Optional[str] = None
+    city: str = 'Abidjan'
+    commune: Optional[str] = None
+    phones: List[str] = Field(default_factory=list)
+    website: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
+
+class HealthFacilityOut(BaseModel):
+    id: str
+    name: str
+    facility_type: str
+    services: Optional[str] = None
+    address: Optional[str] = None
+    city: str
+    commune: Optional[str] = None
+    phones: List[str] = []
+    website: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
+
 # ---------- INDEXES ----------
 async def ensure_indexes():
     await db.pharmacies.create_index([('location', '2dsphere')])
@@ -133,6 +159,9 @@ async def ensure_indexes():
     await db.push_tokens.create_index([('city', 1)])
     await db.push_tokens.create_index([('preferred_lang', 1)])
     await db.push_tokens.create_index([('is_premium', 1)])
+    await db.health_facilities.create_index([('location', '2dsphere')])
+    await db.health_facilities.create_index('name')
+    await db.health_facilities.create_index([('city', 1), ('commune', 1)])
 
 # ---------- BASIC ROUTES ----------
 @api.get('/health')
@@ -186,14 +215,14 @@ async def check_subscription(user_id: str):
     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
     active = False
     expires_at = None
-    if sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
+    if sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow():
         active = True
         expires_at = sub['expires_at']
     return {"is_premium": active, "expires_at": expires_at}
 
-async def _is_user_premium(uid: ObjectId) -> bool:
+async def _is_user_premium(uid: ObjectId) -&gt; bool:
     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
-    return bool(sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow())
+    return bool(sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow())
 
 # ---------- PAYMENTS (CinetPay) ----------
 class PaymentInitInput(BaseModel):
@@ -315,6 +344,261 @@ async def list_pharmacies(
         out.append(p)
     return out
 
+# ---------- HEALTH FACILITIES ENDPOINTS ----------
+@api.get('/health/facilities', response_model=List[HealthFacilityOut])
+async def list_health_facilities(
+    city: Optional[str] = Query('Abidjan'),
+    commune: Optional[str] = Query(None),
+    near_lat: Optional[float] = Query(None),
+    near_lng: Optional[float] = Query(None),
+    max_km: float = Query(5.0)
+):
+    criteria: Dict[str, Any] = {}
+    if city:
+        criteria['city'] = { '$regex': f'^{city}$', '$options': 'i' }
+    if commune:
+        criteria['commune'] = { '$regex': f'^{commune}$', '$options': 'i' }
+
+    if near_lat is not None and near_lng is not None:
+        try:
+            meters = max(100.0, float(max_km) * 1000.0)
+        except Exception:
+            meters = 5000.0
+        criteria['location'] = {
+            '$near': {
+                '$geometry': { 'type': 'Point', 'coordinates': [float(near_lng), float(near_lat)] },
+                '$maxDistance': meters
+            }
+        }
+
+    cur = db.health_facilities.find(criteria).limit(500)
+    out: List[HealthFacilityOut] = []
+    async for h in cur:
+        doc = {
+            'id': str(h['_id']),
+            'name': h.get('name'),
+            'facility_type': h.get('facility_type','public'),
+            'services': h.get('services'),
+            'address': h.get('address'),
+            'city': h.get('city','Abidjan'),
+            'commune': h.get('commune'),
+            'phones': h.get('phones',[]),
+            'website': h.get('website'),
+            'lat': None,
+            'lng': None,
+        }
+        loc = h.get('location')
+        if isinstance(loc, dict) and loc.get('type') == 'Point':
+            try:
+                coords = loc.get('coordinates') or []
+                doc['lng'] = float(coords[0])
+                doc['lat'] = float(coords[1])
+            except Exception:
+                pass
+        out.append(doc)
+    return out
+
+async def seed_health_facilities():
+    count = await db.health_facilities.count_documents({'city': { '$regex': '^Abidjan$', '$options': 'i' }})
+    if count &gt; 0:
+        return
+    seed = [
+        # COCODY
+        {
+            'name': 'CHU de Cocody',
+            'facility_type': 'public',
+            'services': 'urgences, médecine interne, chirurgie, gynéco-obs, pédiatrie, odonto, ophtalmo',
+            'address': "Bd de l’Université, Cocody",
+            'city': 'Abidjan',
+            'commune': 'Cocody',
+            'phones': ['+225 22 44 90 00', '+225 22 44 90 38'],
+            'website': None,
+            # location unknown for now
+        },
+        {
+            'name': "CHU d’Angré",
+            'facility_type': 'public',
+            'services': 'urgences 24/7, médecine, chirurgie, pédiatrie, gynéco, imagerie',
+            'address': 'Angré 8e tranche, Cocody',
+            'city': 'Abidjan',
+            'commune': 'Cocody',
+            'phones': ['+225 27 22 49 64 00'],
+            'website': 'https://chuangre.ci',
+            'location': { 'type': 'Point', 'coordinates': [-3.957433, 5.401012] },
+        },
+        {
+            'name': 'PISAM (Polyclinique Internationale Ste Anne-Marie)',
+            'facility_type': 'clinic',
+            'services': 'clinique multi-spécialités, urgences 24/7, imagerie, maternité',
+            'address': 'Cocody, Rue Cannebière / Av. Joseph Blohorn',
+            'city': 'Abidjan',
+            'commune': 'Cocody',
+            'phones': ['+225 27 22 48 31 31', '+225 27 22 48 31 32'],
+            'website': 'https://groupepisam.com',
+        },
+        {
+            'name': 'Clinique Médicale Danga',
+            'facility_type': 'clinic',
+            'services': 'pluridisciplinaire, référence en néphro-dialyse',
+            'address': 'Av. des Jasmins n°26, Danga, Cocody',
+            'city': 'Abidjan',
+            'commune': 'Cocody',
+            'phones': ['+225 27 22 48 44 44', '+225 27 22 48 23 23'],
+            'website': 'https://cliniquemedicaledanga.com',
+        },
+        {
+            'name': 'Polyclinique des II Plateaux (Novamed)',
+            'facility_type': 'clinic',
+            'services': 'multi-spécialités',
+            'address': 'II Plateaux, Bd Latrille',
+            'city': 'Abidjan',
+            'commune': 'Cocody',
+            'phones': ['+225 27 22 41 33 34'],
+            'website': 'https://groupenovamed.com',
+        },
+        # TREICHVILLE / PLATEAU
+        {
+            'name': 'CHU de Treichville',
+            'facility_type': 'public',
+            'services': 'urgences 24/7, médecine, chirurgie, réanimation, maternité',
+            'address': 'Bd de Marseille (Km 4), Treichville',
+            'city': 'Abidjan',
+            'commune': 'Treichville',
+            'phones': [],
+            'website': None,
+        },
+        {
+            'name': "ICA – Institut de Cardiologie d’Abidjan",
+            'facility_type': 'public',
+            'services': 'cardiologie, chirurgie cardiaque, rythmologie, cathétérisme',
+            'address': 'CHU de Treichville, Bd de Marseille',
+            'city': 'Abidjan',
+            'commune': 'Treichville',
+            'phones': ['+225 27 21 21 61 70', '+225 07 78 77 18 67'],
+            'website': 'https://ica.ci',
+        },
+        {
+            'name': "Polyclinique Internationale de l’Indénié (Novamed)",
+            'facility_type': 'clinic',
+            'services': 'multi-spécialités, urgences 24/7',
+            'address': "4 Bd de l’Indénié, Plateau",
+            'city': 'Abidjan',
+            'commune': 'Plateau',
+            'phones': ['+225 27 20 30 91 00'],
+            'website': 'https://groupenovamed.com',
+        },
+        {
+            'name': 'Nova Cardiologie (Novamed)',
+            'facility_type': 'clinic',
+            'services': 'cardiologie',
+            'address': "4 Bd de l’Indénié, Plateau",
+            'city': 'Abidjan',
+            'commune': 'Plateau',
+            'phones': ['+225 27 20 30 91 00 (standard)'],
+            'website': 'https://centre-novacardio.com',
+        },
+        # MARCORY
+        {
+            'name': 'Hôpital Général de Marcory',
+            'facility_type': 'public',
+            'services': 'médecine, pédiatrie, gynéco, radiologie, odonto, urgences',
+            'address': 'Marcory, Bd de Brazzaville (environs)',
+            'city': 'Abidjan',
+            'commune': 'Marcory',
+            'phones': ['+225 21 26 30 08'],
+            'website': None,
+        },
+        {
+            'name': 'Nouvelle Polyclinique Les Grâces (Novamed)',
+            'facility_type': 'clinic',
+            'services': 'multi-spécialités',
+            'address': 'Zone 4C, Rue Marconi',
+            'city': 'Abidjan',
+            'commune': 'Marcory',
+            'phones': ['+225 27 21 75 15 95', '+225 27 21 75 15 97', '+225 27 21 75 15 98'],
+            'website': 'https://groupenovamed.com',
+        },
+        # KOUMASSI
+        {
+            'name': 'Hôpital Général de Koumassi',
+            'facility_type': 'public',
+            'services': 'médecine générale, maternité, pédiatrie, imagerie de base',
+            'address': 'Grand Carrefour Koumassi',
+            'city': 'Abidjan',
+            'commune': 'Koumassi',
+            'phones': ['+225 27 21 36 13 10'],
+            'website': None,
+        },
+        # PORT-BOUËT
+        {
+            'name': 'Hôpital Général de Port-Bouët',
+            'facility_type': 'public',
+            'services': 'consultations, urgences, imagerie, maternité, chirurgie, pédiatrie',
+            'address': 'Rue des Caraïbes / Abattoir',
+            'city': 'Abidjan',
+            'commune': 'Port-Bouët',
+            'phones': ['+225 27 21 27 85 00'],
+            'website': None,
+        },
+        # BINGERVILLE
+        {
+            'name': 'Hôpital Mère-Enfant Dominique Ouattara (HME)',
+            'facility_type': 'clinic',
+            'services': 'pédiatrie, néonat, gynéco-obs, chirurgie pédiat., urgences 24/7',
+            'address': 'Bingerville',
+            'city': 'Abidjan',
+            'commune': 'Bingerville',
+            'phones': ['+225 27 22 51 15 00', '+225 01 72 76 76 76'],
+            'website': 'https://hmebingerville.ci',
+        },
+        {
+            'name': 'EPHD / Hôpital Général de Bingerville',
+            'facility_type': 'public',
+            'services': 'services généraux',
+            'address': 'Bingerville',
+            'city': 'Abidjan',
+            'commune': 'Bingerville',
+            'phones': [],
+            'website': None,
+        },
+        # YOPOUGON
+        {
+            'name': 'Hôpital Général de Yopougon-Attié',
+            'facility_type': 'public',
+            'services': 'médecine, maternité, pédiatrie, PEC VIH/IST/TB, ouvert 24/7 (garde)',
+            'address': 'Av. M-T Houphouët-Boigny, Yopougon',
+            'city': 'Abidjan',
+            'commune': 'Yopougon',
+            'phones': ['+225 05 06 14 50 27', '+225 23 45 38 52 (ancien)'],
+            'website': None,
+        },
+        # ADJAMÉ
+        {
+            'name': "Hôpital Général d’Adjamé",
+            'facility_type': 'public',
+            'services': 'médecine, maternité, pédiatrie',
+            'address': 'Adjamé',
+            'city': 'Abidjan',
+            'commune': 'Adjamé',
+            'phones': [],
+            'website': None,
+        },
+    ]
+    # normalize + add geospatial point when lat/lng present
+    docs = []
+    for h in seed:
+        doc = dict(h)
+        lat = h.get('lat'); lng = h.get('lng')
+        if lat is not None and lng is not None:
+            doc['location'] = { 'type': 'Point', 'coordinates': [float(lng), float(lat)] }
+        elif 'location' in h:
+            # already set (like CHU Angré)
+            pass
+        docs.append(doc)
+    if docs:
+        await db.health_facilities.insert_many(docs)
+        logger.info(f"Seeded {len(docs)} health facilities for Abidjan")
+
 # ---------- ALERTS: basic CRUD + unread count + read mark ----------
 class MarkReadInput(BaseModel):
     user_id: str
@@ -398,141 +682,13 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     messages: List[ChatMessage]
     stream: Optional[bool] = True
-    temperature: Optional[float] = TEMPERATURE_DEFAULT
-    max_tokens: Optional[int] = MAX_TOKENS_DEFAULT
 
-LAYAH_SYSTEM_PROMPT = (
-    "Assistant IA — Allô Services CI (Périmètre strict : Côte d'Ivoire)\n\n"
-    "RÔLE & MISSION\nTu es l'assistant IA de l'application 'Allô Services CI'. Ton unique mission est d'aider les utilisateurs sur des sujets liés à la Côte d'Ivoire (CI) et de générer des documents conformes au contexte ivoirien.\n\n"
-    "PÉRIMÈTRE GÉOGRAPHIQUE\n- Tu ne traites QUE des informations concernant la Côte d'Ivoire.\n- Si la demande ne concerne pas la CI, refuse poliment et invite à reformuler en contexte ivoirien.\n\n"
-    "LANGUE & TON\n- Langue : Français (comprends le nouchi et normalise en français clair).\n- Ton : professionnel, respectueux, concis et actionnable.\n\n"
-    "FONCTIONS\n1) Réponses et conseils pratiques 100% CI.\n2) Génération de documents 100% CI (CV ATS, lettres, ordres de mission, attestations, etc.) sans inventer d'informations.\n3) Reformulation/synthèse/structuration.\n\n"
-    "FORMATAGE LOCAL\nTéléphone '+225 xx xx xx xx', dates FR, FCFA, adresses 'Quartier – Commune – Ville, Côte d'Ivoire'.\n\n"
-    "SÉCURITÉ CONTENUS\nRefuse injures/violence/incitation. En cas d'urgence: orienter vers services locaux.\n\n"
-    "DONNÉES & SOURCES\nUtilise le contexte fourni (CI uniquement). Si incertitude: demande des précisions ou oriente. Ne pas halluciner.\n\n"
-    "PROCESSUS\n1) Vérifie le contexte CI. 2) Contrôle sûreté. 3) Si document: vérifier champs minimaux, demander manquants, formats locaux, ne pas inventer. 4) Si info: CI uniquement; si incertain: le dire + prochaine étape. 5) Re-scanne: aucune mention hors CI, pas d'insulte/violence, formats locaux."
-)
-
-# Emergent client (lazy import to avoid hard fail if key missing)
-_llm_chat_client = None
-
-def get_llm_chat_client():
-    global _llm_chat_client
-    if _llm_chat_client is None:
-        if not EMERGENT_API_KEY:
-            raise HTTPException(status_code=500, detail="EMERGENT_API_KEY not configured")
-        try:
-            # Use Emergent Integrations LlmChat client
-            from emergentintegrations.llm.chat import LlmChat
-            _llm_chat_client = LlmChat(
-                api_key=EMERGENT_API_KEY,
-                session_id="allo-services-ci",
-                system_message=LAYAH_SYSTEM_PROMPT
-            )
-        except Exception as e:
-            logger.exception("Failed to init Emergent LlmChat client")
-            raise HTTPException(status_code=500, detail=f"Emergent client init failed: {e}")
-    return _llm_chat_client
-
-async def stream_chat(messages: List[Dict[str,str]], temperature: float, max_tokens: int) -> AsyncGenerator[str, None]:
-    # Initialize client to ensure it's available
-    get_llm_chat_client()
-    
-    try:
-        # Use litellm directly for streaming since LlmChat doesn't expose streaming
-        import litellm
-        
-        # Prepare parameters for Emergent proxy
-        params = {
-            "model": OPENAI_MODEL,
-            "messages": messages,
-            "temperature": temperature,
-            "max_tokens": max_tokens,
-            "stream": True,
-            "api_key": EMERGENT_API_KEY,
-        }
-        
-        # Configure for Emergent proxy
-        if EMERGENT_API_KEY.startswith("sk-emergent-"):
-            proxy_url = os.environ.get("INTEGRATION_PROXY_URL", "https://integrations.emergentagent.com")
-            params["api_base"] = proxy_url + "/llm"
-            params["custom_llm_provider"] = "openai"
-        
-        stream = litellm.completion(**params)
-        
-        for chunk in stream:
-            try:
-                if hasattr(chunk, 'choices') and len(chunk.choices) > 0:
-                    choice = chunk.choices[0]
-                    delta = getattr(choice, 'delta', None)
-                    if delta and hasattr(delta, 'content') and delta.content:
-                        yield f"data: {json.dumps({'content': delta.content})}\n\n"
-            except Exception:
-                continue
-        yield "data: [DONE]\n\n"
-    except Exception as e:
-        yield f"data: {json.dumps({'error': str(e)})}\n\n"
-
-async def complete_chat(messages: List[Dict[str,str]], temperature: float, max_tokens: int) -> Dict[str, Any]:
-    # Initialize client to ensure it's available
-    get_llm_chat_client()
-    
-    try:
-        # Use litellm directly for non-streaming
-        import litellm
-        
-        # Prepare parameters for Emergent proxy
-        params = {
-            "model": OPENAI_MODEL,
-            "messages": messages,
-            "temperature": temperature,
-            "max_tokens": max_tokens,
-            "stream": False,
-            "api_key": EMERGENT_API_KEY,
-        }
-        
-        # Configure for Emergent proxy
-        if EMERGENT_API_KEY.startswith("sk-emergent-"):
-            proxy_url = os.environ.get("INTEGRATION_PROXY_URL", "https://integrations.emergentagent.com")
-            params["api_base"] = proxy_url + "/llm"
-            params["custom_llm_provider"] = "openai"
-        
-        response = litellm.completion(**params)
-        
-        return {
-            "content": response.choices[0].message.content,
-            "finish_reason": response.choices[0].finish_reason,
-            "usage": getattr(response, 'usage', None) and {
-                "prompt_tokens": response.usage.prompt_tokens,
-                "completion_tokens": response.usage.completion_tokens,
-                "total_tokens": response.usage.total_tokens,
-            }
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Chat completion failed: {str(e)}")
-
-@api.post('/ai/chat')
-async def ai_chat(req: ChatRequest):
-    if not req.messages or not isinstance(req.messages, list):
-        raise HTTPException(status_code=422, detail="messages required")
-    # prepend system prompt
-    msgs = [{"role": "system", "content": LAYAH_SYSTEM_PROMPT}] + [m.model_dump() for m in req.messages]
-    if req.stream:
-        return StreamingResponse(stream_chat(msgs, req.temperature or TEMPERATURE_DEFAULT, req.max_tokens or MAX_TOKENS_DEFAULT), media_type='text/event-stream')
-    else:
-        return await complete_chat(msgs, req.temperature or TEMPERATURE_DEFAULT, req.max_tokens or MAX_TOKENS_DEFAULT)
-
-# Mount router
+# Mount API
 app.include_router(api)
 
-# Startup hooks
-@api.on_event('startup')
-async def on_startup_router():
-    pass
-
+# Startup tasks
 @app.on_event('startup')
 async def on_startup():
-  try:
     await ensure_indexes()
-  except Exception:
-    logger.exception('Index init failed')
+    # Seed health facilities for Abidjan if none
+    await seed_health_facilities()
