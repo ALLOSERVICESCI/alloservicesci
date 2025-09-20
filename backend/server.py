@@ -222,7 +222,7 @@ async def check_subscription(user_id: str):
 
 async def _is_user_premium(uid: ObjectId) -> bool:
     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
-    return bool(sub and sub.get('expires_at') and sub['expires_at'] &gt; datetime.utcnow())
+    return bool(sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow())
 
 # ---------- PAYMENTS (CinetPay) ----------
 class PaymentInitInput(BaseModel):
