@@ -238,7 +238,7 @@ export default function CategoryPage() {
                   </View>
                 </View>
               ))}
-              </>
+            </>
           )}
         </View>
       ) : (
