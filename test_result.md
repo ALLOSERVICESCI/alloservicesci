@@ -203,6 +203,18 @@ backend:
         agent: "testing"
         comment: "❌ CRITICAL ISSUE FOUND - POST /api/ai/chat endpoint returns 404 Not Found. The endpoint is not implemented in backend/server.py despite ChatMessage and ChatRequest models being defined. The AI chat functionality is missing from the API routes. This is a critical missing feature that needs to be implemented."
 
+  - task: "GET /api/health/facilities (Santé APIs) → 200 + établissements de santé"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ NEW HEALTH FACILITIES APIs VALIDATED - All health facility endpoints working perfectly: 1) GET /api/health/facilities (default city=Abidjan) → 200 + 17 health facilities, 2) GET /api/health/facilities?commune=Cocody → 200 + 5 facilities in Cocody, 3) GET /api/health/facilities?near_lat=5.401012&near_lng=-3.957433&max_km=5 → 200 + 1 facility near CHU Angré. All endpoints return proper JSON structure with required fields (id, name, facility_type, address, city, commune, phones, website, lat, lng). Health facilities seeding working correctly for Abidjan with comprehensive data including CHU de Cocody, CHU d'Angré, PISAM, Clinique Médicale Danga, and others."
+
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
     implemented: true
