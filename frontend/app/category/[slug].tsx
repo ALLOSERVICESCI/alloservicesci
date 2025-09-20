@@ -168,7 +168,7 @@ export default function CategoryPage() {
               <Text style={styles.headerNoteTitle}>Services d’urgences ivoiriens</Text>
               <Text style={styles.headerNoteSub}>Les numéros d’urgence suivants sont donnés sous toute réserve quant à leur fonctionnement ou quant à la qualité des services.</Text>
             </View>
-          ) : (
+          ) : s === 'sante' ? null : (
             <View style={styles.titleWrap}>
               <Text style={[styles.titleStroke]}>{catLabel}</Text>
               <Text style={[styles.title]}>{catLabel}</Text>
