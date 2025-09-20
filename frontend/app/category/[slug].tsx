@@ -231,6 +231,8 @@ export default function CategoryPage() {
                         <Ionicons name="navigate" size={16} color="#0A7C3A" />
                         <Text style={styles.hfActionAltText}>Itinéraire</Text>
                       </TouchableOpacity>
+              </>
+
                     )}
                     {f._dist!=null && (
                       <Text style={styles.hfDist}>{f._dist.toFixed(1)} km</Text>
