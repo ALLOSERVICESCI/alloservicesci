@@ -400,7 +400,7 @@ async def list_health_facilities(
 
 async def seed_health_facilities():
     count = await db.health_facilities.count_documents({'city': { '$regex': '^Abidjan$', '$options': 'i' }})
-    if count &gt; 0:
+    if count > 0:
         return
     seed = [
         # COCODY
