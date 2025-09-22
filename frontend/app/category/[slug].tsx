@@ -314,7 +314,15 @@ export default function CategoryPage() {
   const selectedFacilities = useMemo(() => {
     if (mode === 'nearby') return []; // Pour l'instant, pas d'implémentation pour "Autour de moi"
     if (!communeQuery) return [];
-    return healthFacilitiesByCommune[communeQuery] || [];
+    
+    // Debug: voir quelles clés sont disponibles
+    console.log('Commune recherchée:', communeQuery);
+    console.log('Clés disponibles:', Object.keys(healthFacilitiesByCommune));
+    
+    const facilities = healthFacilitiesByCommune[communeQuery] || [];
+    console.log('Établissements trouvés:', facilities.length);
+    
+    return facilities;
   }, [mode, communeQuery]);
 
   // Fonctions d'actions
