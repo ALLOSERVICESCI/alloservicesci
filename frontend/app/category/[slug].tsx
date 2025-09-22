@@ -25,7 +25,6 @@ export default function CategoryPage() {
   const { slug } = useLocalSearchParams();
   const s = Array.isArray(slug) ? slug[0] : (slug || 'urgence');
   const { t } = useI18n();
-  const router = useRouter();
 
   const bg = HEADERS[s] || HEADERS['urgence'];
 
