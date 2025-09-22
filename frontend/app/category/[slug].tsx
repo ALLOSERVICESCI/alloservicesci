@@ -1387,7 +1387,14 @@ export default function CategoryPage() {
         )}
       </View>
       {(item.description || item.summary) && <Text style={styles.cardDescription}>{item.description || item.summary}</Text>}
-      {item.ussd && <Text style={styles.cardUssd}>USSD: {Array.isArray(item.ussd) ? item.ussd.map(u => `${u.label}: ${u.code}`).join(', ') : item.ussd}</Text>}
+      {item.ussd && (
+        <Text style={styles.cardUssd}>
+          USSD: {Array.isArray(item.ussd) 
+            ? item.ussd.map((u: any) => `${u.label}: ${u.code}`).join(', ')
+            : item.ussd
+          }
+        </Text>
+      )}
       <View style={styles.cardActions}>
         {item.phones?.map((phone: any, idx: number) => (
           <TouchableOpacity key={idx} onPress={() => Linking.openURL(`tel:${(typeof phone === 'string' ? phone : phone?.tel || '').replace(/\s+/g, '')}`)} style={styles.actionBtn}>
