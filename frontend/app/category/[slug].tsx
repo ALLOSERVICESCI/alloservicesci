@@ -45,6 +45,79 @@ export default function CategoryPage() {
     // Ajoutez d'autres villes selon vos besoins
   };
 
+  // Établissements de santé par commune
+  const healthFacilitiesByCommune: Record<string, any[]> = {
+    'Cocody': [
+      {
+        id: 'chu-cocody',
+        name: 'CHU de Cocody',
+        type: 'public',
+        services: 'urgences, médecine interne, chirurgie, gynéco-obs, pédiatrie, odonto, ophtalmo',
+        address: 'Bd de l\'Université, Cocody',
+        phones: ['22 44 90 00', '22 44 90 38'],
+        commune: 'Cocody',
+        city: 'Abidjan'
+      },
+      {
+        id: 'chu-angre',
+        name: 'CHU d\'Angré',
+        type: 'public',
+        services: 'urgences 24/7, médecine, chirurgie, pédiatrie, gynéco, imagerie',
+        address: 'Angré 8e tranche, Cocody',
+        phones: ['+225 27 22 49 64 00'],
+        website: 'chuangre.ci',
+        lat: 5.401012,
+        lng: -3.957433,
+        commune: 'Cocody',
+        city: 'Abidjan'
+      },
+      {
+        id: 'pisam',
+        name: 'PISAM (Polyclinique Int. Ste Anne-Marie)',
+        type: 'clinic',
+        services: 'clinique multi-spécialités, urgences 24/7, imagerie, maternité',
+        address: 'Rue Cannebière / Av. Joseph Blohorn, Cocody',
+        phones: ['27 22 48 31 31', '27 22 48 31 32'],
+        website: 'groupepisam.com',
+        commune: 'Cocody',
+        city: 'Abidjan'
+      },
+      {
+        id: 'danga',
+        name: 'Clinique Médicale Danga',
+        type: 'clinic',
+        services: 'pluridisciplinaire, historique en néphro-dialyse',
+        address: 'Av. des Jasmins n°26, Danga, Cocody',
+        phones: ['27 22 48 44 44', '27 22 48 23 23'],
+        website: 'cliniquemedicaledanga.com',
+        commune: 'Cocody',
+        city: 'Abidjan'
+      },
+      {
+        id: 'ii-plateaux',
+        name: 'Polyclinique des II Plateaux (Groupe Novamed)',
+        type: 'clinic',
+        services: 'multi-spécialités',
+        address: 'II Plateaux, Bd Latrille',
+        phones: ['27 22 41 33 34', '27 22 41 33 20'],
+        website: 'groupenovamed.com',
+        commune: 'Cocody',
+        city: 'Abidjan'
+      },
+      {
+        id: 'inhp-vaccination',
+        name: 'Services vaccination & hygiène (INHP)',
+        type: 'public',
+        services: 'PEV, hygiène, vaccination',
+        address: 'Cocody/Abidjan',
+        emails: ['info@inhp.ci', 'portbouet@inhp.ci'],
+        commune: 'Cocody',
+        city: 'Abidjan',
+        note: 'Antenne Treichville et Port-Bouët disponibles'
+      }
+    ]
+  };
+
   const userCity = user?.city || 'Abidjan';
   const availableCommunes = communesByCity[userCity] || [];
 
