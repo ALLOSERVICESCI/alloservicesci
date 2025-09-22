@@ -495,7 +495,13 @@ export default function CategoryPage() {
     ]
   };
 
-  const userCity = user?.city || 'Abidjan';
+  const userSelectedCity = user?.city || 'Abidjan';
+  
+  // Vérifier si la ville sélectionnée a des communes disponibles
+  const hasCommunes = communesByCity[userSelectedCity] && communesByCity[userSelectedCity].length > 0;
+  
+  // Utiliser la ville sélectionnée si elle a des communes, sinon utiliser Abidjan par défaut
+  const userCity = hasCommunes ? userSelectedCity : 'Abidjan';
   const availableCommunes = communesByCity[userCity] || [];
 
   // Filtrage des communes
