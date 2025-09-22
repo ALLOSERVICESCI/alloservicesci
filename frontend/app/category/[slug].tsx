@@ -174,7 +174,7 @@ export default function CategoryPage() {
 
   const openSource = async (url?: string) => { if (!url) return; try { await Linking.openURL(url); } catch (e) {} };
 
-  const openDirections = async (lat?: number|null, lng?: number|null, label?: string) => {
+  const openGoogleMaps = async (lat?: number|null, lng?: number|null, label?: string) => {
     if (lat == null || lng == null) return;
     const query = encodeURIComponent(label || 'Itinéraire');
     const url = Platform.select({
