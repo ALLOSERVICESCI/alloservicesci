@@ -649,6 +649,204 @@ export default function CategoryPage() {
         commune: 'Sakassou',
         city: 'Sakassou'
       }
+    ],
+    'Facobly': [
+      {
+        id: 'hopital-facobly',
+        name: 'Hôpital Général de Facobly',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie de base',
+        address: 'Facobly centre',
+        phones: ['+225 27 33 84 21 33'],
+        commune: 'Facobly',
+        city: 'Facobly'
+      },
+      {
+        id: 'inhp-facobly',
+        name: 'INHP – Antenne Facobly',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Facobly',
+        emails: ['facobly@inhp.ci'],
+        commune: 'Facobly',
+        city: 'Facobly'
+      }
+    ],
+    'Kounahiri': [
+      {
+        id: 'hopital-kounahiri',
+        name: 'Hôpital Général de Kounahiri',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'Kounahiri',
+        phones: ['+225 27 36 83 21 14'],
+        commune: 'Kounahiri',
+        city: 'Kounahiri'
+      },
+      {
+        id: 'inhp-kounahiri',
+        name: 'INHP – Antenne Kounahiri',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Kounahiri',
+        emails: ['kounahiri@inhp.ci'],
+        commune: 'Kounahiri',
+        city: 'Kounahiri'
+      }
+    ],
+    'Guitry': [
+      {
+        id: 'hopital-guitry',
+        name: 'Hôpital Général de Guitry',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, chirurgie de base',
+        address: 'Guitry centre',
+        phones: ['+225 27 32 55 21 18'],
+        commune: 'Guitry',
+        city: 'Guitry'
+      },
+      {
+        id: 'inhp-guitry',
+        name: 'INHP – Antenne Guitry',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Guitry',
+        emails: ['guitry@inhp.ci'],
+        commune: 'Guitry',
+        city: 'Guitry'
+      }
+    ],
+    'Grand-Lahou': [
+      {
+        id: 'hopital-grand-lahou',
+        name: 'Hôpital Général de Grand-Lahou',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, urgences',
+        address: 'Grand-Lahou',
+        phones: ['+225 27 23 63 21 22'],
+        commune: 'Grand-Lahou',
+        city: 'Grand-Lahou'
+      },
+      {
+        id: 'inhp-grand-lahou',
+        name: 'INHP – Antenne Grand-Lahou',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Grand-Lahou',
+        emails: ['grandlahou@inhp.ci'],
+        commune: 'Grand-Lahou',
+        city: 'Grand-Lahou'
+      }
+    ],
+    'Arrah': [
+      {
+        id: 'hopital-arrah',
+        name: 'Hôpital Général d\'Arrah',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'Arrah',
+        phones: ['+225 27 35 82 21 21'],
+        commune: 'Arrah',
+        city: 'Arrah'
+      },
+      {
+        id: 'inhp-arrah',
+        name: 'INHP – Antenne Arrah',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Arrah',
+        emails: ['arrah@inhp.ci'],
+        commune: 'Arrah',
+        city: 'Arrah'
+      }
+    ],
+    'Bouna': [
+      {
+        id: 'hopital-bouna',
+        name: 'Hôpital Général de Bouna',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, urgences, chirurgie de base',
+        address: 'Bouna centre',
+        phones: ['+225 27 35 95 21 11'],
+        commune: 'Bouna',
+        city: 'Bouna'
+      },
+      {
+        id: 'inhp-bouna',
+        name: 'INHP – Antenne Bouna',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Bouna',
+        emails: ['bouna@inhp.ci'],
+        commune: 'Bouna',
+        city: 'Bouna'
+      }
+    ],
+    'Tanda': [
+      {
+        id: 'hopital-tanda',
+        name: 'Hôpital Général de Tanda',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, chirurgie générale',
+        address: 'Tanda',
+        phones: ['+225 27 35 93 21 17'],
+        commune: 'Tanda',
+        city: 'Tanda'
+      },
+      {
+        id: 'inhp-tanda',
+        name: 'INHP – Antenne Tanda',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Tanda',
+        emails: ['tanda@inhp.ci'],
+        commune: 'Tanda',
+        city: 'Tanda'
+      }
+    ],
+    'Mankono': [
+      {
+        id: 'chr-mankono',
+        name: 'CHR de Mankono',
+        type: 'public',
+        services: 'hôpital régional, médecine générale, chirurgie, maternité, pédiatrie, urgences',
+        address: 'Mankono centre',
+        phones: ['+225 27 36 84 21 23'],
+        commune: 'Mankono',
+        city: 'Mankono'
+      },
+      {
+        id: 'inhp-mankono',
+        name: 'INHP – Antenne Mankono',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Mankono',
+        emails: ['mankono@inhp.ci'],
+        commune: 'Mankono',
+        city: 'Mankono'
+      }
+    ],
+    'Oumé': [
+      {
+        id: 'hopital-oume',
+        name: 'Hôpital Général d\'Oumé',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, chirurgie de base',
+        address: 'Oumé centre',
+        phones: ['+225 27 32 76 21 13'],
+        commune: 'Oumé',
+        city: 'Oumé'
+      },
+      {
+        id: 'inhp-oume',
+        name: 'INHP – Antenne Oumé',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Oumé',
+        emails: ['oume@inhp.ci'],
+        commune: 'Oumé',
+        city: 'Oumé'
+      }
     ]
   };
 
