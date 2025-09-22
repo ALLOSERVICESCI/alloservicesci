@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 # Base URL from frontend environment
-BASE_URL = "https://allo-services-2.preview.emergentagent.com/api"
+BASE_URL = "https://service-locator-ci.preview.emergentagent.com/api"
 
 class RegressionTester:
     def __init__(self):
