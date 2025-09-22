@@ -518,12 +518,23 @@ export default function CategoryPage() {
     return availableCommunes.filter(c => normalize(c).includes(q));
   }, [communeQuery, availableCommunes]);
 
-  // Obtenir les établissements pour la commune sélectionnée
+  // Obtenir les établissements pour la commune sélectionnée ou directement pour la ville
   const selectedFacilities = useMemo(() => {
     if (mode === 'nearby') return []; // Pour l'instant, pas d'implémentation pour "Autour de moi"
-    if (!communeQuery) return [];
-    return healthFacilitiesByCommune[communeQuery] || [];
-  }, [mode, communeQuery]);
+    
+    // Si la ville a un système de communes
+    if (displayMode === 'communes') {
+      if (!communeQuery) return [];
+      return healthFacilitiesByCommune[communeQuery] || [];
+    }
+    
+    // Si la ville a des établissements directs (sans communes)
+    if (displayMode === 'direct') {
+      return healthFacilitiesByCommune[userCity] || [];
+    }
+    
+    return [];
+  }, [mode, communeQuery, displayMode, userCity]);
 
   // Fonctions d'actions
   const openPhone = (phone: string) => {
