@@ -60,6 +60,18 @@ export const CI_CITIES: string[] = [
   'Yamoussoukro',
   'Zouan-Hounien',
   'Zuénoula',
+  
+  // Nouvelles villes ajoutées (décembre 2024)
+  'Akoupé',
+  'Bloléquin',
+  'Dabakala',
+  'Djékanou',
+  'Grand-Béréby',
+  'Grabo',
+  'Guibéroua',
+  'Koun-Fao',
+  'N\'Douci',
+  'Prikro',
 
   // Autres villes importantes (non encore intégrées dans la base santé)
   'Korhogo',
