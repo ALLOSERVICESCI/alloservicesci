@@ -1821,7 +1821,7 @@ export default function CategoryPage() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FAFAF8' },
-  header: { height: 200, justifyContent: 'flex-end' },
+  header: { height: 250, justifyContent: 'flex-end' },
   headerGradient: { flex: 1, justifyContent: 'flex-end' },
   headerContent: { padding: 20, paddingBottom: 30 },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '900', marginBottom: 8 },
