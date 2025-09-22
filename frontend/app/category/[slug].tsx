@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
-import { View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity, Linking, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams } from 'expo-router';
 import { useI18n } from '../../src/i18n/i18n';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
+import { useAuth } from '../../src/context/AuthContext';
 
 const COMMON_HEADER = { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/ce52q6f0_sante_bg.png' };
 const HEADERS: Record<string, any> = {
