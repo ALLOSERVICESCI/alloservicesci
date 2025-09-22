@@ -847,6 +847,226 @@ export default function CategoryPage() {
         commune: 'Oumé',
         city: 'Oumé'
       }
+    ],
+    'Kani': [
+      {
+        id: 'hopital-kani',
+        name: 'Hôpital Général de Kani',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie de base',
+        address: 'Kani centre',
+        phones: ['+225 27 36 93 21 22'],
+        commune: 'Kani',
+        city: 'Kani'
+      },
+      {
+        id: 'inhp-kani',
+        name: 'INHP – Antenne Kani',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Kani',
+        emails: ['kani@inhp.ci'],
+        commune: 'Kani',
+        city: 'Kani'
+      }
+    ],
+    'Minignan': [
+      {
+        id: 'hopital-minignan',
+        name: 'Hôpital Général de Minignan',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, urgences',
+        address: 'Minignan centre',
+        phones: ['+225 27 34 91 21 12'],
+        commune: 'Minignan',
+        city: 'Minignan'
+      },
+      {
+        id: 'inhp-minignan',
+        name: 'INHP – Antenne Minignan',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Minignan',
+        emails: ['minignan@inhp.ci'],
+        commune: 'Minignan',
+        city: 'Minignan'
+      }
+    ],
+    'Zouan-Hounien': [
+      {
+        id: 'hopital-zouan-hounien',
+        name: 'Hôpital Général de Zouan-Hounien',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie de base',
+        address: 'Zouan-Hounien centre',
+        phones: ['+225 27 33 86 21 27'],
+        commune: 'Zouan-Hounien',
+        city: 'Zouan-Hounien'
+      },
+      {
+        id: 'inhp-zouan-hounien',
+        name: 'INHP – Antenne Zouan-Hounien',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Zouan-Hounien',
+        emails: ['zouanhounien@inhp.ci'],
+        commune: 'Zouan-Hounien',
+        city: 'Zouan-Hounien'
+      }
+    ],
+    'Jacqueville': [
+      {
+        id: 'hopital-jacqueville',
+        name: 'Hôpital Général de Jacqueville',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'Jacqueville centre',
+        phones: ['+225 27 23 62 21 33'],
+        commune: 'Jacqueville',
+        city: 'Jacqueville'
+      },
+      {
+        id: 'inhp-jacqueville',
+        name: 'INHP – Antenne Jacqueville',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Jacqueville',
+        emails: ['jacqueville@inhp.ci'],
+        commune: 'Jacqueville',
+        city: 'Jacqueville'
+      }
+    ],
+    'Agnibilékrou': [
+      {
+        id: 'hopital-agnibilekrou',
+        name: 'Hôpital Général d\'Agnibilékrou',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, chirurgie de base',
+        address: 'Agnibilékrou centre',
+        phones: ['+225 27 35 92 21 19'],
+        commune: 'Agnibilékrou',
+        city: 'Agnibilékrou'
+      },
+      {
+        id: 'inhp-agnibilekrou',
+        name: 'INHP – Antenne Agnibilékrou',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Agnibilékrou',
+        emails: ['agnibilekrou@inhp.ci'],
+        commune: 'Agnibilékrou',
+        city: 'Agnibilékrou'
+      }
+    ],
+    'Kong': [
+      {
+        id: 'hopital-kong',
+        name: 'Hôpital Général de Kong',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie de base',
+        address: 'Kong centre',
+        phones: ['+225 27 36 87 21 18'],
+        commune: 'Kong',
+        city: 'Kong'
+      },
+      {
+        id: 'inhp-kong',
+        name: 'INHP – Antenne Kong',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Kong',
+        emails: ['kong@inhp.ci'],
+        commune: 'Kong',
+        city: 'Kong'
+      }
+    ],
+    'Toulepleu': [
+      {
+        id: 'hopital-toulepleu',
+        name: 'Hôpital Général de Toulépleu',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, urgences',
+        address: 'Toulépleu centre',
+        phones: ['+225 27 33 87 21 12'],
+        commune: 'Toulepleu',
+        city: 'Toulepleu'
+      },
+      {
+        id: 'inhp-toulepleu',
+        name: 'INHP – Antenne Toulépleu',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Toulépleu',
+        emails: ['toulepleu@inhp.ci'],
+        commune: 'Toulepleu',
+        city: 'Toulepleu'
+      }
+    ],
+    'Adiaké': [
+      {
+        id: 'hopital-adiake',
+        name: 'Hôpital Général d\'Adiaké',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie de base',
+        address: 'Adiaké centre',
+        phones: ['+225 27 35 52 21 25'],
+        commune: 'Adiaké',
+        city: 'Adiaké'
+      },
+      {
+        id: 'inhp-adiake',
+        name: 'INHP – Antenne Adiaké',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Adiaké',
+        emails: ['adiake@inhp.ci'],
+        commune: 'Adiaké',
+        city: 'Adiaké'
+      }
+    ],
+    'M\'Batto': [
+      {
+        id: 'hopital-mbatto',
+        name: 'Hôpital Général de M\'Batto',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'M\'Batto centre',
+        phones: ['+225 27 35 83 21 11'],
+        commune: 'M\'Batto',
+        city: 'M\'Batto'
+      },
+      {
+        id: 'inhp-mbatto',
+        name: 'INHP – Antenne M\'Batto',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'M\'Batto',
+        emails: ['mbatto@inhp.ci'],
+        commune: 'M\'Batto',
+        city: 'M\'Batto'
+      }
+    ],
+    'Kouto': [
+      {
+        id: 'hopital-kouto',
+        name: 'Hôpital Général de Kouto',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie de base',
+        address: 'Kouto centre',
+        phones: ['+225 27 36 92 21 20'],
+        commune: 'Kouto',
+        city: 'Kouto'
+      },
+      {
+        id: 'inhp-kouto',
+        name: 'INHP – Antenne Kouto',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Kouto',
+        emails: ['kouto@inhp.ci'],
+        commune: 'Kouto',
+        city: 'Kouto'
+      }
     ]
   };
 
