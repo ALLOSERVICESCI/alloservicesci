@@ -1085,6 +1085,227 @@ export default function CategoryPage() {
         commune: 'Kouto',
         city: 'Kouto'
       }
+    ],
+    'Djékanou': [
+      {
+        id: 'hopital-djekanou',
+        name: 'Hôpital Général de Djékanou',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'Djékanou centre',
+        phones: ['+225 27 30 65 21 13'],
+        commune: 'Djékanou',
+        city: 'Djékanou'
+      },
+      {
+        id: 'inhp-djekanou',
+        name: 'INHP – Antenne Djékanou',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Djékanou',
+        emails: ['djekanou@inhp.ci'],
+        commune: 'Djékanou',
+        city: 'Djékanou'
+      }
+    ],
+    'Grand-Béréby': [
+      {
+        id: 'hopital-grand-bereby',
+        name: 'Hôpital Général de Grand-Béréby',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, urgences',
+        address: 'Grand-Béréby centre',
+        phones: ['+225 27 34 72 21 18'],
+        commune: 'Grand-Béréby',
+        city: 'Grand-Béréby'
+      },
+      {
+        id: 'inhp-grand-bereby',
+        name: 'INHP – Antenne Grand-Béréby',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Grand-Béréby',
+        emails: ['grandbereby@inhp.ci'],
+        commune: 'Grand-Béréby',
+        city: 'Grand-Béréby'
+      }
+    ],
+    'Dabakala': [
+      {
+        id: 'hopital-dabakala',
+        name: 'Hôpital Général de Dabakala',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, chirurgie de base',
+        address: 'Dabakala centre',
+        phones: ['+225 27 36 65 21 24'],
+        commune: 'Dabakala',
+        city: 'Dabakala'
+      },
+      {
+        id: 'inhp-dabakala',
+        name: 'INHP – Antenne Dabakala',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Dabakala',
+        emails: ['dabakala@inhp.ci'],
+        commune: 'Dabakala',
+        city: 'Dabakala'
+      }
+    ],
+    'Akoupé': [
+      {
+        id: 'hopital-akoupe',
+        name: 'Hôpital Général d\'Akoupé',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie générale',
+        address: 'Akoupé centre',
+        phones: ['+225 27 32 72 21 22'],
+        commune: 'Akoupé',
+        city: 'Akoupé'
+      },
+      {
+        id: 'inhp-akoupe',
+        name: 'INHP – Antenne Akoupé',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Akoupé',
+        emails: ['akoupe@inhp.ci'],
+        commune: 'Akoupé',
+        city: 'Akoupé'
+      }
+    ],
+    'Bloléquin': [
+      {
+        id: 'hopital-blolequin',
+        name: 'Hôpital Général de Bloléquin',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, urgences',
+        address: 'Bloléquin centre',
+        phones: ['+225 27 33 88 21 15'],
+        commune: 'Bloléquin',
+        city: 'Bloléquin'
+      },
+      {
+        id: 'inhp-blolequin',
+        name: 'INHP – Antenne Bloléquin',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Bloléquin',
+        emails: ['blolequin@inhp.ci'],
+        commune: 'Bloléquin',
+        city: 'Bloléquin'
+      }
+    ],
+    'Prikro': [
+      {
+        id: 'hopital-prikro',
+        name: 'Hôpital Général de Prikro',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie de base',
+        address: 'Prikro centre',
+        phones: ['+225 27 35 72 21 21'],
+        commune: 'Prikro',
+        city: 'Prikro'
+      },
+      {
+        id: 'inhp-prikro',
+        name: 'INHP – Antenne Prikro',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Prikro',
+        emails: ['prikro@inhp.ci'],
+        commune: 'Prikro',
+        city: 'Prikro'
+      }
+    ],
+    'Koun-Fao': [
+      {
+        id: 'hopital-koun-fao',
+        name: 'Hôpital Général de Koun-Fao',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, chirurgie de base',
+        address: 'Koun-Fao centre',
+        phones: ['+225 27 35 94 21 17'],
+        commune: 'Koun-Fao',
+        city: 'Koun-Fao'
+      },
+      {
+        id: 'inhp-koun-fao',
+        name: 'INHP – Antenne Koun-Fao',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Koun-Fao',
+        emails: ['kounfao@inhp.ci'],
+        commune: 'Koun-Fao',
+        city: 'Koun-Fao',
+        note: 'Cliniques privées : cabinets privés de proximité'
+      }
+    ],
+    'Guibéroua': [
+      {
+        id: 'hopital-guiberoua',
+        name: 'Hôpital Général de Guibéroua',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'Guibéroua centre',
+        phones: ['+225 27 32 77 21 13'],
+        commune: 'Guibéroua',
+        city: 'Guibéroua'
+      },
+      {
+        id: 'inhp-guiberoua',
+        name: 'INHP – Antenne Guibéroua',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Guibéroua',
+        emails: ['guiberoua@inhp.ci'],
+        commune: 'Guibéroua',
+        city: 'Guibéroua'
+      }
+    ],
+    'N\'Douci': [
+      {
+        id: 'hopital-ndouci',
+        name: 'Hôpital Général de N\'Douci',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'N\'Douci centre',
+        phones: ['+225 27 34 65 21 25'],
+        commune: 'N\'Douci',
+        city: 'N\'Douci'
+      },
+      {
+        id: 'inhp-ndouci',
+        name: 'INHP – Antenne N\'Douci',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'N\'Douci',
+        emails: ['ndouci@inhp.ci'],
+        commune: 'N\'Douci',
+        city: 'N\'Douci'
+      }
+    ],
+    'Grabo': [
+      {
+        id: 'hopital-grabo',
+        name: 'Hôpital Général de Grabo',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, urgences',
+        address: 'Grabo centre',
+        phones: ['+225 27 34 73 21 14'],
+        commune: 'Grabo',
+        city: 'Grabo'
+      },
+      {
+        id: 'inhp-grabo',
+        name: 'INHP – Antenne Grabo',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Grabo',
+        emails: ['grabo@inhp.ci'],
+        commune: 'Grabo',
+        city: 'Grabo'
+      }
     ]
   };
 
