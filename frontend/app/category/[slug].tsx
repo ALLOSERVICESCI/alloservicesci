@@ -1387,12 +1387,12 @@ export default function CategoryPage() {
         )}
       </View>
       {item.description && <Text style={styles.cardDescription}>{item.description}</Text>}
-      {item.ussd && <Text style={styles.cardUssd}>USSD: {item.ussd}</Text>}
+      {item.ussd && <Text style={styles.cardUssd}>USSD: {Array.isArray(item.ussd) ? item.ussd.map(u => `${u.label}: ${u.code}`).join(', ') : item.ussd}</Text>}
       <View style={styles.cardActions}>
-        {item.phones?.map((phone: string, idx: number) => (
-          <TouchableOpacity key={idx} onPress={() => Linking.openURL(`tel:${phone.replace(/\s+/g, '')}`)} style={styles.actionBtn}>
+        {item.phones?.map((phone: any, idx: number) => (
+          <TouchableOpacity key={idx} onPress={() => Linking.openURL(`tel:${(typeof phone === 'string' ? phone : phone.tel).replace(/\s+/g, '')}`)} style={styles.actionBtn}>
             <Ionicons name="call" size={16} color="#fff" />
-            <Text style={styles.actionBtnText}>{phone}</Text>
+            <Text style={styles.actionBtnText}>{typeof phone === 'string' ? phone : phone.label}</Text>
           </TouchableOpacity>
         ))}
         {item.website && (
