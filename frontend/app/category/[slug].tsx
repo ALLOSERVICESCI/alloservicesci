@@ -516,4 +516,22 @@ const styles = StyleSheet.create({
   suggestionsContainer: { marginTop: 8, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#fff', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
   suggestionItem: { paddingVertical: 12, paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: '#F0F3F0' },
   suggestionText: { fontSize: 16, color: '#0A7C3A' },
+
+  // Styles pour les établissements de santé
+  facilitiesCount: { fontSize: 14, color: '#666', marginBottom: 16, fontWeight: '600' },
+  facilityCard: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#E8F0E8' },
+  facilityHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
+  facilityName: { fontSize: 18, fontWeight: '700', color: '#0A7C3A', flex: 1, marginRight: 12 },
+  typeBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, borderWidth: 1 },
+  badgePublic: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
+  badgeClinic: { backgroundColor: '#FFF3E0', borderColor: '#FF8A00' },
+  typeBadgeText: { fontSize: 12, fontWeight: '600' },
+  facilityServices: { fontSize: 14, color: '#555', marginBottom: 8, lineHeight: 20 },
+  facilityAddress: { fontSize: 14, color: '#666', marginBottom: 8, flexDirection: 'row', alignItems: 'center' },
+  facilityNote: { fontSize: 13, color: '#FF8A00', marginBottom: 12, flexDirection: 'row', alignItems: 'center', fontStyle: 'italic' },
+  facilityActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  actionButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, marginRight: 8, marginBottom: 8 },
+  actionButtonText: { color: '#fff', fontSize: 12, fontWeight: '600', marginLeft: 6 },
+  actionButtonAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 1, borderColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, marginRight: 8, marginBottom: 8 },
+  actionButtonAltText: { color: '#0A7C3A', fontSize: 12, fontWeight: '600', marginLeft: 6 },
 });
