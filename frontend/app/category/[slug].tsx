@@ -722,21 +722,146 @@ export default function CategoryPage() {
           )}
 
           {/* Contenu principal */}
-          {mode === 'nearby' ? (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
-              <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
-                Recherche d'établissements de santé autour de vous dans {userCity}...
-              </Text>
-              <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
-                Fonctionnalité en cours de développement
-              </Text>
-            </View>
+          {displayMode === 'communes' ? (
+            // Mode avec communes (comme Abidjan)
+            mode === 'nearby' ? (
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+                <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+                  Recherche d'établissements de santé autour de vous dans {userCity}...
+                </Text>
+                <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
+                  Fonctionnalité en cours de développement
+                </Text>
+              </View>
+            ) : (
+              <View style={{ flex: 1, marginTop: 20 }}>
+                {selectedFacilities.length > 0 ? (
+                  <>
+                    <Text style={styles.facilitiesCount}>
+                      {selectedFacilities.length} établissement{selectedFacilities.length > 1 ? 's' : ''} trouvé{selectedFacilities.length > 1 ? 's' : ''} à {communeQuery}
+                    </Text>
+                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                      {selectedFacilities.map((facility) => (
+                        <View key={facility.id} style={styles.facilityCard}>
+                          {/* En-tête avec nom et type */}
+                          <View style={styles.facilityHeader}>
+                            <Text style={styles.facilityName}>{facility.name}</Text>
+                            <View style={[styles.typeBadge, facility.type === 'public' ? styles.badgePublic : styles.badgeClinic]}>
+                              <Text style={styles.typeBadgeText}>
+                                {facility.type === 'public' ? 'Public' : 'Clinique'}
+                              </Text>
+                            </View>
+                          </View>
+
+                          {/* Services */}
+                          {facility.services && (
+                            <Text style={styles.facilityServices}>
+                              <Text style={{ fontWeight: '600', color: '#0A7C3A' }}>Services: </Text>
+                              {facility.services}
+                            </Text>
+                          )}
+
+                          {/* Adresse */}
+                          {facility.address && (
+                            <Text style={styles.facilityAddress}>
+                              <Ionicons name="location-outline" size={14} color="#666" />
+                              {' '}{facility.address}
+                            </Text>
+                          )}
+
+                          {/* Note supplémentaire */}
+                          {facility.note && (
+                            <Text style={styles.facilityNote}>
+                              <Ionicons name="information-circle-outline" size={14} color="#FF8A00" />
+                              {' '}{facility.note}
+                            </Text>
+                          )}
+
+                          {/* Actions */}
+                          <View style={styles.facilityActions}>
+                            {/* Téléphones */}
+                            {facility.phones && facility.phones.map((phone: string, index: number) => (
+                              <TouchableOpacity
+                                key={index}
+                                onPress={() => openPhone(phone)}
+                                style={styles.actionButton}
+                              >
+                                <Ionicons name="call" size={16} color="#fff" />
+                                <Text style={styles.actionButtonText}>
+                                  {phone}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+
+                            {/* Emails */}
+                            {facility.emails && facility.emails.map((email: string, index: number) => (
+                              <TouchableOpacity
+                                key={index}
+                                onPress={() => Linking.openURL(`mailto:${email}`)}
+                                style={styles.actionButtonAlt}
+                              >
+                                <Ionicons name="mail" size={16} color="#0A7C3A" />
+                                <Text style={styles.actionButtonAltText}>
+                                  {email}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+
+                            {/* Site web */}
+                            {facility.website && (
+                              <TouchableOpacity
+                                onPress={() => openWebsite(facility.website)}
+                                style={styles.actionButtonAlt}
+                              >
+                                <Ionicons name="globe" size={16} color="#0A7C3A" />
+                                <Text style={styles.actionButtonAltText}>
+                                  {facility.website}
+                                </Text>
+                              </TouchableOpacity>
+                            )}
+
+                            {/* GPS */}
+                            {facility.lat && facility.lng && (
+                              <TouchableOpacity
+                                onPress={() => openGoogleMaps(facility.lat, facility.lng, facility.name)}
+                                style={styles.actionButtonAlt}
+                              >
+                                <Ionicons name="navigate" size={16} color="#0A7C3A" />
+                                <Text style={styles.actionButtonAltText}>
+                                  Itinéraire GPS
+                                </Text>
+                              </TouchableOpacity>
+                            )}
+                          </View>
+                        </View>
+                      ))}
+                    </ScrollView>
+                  </>
+                ) : communeQuery ? (
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+                    <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+                      Aucun établissement de santé disponible pour {communeQuery}
+                    </Text>
+                    <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
+                      Essayez une autre commune comme Cocody
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+                    <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+                      Sélectionnez une commune pour voir les établissements de santé
+                    </Text>
+                  </View>
+                )}
+              </View>
+            )
           ) : (
+            // Mode direct (villes comme Divo, Ferkessédougou)
             <View style={{ flex: 1, marginTop: 20 }}>
               {selectedFacilities.length > 0 ? (
                 <>
                   <Text style={styles.facilitiesCount}>
-                    {selectedFacilities.length} établissement{selectedFacilities.length > 1 ? 's' : ''} trouvé{selectedFacilities.length > 1 ? 's' : ''} à {communeQuery}
+                    {selectedFacilities.length} établissement{selectedFacilities.length > 1 ? 's' : ''} trouvé{selectedFacilities.length > 1 ? 's' : ''} à {userCity}
                   </Text>
                   <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                     {selectedFacilities.map((facility) => (
@@ -835,19 +960,13 @@ export default function CategoryPage() {
                     ))}
                   </ScrollView>
                 </>
-              ) : communeQuery ? (
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
-                  <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
-                    Aucun établissement de santé disponible pour {communeQuery}
-                  </Text>
-                  <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
-                    Essayez une autre commune comme Cocody
-                  </Text>
-                </View>
               ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
                   <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
-                    Sélectionnez une commune pour voir les établissements de santé
+                    Aucun établissement de santé disponible pour {userCity}
+                  </Text>
+                  <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
+                    Données en cours d'ajout
                   </Text>
                 </View>
               )}
