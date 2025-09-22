@@ -20,6 +20,13 @@ export default function CategoryPage() {
   const [communeQuery, setCommuneQuery] = useState('');
   const [showCommuneSuggestions, setShowCommuneSuggestions] = useState(false);
 
+  // Fonction pour réinitialiser les filtres
+  const resetFilters = () => {
+    setMode('nearby');
+    setCommuneQuery('');
+    setShowCommuneSuggestions(false);
+  };
+
   // Communes par ville
   const communesByCity: Record<string, string[]> = {
     'Abidjan': [
