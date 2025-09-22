@@ -7,20 +7,7 @@ import { useI18n } from '../../src/i18n/i18n';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 import { useAuth } from '../../src/context/AuthContext';
 
-const COMMON_HEADER = { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/ce52q6f0_sante_bg.png' };
-const HEADERS: Record<string, any> = {
-  urgence: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/16jgx6x2_urgence_bg.png' },
-  sante: COMMON_HEADER,
-  education: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/kuyfb8wf_bg-education.png' },
-  services_utiles: COMMON_HEADER,
-  agriculture: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/r7xlibx4_agriculture_bg.png' },
-  loisirs_tourisme: COMMON_HEADER,
-  services_publics: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/7w0pi6lv_services_publics_bg.png' },
-  examens_concours: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/sfdp17jj_examens_concours_bg.png' },
-  transport: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/1yzx1q1o_transport_bg.png' },
-  alertes: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/aiwoflhn_alerte_gb.png' },
-  pharmacies: { uri: 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/8s9hxw1p_pharmacies_bg.png' },
-};
+const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' };
 
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams();
@@ -56,7 +43,6 @@ export default function CategoryPage() {
     'Bongouanou': ['Bongouanou'],
     'Issia': ['Issia'],
     'Odienné': ['Odienné'],
-    'Soubré': ['Soubré'],
     'Dabou': ['Dabou'],
     'Tiassalé': ['Tiassalé'],
     'Tabou': ['Tabou'],
@@ -452,6 +438,60 @@ export default function CategoryPage() {
         commune: 'Songon',
         city: 'Abidjan'
       }
+    ],
+    // Autres villes de Côte d'Ivoire
+    'Divo': [
+      {
+        id: 'hopital-divo',
+        name: 'Hôpital Général de Divo',
+        type: 'public',
+        services: 'médecine, chirurgie, pédiatrie, maternité, imagerie de base',
+        address: 'Divo centre-ville',
+        phones: ['+225 32 58 22 47'],
+        commune: 'Divo',
+        city: 'Divo'
+      },
+      {
+        id: 'inhp-divo',
+        name: 'INHP – Antenne Divo',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Divo',
+        emails: ['divo@inhp.ci'],
+        commune: 'Divo',
+        city: 'Divo'
+      }
+    ],
+    'Ferkessédougou': [
+      {
+        id: 'hopital-ferkessedougou',
+        name: 'Hôpital Général de Ferkessédougou',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, urgences',
+        address: 'Quartier central, Ferkessédougou',
+        phones: ['+225 36 61 21 87'],
+        commune: 'Ferkessédougou',
+        city: 'Ferkessédougou'
+      },
+      {
+        id: 'clinique-saint-luc',
+        name: 'Clinique Saint-Luc',
+        type: 'clinic',
+        services: 'médecine générale, maternité',
+        address: 'Ferkessédougou',
+        commune: 'Ferkessédougou',
+        city: 'Ferkessédougou'
+      },
+      {
+        id: 'inhp-ferkessedougou',
+        name: 'INHP – Antenne Ferkessédougou',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Ferkessédougou',
+        emails: ['ferkessedougou@inhp.ci'],
+        commune: 'Ferkessédougou',
+        city: 'Ferkessédougou'
+      }
     ]
   };
 
@@ -484,33 +524,6 @@ export default function CategoryPage() {
     Linking.openURL(url);
   };
 
-  const bg = HEADERS[s] || HEADERS['urgence'];
-
-  const catLabel = useMemo(() => {
-    const map: Record<string, string> = {
-      urgence: t('urgence'),
-      sante: t('sante'),
-      education: t('education'),
-      services_utiles: t('services_utiles'),
-      agriculture: t('agriculture'),
-      loisirs_tourisme: t('loisirs_tourisme'),
-      services_publics: t('services_publics'),
-      examens_concours: t('examens'),
-      transport: t('transport'),
-      alertes: t('alertes'),
-      pharmacies: t('tabPharm'),
-    };
-    return map[s] || s;
-  }, [s, t]);
-
-
-
-
-  const data = CONTENT_BY_CATEGORY[s] || [];
-  const isUrgence = s === 'urgence';
-
-  const openSource = async (url?: string) => { if (!url) return; try { await Linking.openURL(url); } catch (e) {} };
-
   const openGoogleMaps = async (lat?: number|null, lng?: number|null, label?: string) => {
     if (lat == null || lng == null) return;
     const query = encodeURIComponent(label || 'Itinéraire');
@@ -522,27 +535,76 @@ export default function CategoryPage() {
     try { await Linking.openURL(url); } catch (e) {}
   };
 
+  const openSource = async (url?: string) => { if (!url) return; try { await Linking.openURL(url); } catch (e) {} };
+
+  const data = CONTENT_BY_CATEGORY[s] || [];
+
+  const renderContentItem = ({ item }: { item: any }) => (
+    <View style={styles.contentCard}>
+      <View style={styles.cardHeader}>
+        <Text style={styles.cardTitle}>{item.name}</Text>
+        {item.isPremium && (
+          <View style={styles.premiumBadge}>
+            <Text style={styles.premiumBadgeText}>Premium</Text>
+          </View>
+        )}
+      </View>
+      {item.description && <Text style={styles.cardDescription}>{item.description}</Text>}
+      {item.ussd && <Text style={styles.cardUssd}>USSD: {item.ussd}</Text>}
+      <View style={styles.cardActions}>
+        {item.phones?.map((phone: string, idx: number) => (
+          <TouchableOpacity key={idx} onPress={() => Linking.openURL(`tel:${phone.replace(/\s+/g, '')}`)} style={styles.actionBtn}>
+            <Ionicons name="call" size={16} color="#fff" />
+            <Text style={styles.actionBtnText}>{phone}</Text>
+          </TouchableOpacity>
+        ))}
+        {item.website && (
+          <TouchableOpacity onPress={() => openSource(item.website)} style={styles.actionBtnAlt}>
+            <Ionicons name="globe" size={16} color="#0A7C3A" />
+            <Text style={styles.actionBtnAltText}>Site web</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
+  );
+
+  // Choix de l'image d'en-tête selon la catégorie
+  const backgroundImages: Record<string, any> = {
+    pharmacies: { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' },
+    sante: { uri: 'https://customer-assets.emergent.sh/alloscici/home/sante_bg.png' },
+    urgence: { uri: 'https://customer-assets.emergent.sh/alloscici/home/urgence_bg.png' },
+  };
+
+  const bg = backgroundImages[s] || COMMON_HEADER;
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={styles.container}>
+      {/* En-tête avec image */}
       <ImageBackground source={bg} style={styles.header} resizeMode="cover">
-        <View style={styles.lightOverlay} />
-        <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.65)"]} locations={[0,1]} style={styles.overlay} />
-        <View style={styles.headerContent}>
-          {s === 'urgence' ? (
-            <View>
-              <Text style={styles.headerNoteTitle}>Services d’urgences ivoiriens</Text>
-              <Text style={styles.headerNoteSub}>Les numéros d’urgence suivants sont donnés sous toute réserve quant à leur fonctionnement ou quant à la qualité des services.</Text>
-            </View>
-          ) : s === 'sante' ? null : (
-            <View style={styles.titleWrap}>
-              <Text style={[styles.titleStroke]}>{catLabel}</Text>
-              <Text style={[styles.title]}>{catLabel}</Text>
-            </View>
-          )}
-        </View>
+        <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
+          <View style={styles.headerContent}>
+            <Text style={styles.headerTitle}>{t(`categories.${s}`)}</Text>
+            <Text style={styles.headerSubtitle}>Services disponibles en Côte d'Ivoire</Text>
+          </View>
+        </LinearGradient>
       </ImageBackground>
 
-      {s === 'sante' ? (
+      {/* Contenu spécifique par catégorie */}
+      {s === 'urgence' ? (
+        <View style={{ padding: 16, paddingBottom: 40 }}>
+          <View style={styles.headerNote}>
+            <Text style={styles.headerNoteTitle}>Urgences - Secours</Text>
+            <Text style={styles.headerNoteSub}>Numéros d'urgence et services de secours disponibles 24h/24 en Côte d'Ivoire</Text>
+          </View>
+          <FlatList
+            data={data}
+            renderItem={renderContentItem}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        </View>
+      ) : s === 'sante' ? (
         <View style={{ flex: 1, padding: 16 }}>
           {/* Localisation */}
           <View style={{ marginBottom: 16 }}>
@@ -763,68 +825,28 @@ export default function CategoryPage() {
           )}
         </View>
       ) : (
-        <FlatList
-          data={data}
-          keyExtractor={(item, idx) => `${s}_${idx}`}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
-                {!!item.tag && (<Text style={styles.badge}>{item.tag}</Text>)}
-                <Text style={[styles.itemTitle, isUrgence && styles.urgTitle]}>{item.title}</Text>
-              </View>
-              <Text style={[styles.itemSummary, isUrgence && styles.urgSummary]}>{item.summary}</Text>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, alignItems: 'center' }}>
-                <Text style={[styles.metaText, isUrgence && styles.urgMeta]}>{item.location ? item.location + ' • ' : ''}{item.date || ''}</Text>
-                {item.source && (
-                  <TouchableOpacity onPress={() => openSource(item.source)} style={styles.sourceBtn} accessibilityRole="button">
-                    <Text style={styles.sourceBtnText}>{t('open')}</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-
-              {!!item.phones?.length && (
-                <View style={styles.phonesWrap}>
-                  {item.phones.map((p, idx) => (
-                    <TouchableOpacity
-                      key={`${p.tel}_${idx}`}
-                      onPress={() => Linking.openURL(`tel:${p.tel}`)}
-                      style={styles.phoneBtn}
-                      accessibilityRole="button"
-                      accessibilityLabel={`Appeler ${p.label} au ${p.tel}`}
-                    >
-                      <Ionicons name="call" size={16} color="#fff" />
-                      <Text style={styles.phoneBtnText}>{p.label}</Text>
-                      <Text style={styles.phoneBtnNumber}>{p.tel}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )}
-            </View>
-          )}
-          contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
-        />
+        <View style={{ padding: 16, paddingBottom: 40 }}>
+          <FlatList
+            data={data}
+            renderItem={renderContentItem}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        </View>
       )}
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { height: 240, justifyContent: 'flex-end' },
-  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)' },
-  lightOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(255,255,255,0.08)' },
-  headerContent: { paddingTop: 16, paddingRight: 16, paddingBottom: 16, paddingLeft: 20 },
-  titleWrap: { position: 'relative', marginTop: -2 },
-  titleStroke: { color: 'transparent', fontSize: 26, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase', textAlign: 'left', textShadowColor: 'rgba(0,0,0,0.6)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 1.5, position: 'absolute', left: 0, top: 0 },
-  title: { color: '#fff', fontSize: 26, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase', textAlign: 'left', textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 6 },
-
-  card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E8F0E8' },
-  badge: { backgroundColor: '#0A7C3A', color: '#fff', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginRight: 8, fontSize: 11, fontWeight: '800' },
-  itemTitle: { color: '#0A7C3A', fontWeight: '900', fontSize: 18, flex: 1 },
-  itemSummary: { color: '#222', fontSize: 16, marginTop: 4, lineHeight: 22 },
-  metaText: { color: '#666', fontSize: 13 },
-  sourceBtn: { backgroundColor: '#0A7C3A', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
-  sourceBtnText: { color: '#fff', fontWeight: '700' },
+  container: { flex: 1, backgroundColor: '#FAFAF8' },
+  header: { height: 200, justifyContent: 'flex-end' },
+  headerGradient: { flex: 1, justifyContent: 'flex-end' },
+  headerContent: { padding: 20, paddingBottom: 30 },
+  headerTitle: { color: '#fff', fontSize: 24, fontWeight: '900', marginBottom: 8 },
+  headerSubtitle: { color: '#fff', fontSize: 14, opacity: 0.9 },
+  headerNote: { backgroundColor: '#FF8A00', padding: 16, borderRadius: 12, marginBottom: 20 },
   headerNoteTitle: { color: '#FF8A00', fontSize: 20, fontWeight: '900' },
   headerNoteSub: { color: '#fff', fontSize: 13, lineHeight: 18, marginTop: 4, maxWidth: '92%' },
 
@@ -865,4 +887,20 @@ const styles = StyleSheet.create({
   actionButtonText: { color: '#fff', fontSize: 12, fontWeight: '600', marginLeft: 6 },
   actionButtonAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 1, borderColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, marginRight: 8, marginBottom: 8 },
   actionButtonAltText: { color: '#0A7C3A', fontSize: 12, fontWeight: '600', marginLeft: 6 },
+
+  // Styles pour les cartes de contenu générique
+  contentCard: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#E8F0E8' },
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  cardTitle: { fontSize: 18, fontWeight: '700', color: '#0A7C3A', flex: 1 },
+  premiumBadge: { backgroundColor: '#FFD700', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 },
+  premiumBadgeText: { fontSize: 10, fontWeight: '700', color: '#333' },
+  cardDescription: { fontSize: 14, color: '#555', marginBottom: 8, lineHeight: 20 },
+  cardUssd: { fontSize: 14, color: '#0D6EFD', fontWeight: '600', marginBottom: 12 },
+  cardActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  actionBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, marginRight: 8, marginBottom: 8 },
+  actionBtnText: { color: '#fff', fontSize: 12, fontWeight: '600', marginLeft: 6 },
+  actionBtnAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 1, borderColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, marginRight: 8, marginBottom: 8 },
+  actionBtnAltText: { color: '#0A7C3A', fontSize: 12, fontWeight: '600', marginLeft: 6 },
+  tipBtnText: { fontSize: 12, fontWeight: '600', color: '#333' },
+
 });
