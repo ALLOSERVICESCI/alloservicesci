@@ -37,8 +37,8 @@ export default function CategoryPage() {
   const communesByCity: Record<string, string[]> = {
     'Abidjan': [
       'Abobo', 'Adjamé', 'Anyama', 'Attécoubé', 'Bingerville', 'Cocody', 
-      'Angré', 'Plateau Dokui', 'Williamsville', 'Koumassi', 'Marcory', 
-      'Plateau', 'Port-Bouët', 'Treichville', 'Songon', 'Yopougon'
+      'Koumassi', 'Marcory', 'Plateau', 'Port-Bouët', 'Treichville', 
+      'Songon', 'Yopougon'
     ],
     'Bouaké': ['Broukro', 'Djébonoua', 'Gonfreville', 'Korhogo'],
     'Yamoussoukro': ['Attiégouakro', 'N\'Gokro'],
