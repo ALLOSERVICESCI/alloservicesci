@@ -1833,6 +1833,7 @@ const styles = StyleSheet.create({
   // Styles pour la section santé
   locationText: { fontSize: 16, marginBottom: 8 },
   filtersRow: { flexDirection: 'row', marginBottom: 16 },
+  filtersRowAligned: { flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 16 },
   chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, marginRight: 12 },
   chipNear: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
   chipCommune: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
