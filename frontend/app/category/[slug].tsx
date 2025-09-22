@@ -1604,6 +1604,8 @@ const styles = StyleSheet.create({
   chipTextNear: { color: '#0D6EFD', fontSize: 14, fontWeight: '600' },
   chipTextCommune: { color: '#0A7C3A', fontSize: 14, fontWeight: '600' },
   chipTextInactive: { color: '#666', fontSize: 14, fontWeight: '600' },
+  chipReset: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, backgroundColor: '#FFF3E0', borderColor: '#FF8A00', marginLeft: 8 },
+  chipTextReset: { color: '#FF8A00', fontSize: 14, fontWeight: '600' },
   
   searchLabel: { color: '#0A7C3A', fontWeight: '700', marginBottom: 8, fontSize: 16 },
   searchContainer: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#FAFAF8' },
