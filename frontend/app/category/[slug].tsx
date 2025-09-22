@@ -139,6 +139,16 @@ export default function CategoryPage() {
         note: 'Ouvert 24/7'
       },
       {
+        id: 'pole-cardio-treichville',
+        name: 'LE POLE CARDIO - ICA',
+        type: 'public',
+        services: 'cardiologie interventionnelle, chirurgie cardiaque',
+        address: 'CHU Treichville, Bd de Marseille',
+        phones: ['27 21 21 61 70', '07 78 77 18 67'],
+        commune: 'Treichville',
+        city: 'Abidjan'
+      },
+      {
         id: 'novamed-plateau-indenie',
         name: 'Polyclinique Internationale de l\'Indénié (Novamed)',
         type: 'clinic',
