@@ -634,7 +634,7 @@ export default function CategoryPage() {
             <Text style={styles.locationText}>
               <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localisation: </Text>
               <Text style={{ color: '#555' }}>{userCity}</Text>
-              {!hasCommunes && userSelectedCity !== 'Abidjan' && (
+              {displayMode === 'direct' && userSelectedCity !== userCity && (
                 <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
                   {' '}(données par défaut - {userSelectedCity} non disponible)
                 </Text>
@@ -642,27 +642,29 @@ export default function CategoryPage() {
             </Text>
           </View>
 
-          {/* Chips de filtres */}
-          <View style={styles.filtersRow}>
-            <TouchableOpacity 
-              onPress={() => setMode('nearby')} 
-              style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
-            >
-              <Ionicons name="location-outline" size={18} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
-              <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              onPress={() => setMode('commune')} 
-              style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}
-            >
-              <Ionicons name="map-outline" size={18} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
-              <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
-            </TouchableOpacity>
-          </View>
+          {/* Chips de filtres - seulement si la ville a des communes */}
+          {displayMode === 'communes' && (
+            <View style={styles.filtersRow}>
+              <TouchableOpacity 
+                onPress={() => setMode('nearby')} 
+                style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
+              >
+                <Ionicons name="location-outline" size={18} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+                <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                onPress={() => setMode('commune')} 
+                style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}
+              >
+                <Ionicons name="map-outline" size={18} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+                <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
-          {/* Barre de recherche communes (visible seulement en mode commune) */}
-          {mode === 'commune' && (
+          {/* Barre de recherche communes (visible seulement en mode commune ET si la ville a des communes) */}
+          {displayMode === 'communes' && mode === 'commune' && (
             <View style={{ marginTop: 16 }}>
               <Text style={styles.searchLabel}>Rechercher une commune</Text>
               <View style={styles.searchContainer}>
