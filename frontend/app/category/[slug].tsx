@@ -279,4 +279,24 @@ const styles = StyleSheet.create({
   sourceBtnText: { color: '#fff', fontWeight: '700' },
   headerNoteTitle: { color: '#FF8A00', fontSize: 20, fontWeight: '900' },
   headerNoteSub: { color: '#fff', fontSize: 13, lineHeight: 18, marginTop: 4, maxWidth: '92%' },
+
+  // Styles pour la section santé
+  locationText: { fontSize: 16, marginBottom: 8 },
+  filtersRow: { flexDirection: 'row', marginBottom: 16 },
+  chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, marginRight: 12 },
+  chipNear: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
+  chipCommune: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
+  chipInactive: { backgroundColor: '#F4F5F6', borderColor: '#DADADA' },
+  chipTextNear: { color: '#0D6EFD', fontSize: 14, fontWeight: '600' },
+  chipTextCommune: { color: '#0A7C3A', fontSize: 14, fontWeight: '600' },
+  chipTextInactive: { color: '#666', fontSize: 14, fontWeight: '600' },
+  
+  searchLabel: { color: '#0A7C3A', fontWeight: '700', marginBottom: 8, fontSize: 16 },
+  searchContainer: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#FAFAF8' },
+  searchInput: { flex: 1, height: 44, paddingHorizontal: 12, fontSize: 16, color: '#0A7C3A' },
+  clearButton: { paddingHorizontal: 12, paddingVertical: 12 },
+  
+  suggestionsContainer: { marginTop: 8, borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, backgroundColor: '#fff', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
+  suggestionItem: { paddingVertical: 12, paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: '#F0F3F0' },
+  suggestionText: { fontSize: 16, color: '#0A7C3A' },
 });
