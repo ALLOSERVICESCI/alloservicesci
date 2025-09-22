@@ -1445,52 +1445,54 @@ export default function CategoryPage() {
         </View>
       ) : s === 'sante' ? (
         <View style={{ flex: 1, padding: 16 }}>
-          {/* Localités */}
-          <View style={{ marginBottom: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.locationText}>
-                <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localités: </Text>
-                <Text style={{ color: '#555' }}>{userCity}</Text>
-                {displayMode === 'direct' && userSelectedCity !== userCity && (
-                  <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
-                    {' '}(données par défaut - {userSelectedCity} non disponible)
-                  </Text>
-                )}
-              </Text>
+          {/* Localités avec badge Réinitialiser */}
+          <View style={{ marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.locationText}>
+                  <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localités: </Text>
+                  <Text style={{ color: '#555' }}>{userCity}</Text>
+                  {displayMode === 'direct' && userSelectedCity !== userCity && (
+                    <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
+                      {' '}(données par défaut - {userSelectedCity} non disponible)
+                    </Text>
+                  )}
+                </Text>
+              </View>
+
+              {/* Badge Réinitialiser - en face de Localités */}
+              {displayMode === 'communes' && (mode === 'commune' && communeQuery) && (
+                <TouchableOpacity 
+                  onPress={resetFilters} 
+                  style={styles.chipReset}
+                >
+                  <Ionicons name="refresh-outline" size={18} color="#FF8A00" style={{ marginRight: 8 }} />
+                  <Text style={styles.chipTextReset}>Réinitialiser</Text>
+                </TouchableOpacity>
+              )}
             </View>
 
-            {/* Badge Réinitialiser - en face de Localités */}
-            {displayMode === 'communes' && (mode === 'commune' && communeQuery) && (
-              <TouchableOpacity 
-                onPress={resetFilters} 
-                style={styles.chipReset}
-              >
-                <Ionicons name="refresh-outline" size={18} color="#FF8A00" style={{ marginRight: 8 }} />
-                <Text style={styles.chipTextReset}>Réinitialiser</Text>
-              </TouchableOpacity>
+            {/* Chips de filtres - alignés sous le badge Réinitialiser */}
+            {displayMode === 'communes' && (
+              <View style={styles.filtersRowAligned}>
+                <TouchableOpacity 
+                  onPress={() => setMode('nearby')} 
+                  style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
+                >
+                  <Ionicons name="location-outline" size={18} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+                  <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                  onPress={() => setMode('commune')} 
+                  style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}
+                >
+                  <Ionicons name="map-outline" size={18} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+                  <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
+                </TouchableOpacity>
+              </View>
             )}
           </View>
-
-          {/* Chips de filtres - seulement si la ville a des communes */}
-          {displayMode === 'communes' && (
-            <View style={styles.filtersRow}>
-              <TouchableOpacity 
-                onPress={() => setMode('nearby')} 
-                style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
-              >
-                <Ionicons name="location-outline" size={18} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
-                <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                onPress={() => setMode('commune')} 
-                style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}
-              >
-                <Ionicons name="map-outline" size={18} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
-                <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
-              </TouchableOpacity>
-            </View>
-          )}
 
           {/* Barre de recherche communes (visible seulement en mode commune ET si la ville a des communes) */}
           {displayMode === 'communes' && mode === 'commune' && (
