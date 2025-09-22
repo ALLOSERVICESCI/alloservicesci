@@ -1390,9 +1390,9 @@ export default function CategoryPage() {
       {item.ussd && <Text style={styles.cardUssd}>USSD: {Array.isArray(item.ussd) ? item.ussd.map(u => `${u.label}: ${u.code}`).join(', ') : item.ussd}</Text>}
       <View style={styles.cardActions}>
         {item.phones?.map((phone: any, idx: number) => (
-          <TouchableOpacity key={idx} onPress={() => Linking.openURL(`tel:${(typeof phone === 'string' ? phone : phone.tel).replace(/\s+/g, '')}`)} style={styles.actionBtn}>
+          <TouchableOpacity key={idx} onPress={() => Linking.openURL(`tel:${(typeof phone === 'string' ? phone : phone?.tel || '').replace(/\s+/g, '')}`)} style={styles.actionBtn}>
             <Ionicons name="call" size={16} color="#fff" />
-            <Text style={styles.actionBtnText}>{typeof phone === 'string' ? phone : phone.label}</Text>
+            <Text style={styles.actionBtnText}>{typeof phone === 'string' ? phone : (phone?.label || 'Téléphone')}</Text>
           </TouchableOpacity>
         ))}
         {item.website && (
