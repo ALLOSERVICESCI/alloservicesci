@@ -1213,17 +1213,30 @@ export default function CategoryPage() {
         </View>
       ) : s === 'sante' ? (
         <View style={{ flex: 1, padding: 16 }}>
-          {/* Localisation */}
-          <View style={{ marginBottom: 16 }}>
-            <Text style={styles.locationText}>
-              <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localisation: </Text>
-              <Text style={{ color: '#555' }}>{userCity}</Text>
-              {displayMode === 'direct' && userSelectedCity !== userCity && (
-                <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
-                  {' '}(données par défaut - {userSelectedCity} non disponible)
-                </Text>
-              )}
-            </Text>
+          {/* Localités */}
+          <View style={{ marginBottom: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.locationText}>
+                <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localités: </Text>
+                <Text style={{ color: '#555' }}>{userCity}</Text>
+                {displayMode === 'direct' && userSelectedCity !== userCity && (
+                  <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
+                    {' '}(données par défaut - {userSelectedCity} non disponible)
+                  </Text>
+                )}
+              </Text>
+            </View>
+
+            {/* Badge Réinitialiser - en face de Localités */}
+            {displayMode === 'communes' && (mode === 'commune' && communeQuery) && (
+              <TouchableOpacity 
+                onPress={resetFilters} 
+                style={styles.chipReset}
+              >
+                <Ionicons name="refresh-outline" size={18} color="#FF8A00" style={{ marginRight: 8 }} />
+                <Text style={styles.chipTextReset}>Réinitialiser</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
           {/* Chips de filtres - seulement si la ville a des communes */}
