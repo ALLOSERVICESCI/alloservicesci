@@ -1379,14 +1379,14 @@ export default function CategoryPage() {
   const renderContentItem = ({ item }: { item: any }) => (
     <View style={styles.contentCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.cardTitle}>{item.name}</Text>
+        <Text style={styles.cardTitle}>{item.title || item.name}</Text>
         {item.isPremium && (
           <View style={styles.premiumBadge}>
             <Text style={styles.premiumBadgeText}>Premium</Text>
           </View>
         )}
       </View>
-      {item.description && <Text style={styles.cardDescription}>{item.description}</Text>}
+      {(item.description || item.summary) && <Text style={styles.cardDescription}>{item.description || item.summary}</Text>}
       {item.ussd && <Text style={styles.cardUssd}>USSD: {Array.isArray(item.ussd) ? item.ussd.map(u => `${u.label}: ${u.code}`).join(', ') : item.ussd}</Text>}
       <View style={styles.cardActions}>
         {item.phones?.map((phone: any, idx: number) => (
