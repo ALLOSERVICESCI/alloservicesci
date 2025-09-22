@@ -147,12 +147,6 @@ export default function CategoryPage() {
     Linking.openURL(url);
   };
 
-  const openDirections = (lat: number, lng: number, name: string) => {
-    const query = encodeURIComponent(name);
-    const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-    Linking.openURL(url);
-  };
-
   const bg = HEADERS[s] || HEADERS['urgence'];
 
   const catLabel = useMemo(() => {
