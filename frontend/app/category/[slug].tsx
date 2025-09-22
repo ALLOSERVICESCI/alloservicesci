@@ -517,6 +517,138 @@ export default function CategoryPage() {
         commune: 'Ferkessédougou',
         city: 'Ferkessédougou'
       }
+    ],
+    'Toumodi': [
+      {
+        id: 'hopital-toumodi',
+        name: 'Hôpital Général de Toumodi',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'Toumodi centre',
+        phones: ['+225 27 30 61 21 12'],
+        commune: 'Toumodi',
+        city: 'Toumodi'
+      },
+      {
+        id: 'inhp-toumodi',
+        name: 'INHP – Antenne Toumodi',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Toumodi',
+        emails: ['toumodi@inhp.ci'],
+        commune: 'Toumodi',
+        city: 'Toumodi'
+      }
+    ],
+    'Tiapoum': [
+      {
+        id: 'hopital-tiapoum',
+        name: 'Hôpital Général de Tiapoum',
+        type: 'public',
+        services: 'soins de base : médecine, maternité, pédiatrie',
+        address: 'Tiapoum centre',
+        phones: ['+225 27 35 53 21 22'],
+        commune: 'Tiapoum',
+        city: 'Tiapoum'
+      },
+      {
+        id: 'inhp-tiapoum',
+        name: 'INHP – Antenne Tiapoum',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Tiapoum',
+        emails: ['tiapoum@inhp.ci'],
+        commune: 'Tiapoum',
+        city: 'Tiapoum'
+      }
+    ],
+    'Fresco': [
+      {
+        id: 'hopital-fresco',
+        name: 'Hôpital Général de Fresco',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, chirurgie de base',
+        address: 'Fresco centre',
+        phones: ['+225 27 34 62 21 14'],
+        commune: 'Fresco',
+        city: 'Fresco'
+      },
+      {
+        id: 'inhp-fresco',
+        name: 'INHP – Antenne Fresco',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Fresco',
+        emails: ['fresco@inhp.ci'],
+        commune: 'Fresco',
+        city: 'Fresco'
+      }
+    ],
+    'Sassandra': [
+      {
+        id: 'chr-sassandra',
+        name: 'CHR de Sassandra',
+        type: 'public',
+        services: 'hôpital régional, urgences, médecine, chirurgie, maternité, pédiatrie, imagerie',
+        address: 'Sassandra',
+        phones: ['+225 27 34 61 21 37'],
+        commune: 'Sassandra',
+        city: 'Sassandra'
+      },
+      {
+        id: 'inhp-sassandra',
+        name: 'INHP – Antenne Sassandra',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Sassandra',
+        emails: ['sassandra@inhp.ci'],
+        commune: 'Sassandra',
+        city: 'Sassandra'
+      }
+    ],
+    'Béoumi': [
+      {
+        id: 'hopital-beoumi',
+        name: 'Hôpital Général de Béoumi',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie',
+        address: 'Béoumi (près de Bouaké)',
+        phones: ['+225 27 31 65 21 24'],
+        commune: 'Béoumi',
+        city: 'Béoumi'
+      },
+      {
+        id: 'inhp-beoumi',
+        name: 'INHP – Antenne Béoumi',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Béoumi',
+        emails: ['beoumi@inhp.ci'],
+        commune: 'Béoumi',
+        city: 'Béoumi'
+      }
+    ],
+    'Sakassou': [
+      {
+        id: 'hopital-sakassou',
+        name: 'Hôpital Général de Sakassou',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie',
+        address: 'Sakassou (près de Bouaké)',
+        phones: ['+225 27 31 66 21 44'],
+        commune: 'Sakassou',
+        city: 'Sakassou'
+      },
+      {
+        id: 'inhp-sakassou',
+        name: 'INHP – Antenne Sakassou',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Sakassou',
+        emails: ['sakassou@inhp.ci'],
+        commune: 'Sakassou',
+        city: 'Sakassou'
+      }
     ]
   };
 
