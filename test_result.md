@@ -425,13 +425,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "FRONTEND E2E: Page Santé (/category/sante) - Interface établissements de santé (copie Pharmacies)"
     - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
   stuck_tasks:
     - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
   test_all: false
   test_priority: "high_first"
   backend_health_testing_completed: true
+  frontend_sante_testing_completed: true
 
 agent_communication:
   - agent: "main"
