@@ -1257,17 +1257,6 @@ export default function CategoryPage() {
                 <Ionicons name="map-outline" size={18} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
                 <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
               </TouchableOpacity>
-
-              {/* Badge Réinitialiser - visible si une recherche est active */}
-              {(mode === 'commune' && communeQuery) && (
-                <TouchableOpacity 
-                  onPress={resetFilters} 
-                  style={styles.chipReset}
-                >
-                  <Ionicons name="refresh-outline" size={18} color="#FF8A00" style={{ marginRight: 8 }} />
-                  <Text style={styles.chipTextReset}>Réinitialiser</Text>
-                </TouchableOpacity>
-              )}
             </View>
           )}
 
