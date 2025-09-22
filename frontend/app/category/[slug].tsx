@@ -105,7 +105,7 @@ export default function CategoryPage() {
         city: 'Abidjan'
       },
       {
-        id: 'inhp-vaccination',
+        id: 'inhp-vaccination-cocody',
         name: 'Services vaccination & hygiène (INHP)',
         type: 'public',
         services: 'PEV, hygiène, vaccination',
@@ -114,6 +114,187 @@ export default function CategoryPage() {
         commune: 'Cocody',
         city: 'Abidjan',
         note: 'Antenne Treichville et Port-Bouët disponibles'
+      }
+    ],
+    'Treichville': [
+      {
+        id: 'chu-treichville',
+        name: 'CHU de Treichville',
+        type: 'public',
+        services: 'urgences 24/7, médecine, chirurgie, réanimation, maternité',
+        address: 'Bd de Marseille (Km 4), Treichville',
+        commune: 'Treichville',
+        city: 'Abidjan'
+      },
+      {
+        id: 'ica-treichville',
+        name: 'Institut de Cardiologie d\'Abidjan (ICA)',
+        type: 'public',
+        services: 'cardiologie, chirurgie cardiaque, rythmologie, cathétérisme',
+        address: 'au sein du CHU de Treichville, Bd de Marseille',
+        phones: ['+225 27 21 21 61 70', '07 78 77 18 67'],
+        website: 'ica.ci',
+        commune: 'Treichville',
+        city: 'Abidjan',
+        note: 'Ouvert 24/7'
+      },
+      {
+        id: 'novamed-plateau-indenie',
+        name: 'Polyclinique Internationale de l\'Indénié (Novamed)',
+        type: 'clinic',
+        services: 'multi-spécialités, urgences 24/7',
+        address: '4 Bd de l\'Indénié, Plateau (à 5–10 min de Treichville)',
+        phones: ['27 20 30 91 00'],
+        website: 'groupenovamed.com',
+        commune: 'Treichville',
+        city: 'Abidjan'
+      },
+      {
+        id: 'inhp-treichville',
+        name: 'INHP – Antenne Treichville',
+        type: 'public',
+        services: 'vaccins de voyage, PEV, hygiène',
+        address: 'Treichville',
+        emails: ['info@inhp.ci'],
+        commune: 'Treichville',
+        city: 'Abidjan'
+      }
+    ],
+    'Plateau': [
+      {
+        id: 'novamed-plateau',
+        name: 'Polyclinique Int. de l\'Indénié (Novamed)',
+        type: 'clinic',
+        services: 'multi-spécialités, urgences 24/7',
+        address: '4 Bd de l\'Indénié, Plateau',
+        phones: ['27 20 30 91 00'],
+        website: 'groupenovamed.com',
+        commune: 'Plateau',
+        city: 'Abidjan'
+      },
+      {
+        id: 'nova-cardiologie',
+        name: 'Nova Cardiologie (Novamed)',
+        type: 'clinic',
+        services: 'cardiologie',
+        address: '4 Bd de l\'Indénié, Plateau',
+        phones: ['27 20 30 91 00'],
+        website: 'groupenovamed.com',
+        commune: 'Plateau',
+        city: 'Abidjan',
+        note: 'Via standard'
+      },
+      {
+        id: 'insp-plateau',
+        name: 'INSP – Institut National de Santé Publique',
+        type: 'public',
+        services: 'épidémiologie, santé publique',
+        address: 'Plateau, Abidjan',
+        commune: 'Plateau',
+        city: 'Abidjan'
+      }
+    ],
+    'Marcory': [
+      {
+        id: 'hopital-marcory',
+        name: 'Hôpital Général de Marcory',
+        type: 'public',
+        services: 'médecine, pédiatrie, gynéco, radiologie, odonto, urgences',
+        address: 'Marcory (Bd de Brazzaville / environs)',
+        phones: ['+225 21 26 30 08'],
+        commune: 'Marcory',
+        city: 'Abidjan'
+      },
+      {
+        id: 'novamed-graces',
+        name: 'Nouvelle Polyclinique Les Grâces (Novamed)',
+        type: 'clinic',
+        services: 'multi-spécialités',
+        address: 'Zone 4C, Rue Marconi',
+        phones: ['27 21 75 15 95', '27 21 75 15 97', '27 21 75 15 98'],
+        website: 'groupenovamed.com',
+        commune: 'Marcory',
+        city: 'Abidjan'
+      }
+    ],
+    'Koumassi': [
+      {
+        id: 'hopital-koumassi',
+        name: 'Hôpital Général de Koumassi',
+        type: 'public',
+        services: 'médecine générale, maternité, pédiatrie, imagerie de base',
+        address: 'Grand Carrefour Koumassi',
+        phones: ['+225 27 21 36 13 10'],
+        commune: 'Koumassi',
+        city: 'Abidjan'
+      }
+    ],
+    'Port-Bouët': [
+      {
+        id: 'hopital-port-bouet',
+        name: 'Hôpital Général de Port-Bouët',
+        type: 'public',
+        services: 'consultations, urgences, imagerie, maternité, chirurgie, pédiatrie',
+        address: 'Rue des Caraïbes / Abattoir',
+        phones: ['+225 27 21 27 85 00'],
+        commune: 'Port-Bouët',
+        city: 'Abidjan'
+      },
+      {
+        id: 'inhp-port-bouet',
+        name: 'Antenne INHP – Port-Bouët',
+        type: 'public',
+        services: 'vaccination, hygiène',
+        address: 'Port-Bouët',
+        emails: ['portbouet@inhp.ci'],
+        commune: 'Port-Bouët',
+        city: 'Abidjan'
+      }
+    ],
+    'Bingerville': [
+      {
+        id: 'hme-bingerville',
+        name: 'Hôpital Mère-Enfant Dominique Ouattara (HME)',
+        type: 'public',
+        services: 'pédiatrie, néonat, gynéco-obs, chirurgie pédiat., urgences 24/7',
+        address: 'Bingerville',
+        phones: ['+225 27 22 51 15 00', '01 72 76 76 76'],
+        commune: 'Bingerville',
+        city: 'Abidjan'
+      },
+      {
+        id: 'ephd-bingerville',
+        name: 'EPHD / Hôpital Général de Bingerville',
+        type: 'public',
+        services: 'services généraux',
+        address: 'Bingerville',
+        commune: 'Bingerville',
+        city: 'Abidjan'
+      }
+    ],
+    'Yopougon': [
+      {
+        id: 'hopital-yopougon-attie',
+        name: 'Hôpital Général de Yopougon-Attié',
+        type: 'public',
+        services: 'médecine, maternité, pédiatrie, PEC VIH/IST/TB',
+        address: 'Av. M-T Houphouët-Boigny, Yopougon',
+        phones: ['05 06 14 50 27'],
+        commune: 'Yopougon',
+        city: 'Abidjan',
+        note: 'Ouvert 24/7 (garde), ancien fixe 23 45 38 52'
+      }
+    ],
+    'Adjamé': [
+      {
+        id: 'hopital-adjame',
+        name: 'Hôpital Général d\'Adjamé',
+        type: 'public',
+        services: 'médecine générale, urgences, maternité, pédiatrie, chirurgie de base',
+        address: 'Adjamé',
+        phones: ['+225 27 20 21 31 44', '27 20 30 40 73'],
+        commune: 'Adjamé',
+        city: 'Abidjan'
       }
     ]
   };
