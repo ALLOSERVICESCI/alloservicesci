@@ -115,10 +115,104 @@ export default function CategoryPage() {
       </ImageBackground>
 
       {s === 'sante' ? (
-        <View style={{ flex: 1, padding: 16, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
-            Page en construction
-          </Text>
+        <View style={{ flex: 1, padding: 16 }}>
+          {/* Localisation */}
+          <View style={{ marginBottom: 16 }}>
+            <Text style={styles.locationText}>
+              <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localisation: </Text>
+              <Text style={{ color: '#555' }}>{userCity}</Text>
+            </Text>
+          </View>
+
+          {/* Chips de filtres */}
+          <View style={styles.filtersRow}>
+            <TouchableOpacity 
+              onPress={() => setMode('nearby')} 
+              style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
+            >
+              <Ionicons name="location-outline" size={18} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+              <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              onPress={() => setMode('commune')} 
+              style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}
+            >
+              <Ionicons name="map-outline" size={18} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+              <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Barre de recherche communes (visible seulement en mode commune) */}
+          {mode === 'commune' && (
+            <View style={{ marginTop: 16 }}>
+              <Text style={styles.searchLabel}>Rechercher une commune</Text>
+              <View style={styles.searchContainer}>
+                <TextInput
+                  value={communeQuery}
+                  onChangeText={(text) => {
+                    setCommuneQuery(text);
+                    setShowCommuneSuggestions(true);
+                  }}
+                  onFocus={() => setShowCommuneSuggestions(true)}
+                  placeholder={`Rechercher dans ${userCity}...`}
+                  style={styles.searchInput}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                {communeQuery.length > 0 && (
+                  <TouchableOpacity 
+                    onPress={() => {
+                      setCommuneQuery('');
+                      setShowCommuneSuggestions(false);
+                    }} 
+                    style={styles.clearButton}
+                  >
+                    <Ionicons name="close-circle" size={20} color="#666" />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {/* Suggestions de communes */}
+              {showCommuneSuggestions && communeQuery.length > 0 && (
+                <View style={styles.suggestionsContainer}>
+                  <ScrollView style={{ maxHeight: 200 }} nestedScrollEnabled>
+                    {filteredCommunes.length > 0 ? (
+                      filteredCommunes.map((commune, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          onPress={() => {
+                            setCommuneQuery(commune);
+                            setShowCommuneSuggestions(false);
+                          }}
+                          style={styles.suggestionItem}
+                        >
+                          <Text style={styles.suggestionText}>{commune}</Text>
+                        </TouchableOpacity>
+                      ))
+                    ) : (
+                      <View style={styles.suggestionItem}>
+                        <Text style={[styles.suggestionText, { color: '#999' }]}>Aucune commune trouvée</Text>
+                      </View>
+                    )}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
+          )}
+
+          {/* Contenu principal */}
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+            <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+              {mode === 'nearby' 
+                ? `Recherche d'établissements de santé autour de vous dans ${userCity}...`
+                : `Recherche d'établissements de santé ${communeQuery ? `dans ${communeQuery}` : `dans ${userCity}`}...`
+              }
+            </Text>
+            <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
+              Fonctionnalité en cours de développement
+            </Text>
+          </View>
         </View>
       ) : (
         <FlatList
