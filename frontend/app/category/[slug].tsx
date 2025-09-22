@@ -129,6 +129,30 @@ export default function CategoryPage() {
     return availableCommunes.filter(c => normalize(c).includes(q));
   }, [communeQuery, availableCommunes]);
 
+  // Obtenir les établissements pour la commune sélectionnée
+  const selectedFacilities = useMemo(() => {
+    if (mode === 'nearby') return []; // Pour l'instant, pas d'implémentation pour "Autour de moi"
+    if (!communeQuery) return [];
+    return healthFacilitiesByCommune[communeQuery] || [];
+  }, [mode, communeQuery]);
+
+  // Fonctions d'actions
+  const openPhone = (phone: string) => {
+    const cleanPhone = phone.replace(/\s+/g, '');
+    Linking.openURL(`tel:${cleanPhone}`);
+  };
+
+  const openWebsite = (website: string) => {
+    const url = website.startsWith('http') ? website : `https://${website}`;
+    Linking.openURL(url);
+  };
+
+  const openDirections = (lat: number, lng: number, name: string) => {
+    const query = encodeURIComponent(name);
+    const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+    Linking.openURL(url);
+  };
+
   const bg = HEADERS[s] || HEADERS['urgence'];
 
   const catLabel = useMemo(() => {
