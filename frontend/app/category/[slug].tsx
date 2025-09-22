@@ -617,6 +617,11 @@ export default function CategoryPage() {
             <Text style={styles.locationText}>
               <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localisation: </Text>
               <Text style={{ color: '#555' }}>{userCity}</Text>
+              {!hasCommunes && userSelectedCity !== 'Abidjan' && (
+                <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
+                  {' '}(données par défaut - {userSelectedCity} non disponible)
+                </Text>
+              )}
             </Text>
           </View>
 
