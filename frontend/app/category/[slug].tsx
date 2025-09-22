@@ -90,6 +90,17 @@ export default function CategoryPage() {
     'Adiaké': ['Adiaké'],
     'M\'Batto': ['M\'Batto'],
     'Kouto': ['Kouto'],
+    // Nouvelles villes ajoutées
+    'Djékanou': ['Djékanou'],
+    'Grand-Béréby': ['Grand-Béréby'],
+    'Dabakala': ['Dabakala'],
+    'Akoupé': ['Akoupé'],
+    'Bloléquin': ['Bloléquin'],
+    'Prikro': ['Prikro'],
+    'Koun-Fao': ['Koun-Fao'],
+    'Guibéroua': ['Guibéroua'],
+    'N\'Douci': ['N\'Douci'],
+    'Grabo': ['Grabo'],
     'Bouaké': ['Broukro', 'Djébonoua', 'Gonfreville', 'Korhogo'],
     'Yamoussoukro': ['Attiégouakro', 'N\'Gokro'],
   };
