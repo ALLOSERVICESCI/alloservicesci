@@ -306,6 +306,121 @@ export default function CategoryPage() {
         commune: 'Adjamé',
         city: 'Abidjan'
       }
+    ],
+    'Abobo': [
+      {
+        id: 'hopital-abobo',
+        name: 'Hôpital Général d\'Abobo',
+        type: 'public',
+        services: 'médecine, chirurgie, maternité, urgences',
+        address: 'Quartier de la Cent Douze Hectares, Abobo',
+        phones: ['+225 05 86 30 20 83'],
+        commune: 'Abobo',
+        city: 'Abidjan',
+        note: 'Réhabilitation en travaux'
+      },
+      {
+        id: 'cmsh-biabou',
+        name: 'Centre Médical Spécialisé Hinneh (CMSH) de Biabou',
+        type: 'public',
+        services: 'dispensaire, maternité, services spécialisés',
+        address: 'Abobo-Biabou',
+        commune: 'Abobo',
+        city: 'Abidjan'
+      },
+      {
+        id: 'clinique-chirurgical-abobo',
+        name: 'Clinique Médical Chirurgical d\'Abobo',
+        type: 'clinic',
+        services: 'chirurgicale & médicale pluridisciplinaire',
+        address: 'Derrière la CIE à environ 250 m, Avocatier, Abobo',
+        phones: ['+225 78 88 22 46 9'],
+        commune: 'Abobo',
+        city: 'Abidjan'
+      },
+      {
+        id: 'polyclinique-centrale-abobo',
+        name: 'Polyclinique Centrale Abobo',
+        type: 'clinic',
+        services: 'polyclinique de référence',
+        address: 'Route du Zoo, Abobo (Carrefour Menuiserie / Aboboté)',
+        commune: 'Abobo',
+        city: 'Abidjan'
+      },
+      {
+        id: 'polyclinique-etoile',
+        name: 'Polyclinique Médicale de l\'Étoile',
+        type: 'clinic',
+        services: 'clinique médicale',
+        address: 'Face Camp Commando, Abobo',
+        phones: ['24 49 44 81'],
+        commune: 'Abobo',
+        city: 'Abidjan'
+      },
+      {
+        id: 'grande-clinique-dokui',
+        name: 'Grande Clinique du Dokui',
+        type: 'clinic',
+        services: 'soins divers',
+        address: 'Abobo',
+        phones: ['20 37 23 40'],
+        commune: 'Abobo',
+        city: 'Abidjan'
+      },
+      {
+        id: 'clinique-fatima-4etages',
+        name: 'Clinique Fatima des 4 Étages',
+        type: 'clinic',
+        services: 'centre hospitalier, clinique, maternité',
+        address: 'Sogé-Phia, Abobo (près mosquée des 4 étages)',
+        commune: 'Abobo',
+        city: 'Abidjan'
+      }
+    ],
+    'Anyama': [
+      {
+        id: 'centre-don-orione-anyama',
+        name: 'Centre Médical Don Orione Anyama',
+        type: 'public',
+        services: 'gynécologie obstétrique, médecine générale',
+        address: 'Anyama',
+        commune: 'Anyama',
+        city: 'Abidjan'
+      },
+      {
+        id: 'clinique-medicale-anyama',
+        name: 'Clinique Médicale d\'Anyama',
+        type: 'clinic',
+        services: 'services médicaux généraux',
+        address: 'Anyama',
+        phones: ['23 55 91 45'],
+        commune: 'Anyama',
+        city: 'Abidjan'
+      },
+      {
+        id: 'centre-st-louis-orione',
+        name: 'Centre Médical St Louis Orione',
+        type: 'clinic',
+        services: 'service médical',
+        address: 'Anyama',
+        phones: ['23 55 95 34'],
+        website: 'gcya-holding.com',
+        commune: 'Anyama',
+        city: 'Abidjan',
+        note: 'Privé confessionnel'
+      }
+    ],
+    'Songon': [
+      {
+        id: 'societe-medicale-songon',
+        name: 'Société Médicale de Songon',
+        type: 'clinic',
+        services: 'clinique médicale',
+        address: 'Carrefour Gravier, Songon',
+        phones: ['07 58 30 87 81'],
+        commune: 'Songon',
+        city: 'Abidjan'
+      }
     ]
   };
 
