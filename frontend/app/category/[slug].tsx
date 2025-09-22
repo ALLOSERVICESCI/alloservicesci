@@ -26,6 +26,35 @@ export default function CategoryPage() {
   const { slug } = useLocalSearchParams();
   const s = Array.isArray(slug) ? slug[0] : (slug || 'urgence');
   const { t } = useI18n();
+  const { user } = useAuth();
+
+  // États pour la section santé
+  const [mode, setMode] = useState<'nearby' | 'commune'>('nearby');
+  const [communeQuery, setCommuneQuery] = useState('');
+  const [showCommuneSuggestions, setShowCommuneSuggestions] = useState(false);
+
+  // Communes par ville
+  const communesByCity: Record<string, string[]> = {
+    'Abidjan': [
+      'Abobo', 'Adjamé', 'Anyama', 'Attécoubé', 'Bingerville', 'Cocody', 
+      'Angré', 'Plateau Dokui', 'Williamsville', 'Koumassi', 'Marcory', 
+      'Plateau', 'Port-Bouët', 'Treichville', 'Songon', 'Yopougon'
+    ],
+    'Bouaké': ['Broukro', 'Djébonoua', 'Gonfreville', 'Korhogo'],
+    'Yamoussoukro': ['Attiégouakro', 'N\'Gokro'],
+    // Ajoutez d'autres villes selon vos besoins
+  };
+
+  const userCity = user?.city || 'Abidjan';
+  const availableCommunes = communesByCity[userCity] || [];
+
+  // Filtrage des communes
+  const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const filteredCommunes = useMemo(() => {
+    if (!communeQuery) return availableCommunes;
+    const q = normalize(communeQuery);
+    return availableCommunes.filter(c => normalize(c).includes(q));
+  }, [communeQuery, availableCommunes]);
 
   const bg = HEADERS[s] || HEADERS['urgence'];
 
