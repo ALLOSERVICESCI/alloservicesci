@@ -392,7 +392,7 @@ export default function CategoryPage() {
                           {/* GPS */}
                           {facility.lat && facility.lng && (
                             <TouchableOpacity
-                              onPress={() => openDirections(facility.lat, facility.lng, facility.name)}
+                              onPress={() => openGoogleMaps(facility.lat, facility.lng, facility.name)}
                               style={styles.actionButtonAlt}
                             >
                               <Ionicons name="navigate" size={16} color="#0A7C3A" />
