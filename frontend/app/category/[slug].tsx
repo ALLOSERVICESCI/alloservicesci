@@ -1417,7 +1417,7 @@ export default function CategoryPage() {
   return (
     <View style={styles.container}>
       {/* En-tête avec image */}
-      <ImageBackground source={bg} style={styles.header} resizeMode="cover">
+      <ImageBackground source={bg} style={styles.header} resizeMode="contain">
         <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
           <View style={styles.headerContent}>
             <Text style={styles.headerTitle}>
