@@ -500,9 +500,15 @@ export default function CategoryPage() {
   // Vérifier si la ville sélectionnée a des communes disponibles
   const hasCommunes = communesByCity[userSelectedCity] && communesByCity[userSelectedCity].length > 0;
   
-  // Utiliser la ville sélectionnée si elle a des communes, sinon utiliser Abidjan par défaut
-  const userCity = hasCommunes ? userSelectedCity : 'Abidjan';
+  // Vérifier si la ville sélectionnée a des établissements de santé directement (sans communes)
+  const hasDirectFacilities = healthFacilitiesByCommune[userSelectedCity] && healthFacilitiesByCommune[userSelectedCity].length > 0;
+  
+  // Utiliser la ville sélectionnée si elle a des communes ou des établissements directs, sinon utiliser Abidjan par défaut
+  const userCity = (hasCommunes || hasDirectFacilities) ? userSelectedCity : 'Abidjan';
   const availableCommunes = communesByCity[userCity] || [];
+  
+  // Mode d'affichage : 'communes' si la ville a des communes, 'direct' si établissements directs
+  const displayMode = hasCommunes ? 'communes' : 'direct';
 
   // Filtrage des communes
   const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
