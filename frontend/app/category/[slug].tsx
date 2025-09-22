@@ -1376,32 +1376,60 @@ export default function CategoryPage() {
 
   const data = CONTENT_BY_CATEGORY[s] || [];
 
+  // Fonction pour sécuriser le rendu des téléphones
+  const renderPhones = (phones: any[]) => {
+    if (!phones || !Array.isArray(phones)) return null;
+    
+    return phones.map((phone: any, idx: number) => {
+      const phoneNumber = typeof phone === 'string' ? phone : (phone?.tel || '');
+      const phoneLabel = typeof phone === 'string' ? phone : (phone?.label || 'Téléphone');
+      
+      return (
+        <TouchableOpacity 
+          key={`phone-${idx}`} 
+          onPress={() => Linking.openURL(`tel:${phoneNumber.replace(/\s+/g, '')}`)} 
+          style={styles.actionBtn}
+        >
+          <Ionicons name="call" size={16} color="#fff" />
+          <Text style={styles.actionBtnText}>{phoneLabel}</Text>
+        </TouchableOpacity>
+      );
+    });
+  };
+
+  // Fonction pour sécuriser le rendu des codes USSD
+  const renderUSSD = (ussd: any) => {
+    if (!ussd) return null;
+    
+    if (typeof ussd === 'string') {
+      return `USSD: ${ussd}`;
+    }
+    
+    if (Array.isArray(ussd)) {
+      return `USSD: ${ussd.map((u: any) => `${u?.label || 'Code'}: ${u?.code || ''}`).join(', ')}`;
+    }
+    
+    return 'USSD: Information disponible';
+  };
+
   const renderContentItem = ({ item }: { item: any }) => (
     <View style={styles.contentCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.cardTitle}>{item.title || item.name}</Text>
+        <Text style={styles.cardTitle}>{item.title || item.name || 'Service'}</Text>
         {item.isPremium && (
           <View style={styles.premiumBadge}>
             <Text style={styles.premiumBadgeText}>Premium</Text>
           </View>
         )}
       </View>
-      {(item.description || item.summary) && <Text style={styles.cardDescription}>{item.description || item.summary}</Text>}
+      {(item.description || item.summary) && (
+        <Text style={styles.cardDescription}>{item.description || item.summary}</Text>
+      )}
       {item.ussd && (
-        <Text style={styles.cardUssd}>
-          USSD: {Array.isArray(item.ussd) 
-            ? item.ussd.map((u: any) => `${u.label}: ${u.code}`).join(', ')
-            : item.ussd
-          }
-        </Text>
+        <Text style={styles.cardUssd}>{renderUSSD(item.ussd)}</Text>
       )}
       <View style={styles.cardActions}>
-        {item.phones?.map((phone: any, idx: number) => (
-          <TouchableOpacity key={idx} onPress={() => Linking.openURL(`tel:${(typeof phone === 'string' ? phone : phone?.tel || '').replace(/\s+/g, '')}`)} style={styles.actionBtn}>
-            <Ionicons name="call" size={16} color="#fff" />
-            <Text style={styles.actionBtnText}>{typeof phone === 'string' ? phone : (phone?.label || 'Téléphone')}</Text>
-          </TouchableOpacity>
-        ))}
+        {renderPhones(item.phones)}
         {item.website && (
           <TouchableOpacity onPress={() => openSource(item.website)} style={styles.actionBtnAlt}>
             <Ionicons name="globe" size={16} color="#0A7C3A" />
