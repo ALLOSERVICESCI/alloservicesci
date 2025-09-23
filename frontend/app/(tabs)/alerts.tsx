@@ -73,13 +73,15 @@ export default function Alerts() {
   useEffect(() => { fetchAlerts(); }, []);
 
   const renderHeader = () => (
-    <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} imageStyle={styles.headerImage} resizeMode="cover">
-      <View style={styles.headerContentRight}>
-        <Link href="/alerts/new" asChild>
-          <TouchableOpacity style={styles.btn} accessibilityRole="button"><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
-        </Link>
-      </View>
-    </ImageBackground>
+    <View style={styles.headerWrapperAlerts}>
+      <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} imageStyle={styles.headerImage} resizeMode="cover">
+        <View style={styles.headerContentRight}>
+          <Link href="/alerts/new" asChild>
+            <TouchableOpacity style={styles.btn} accessibilityRole="button"><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
+          </Link>
+        </View>
+      </ImageBackground>
+    </View>
   );
 
   if (loading) return <View style={styles.center}><ActivityIndicator /></View>;
