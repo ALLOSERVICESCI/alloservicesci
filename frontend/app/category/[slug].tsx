@@ -1335,19 +1335,19 @@ export default function CategoryPage() {
   // Obtenir les établissements pour la commune sélectionnée ou directement pour la ville
   const selectedFacilities = useMemo(() => {
     if (mode === 'nearby') return []; // Pour l'instant, pas d'implémentation pour "Autour de moi"
-    
-    // Si la ville a un système de communes
+
     if (displayMode === 'communes') {
       if (!communeQuery) return [];
       return healthFacilitiesByCommune[communeQuery] || [];
     }
-    
-    // Si la ville a des établissements directs (sans communes)
+
     if (displayMode === 'direct') {
       return healthFacilitiesByCommune[userCity] || [];
     }
-    
+
     return [];
+  }, [mode, communeQuery, displayMode, userCity]);
+
   const getBrand = (name?: string): 'orange' | 'mtn' | 'moov' | null => {
     if (!name) return null;
     const n = name.toLowerCase();
@@ -1357,7 +1357,6 @@ export default function CategoryPage() {
     return null;
   };
 
-  }, [mode, communeQuery, displayMode, userCity]);
 
   // Fonctions d'actions
   const openPhone = (phone: string) => {
