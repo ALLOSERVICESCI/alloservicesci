@@ -418,6 +418,19 @@ frontend:
         comment: "🎉 SANTÉ PAGE RÉVOLUTIONNAIRE ENTIÈREMENT FONCTIONNELLE! Test complet iPhone 12/13/14 (390x844) confirme succès à 90% (9/10 critères). ✅ TOUTES FONCTIONNALITÉS MAJEURES: 1) Titre 'Les unités de santé' dans header (pas 'categories.sante'), 2) Localisation dynamique basée sur ville profil utilisateur (Abidjan par défaut), 3) Filtres 'Autour de moi' (bleu #0D6EFD) et 'Communes' (vert #0A7C3A) entièrement fonctionnels, 4) Barre de recherche avec autocomplétion des communes (testé avec Cocody), 5) Affichage des établissements avec cartes détaillées (CHU de Cocody, CHU d'Angré avec services complets), 6) Boutons d'action fonctionnels (téléphone: 22 44 90 00, site web: chuangre.ci), 7) Badges 'Public'/'Clinique' affichés correctement, 8) Mode 'Autour de moi' implémenté avec message approprié, 9) Logique intelligente: affichage direct pour villes avec établissements, communes pour Abidjan, fallback vers Abidjan. ✅ RÉGRESSION VALIDÉE: Pharmacies page fonctionnelle, Profile page sans 'Réinitialiser infobulles'. ⚠️ SEUL POINT MINEUR: Image header santé pourrait être plus visible. CONCLUSION: Page Santé révolutionnaire selon spécifications review request - prête pour production!"
 
 metadata:
+
+  - task: "FRONTEND E2E: Services utiles USSD + badges opérateurs (Orange/MTN/Moov) et Urgence rendering"
+    implemented: true
+    working: false
+    file: "frontend/app/category/[slug].tsx, frontend/src/utils/categoryContent.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Plan: vérifier chips USSD (Orange: *144#/*111#, MTN: *133#/13310#, Moov: *155#/1554#), badges de marque (ORANGE/MTN/MOOV) et rendu Urgence sans erreurs."
+
   created_by: "main_agent"
   version: "1.3"
   test_sequence: 6
