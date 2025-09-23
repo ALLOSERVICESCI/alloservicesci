@@ -1584,19 +1584,26 @@ export default function CategoryPage() {
             </View>
           </ImageBackground>
         </View>
+      ) : s === 'sante' ? (
+        <ImageBackground source={bg} style={styles.header} resizeMode="cover">
+          <View style={[
+            styles.headerContent,
+            styles.headerContentLower
+          ]}>
+            <Text style={[
+              styles.headerTitle,
+              styles.headerTitleSante
+            ]}>
+              Les unités de santé
+            </Text>
+            <Text style={styles.headerSubtitle}>Services disponibles en Côte d'Ivoire</Text>
+          </View>
+        </ImageBackground>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
-            <View style={[
-              styles.headerContent,
-              s === 'sante' && styles.headerContentLower
-            ]}>
-              <Text style={[
-                styles.headerTitle,
-                s === 'sante' && styles.headerTitleSante
-              ]}>
-                {s === 'sante' ? 'Les unités de santé' : t(`categories.${s}`)}
-              </Text>
+            <View style={styles.headerContent}>
+              <Text style={styles.headerTitle}>{t(`categories.${s}`)}</Text>
               <Text style={styles.headerSubtitle}>Services disponibles en Côte d'Ivoire</Text>
             </View>
           </LinearGradient>
