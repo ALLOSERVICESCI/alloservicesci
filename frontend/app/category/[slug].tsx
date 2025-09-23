@@ -1606,9 +1606,6 @@ export default function CategoryPage() {
             renderItem={renderUrgenceItem as any}
             renderSectionHeader={({ section }: any) => {
               const title = section?.title || '';
-              // Primary phone: prefer short emergency numbers if present
-              const phones = Array.isArray(section?.data?.[0]?.phones) ? section.data[0].phones : [];
-              const primary = phones.find((p: any) => /^\d{2,4}$/.test((p?.tel || '').trim())) || phones[0];
               return (
                 <View style={styles.urgSectionHeader}>
                   <View style={styles.urgSectionHeaderRow}>
@@ -1616,12 +1613,6 @@ export default function CategoryPage() {
                       <Ionicons name={title === 'Incendie' ? 'flame' : title === 'Médical' ? 'medkit' : 'shield'} size={18} color="#fff" style={{ marginRight: 8 }} />
                       <Text style={styles.urgSectionTitle}>{title}</Text>
                     </View>
-                    {primary?.tel ? (
-                      <TouchableOpacity onPress={() => openPhone(primary.tel)} style={styles.urgQuickCall}>
-                        <Ionicons name="call" size={16} color="#E53935" />
-                        <Text style={styles.urgQuickCallText}>{primary.tel}</Text>
-                      </TouchableOpacity>
-                    ) : null}
                   </View>
                 </View>
               );
