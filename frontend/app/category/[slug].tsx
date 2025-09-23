@@ -1573,7 +1573,7 @@ export default function CategoryPage() {
   const bg = backgroundImages[s] || COMMON_HEADER;
 
   return (
-    <View style={[styles.container, s === 'urgence' && { paddingTop: 250 }]}>
+    <View style={[styles.container, (s === 'urgence' || s === 'sante') && { paddingTop: 250 }]}>
       {/* En-tête avec image */}
       {s === 'urgence' ? (
         <View style={styles.headerWrapperUrgence}>
