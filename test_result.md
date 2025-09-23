@@ -430,6 +430,10 @@ metadata:
       - working: "NA"
         agent: "testing"
         comment: "Plan: vérifier chips USSD (Orange: *144#/*111#, MTN: *133#/13310#, Moov: *155#/1554#), badges de marque (ORANGE/MTN/MOOV) et rendu Urgence sans erreurs."
+      - working: false
+        agent: "testing"
+        comment: "Relance demandée: navigation via Accueil → Services utiles / Urgence (router.push depuis grille catégories) pour valider badges USSD + brand badges et rendu Urgence sans erreurs."
+
 
   created_by: "main_agent"
   version: "1.3"
