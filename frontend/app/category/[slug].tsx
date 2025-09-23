@@ -2018,9 +2018,28 @@ const styles = StyleSheet.create({
     }),
   },
   headerUrgence: { width: '100%', height: '100%', justifyContent: 'flex-end' },
-  headerUrgenceContent: { padding: 20, paddingBottom: 18, alignItems: 'flex-start' },
-  headerTitleUrg: { color: '#FF8A00', fontSize: 24, fontWeight: '900', marginBottom: 2 },
-  headerSubtitleUrg: { color: '#fff', fontSize: 14, opacity: 0.95 },
+  headerUrgenceContent: { padding: 20, paddingBottom: 6, alignItems: 'flex-start' },
+  headerTitleUrg: {
+    color: '#FF8A00',
+    fontSize: 24,
+    fontWeight: '900',
+    marginBottom: 2,
+    ...Platform.select({
+      ios: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
+      android: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
+      default: { textShadow: '0px 1.5px 3px rgba(0,0,0,0.45)' as any },
+    }),
+  },
+  headerSubtitleUrg: {
+    color: '#fff',
+    fontSize: 14,
+    opacity: 0.95,
+    ...Platform.select({
+      ios: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
+      android: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
+      default: { textShadow: '0px 1.5px 3px rgba(0,0,0,0.45)' as any },
+    }),
+  },
 
   // Brand badge styles
   brandBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, marginLeft: 8 },
