@@ -1441,7 +1441,7 @@ export default function CategoryPage() {
   // Choix de l'image d'en-tête selon la catégorie
   const backgroundImages: Record<string, any> = {
     pharmacies: { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' },
-    sante: require('../../assets/headers/headers/sante_bg.png'),
+    sante: require('../../assets/headers/sante_bg.png'),
     urgence: { uri: 'https://customer-assets.emergent.sh/alloscici/home/urgence_bg.png' },
   };
 
