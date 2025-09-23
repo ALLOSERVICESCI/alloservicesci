@@ -1311,18 +1311,18 @@ export default function CategoryPage() {
 
   const userSelectedCity = user?.city || 'Abidjan';
   
-  // Vérifier si la ville sélectionnée a des communes disponibles
-  const hasCommunes = communesByCity[userSelectedCity] && communesByCity[userSelectedCity].length > 0;
-  
-  // Vérifier si la ville sélectionnée a des établissements de santé directement (sans communes)
-  const hasDirectFacilities = healthFacilitiesByCommune[userSelectedCity] && healthFacilitiesByCommune[userSelectedCity].length > 0;
-  
-  // Utiliser la ville sélectionnée si elle a des communes ou des établissements directs, sinon utiliser Abidjan par défaut
-  const userCity = (hasCommunes || hasDirectFacilities) ? userSelectedCity : 'Abidjan';
-  const availableCommunes = communesByCity[userCity] || [];
-  
-  // Mode d'affichage : 'communes' si la ville a des communes, 'direct' si établissements directs
-  const displayMode = hasCommunes ? 'communes' : 'direct';
+  // Règle demandée: Seule Abidjan utilise les communes, toutes les autres villes affichent directement leurs établissements
+  const isAbidjan = userSelectedCity === 'Abidjan';
+  const cityHasFacilities = !!healthFacilitiesByCommune[userSelectedCity];
+
+  // Si la ville sélectionnée n'a pas d'établissements connus, fallback sur Abidjan
+  const userCity = (isAbidjan || cityHasFacilities) ? userSelectedCity : 'Abidjan';
+
+  // Communes disponibles uniquement pour Abidjan
+  const availableCommunes = isAbidjan ? (communesByCity['Abidjan'] || []) : [];
+
+  // Mode d'affichage: communes uniquement pour Abidjan, direct sinon
+  const displayMode: 'communes' | 'direct' = isAbidjan ? 'communes' : 'direct';
 
   // Filtrage des communes
   const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
