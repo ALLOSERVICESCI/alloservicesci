@@ -1471,7 +1471,7 @@ export default function CategoryPage() {
           <FlatList
             data={data}
             renderItem={renderContentItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(_, idx) => `${s}-urgence-${idx}`}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
           />
@@ -1842,7 +1842,7 @@ export default function CategoryPage() {
           <FlatList
             data={data}
             renderItem={renderContentItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(_, idx) => `${s}-urgence-${idx}`}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
           />
