@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
 """
-Backend API Testing Suite for Allô Services CI
-Tests all endpoints specified in the review request:
-1) Auth: POST /api/auth/register 
-2) Users: PATCH /api/users/<id>
-3) Subscriptions: GET /api/subscriptions/check?user_id=<id>
-4) Alerts: GET /api/alerts, POST /api/alerts, GET /api/alerts/unread_count?user_id=<id>
-5) Pharmacies: GET /api/pharmacies (various filters)
-6) Payments: POST /api/payments/cinetpay/initiate
-7) AI: POST /api/ai/chat (stream=false)
-8) Health: GET /api/health/facilities (new APIs)
+Backend Test Suite for Allô Services CI API
+Focus: AI Chat endpoint testing as per review request
 """
 
 import requests
 import json
+import time
+import os
 import sys
+from typing import Dict, Any, List
 from datetime import datetime
 
-# Get backend URL from frontend .env
+# Load backend URL from frontend .env
 BACKEND_URL = "https://allo-assistance.preview.emergentagent.com/api"
+EMERGENT_API_KEY = "sk-emergent-5F8959dC8249919584"  # For leak detection
 
 def test_review_request_complete():
     """Complete backend regression test according to review request"""
