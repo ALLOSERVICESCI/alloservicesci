@@ -16,6 +16,9 @@ export default function CategoryPage() {
   const { t } = useI18n();
   const { user } = useAuth();
 
+  // Ville effective (contexte puis stockage local en secours)
+  const [effectiveCity, setEffectiveCity] = useState<string>(user?.city || 'Abidjan');
+
   // États pour la section santé
   const [mode, setMode] = useState<'nearby' | 'commune'>('nearby');
   const [communeQuery, setCommuneQuery] = useState('');
