@@ -1404,15 +1404,6 @@ export default function CategoryPage() {
       </View>
     </View>
   );
-        {item.website && (
-          <TouchableOpacity onPress={() => openSource(item.website)} style={styles.actionBtnAlt}>
-            <Ionicons name="globe" size={16} color="#0A7C3A" />
-            <Text style={styles.actionBtnAltText}>Site web</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    </View>
-  );
 
   // Choix de l'image d'en-tête selon la catégorie
   const backgroundImages: Record<string, any> = {
