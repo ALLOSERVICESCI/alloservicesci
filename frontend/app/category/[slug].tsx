@@ -1432,14 +1432,11 @@ export default function CategoryPage() {
 
 
 
-  const renderUrgenceItem = ({ item, index }: { item: any; index: number }) => {
+  const renderUrgenceItem = ({ item }: { item: any; index: number }) => {
     const title = item?.title || '';
     const summary = item?.summary || '';
     const source = item?.source;
     const phones: { label?: string; tel?: string }[] = Array.isArray(item?.phones) ? item.phones : [];
-    const sectionKey = `${item?.tag || 'Autres'}`;
-    const adviceKey = `${sectionKey}-${index}-${title}`;
-    const isOpen = !!openAdvice[adviceKey];
 
     return (
       <View style={styles.urgItemCard}>
@@ -1459,22 +1456,6 @@ export default function CategoryPage() {
             </TouchableOpacity>
           ) : null}
         </View>
-
-        {/* Accordéon Conseils */}
-        <TouchableOpacity onPress={() => toggleAdvice(adviceKey)} style={styles.adviceToggle} activeOpacity={0.85}>
-          <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={18} color="#E53935" />
-          <Text style={styles.adviceToggleText}>Conseils</Text>
-        </TouchableOpacity>
-        {isOpen && (
-          <View style={styles.adviceContent}>
-            {(adviceMap[sectionKey] || adviceMap['Autres']).map((tip, i) => (
-              <View key={`tip-${i}`} style={styles.adviceRow}>
-                <Ionicons name="information-circle-outline" size={14} color="#E53935" />
-                <Text style={styles.adviceText}>{tip}</Text>
-              </View>
-            ))}
-          </View>
-        )}
       </View>
     );
   };
