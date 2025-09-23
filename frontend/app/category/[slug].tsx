@@ -1643,14 +1643,33 @@ export default function CategoryPage() {
       {/* Contenu spécifique par catégorie */}
       {s === 'urgence' ? (
         <View style={{ padding: 16, paddingBottom: 40 }}>
-          <View style={styles.headerNote}>
-            <Text style={styles.headerNoteTitle}>Urgences - Secours</Text>
-            <Text style={styles.headerNoteSub}>Numéros d'urgence et services de secours disponibles 24h/24 en Côte d'Ivoire</Text>
-          </View>
-          <FlatList
-            data={data}
-            renderItem={renderContentItem}
-            keyExtractor={(_, idx) => `${s}-urgence-${idx}`}
+          <SectionList
+            sections={urgenceSections as any}
+            keyExtractor={(item, idx) => `urg-item-${idx}`}
+            renderItem={renderUrgenceItem as any}
+            renderSectionHeader={({ section }: any) => {
+              const title = section?.title || '';
+              // Primary phone: prefer short emergency numbers if present
+              const phones = Array.isArray(section?.data?.[0]?.phones) ? section.data[0].phones : [];
+              const primary = phones.find((p: any) => /^\d{2,4}$/.test((p?.tel || '').trim())) || phones[0];
+              return (
+                <View style={styles.urgSectionHeader}>
+                  <View style={styles.urgSectionHeaderRow}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Ionicons name={title === 'Incendie' ? 'flame' : title === 'Médical' ? 'medkit' : 'shield'} size={18} color="#fff" style={{ marginRight: 8 }} />
+                      <Text style={styles.urgSectionTitle}>{title}</Text>
+                    </View>
+                    {primary?.tel ? (
+                      <TouchableOpacity onPress={() => openPhone(primary.tel)} style={styles.urgQuickCall}>
+                        <Ionicons name="call" size={16} color="#E53935" />
+                        <Text style={styles.urgQuickCallText}>{primary.tel}</Text>
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
+                </View>
+              );
+            }}
+            stickySectionHeadersEnabled
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
           />
