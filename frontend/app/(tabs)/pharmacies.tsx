@@ -159,9 +159,9 @@ export default function Pharmacies() {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}> 
+      {/* Header fixe */}
+      <View style={styles.headerWrapperPharm}>
         <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
-          <View pointerEvents="none" style={styles.headerOverlay} />
           <View style={styles.titleWrap}>
             <View style={styles.headerRow} testID="pharmaciesHeaderRow" dataSet={{ testid: 'pharmaciesHeaderRow' }}>
               <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle" dataSet={{ testid: 'pharmaciesHeaderTitle' }} accessibilityLabel="Pharmacies" nativeID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
@@ -178,6 +178,9 @@ export default function Pharmacies() {
             </View>
           </View>
         </ImageBackground>
+      </View>
+
+      <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}> 
 
         {/* Filtres actifs (badges) */}
         <View style={styles.activeFiltersRow}>
