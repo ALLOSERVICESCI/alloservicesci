@@ -9,7 +9,7 @@ import { useAuth } from '../../src/context/AuthContext';
 import { useI18n } from '../../src/i18n/i18n';
 import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 import NavMenu from '../../src/components/NavMenu';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { apiFetch } from '../../src/utils/api';
 import Reanimated, { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, runOnJS, withTiming, withRepeat, withSequence, withDelay, Easing as REEasing, cancelAnimation } from 'react-native-reanimated';
 
