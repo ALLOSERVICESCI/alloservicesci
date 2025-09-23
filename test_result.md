@@ -443,7 +443,7 @@ metadata:
     implemented: true
     working: false
     file: "frontend/app/category/[slug].tsx, frontend/app/profile/edit.tsx"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: false
     status_history:
@@ -453,6 +453,9 @@ metadata:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL ISSUES FOUND - Comprehensive E2E test (iPhone 12/13/14: 390x844) reveals major problems: 1) ✅ PART A (Divo mode): UI behavior CORRECT - no chips 'Autour de moi'/'Communes' visible, no 'Rechercher une commune' input (proper direct mode), 2) ❌ CRITICAL: No Divo facilities displayed - shows 'Aucun établissement de santé disponible pour Divo' + 'Données en cours d'ajout', 3) ❌ PART B (Abidjan mode): UI behavior BROKEN - no chips visible, no commune search input, still shows Divo location, 4) ❌ ROOT CAUSE: Frontend using static data from healthFacilitiesByCommune object instead of backend API (/api/health/facilities returns 404), 5) ❌ Backend API not connected - /api/health/facilities?city=Divo returns 404 Not Found. Frontend implementation correct but backend integration missing. Requires backend API connection to display real facility data."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL CITY-BASED LOGIC FAILURE - Comprehensive E2E test (iPhone 12/13/14: 390x844) reveals fundamental implementation issues: 1) ❌ PART A (Divo): Shows WRONG interface - displays Abidjan communes mode (chips 'Autour de moi'/'Communes' present) instead of direct mode, no Divo facility cards visible (0/5 required facilities found), city change to Divo not taking effect properly, 2) ❌ PART B (Abidjan): Chips present correctly but 'Rechercher une commune' input missing, commune search functionality not working, 3) ❌ ROOT CAUSE: City-based conditional rendering logic broken - both Divo and Abidjan show same interface with 'Localités: Abidjan', profile city changes not persisting or not being used correctly in Santé page logic, 4) ❌ BACKEND INTEGRATION: No facility data displayed for either city, static data from healthFacilitiesByCommune not being rendered. URGENT: Fix city-based display mode logic and backend API integration for health facilities data."
 
   created_by: "main_agent"
   version: "1.3"
