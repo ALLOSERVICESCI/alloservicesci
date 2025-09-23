@@ -1596,29 +1596,7 @@ export default function CategoryPage() {
 
       {/* Contenu spécifique par catégorie */}
       {s === 'urgence' ? (
-        <View style={{ padding: 16, paddingBottom: 40 }}>
-          <SectionList
-            sections={urgenceSections as any}
-            keyExtractor={(item, idx) => `urg-item-${idx}`}
-            renderItem={renderUrgenceItem as any}
-            renderSectionHeader={({ section }: any) => {
-              const title = section?.title || '';
-              return (
-                <View style={styles.urgSectionHeader}>
-                  <View style={styles.urgSectionHeaderRow}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Ionicons name={title === 'Incendie' ? 'flame' : title === 'Médical' ? 'medkit' : 'shield'} size={18} color="#fff" style={{ marginRight: 8 }} />
-                      <Text style={styles.urgSectionTitle}>{title}</Text>
-                    </View>
-                  </View>
-                </View>
-              );
-            }}
-            stickySectionHeadersEnabled={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
-          />
-        </View>
+        <View />
       ) : s === 'sante' ? (
         <View style={{ flex: 1, padding: 16 }}>
           {/* Localités avec badge Réinitialiser */}
