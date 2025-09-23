@@ -1577,7 +1577,12 @@ export default function CategoryPage() {
       {/* En-tête avec image */}
       {s === 'urgence' ? (
         <View style={styles.headerWrapperUrgence}>
-          <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover" />
+          <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover">
+            <View style={styles.headerUrgenceContent}>
+              <Text style={styles.headerTitleUrg}>Les unités d'Urgence</Text>
+              <Text style={styles.headerSubtitleUrg}>Services disponibles en Côte d'Ivoire</Text>
+            </View>
+          </ImageBackground>
         </View>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
