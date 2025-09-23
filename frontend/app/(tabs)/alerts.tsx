@@ -15,7 +15,7 @@ export default function Alerts() {
   const { user } = useAuth();
   const { refreshAlertsUnread } = useNotificationsCenter();
 
-  const REMOTE_ALERTS_BG = 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/aiwoflhn_alerte_gb.png';
+  const REMOTE_ALERTS_BG = 'https://customer-assets.emergentagent.com/job_allo-services-1/artifacts/aiwoflhn_alerte_gb.png'; // conservé mais effets désactivés
   const LOCAL_ALERTS_BG = require('../../assets/headers/headers/alertes_bg.png');
   const [headerSource, setHeaderSource] = useState<any>({ uri: REMOTE_ALERTS_BG });
   const SHOW_HEADER_IMAGE = true;
