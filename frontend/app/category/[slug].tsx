@@ -2005,7 +2005,7 @@ const styles = StyleSheet.create({
   headerContent: { padding: 20, paddingBottom: 30 },
   headerContentLower: { paddingBottom: 10 },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '900', marginBottom: 6 },
-  headerTitleSante: { color: '#FF9A4D', marginBottom: 2, fontSize: 22 },
+  headerTitleSante: { color: '#FF8A00', marginBottom: 2, fontSize: 22 },
   headerTitleUrgence: { color: '#FF8A00', marginBottom: 2, fontSize: 24, fontWeight: '900' },
   headerSubtitle: { color: '#fff', fontSize: 14, opacity: 0.9 },
   headerSubtitleTight: { marginTop: -2 },
