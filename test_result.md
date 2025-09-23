@@ -421,11 +421,11 @@ metadata:
 
   - task: "FRONTEND E2E: Services utiles USSD + badges opérateurs (Orange/MTN/Moov) et Urgence rendering"
     implemented: true
-    working: false
+    working: true
     file: "frontend/app/category/[slug].tsx, frontend/src/utils/categoryContent.ts"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
@@ -433,6 +433,9 @@ metadata:
       - working: false
         agent: "testing"
         comment: "Relance demandée: navigation via Accueil → Services utiles / Urgence (router.push depuis grille catégories) pour valider badges USSD + brand badges et rendu Urgence sans erreurs."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE E2E TESTING COMPLETED (iPhone 12/13/14: 390x844) - ALL REQUIREMENTS MET! Test 1: Services utiles navigation successful via 9th tile (services_utiles slug), Orange USSD chips (*144#, *111#) found and clickable, MTN USSD chips (*133#, 13310#) found and clickable, Moov USSD chips (*155#, 1554#) found and clickable, brand background colors validated (Orange: 2 elements ~#FF7900, Green: 14 elements ~#00A859), Site officiel chips (5 found) clickable without errors, header background image renders as local asset without network 404s. Test 2: Urgence navigation successful via first tile, 'Urgences - Secours' title found, '24h/24' subtitle found, emergency services (Pompiers, SAMU, Police) all present, header images (16 found) render correctly, no React child errors detected. Pre-conditions: Splash screen 'Touchez pour continuer' handled correctly, Home page ready with French slogan visible, categories grid detected (14 elements). Console: Only expected tel: protocol errors for USSD codes, no critical React errors. All major requirements from review request successfully validated."
 
 
   created_by: "main_agent"
