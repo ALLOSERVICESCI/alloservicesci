@@ -14,67 +14,99 @@ export interface CatItem {
 export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   urgence: [
     {
-      title: 'En cas d\'incendie',
-      summary: 'Pompier et unités locales en cas d\'incendie.',
+      title: 'Pompiers – GSPM',
+      summary: 'Secours à victimes, incendies, accidents, inondations, désincarcérations',
       tag: 'Incendie',
+      location: 'National, unités basées Abidjan + appuis régionaux',
       phones: [
-        { label: 'Pompiers (GSPM)', tel: '180' },
-        { label: 'Pompiers (GSPM) mobile', tel: '0707811818' },
-        { label: 'Pompiers d\'Indénié', tel: '2720211289' },
-        { label: 'Pompiers de Yopougon', tel: '2723451690' },
+        { label: 'Numéro court', tel: '180' },
+        { label: 'Ligne d\'appui', tel: '0101801328' },
+        { label: 'Ligne d\'appui', tel: '0103019094' },
+        { label: 'Ligne d\'appui', tel: '0501180180' },
+        { label: 'Ligne d\'appui', tel: '0789180180' },
       ],
     },
     {
-      title: 'Urgences médicales',
-      summary: 'SAMU et urgences hospitalières (CHU)',
+      title: 'SAMU Côte d\'Ivoire',
+      summary: 'Urgences médicales, ambulances, régulation médicale',
       tag: 'Médical',
+      location: 'National, dispatch prioritaire depuis Abidjan',
       phones: [
-        { label: 'SAMU (Cocody)', tel: '272722445353' },
-        { label: 'SAMU (numéro abrégé)', tel: '185' },
-        { label: 'CHU de Cocody', tel: '2722481000' },
-        { label: 'CHU de Cocody (ligne 2)', tel: '2722449038' },
-        { label: 'CHU de Treichville', tel: '2721249122' },
-        { label: 'CHU de Yopougon', tel: '2723466454' },
-        { label: 'CHU de Yopougon (ligne 2)', tel: '2723466170' },
-        { label: 'CHU de Grand-Bassam', tel: '2721301036' },
+        { label: 'Numéro court', tel: '185' },
+        { label: 'Alternative', tel: '2722445353' },
+        { label: 'Alternative', tel: '0749960324' },
       ],
     },
     {
-      title: 'Police',
-      summary: 'Numéros de secours et directions de la police',
+      title: 'Police Secours',
+      summary: 'Agressions, troubles, détresse citoyenne',
       tag: 'Police',
+      location: 'National',
       phones: [
-        { label: 'Police secours', tel: '110' },
-        { label: 'Police secours (ligne 2)', tel: '111' },
-        { label: 'Police secours (numéro abrégé)', tel: '170' },
-        { label: 'Direction générale de la police', tel: '2720222030' },
-        { label: 'Préfecture de police', tel: '2720210022' },
-        { label: 'Police juridique', tel: '2720212300' },
-        { label: 'Police économique', tel: '2720325144' },
+        { label: 'Numéro court', tel: '100' }
       ],
     },
     {
-      title: 'Gendarmerie',
-      summary: 'Contacts de la gendarmerie',
+      title: 'Gendarmerie nationale',
+      summary: 'Sécurité publique hors centres urbains, renforts, interventions',
       tag: 'Gendarmerie',
+      location: 'National',
       phones: [
-        { label: 'Standard', tel: '2720219758' },
-        { label: 'Standard', tel: '2720210170' },
-        { label: 'Standard', tel: '05825705' },
+        { label: 'Numéro court', tel: '145' }
       ],
     },
     {
-      title: 'État-major de l\'armée',
-      summary: 'Contacts de l\'État-major',
-      tag: 'Armée',
+      title: 'ONPC – Office National de la Protection Civile',
+      summary: 'Coordination de la protection civile, gestion catastrophes, CPC (Centres Protection Civile)',
+      tag: 'Protection civile',
+      location: 'Siège Abidjan (Cocody), CPC dans toutes les régions',
       phones: [
-        { label: 'État-major', tel: '2720214224' },
-        { label: 'État-major', tel: '2720211283' },
-        { label: 'État-major', tel: '0707835233' },
-        { label: 'État-major', tel: '0505312198' },
+        { label: 'Siège', tel: '2722478730' },
+        { label: 'Siège', tel: '2722478731' },
+        { label: 'Mobile', tel: '0789323232' },
+        { label: 'Mobile', tel: '0574323232' },
+        { label: 'Mobile', tel: '0150503332' },
       ],
     },
-
+    {
+      title: 'INHP – Institut National d\'Hygiène Publique',
+      summary: 'Vaccination, prévention, hygiène, suivi épidémies',
+      tag: 'Santé publique',
+      location: 'Siège Treichville, antennes régionales',
+      source: 'mailto:info@inhp.ci',
+      phones: [
+        { label: 'Standard', tel: '21259254' }
+      ],
+    },
+    {
+      title: 'Croix-Rouge de Côte d\'Ivoire',
+      summary: 'Premiers secours, catastrophes, soutien communautés',
+      tag: 'Aide humanitaire',
+      location: 'Siège Abidjan, antennes nationales',
+      phones: [
+        { label: 'Standard', tel: '2523002661' }
+      ],
+    },
+    {
+      title: 'Allô 101 (numéro vert gouvernemental)',
+      summary: 'Centre d\'appels citoyen : plaintes, infos administratives, alertes',
+      tag: 'Numéro vert',
+      location: 'National (Primature / Min. Communication & Économie Numérique)',
+      phones: [
+        { label: 'Numéro gratuit', tel: '101' }
+      ],
+    },
+    {
+      title: 'PLCC – Plateforme de Lutte Contre la Cybercriminalité',
+      summary: 'Cyber-escroqueries, fraudes bancaires, assistance victimes',
+      tag: 'Cybercriminalité',
+      location: 'Abidjan (Plateau – DITT), couverture nationale',
+      source: 'https://www.plcc.ci',
+      phones: [
+        { label: 'Standard', tel: '22447270' },
+        { label: 'Standard', tel: '22447271' }
+      ],
+    },
   ],
   sante: [
     {
