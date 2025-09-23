@@ -1334,18 +1334,14 @@ export default function CategoryPage() {
 
   // Obtenir les établissements pour la commune sélectionnée ou directement pour la ville
   const selectedFacilities = useMemo(() => {
-    if (mode === 'nearby') return []; // Pour l'instant, pas d'implémentation pour "Autour de moi"
-
     if (displayMode === 'communes') {
+      // En mode Abidjan (communes), on affiche soit 'nearby' (à implémenter), soit par commune sélectionnée
+      if (mode === 'nearby') return []; // placeholder tant que 'Autour de moi' n'est pas branché
       if (!communeQuery) return [];
       return healthFacilitiesByCommune[communeQuery] || [];
     }
-
-    if (displayMode === 'direct') {
-      return healthFacilitiesByCommune[userCity] || [];
-    }
-
-    return [];
+    // En mode direct (toutes les autres villes), on ignore 'mode' et on affiche directement les établissements de la ville
+    return healthFacilitiesByCommune[userCity] || [];
   }, [mode, communeQuery, displayMode, userCity]);
 
   const getBrand = (name?: string): 'orange' | 'mtn' | 'moov' | null => {
