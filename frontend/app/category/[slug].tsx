@@ -1430,9 +1430,7 @@ export default function CategoryPage() {
     return Object.keys(groups).map((key) => ({ title: key, data: groups[key] }));
   }, [s, categoryData]);
 
-  const toggleAdvice = (key: string) => {
-    setOpenAdvice((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
+
 
   const renderUrgenceItem = ({ item, index }: { item: any; index: number }) => {
     const title = item?.title || '';
