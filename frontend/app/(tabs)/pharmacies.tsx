@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
   headerWrapperPharm: { position: 'relative', zIndex: 1 },
   header: { height: 250, justifyContent: 'flex-end' },
   headerImg: { resizeMode: 'cover' },
-  headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, top: 0, backgroundColor: 'rgba(0,0,0,0.25)' },
+  headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, top: 0, backgroundColor: 'transparent' },
   titleWrap: { paddingHorizontal: 16, paddingBottom: 12, alignItems: 'flex-start' },
   headerRow: { flexDirection: 'row', alignItems: 'center' },
   headerTitle: { color: '#fff', fontWeight: '800', fontSize: 26, textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
