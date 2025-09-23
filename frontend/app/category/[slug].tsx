@@ -2035,7 +2035,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: 200,
+    height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
     ...Platform.select({
