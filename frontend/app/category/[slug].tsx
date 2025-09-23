@@ -1888,6 +1888,13 @@ const styles = StyleSheet.create({
   headerNoteTitle: { color: '#FF8A00', fontSize: 20, fontWeight: '900' },
   headerNoteSub: { color: '#fff', fontSize: 13, lineHeight: 18, marginTop: 4, maxWidth: '92%' },
 
+  // Brand badge styles
+  brandBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, marginLeft: 8 },
+  brandBadgeText: { color: '#fff', fontSize: 10, fontWeight: '800' },
+  brandOrange: { backgroundColor: '#FF7900' },
+  brandMtn: { backgroundColor: '#FDDC00' },
+  brandMoov: { backgroundColor: '#00A859' },
+
   // Styles pour la section santé
   locationText: { fontSize: 16, marginBottom: 8 },
   filtersRow: { flexDirection: 'row', marginBottom: 16 },
