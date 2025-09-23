@@ -1364,7 +1364,7 @@ export default function CategoryPage() {
     ]
   };
 
-  const userSelectedCity = user?.city || 'Abidjan';
+  const userSelectedCity = effectiveCity || 'Abidjan';
   
   // Règle demandée: Seule Abidjan utilise les communes, toutes les autres villes affichent directement leurs établissements
   // Normalisation simple (insensible aux accents/majuscules) pour fiabiliser la correspondance de ville
