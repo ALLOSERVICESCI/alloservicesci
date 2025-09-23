@@ -1414,6 +1414,98 @@ export default function CategoryPage() {
 
 
   // Fonctions d'actions
+  // ----- Urgence (mise en page sectionnée) -----
+  const [openAdvice, setOpenAdvice] = React.useState<Record<string, boolean>>({});
+  const adviceMap: Record<string, string[]> = {
+    'Incendie': [
+      "Alertez immédiatement le 180 (GSPM)",
+      "Évacuez les lieux et fermez les portes derrière vous",
+      "N'utilisez pas l'ascenseur en cas d'incendie",
+    ],
+    'Médical': [
+      "Composez le 185 (SAMU) pour une urgence médicale",
+      "Restez au téléphone et suivez les instructions",
+      "Préparez l'adresse exacte et l'état de la personne",
+    ],
+    'Police': [
+      "Contactez la police secours 110/111/170",
+      "Ne mettez pas votre sécurité en danger",
+      "Donnez un maximum de détails utiles",
+    ],
+    'Gendarmerie': [
+      "Prévenez les autorités et restez joignable",
+    ],
+    'Armée': [
+      "Réservé aux situations nécessitant l'armée",
+    ],
+    'Autres': [
+      "Appelez immédiatement les secours concernés",
+    ],
+  };
+
+  const urgenceSections = useMemo(() => {
+    if (s !== 'urgence') return [];
+    const items = Array.isArray(data) ? data : [];
+    const groups: Record<string, any[]> = {};
+    items.forEach((it: any) => {
+      const key = it?.tag || 'Autres';
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(it);
+    });
+    return Object.keys(groups).map((key) => ({ title: key, data: groups[key] }));
+  }, [s, data]);
+
+  const toggleAdvice = (key: string) => {
+    setOpenAdvice((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const renderUrgenceItem = ({ item, index }: { item: any; index: number }) => {
+    const title = item?.title || '';
+    const summary = item?.summary || '';
+    const source = item?.source;
+    const phones: { label?: string; tel?: string }[] = Array.isArray(item?.phones) ? item.phones : [];
+    const sectionKey = `${item?.tag || 'Autres'}`;
+    const adviceKey = `${sectionKey}-${index}-${title}`;
+    const isOpen = !!openAdvice[adviceKey];
+
+    return (
+      <View style={styles.urgItemCard}>
+        <Text style={styles.urgItemTitle}>{title}</Text>
+        {summary ? <Text style={styles.urgItemSummary}>{summary}</Text> : null}
+        <View style={styles.cardActions}>
+          {phones.map((p, idx) => (
+            <TouchableOpacity key={`u-phone-${idx}`} onPress={() => p?.tel && openPhone(p.tel)} style={styles.actionBtn}>
+              <Ionicons name="call" size={16} color="#fff" />
+              <Text style={styles.actionBtnText}>{p?.label ? `${p.label} • ${p.tel}` : p?.tel || ''}</Text>
+            </TouchableOpacity>
+          ))}
+          {source ? (
+            <TouchableOpacity onPress={() => openSource(source)} style={styles.actionBtnAlt}>
+              <Ionicons name="globe" size={16} color="#0A7C3A" />
+              <Text style={styles.actionBtnAltText}>Site officiel</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+
+        {/* Accordéon Conseils */}
+        <TouchableOpacity onPress={() => toggleAdvice(adviceKey)} style={styles.adviceToggle} activeOpacity={0.85}>
+          <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={18} color="#E53935" />
+          <Text style={styles.adviceToggleText}>Conseils</Text>
+        </TouchableOpacity>
+        {isOpen && (
+          <View style={styles.adviceContent}>
+            {(adviceMap[sectionKey] || adviceMap['Autres']).map((tip, i) => (
+              <View key={`tip-${i}`} style={styles.adviceRow}>
+                <Ionicons name="information-circle-outline" size={14} color="#E53935" />
+                <Text style={styles.adviceText}>{tip}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+      </View>
+    );
+  };
+
   const openPhone = (phone: string) => {
     const cleanPhone = phone.replace(/\s+/g, '');
     Linking.openURL(`tel:${cleanPhone}`);
