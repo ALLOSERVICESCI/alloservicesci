@@ -1417,33 +1417,6 @@ export default function CategoryPage() {
 
   // Fonctions d'actions
   // ----- Urgence (mise en page sectionnée) -----
-  const [openAdvice, setOpenAdvice] = React.useState<Record<string, boolean>>({});
-  const adviceMap: Record<string, string[]> = {
-    'Incendie': [
-      "Alertez immédiatement le 180 (GSPM)",
-      "Évacuez les lieux et fermez les portes derrière vous",
-      "N'utilisez pas l'ascenseur en cas d'incendie",
-    ],
-    'Médical': [
-      "Composez le 185 (SAMU) pour une urgence médicale",
-      "Restez au téléphone et suivez les instructions",
-      "Préparez l'adresse exacte et l'état de la personne",
-    ],
-    'Police': [
-      "Contactez la police secours 110/111/170",
-      "Ne mettez pas votre sécurité en danger",
-      "Donnez un maximum de détails utiles",
-    ],
-    'Gendarmerie': [
-      "Prévenez les autorités et restez joignable",
-    ],
-    'Armée': [
-      "Réservé aux situations nécessitant l'armée",
-    ],
-    'Autres': [
-      "Appelez immédiatement les secours concernés",
-    ],
-  };
 
   const urgenceSections = useMemo(() => {
     if (s !== 'urgence') return [] as { title: string; data: any[] }[];
