@@ -1997,7 +1997,7 @@ export default function CategoryPage() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FAFAF8' },
-  header: { height: 250, justifyContent: 'flex-end' },
+  header: { height: 250, justifyContent: 'flex-end', overflow: 'hidden' },
   headerGradient: { flex: 1, justifyContent: 'flex-end' },
   headerContent: { padding: 20, paddingBottom: 30 },
   headerContentLower: { paddingBottom: 10 },
