@@ -1406,6 +1406,14 @@ export default function CategoryPage() {
       <View style={styles.contentCard}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{title}</Text>
+          {getBrand(title) && (
+            <View style={[
+              styles.brandBadge,
+              getBrand(title) === 'orange' ? styles.brandOrange : getBrand(title) === 'mtn' ? styles.brandMtn : styles.brandMoov
+            ]}>
+              <Text style={styles.brandBadgeText}>{getBrand(title)?.toUpperCase()}</Text>
+            </View>
+          )}
         </View>
 
         {summary ? (
