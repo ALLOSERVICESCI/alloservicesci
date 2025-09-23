@@ -9,6 +9,7 @@ import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 import { useAuth } from '../../src/context/AuthContext';
 
 const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' };
+const eduHeaderHeight = 250;
 
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams();
