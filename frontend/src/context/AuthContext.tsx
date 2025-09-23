@@ -107,9 +107,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateProfile = async (input: Partial<User>) => {
     if (!user?.id) throw new Error('Not logged in');
-    const res = await apiFetch(`/api/users/${user.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
-    const updated = await res.json();
-    const merged = { ...updated, ...input } as User;
+    let updated: Partial<User> = {};
+    try {
+      const res = await apiFetch(`/api/users/${user.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
+      if (res.ok) {
+        updated = await res.json();
+      } else {
+        // Try to read error but still proceed with local persistence
+        await res.json().catch(() => ({} as any));
+      }
+    } catch (e) {
+      // Network/backend error: proceed with local persistence
+    }
+    const merged = { ...(user as User), ...(updated as User), ...input } as User;
     setUser(merged);
     await AsyncStorage.setItem('auth_user', JSON.stringify(merged));
     return merged;
