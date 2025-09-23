@@ -468,8 +468,7 @@ metadata:
 test_plan:
   current_focus:
     - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
-  stuck_tasks:
-    - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
   backend_health_testing_completed: true
