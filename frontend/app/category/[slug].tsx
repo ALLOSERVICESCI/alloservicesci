@@ -485,22 +485,55 @@ export default function CategoryPage() {
     // Autres villes de Côte d'Ivoire
     'Divo': [
       {
-        id: 'hopital-divo',
-        name: 'Hôpital Général de Divo',
+        id: 'chr-divo',
+        name: 'Centre Hospitalier Régional de Divo (CHR de Divo)',
         type: 'public',
-        services: 'médecine, chirurgie, pédiatrie, maternité, imagerie de base',
-        address: 'Divo centre-ville',
-        phones: ['+225 32 58 22 47'],
+        services: 'urgences, médecine, chirurgie, maternité, pédiatrie, imagerie',
+        address: "Près de l’Église Catholique, Divo",
+        phones: ['+225 0151443842', '+225 0749669461'],
+        website: 'accessante.org',
+        lat: 5.85,
+        lng: -5.85,
         commune: 'Divo',
         city: 'Divo'
       },
       {
-        id: 'inhp-divo',
-        name: 'INHP – Antenne Divo',
+        id: 'clinique-nouvelle-providence-divo',
+        name: 'Clinique Médicale La Nouvelle Providence',
+        type: 'clinic',
+        services: 'clinique médicale',
+        address: 'Vers Mediska Laboratoires, Quartier Dialogue 1, Divo',
+        commune: 'Divo',
+        city: 'Divo'
+      },
+      {
+        id: 'clinique-ahissa-divo',
+        name: 'Clinique Médicale Ahissa',
+        type: 'clinic',
+        services: 'clinique médicale',
+        address: 'Konankro, BP 1602, Divo — En allant à la gare, non loin du CHR',
+        phones: ['+225 27 32 76 02 24', '+225 27 32 76 02 35', '+225 07 07 90 71 99'],
+        commune: 'Divo',
+        city: 'Divo'
+      },
+      {
+        id: 'centre-sante-police-divo',
+        name: 'Centre de Santé de la Police (CRS) — Divo',
         type: 'public',
-        services: 'vaccination, hygiène',
-        address: 'Divo',
-        emails: ['divo@inhp.ci'],
+        services: 'service de santé spécialisé (Police)',
+        address: 'Caserne/Quartier Police, Divo',
+        phones: ['+225 27 32 76 22 47'],
+        website: 'scaintera-sgam.com',
+        commune: 'Divo',
+        city: 'Divo'
+      },
+      {
+        id: 'clinique-saint-jean-marie-vianney-divo',
+        name: 'Clinique médicale Saint Jean Marie-Vianney',
+        type: 'clinic',
+        services: 'clinique médicale',
+        address: 'Quartier Libanais 3, Divo',
+        website: 'depps.sante.gouv.ci',
         commune: 'Divo',
         city: 'Divo'
       }
