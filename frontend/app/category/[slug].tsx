@@ -1993,6 +1993,23 @@ const styles = StyleSheet.create({
   headerNoteTitle: { color: '#FF8A00', fontSize: 20, fontWeight: '900' },
   headerNoteSub: { color: '#fff', fontSize: 13, lineHeight: 18, marginTop: 4, maxWidth: '92%' },
 
+  // Urgence: header fixe sans effet + petite ombre basse
+  headerWrapperUrgence: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 250,
+    zIndex: 10,
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.15, shadowRadius: 6 },
+      android: { elevation: 6 },
+      default: { boxShadow: '0px 10px 16px rgba(0,0,0,0.08)' as any },
+    }),
+  },
+  headerUrgence: { width: '100%', height: '100%' },
+
   // Brand badge styles
   brandBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, marginLeft: 8 },
   brandBadgeText: { color: '#fff', fontSize: 10, fontWeight: '800' },
