@@ -2030,6 +2030,20 @@ const styles = StyleSheet.create({
     }),
   },
   headerUrgence: { width: '100%', height: '100%', justifyContent: 'flex-end' },
+  headerWrapperSante: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 200,
+    zIndex: 10,
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
+      android: { elevation: 14 },
+      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
+    }),
+  },
   headerUrgenceContent: { padding: 20, paddingBottom: 6, alignItems: 'flex-start' },
   headerTitleUrg: {
     color: '#FF8A00',
