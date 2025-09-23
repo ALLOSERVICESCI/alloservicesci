@@ -1348,6 +1348,15 @@ export default function CategoryPage() {
     }
     
     return [];
+  const getBrand = (name?: string): 'orange' | 'mtn' | 'moov' | null => {
+    if (!name) return null;
+    const n = name.toLowerCase();
+    if (n.includes('orange')) return 'orange';
+    if (n.includes('mtn')) return 'mtn';
+    if (n.includes('moov')) return 'moov';
+    return null;
+  };
+
   }, [mode, communeQuery, displayMode, userCity]);
 
   // Fonctions d'actions
