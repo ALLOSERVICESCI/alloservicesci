@@ -1376,34 +1376,67 @@ export default function CategoryPage() {
 
   const data = CONTENT_BY_CATEGORY[s] || [];
 
-  const renderContentItem = ({ item }: { item: any }) => (
-    <View style={styles.contentCard}>
-      <View style={styles.cardHeader}>
-        <Text style={styles.cardTitle}>{item.name}</Text>
-        {item.isPremium && (
-          <View style={styles.premiumBadge}>
-            <Text style={styles.premiumBadgeText}>Premium</Text>
-          </View>
-        )}
+  const openUSSD = (code: string) => {
+    if (!code) return;
+    // Encode # for tel: links (especially on Android)
+    const encoded = code.replace('#', encodeURIComponent('#'));
+    Linking.openURL(`tel:${encoded}`);
+  };
+
+  const renderContentItem = ({ item, index }: { item: any; index: number }) => {
+    const title: string = item?.title || item?.name || '';
+    const summary: string | undefined = item?.summary || item?.description;
+    const tag: string | undefined = item?.tag;
+    const location: string | undefined = item?.location;
+    const date: string | undefined = item?.date;
+    const source: string | undefined = item?.source || item?.website;
+    const phones: { label?: string; tel?: string }[] = Array.isArray(item?.phones) ? item.phones : [];
+    const ussd: { label?: string; code?: string }[] = Array.isArray(item?.ussd) ? item.ussd : [];
+
+    return (
+      <View style={styles.contentCard}>
+        <View style={styles.cardHeader}>
+          <Text style={styles.cardTitle}>{title}</Text>
+        </View>
+
+        {summary ? (
+          <Text style={styles.cardDescription}>{summary}</Text>
+        ) : null}
+
+        {(location || date) ? (
+          <Text style={styles.cardDescription}>
+            {location ? `${location}` : ''}
+            {location && date ? ' • ' : ''}
+            {date ? `${date}` : ''}
+          </Text>
+        ) : null}
+
+        {/* Actions */}
+        <View style={styles.cardActions}>
+          {phones.map((p, idx) => (
+            <TouchableOpacity key={`phone-${idx}`} onPress={() => p?.tel && openPhone(p.tel)} style={styles.actionBtn}>
+              <Ionicons name="call" size={16} color="#fff" />
+              <Text style={styles.actionBtnText}>{p?.label ? `${p.label} • ${p.tel}` : p?.tel || ''}</Text>
+            </TouchableOpacity>
+          ))}
+
+          {ussd.map((u, idx) => (
+            <TouchableOpacity key={`ussd-${idx}`} onPress={() => u?.code && openUSSD(u.code)} style={styles.actionBtnAlt}>
+              <Ionicons name="keypad" size={16} color="#0D6EFD" />
+              <Text style={styles.actionBtnAltText}>{u?.label ? `${u.label} • ${u.code}` : u?.code || ''}</Text>
+            </TouchableOpacity>
+          ))}
+
+          {source ? (
+            <TouchableOpacity onPress={() => openSource(source)} style={styles.actionBtnAlt}>
+              <Ionicons name="globe" size={16} color="#0A7C3A" />
+              <Text style={styles.actionBtnAltText}>Site officiel</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
-      {item.description && <Text style={styles.cardDescription}>{item.description}</Text>}
-      {item.ussd && <Text style={styles.cardUssd}>USSD: {item.ussd}</Text>}
-      <View style={styles.cardActions}>
-        {item.phones?.map((phone: string, idx: number) => (
-          <TouchableOpacity key={idx} onPress={() => Linking.openURL(`tel:${phone.replace(/\s+/g, '')}`)} style={styles.actionBtn}>
-            <Ionicons name="call" size={16} color="#fff" />
-            <Text style={styles.actionBtnText}>{phone}</Text>
-          </TouchableOpacity>
-        ))}
-        {item.website && (
-          <TouchableOpacity onPress={() => openSource(item.website)} style={styles.actionBtnAlt}>
-            <Ionicons name="globe" size={16} color="#0A7C3A" />
-            <Text style={styles.actionBtnAltText}>Site web</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    </View>
-  );
+    );
+  };
 
   // Choix de l'image d'en-tête selon la catégorie
   const backgroundImages: Record<string, any> = {
