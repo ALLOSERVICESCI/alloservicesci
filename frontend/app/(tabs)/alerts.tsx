@@ -75,7 +75,7 @@ export default function Alerts() {
 
   const renderHeader = () => (
     <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} imageStyle={styles.headerImage} resizeMode="cover">
-      <View style={styles.headerContent}>
+      <View style={styles.headerContentRight}>
         <Link href="/alerts/new" asChild>
           <TouchableOpacity style={styles.btn} accessibilityRole="button"><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
         </Link>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   header: { height: 260, justifyContent: 'center' },
   headerImage: { transform: [{ translateY: -14 }] },
   overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  headerContent: { paddingHorizontal: 16, alignItems: 'flex-start' },
+  headerContentRight: { paddingHorizontal: 16, alignItems: 'flex-start' },
   btn: { backgroundColor: '#0F5132', paddingVertical: 10, paddingHorizontal: 16, borderRadius: 10 },
   btnText: { color: '#fff', fontWeight: '700' },
 
