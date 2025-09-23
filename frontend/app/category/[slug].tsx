@@ -1624,7 +1624,7 @@ export default function CategoryPage() {
     <View style={styles.container}>
       {/* En-tête avec image */}
       <ImageBackground source={bg} style={styles.header} resizeMode="cover">
-        <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
+        <LinearGradient colors={s === 'urgence' ? ['transparent', 'transparent'] : ['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
           <View style={[
             styles.headerContent,
             s === 'sante' && styles.headerContentLower,
@@ -1637,7 +1637,10 @@ export default function CategoryPage() {
             ]}>
               {s === 'sante' ? 'Les unités de santé' : s === 'urgence' ? 'Les Unités d\'Urgences' : t(`categories.${s}`)}
             </Text>
-            <Text style={styles.headerSubtitle}>Services disponibles en Côte d'Ivoire</Text>
+            <Text style={[
+              styles.headerSubtitle,
+              s === 'urgence' && styles.headerSubtitleTight
+            ]}>Services disponibles en Côte d'Ivoire</Text>
           </View>
         </LinearGradient>
       </ImageBackground>
