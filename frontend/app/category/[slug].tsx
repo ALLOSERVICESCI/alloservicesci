@@ -2025,18 +2025,18 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     marginBottom: 2,
     ...Platform.select({
-      ios: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
-      android: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
+      ios: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
+      android: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
       default: { textShadow: '0px 1.5px 3px rgba(0,0,0,0.45)' as any },
     }),
   },
   headerSubtitleUrg: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 16,
     opacity: 0.95,
     ...Platform.select({
-      ios: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
-      android: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
+      ios: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
+      android: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
       default: { textShadow: '0px 1.5px 3px rgba(0,0,0,0.45)' as any },
     }),
   },
