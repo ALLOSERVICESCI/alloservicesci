@@ -151,12 +151,25 @@ export default function Alerts() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#fff', paddingTop: 260 },
   header: { height: 260, justifyContent: 'center' },
-  headerImage: { transform: [{ translateY: -14 }] },
-  headerWrapperAlerts: { /* Add your wrapper styles here */ },
+  headerImage: {},
+  headerWrapperAlerts: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 260,
+    zIndex: 10,
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.18, shadowRadius: 10 },
+      android: { elevation: 10 },
+      default: { boxShadow: '0px 14px 22px rgba(0,0,0,0.15)' as any },
+    }),
+  },
   overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  headerContentRight: { paddingHorizontal: 16, alignItems: 'flex-start' },
+  headerContentRight: { paddingHorizontal: 16, alignItems: 'flex-end' },
   btn: { backgroundColor: '#0F5132', paddingVertical: 10, paddingHorizontal: 16, borderRadius: 10 },
   btnText: { color: '#fff', fontWeight: '700' },
 
