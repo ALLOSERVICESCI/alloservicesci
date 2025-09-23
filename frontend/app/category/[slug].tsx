@@ -2003,9 +2003,9 @@ const styles = StyleSheet.create({
     zIndex: 10,
     backgroundColor: 'transparent',
     ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.15, shadowRadius: 6 },
-      android: { elevation: 6 },
-      default: { boxShadow: '0px 10px 16px rgba(0,0,0,0.08)' as any },
+      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
+      android: { elevation: 14 },
+      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
     }),
   },
   headerUrgence: { width: '100%', height: '100%' },
