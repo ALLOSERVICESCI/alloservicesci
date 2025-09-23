@@ -18,7 +18,7 @@ import sys
 from datetime import datetime
 
 # Get backend URL from frontend .env
-BACKEND_URL = "https://service-locator-ci.preview.emergentagent.com/api"
+BACKEND_URL = "https://cihealth-navigation.preview.emergentagent.com/api"
 
 def test_review_request_complete():
     """Complete backend regression test according to review request"""
