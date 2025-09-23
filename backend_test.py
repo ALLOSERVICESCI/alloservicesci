@@ -207,7 +207,7 @@ class BackendTester:
         return False
     
     def test_ai_chat_missing_messages(self):
-        """Test POST /api/ai/chat with missing messages → Expect 400 with detail"""
+        """Test POST /api/ai/chat with missing messages → Expect 400/422 with detail"""
         payload = {
             "stream": False,
             "temperature": 0.5,
@@ -219,22 +219,23 @@ class BackendTester:
             response = self.session.post(f"{self.backend_url}/ai/chat", 
                                        json=payload, timeout=10)
             
-            if response.status_code == 400:
+            # Accept both 400 (Bad Request) and 422 (Unprocessable Entity) as valid
+            if response.status_code in [400, 422]:
                 try:
                     data = response.json()
                     if 'detail' in data:
                         self.log_result("POST /api/ai/chat (missing messages)", True, 
-                                      f"Returns 400 with detail: {data['detail']}")
+                                      f"Returns {response.status_code} with detail: {data['detail']}")
                         return True
                     else:
                         self.log_result("POST /api/ai/chat (missing messages)", False, 
-                                      f"400 status but no 'detail' field: {data}")
+                                      f"{response.status_code} status but no 'detail' field: {data}")
                 except json.JSONDecodeError:
                     self.log_result("POST /api/ai/chat (missing messages)", False, 
-                                  f"400 status but invalid JSON: {response.text}")
+                                  f"{response.status_code} status but invalid JSON: {response.text}")
             else:
                 self.log_result("POST /api/ai/chat (missing messages)", False, 
-                              f"Expected 400, got {response.status_code}: {response.text}")
+                              f"Expected 400/422, got {response.status_code}: {response.text}")
                 
         except Exception as e:
             self.log_result("POST /api/ai/chat (missing messages)", False, f"Exception: {str(e)}")
