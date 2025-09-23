@@ -1440,9 +1440,17 @@ export default function CategoryPage() {
 
   // Choix de l'image d'en-tête selon la catégorie
   const backgroundImages: Record<string, any> = {
-    pharmacies: { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' },
-    sante: require('../../assets/headers/sante_bg.png'),
-    urgence: { uri: 'https://customer-assets.emergent.sh/alloscici/home/urgence_bg.png' },
+    pharmacies: require('../../assets/headers/pharmacies_header.png'),
+    sante: require('../../assets/headers/headers/sante_bg.png'),
+    urgence: require('../../assets/headers/headers/urgence_bg.png'),
+    transport: require('../../assets/headers/headers/transport_bg.png'),
+    alertes: require('../../assets/headers/headers/alertes_bg.png'),
+    examens_concours: require('../../assets/headers/headers/examens_concours_bg.png'),
+    education: require('../../assets/headers/headers/education_bg.png'),
+    services_utiles: require('../../assets/headers/headers/services_utiles_bg.png'),
+    agriculture: require('../../assets/headers/headers/agriculture_bg.png'),
+    loisirs_tourisme: require('../../assets/headers/headers/loisirs_tourisme_bg.png'),
+    services_publics: require('../../assets/headers/headers/services_publics_bg.png'),
   };
 
   const bg = backgroundImages[s] || COMMON_HEADER;
