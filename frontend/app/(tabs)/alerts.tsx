@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   header: { height: 260, justifyContent: 'center' },
   headerImage: { transform: [{ translateY: -14 }] },
+  headerWrapperAlerts: { /* Add your wrapper styles here */ },
   overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   headerContentRight: { paddingHorizontal: 16, alignItems: 'flex-start' },
   btn: { backgroundColor: '#0F5132', paddingVertical: 10, paddingHorizontal: 16, borderRadius: 10 },
