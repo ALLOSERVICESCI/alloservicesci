@@ -2017,7 +2017,10 @@ const styles = StyleSheet.create({
       default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
     }),
   },
-  headerUrgence: { width: '100%', height: '100%' },
+  headerUrgence: { width: '100%', height: '100%', justifyContent: 'flex-end' },
+  headerUrgenceContent: { padding: 20, paddingBottom: 18, alignItems: 'flex-start' },
+  headerTitleUrg: { color: '#FF8A00', fontSize: 24, fontWeight: '900', marginBottom: 2 },
+  headerSubtitleUrg: { color: '#fff', fontSize: 14, opacity: 0.95 },
 
   // Brand badge styles
   brandBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, marginLeft: 8 },
