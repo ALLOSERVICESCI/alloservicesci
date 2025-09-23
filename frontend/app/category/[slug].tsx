@@ -1674,7 +1674,7 @@ export default function CategoryPage() {
                 </View>
               );
             }}
-            stickySectionHeadersEnabled
+            stickySectionHeadersEnabled={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
           />
