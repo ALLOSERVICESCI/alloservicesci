@@ -15,6 +15,8 @@ export default function CategoryPage() {
   const s = Array.isArray(slug) ? slug[0] : (slug || 'urgence');
   const { t } = useI18n();
   const { user } = useAuth();
+  // Données de contenu pour la catégorie courante (disponible tôt pour éviter TDZ)
+  const categoryData = CONTENT_BY_CATEGORY[s] || [];
 
   // Ville effective (contexte puis stockage local en secours)
   const [effectiveCity, setEffectiveCity] = useState<string>(user?.city || 'Abidjan');
