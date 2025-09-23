@@ -1558,7 +1558,7 @@ export default function CategoryPage() {
   // Choix de l'image d'en-tête selon la catégorie
   const backgroundImages: Record<string, any> = {
     pharmacies: require('../../assets/headers/pharmacies_header.png'),
-    sante: require('../../assets/headers/headers/sante_bg.png'),
+    sante: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/bgconh5v_santebis_bg.png' },
     urgence: require('../../assets/headers/headers/urgence_bg.png'),
     transport: require('../../assets/headers/headers/transport_bg.png'),
     alertes: require('../../assets/headers/headers/alertes_bg.png'),
