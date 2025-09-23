@@ -2025,9 +2025,9 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     marginBottom: 2,
     ...Platform.select({
-      ios: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-      android: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-      default: { textShadow: '0px 1.5px 3px rgba(0,0,0,0.45)' as any },
+      ios: { textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4 },
+      android: { textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4 },
+      default: { textShadow: '0px 2px 6px rgba(0,0,0,0.5)' as any },
     }),
   },
   headerSubtitleUrg: {
@@ -2035,9 +2035,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     opacity: 0.95,
     ...Platform.select({
-      ios: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-      android: { textShadowColor: '#000', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-      default: { textShadow: '0px 1.5px 3px rgba(0,0,0,0.45)' as any },
+      ios: { textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4 },
+      android: { textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4 },
+      default: { textShadow: '0px 2px 6px rgba(0,0,0,0.5)' as any },
     }),
   },
 
