@@ -1586,7 +1586,7 @@ export default function CategoryPage() {
         </View>
       ) : s === 'sante' ? (
         <View style={styles.headerWrapperSante}>
-          <ImageBackground source={bg} style={styles.header} resizeMode="cover">
+          <ImageBackground source={bg} style={styles.header} resizeMode="contain">
             <View style={[
               styles.headerContent,
               styles.headerContentLower
