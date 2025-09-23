@@ -310,7 +310,7 @@ export default function Pharmacies() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#fff', paddingTop: 250 },
   headerWrapperPharm: { position: 'relative', zIndex: 1 },
   header: { height: Math.min(240, Math.max(180, SCREEN_WIDTH * 0.42)), justifyContent: 'flex-end' },
   headerImg: { resizeMode: 'cover' },
