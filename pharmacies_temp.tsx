@@ -311,7 +311,20 @@ export default function Pharmacies() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', paddingTop: 250 },
-  headerWrapperPharm: { position: 'relative', zIndex: 1 },
+  headerWrapperPharm: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 250,
+    zIndex: 10,
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
+      android: { elevation: 14 },
+      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
+    }),
+  },
   header: { height: 250, justifyContent: 'flex-end' },
   headerImg: { resizeMode: 'cover' },
   headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, top: 0, backgroundColor: 'transparent' },
