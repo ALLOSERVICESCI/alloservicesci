@@ -438,6 +438,19 @@ metadata:
         comment: "✅ COMPREHENSIVE E2E TESTING COMPLETED (iPhone 12/13/14: 390x844) - ALL REQUIREMENTS MET! Test 1: Services utiles navigation successful via 9th tile (services_utiles slug), Orange USSD chips (*144#, *111#) found and clickable, MTN USSD chips (*133#, 13310#) found and clickable, Moov USSD chips (*155#, 1554#) found and clickable, brand background colors validated (Orange: 2 elements ~#FF7900, Green: 14 elements ~#00A859), Site officiel chips (5 found) clickable without errors, header background image renders as local asset without network 404s. Test 2: Urgence navigation successful via first tile, 'Urgences - Secours' title found, '24h/24' subtitle found, emergency services (Pompiers, SAMU, Police) all present, header images (16 found) render correctly, no React child errors detected. Pre-conditions: Splash screen 'Touchez pour continuer' handled correctly, Home page ready with French slogan visible, categories grid detected (14 elements). Console: Only expected tel: protocol errors for USSD codes, no critical React errors. All major requirements from review request successfully validated."
 
 
+
+  - task: "FRONTEND E2E: Santé – Mode direct pour villes (ex: Divo) et mode communes pour Abidjan"
+    implemented: true
+    working: false
+    file: "frontend/app/category/[slug].tsx, frontend/app/profile/edit.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Plan de test: 1) Définir ville=Divo dans Profil → Santé: pas de chips communes ni recherche, établissements de Divo visibles. 2) Définir ville=Abidjan → Santé: chips 'Autour de moi'/'Communes' visibles, barre 'Rechercher une commune', sélectionner Cocody et vérifier la liste (CHU de Cocody, etc.)."
+
   created_by: "main_agent"
   version: "1.3"
   test_sequence: 6
