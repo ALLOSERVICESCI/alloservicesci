@@ -1446,8 +1446,8 @@ export default function CategoryPage() {
   };
 
   const urgenceSections = useMemo(() => {
-    if (s !== 'urgence') return [];
-    const items = Array.isArray(data) ? data : [];
+    if (s !== 'urgence') return [] as { title: string; data: any[] }[];
+    const items = Array.isArray(categoryData) ? categoryData : [];
     const groups: Record<string, any[]> = {};
     items.forEach((it: any) => {
       const key = it?.tag || 'Autres';
@@ -1455,7 +1455,7 @@ export default function CategoryPage() {
       groups[key].push(it);
     });
     return Object.keys(groups).map((key) => ({ title: key, data: groups[key] }));
-  }, [s, data]);
+  }, [s, categoryData]);
 
   const toggleAdvice = (key: string) => {
     setOpenAdvice((prev) => ({ ...prev, [key]: !prev[key] }));
