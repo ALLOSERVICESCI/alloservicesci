@@ -1312,11 +1312,15 @@ export default function CategoryPage() {
   const userSelectedCity = user?.city || 'Abidjan';
   
   // Règle demandée: Seule Abidjan utilise les communes, toutes les autres villes affichent directement leurs établissements
-  const isAbidjan = userSelectedCity === 'Abidjan';
-  const cityHasFacilities = !!healthFacilitiesByCommune[userSelectedCity];
+  // Normalisation simple (insensible aux accents/majuscules) pour fiabiliser la correspondance de ville
+  const normCity = (s: string) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+
+  const isAbidjan = normCity(userSelectedCity) === normCity('Abidjan');
+  const matchedCityKey = Object.keys(healthFacilitiesByCommune).find(k => normCity(k) === normCity(userSelectedCity)) || null;
+  const cityHasFacilities = !!matchedCityKey;
 
   // Si la ville sélectionnée n'a pas d'établissements connus, fallback sur Abidjan
-  const userCity = (isAbidjan || cityHasFacilities) ? userSelectedCity : 'Abidjan';
+  const userCity = isAbidjan ? 'Abidjan' : (cityHasFacilities ? (matchedCityKey as string) : 'Abidjan');
 
   // Communes disponibles uniquement pour Abidjan
   const availableCommunes = isAbidjan ? (communesByCity['Abidjan'] || []) : [];
