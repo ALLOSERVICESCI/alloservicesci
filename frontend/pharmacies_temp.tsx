@@ -311,6 +311,7 @@ export default function Pharmacies() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
+  headerWrapperPharm: { position: 'relative', zIndex: 1 },
   header: { height: Math.min(240, Math.max(180, SCREEN_WIDTH * 0.42)), justifyContent: 'flex-end' },
   headerImg: { resizeMode: 'cover' },
   headerOverlay: { position: 'absolute', left: 0, right: 0, bottom: 0, top: 0, backgroundColor: 'rgba(0,0,0,0.25)' },
