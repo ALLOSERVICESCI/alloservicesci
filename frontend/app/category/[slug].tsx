@@ -1576,7 +1576,7 @@ export default function CategoryPage() {
   return (
     <View style={[
       styles.container,
-      s === 'urgence' ? { paddingTop: 250 } : s === 'sante' ? { paddingTop: 250 } : null
+      s === 'urgence' ? { paddingTop: 250 } : s === 'sante' ? { paddingTop: 250 } : s === 'education' ? { paddingTop: eduHeaderHeight } : null
     ]}>
       {/* En-tête avec image */}
       {s === 'urgence' ? (
