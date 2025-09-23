@@ -16,334 +16,302 @@ from datetime import datetime
 BACKEND_URL = "https://allo-assistance.preview.emergentagent.com/api"
 EMERGENT_API_KEY = "sk-emergent-5F8959dC8249919584"  # For leak detection
 
-def test_review_request_complete():
-    """Complete backend regression test according to review request"""
-    print("🎯 BACKEND REGRESSION TEST SUITE - REVIEW REQUEST VALIDATION")
-    print("=" * 70)
-    
-    results = {
-        "total_tests": 0,
-        "passed_tests": 0,
-        "failed_tests": 0
-    }
-    
-    def log_test(test_name, status, details=""):
-        """Log test results with timestamp"""
-        timestamp = datetime.now().strftime("%H:%M:%S")
-        status_icon = "✅" if status == "PASS" else "❌"
-        print(f"[{timestamp}] {status_icon} {test_name}")
+class BackendTester:
+    def __init__(self):
+        self.backend_url = BACKEND_URL
+        self.session = requests.Session()
+        self.session.headers.update({
+            'Content-Type': 'application/json',
+            'User-Agent': 'Backend-Test-Suite/1.0'
+        })
+        self.results = []
+        
+    def log_result(self, test_name: str, success: bool, details: str = "", response_data: Any = None):
+        """Log test result"""
+        status = "✅ PASS" if success else "❌ FAIL"
+        print(f"{status} {test_name}")
         if details:
-            print(f"    {details}")
-        results["total_tests"] += 1
-        if status == "PASS":
-            results["passed_tests"] += 1
-        else:
-            results["failed_tests"] += 1
-
-    # Test 1: Auth Register
-    print("\n=== TEST 1: AUTH REGISTER ===")
-    user_id = None
-    payload = {
-        "first_name": "Jean-Baptiste",
-        "last_name": "Kouame", 
-        "email": "jean.kouame@example.ci",
-        "phone": "+225 07 12 34 56 78",
-        "preferred_lang": "fr",
-        "city": "Abidjan"
-    }
-    
-    try:
-        response = requests.post(f"{BACKEND_URL}/auth/register", json=payload, timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            user_id = data.get('id')
-            if user_id:
-                log_test("POST /api/auth/register", "PASS", 
-                        f"User created with ID: {user_id}. Note: pseudo/show_pseudo not supported by current backend")
-            else:
-                log_test("POST /api/auth/register", "FAIL", "No user ID returned")
-        else:
-            log_test("POST /api/auth/register", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("POST /api/auth/register", "FAIL", f"Exception: {str(e)}")
-
-    # Test 2: Users Update
-    print("\n=== TEST 2: USERS UPDATE ===")
-    if user_id:
-        payload = {
-            "city": "Yamoussoukro",
-            "email": "jean.updated@example.ci", 
-            "phone": "+225 01 02 03 04 05"
-        }
+            print(f"   Details: {details}")
+        if response_data and not success:
+            print(f"   Response: {response_data}")
+        print()
         
+        self.results.append({
+            'test': test_name,
+            'success': success,
+            'details': details,
+            'response_data': response_data
+        })
+    
+    def check_secret_leak(self, text: str, test_name: str) -> bool:
+        """Check if response contains secret API key"""
+        if EMERGENT_API_KEY in text:
+            self.log_result(f"{test_name} - Secret Leak Check", False, 
+                          f"CRITICAL: EMERGENT_API_KEY found in response: {text[:200]}...")
+            return False
+        return True
+    
+    def test_health_endpoint(self):
+        """Test GET /api/health → 200 {status: ok}"""
         try:
-            response = requests.patch(f"{BACKEND_URL}/users/{user_id}", json=payload, timeout=10)
-            if response.status_code == 200:
-                data = response.json()
-                log_test("PATCH /api/users/<id>", "PASS", 
-                        f"User updated: city={data.get('city')}, email={data.get('email')}. Note: pseudo/show_pseudo not supported")
-            else:
-                log_test("PATCH /api/users/<id>", "FAIL", 
-                        f"Status {response.status_code}: {response.text}")
-        except Exception as e:
-            log_test("PATCH /api/users/<id>", "FAIL", f"Exception: {str(e)}")
-    else:
-        log_test("PATCH /api/users/<id>", "FAIL", "No user_id from previous test")
-
-    # Test 3: Subscriptions Check
-    print("\n=== TEST 3: SUBSCRIPTIONS CHECK ===")
-    if user_id:
-        try:
-            response = requests.get(f"{BACKEND_URL}/subscriptions/check?user_id={user_id}", timeout=10)
-            if response.status_code == 200:
-                data = response.json()
-                is_premium = data.get('is_premium')
-                expires_at = data.get('expires_at')
-                log_test("GET /api/subscriptions/check", "PASS", 
-                        f"is_premium: {is_premium}, expires_at: {expires_at}")
-            else:
-                log_test("GET /api/subscriptions/check", "FAIL", 
-                        f"Status {response.status_code}: {response.text}")
-        except Exception as e:
-            log_test("GET /api/subscriptions/check", "FAIL", f"Exception: {str(e)}")
-    else:
-        log_test("GET /api/subscriptions/check", "FAIL", "No user_id from previous test")
-
-    # Test 4: Alerts Endpoints
-    print("\n=== TEST 4: ALERTS ENDPOINTS ===")
-    
-    # GET /api/alerts
-    try:
-        response = requests.get(f"{BACKEND_URL}/alerts", timeout=10)
-        if response.status_code == 200:
-            alerts = response.json()
-            log_test("GET /api/alerts", "PASS", f"Retrieved {len(alerts)} alerts")
-        else:
-            log_test("GET /api/alerts", "FAIL", f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("GET /api/alerts", "FAIL", f"Exception: {str(e)}")
-    
-    # POST /api/alerts
-    alert_payload = {
-        "title": "Test Alerte Sécurité",
-        "type": "accident", 
-        "description": "Accident de circulation sur l'autoroute du Nord, voie bloquée",
-        "city": "Abidjan"
-    }
-    
-    try:
-        response = requests.post(f"{BACKEND_URL}/alerts", json=alert_payload, timeout=10)
-        if response.status_code == 200:
-            alert_data = response.json()
-            alert_id = alert_data.get('id')
-            log_test("POST /api/alerts", "PASS", f"Alert created with ID: {alert_id}")
+            response = self.session.get(f"{self.backend_url}/health", timeout=10)
             
-            # Verify alert appears in GET /api/alerts
-            response = requests.get(f"{BACKEND_URL}/alerts", timeout=10)
-            if response.status_code == 200:
-                alerts = response.json()
-                found = any(a.get('id') == alert_id for a in alerts)
-                if found:
-                    log_test("GET /api/alerts verification", "PASS", "New alert found in list")
-                else:
-                    log_test("GET /api/alerts verification", "FAIL", "New alert not found in list")
-        else:
-            log_test("POST /api/alerts", "FAIL", f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("POST /api/alerts", "FAIL", f"Exception: {str(e)}")
-    
-    # GET /api/alerts/unread_count
-    if user_id:
-        try:
-            response = requests.get(f"{BACKEND_URL}/alerts/unread_count?user_id={user_id}", timeout=10)
             if response.status_code == 200:
                 data = response.json()
-                count = data.get('count')
-                log_test("GET /api/alerts/unread_count", "PASS", f"Unread count: {count}")
+                if data.get('status') == 'ok':
+                    self.log_result("GET /api/health", True, "Returns 200 with status: ok")
+                    return True
+                else:
+                    self.log_result("GET /api/health", False, f"Wrong response format: {data}")
             else:
-                log_test("GET /api/alerts/unread_count", "FAIL", f"Status {response.status_code}: {response.text}")
+                self.log_result("GET /api/health", False, f"Status {response.status_code}: {response.text}")
+                
         except Exception as e:
-            log_test("GET /api/alerts/unread_count", "FAIL", f"Exception: {str(e)}")
-
-    # Test 5: Pharmacies Endpoints
-    print("\n=== TEST 5: PHARMACIES ENDPOINTS ===")
+            self.log_result("GET /api/health", False, f"Exception: {str(e)}")
+        return False
     
-    # No filters
-    try:
-        response = requests.get(f"{BACKEND_URL}/pharmacies", timeout=10)
-        if response.status_code == 200:
-            pharmacies = response.json()
-            log_test("GET /api/pharmacies (no filters)", "PASS", 
-                    f"Retrieved {len(pharmacies)} pharmacies")
-        else:
-            log_test("GET /api/pharmacies (no filters)", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("GET /api/pharmacies (no filters)", "FAIL", f"Exception: {str(e)}")
+    def test_api_root_endpoint(self):
+        """Test GET /api/ → 200 plus routes list includes '/api/ai/chat'"""
+        try:
+            response = self.session.get(f"{self.backend_url}/", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                paths = data.get('paths', [])
+                
+                # Check if AI chat route is listed
+                ai_chat_found = any('/api/ai/chat' in str(path) for path in paths)
+                
+                if ai_chat_found:
+                    self.log_result("GET /api/ - AI Chat Route", True, 
+                                  f"Found /api/ai/chat in routes list ({len(paths)} total routes)")
+                    return True
+                else:
+                    self.log_result("GET /api/ - AI Chat Route", False, 
+                                  f"AI chat route not found in paths: {paths}")
+            else:
+                self.log_result("GET /api/", False, f"Status {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_result("GET /api/", False, f"Exception: {str(e)}")
+        return False
     
-    # City filter (Abidjan)
-    try:
-        response = requests.get(f"{BACKEND_URL}/pharmacies?city=Abidjan", timeout=10)
-        if response.status_code == 200:
-            pharmacies = response.json()
-            log_test("GET /api/pharmacies?city=Abidjan", "PASS", 
-                    f"Retrieved {len(pharmacies)} pharmacies in Abidjan")
-        else:
-            log_test("GET /api/pharmacies?city=Abidjan", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("GET /api/pharmacies?city=Abidjan", "FAIL", f"Exception: {str(e)}")
-    
-    # on_duty filter
-    try:
-        response = requests.get(f"{BACKEND_URL}/pharmacies?on_duty=true", timeout=10)
-        if response.status_code == 200:
-            pharmacies = response.json()
-            on_duty_count = len([p for p in pharmacies if p.get('on_duty') == True])
-            log_test("GET /api/pharmacies?on_duty=true", "PASS", 
-                    f"Retrieved {len(pharmacies)} pharmacies, {on_duty_count} on duty")
-        else:
-            log_test("GET /api/pharmacies?on_duty=true", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("GET /api/pharmacies?on_duty=true", "FAIL", f"Exception: {str(e)}")
-    
-    # Near location (Abidjan coordinates)
-    try:
-        response = requests.get(f"{BACKEND_URL}/pharmacies?near_lat=5.33&near_lng=-4.03&max_km=10", timeout=10)
-        if response.status_code == 200:
-            pharmacies = response.json()
-            log_test("GET /api/pharmacies (near Abidjan)", "PASS", 
-                    f"Retrieved {len(pharmacies)} pharmacies near Abidjan")
-        else:
-            log_test("GET /api/pharmacies (near Abidjan)", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("GET /api/pharmacies (near Abidjan)", "FAIL", f"Exception: {str(e)}")
-
-    # Test 6: Payments CinetPay
-    print("\n=== TEST 6: PAYMENTS CINETPAY ===")
-    if user_id:
+    def test_ai_chat_non_stream(self):
+        """Test POST /api/ai/chat with stream=false → Expect 200 and JSON { content: string }"""
         payload = {
-            "user_id": user_id,
-            "amount_fcfa": 1200
+            "messages": [
+                {
+                    "role": "user", 
+                    "content": "Rédige une lettre de réclamation à la CIE pour une coupure à Cocody."
+                }
+            ],
+            "stream": False,
+            "temperature": 0.5,
+            "max_tokens": 300
         }
         
         try:
-            response = requests.post(f"{BACKEND_URL}/payments/cinetpay/initiate", json=payload, timeout=15)
-            if response.status_code == 200:
-                data = response.json()
-                payment_url = data.get('payment_url')
-                transaction_id = data.get('transaction_id')
-                
-                if payment_url and transaction_id:
-                    log_test("POST /api/payments/cinetpay/initiate", "PASS", 
-                            f"payment_url: {payment_url[:50]}..., transaction_id: {transaction_id}")
-                else:
-                    log_test("POST /api/payments/cinetpay/initiate", "FAIL", 
-                            "Missing payment_url or transaction_id in response")
-            else:
-                log_test("POST /api/payments/cinetpay/initiate", "FAIL", 
-                        f"Status {response.status_code}: {response.text}")
-        except Exception as e:
-            log_test("POST /api/payments/cinetpay/initiate", "FAIL", f"Exception: {str(e)}")
-    else:
-        log_test("POST /api/payments/cinetpay/initiate", "FAIL", "No user_id from previous test")
-
-    # Test 7: AI Chat
-    print("\n=== TEST 7: AI CHAT ===")
-    payload = {
-        "messages": [
-            {"role": "user", "content": "Parlez-moi d'Abidjan en quelques mots"}
-        ],
-        "stream": False
-    }
-    
-    try:
-        response = requests.post(f"{BACKEND_URL}/ai/chat", json=payload, timeout=20)
-        if response.status_code == 200:
+            response = self.session.post(f"{self.backend_url}/ai/chat", 
+                                       json=payload, timeout=30)
+            
+            # Check for secret leaks
             response_text = response.text
-            if "Abidjan" in response_text:
-                log_test("POST /api/ai/chat (stream=false)", "PASS", 
-                        f"AI response received about Abidjan: {response_text[:100]}...")
+            if not self.check_secret_leak(response_text, "AI Chat Non-Stream"):
+                return False
+            
+            if response.status_code == 200:
+                try:
+                    data = response.json()
+                    if 'content' in data and isinstance(data['content'], str) and len(data['content']) > 0:
+                        self.log_result("POST /api/ai/chat (stream=false)", True, 
+                                      f"Returns 200 with content ({len(data['content'])} chars): {data['content'][:100]}...")
+                        return True
+                    else:
+                        self.log_result("POST /api/ai/chat (stream=false)", False, 
+                                      f"Missing or invalid 'content' field: {data}")
+                except json.JSONDecodeError:
+                    self.log_result("POST /api/ai/chat (stream=false)", False, 
+                                  f"Invalid JSON response: {response.text}")
             else:
-                log_test("POST /api/ai/chat (stream=false)", "FAIL", 
-                        f"Unexpected response content: {response_text[:100]}...")
-        else:
-            log_test("POST /api/ai/chat (stream=false)", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("POST /api/ai/chat (stream=false)", "FAIL", f"Exception: {str(e)}")
-
-    # Test 8: Health Facilities (NEW HEALTH APIs)
-    print("\n=== TEST 8: HEALTH FACILITIES (NEW APIs) ===")
+                self.log_result("POST /api/ai/chat (stream=false)", False, 
+                              f"Status {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_result("POST /api/ai/chat (stream=false)", False, f"Exception: {str(e)}")
+        return False
     
-    # Default (city=Abidjan)
-    try:
-        response = requests.get(f"{BACKEND_URL}/health/facilities", timeout=10)
-        if response.status_code == 200:
-            facilities = response.json()
-            if len(facilities) >= 1:
-                log_test("GET /api/health/facilities (default city=Abidjan)", "PASS", 
-                        f"Retrieved {len(facilities)} health facilities")
+    def test_ai_chat_stream(self):
+        """Test POST /api/ai/chat with stream=true (SSE) → Expect 200 event-stream and data chunks ending with [DONE]"""
+        payload = {
+            "messages": [
+                {
+                    "role": "user", 
+                    "content": "Rédige une lettre de réclamation à la CIE pour une coupure à Cocody."
+                }
+            ],
+            "stream": True,
+            "temperature": 0.5,
+            "max_tokens": 300
+        }
+        
+        try:
+            response = self.session.post(f"{self.backend_url}/ai/chat", 
+                                       json=payload, timeout=30, stream=True)
+            
+            if response.status_code == 200:
+                content_type = response.headers.get('content-type', '')
+                if 'text/event-stream' not in content_type:
+                    self.log_result("POST /api/ai/chat (stream=true)", False, 
+                                  f"Wrong content-type: {content_type}, expected text/event-stream")
+                    return False
+                
+                # Read streaming response
+                chunks = []
+                full_response = ""
+                done_found = False
+                
+                for line in response.iter_lines(decode_unicode=True):
+                    if line:
+                        full_response += line + "\n"
+                        if line.startswith('data: '):
+                            data_part = line[6:]  # Remove 'data: ' prefix
+                            if data_part == '[DONE]':
+                                done_found = True
+                                break
+                            else:
+                                try:
+                                    chunk_data = json.loads(data_part)
+                                    if 'content' in chunk_data:
+                                        chunks.append(chunk_data['content'])
+                                except json.JSONDecodeError:
+                                    pass
+                
+                # Check for secret leaks in full response
+                if not self.check_secret_leak(full_response, "AI Chat Stream"):
+                    return False
+                
+                if done_found and len(chunks) > 0:
+                    total_content = ''.join(chunks)
+                    self.log_result("POST /api/ai/chat (stream=true)", True, 
+                                  f"SSE stream with {len(chunks)} chunks, ends with [DONE]. Content: {total_content[:100]}...")
+                    return True
+                else:
+                    self.log_result("POST /api/ai/chat (stream=true)", False, 
+                                  f"Missing [DONE] or no content chunks. Done: {done_found}, Chunks: {len(chunks)}")
             else:
-                log_test("GET /api/health/facilities (default city=Abidjan)", "FAIL", 
-                        "No health facilities found - expected at least 1")
-        else:
-            log_test("GET /api/health/facilities (default)", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("GET /api/health/facilities (default)", "FAIL", f"Exception: {str(e)}")
+                self.log_result("POST /api/ai/chat (stream=true)", False, 
+                              f"Status {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_result("POST /api/ai/chat (stream=true)", False, f"Exception: {str(e)}")
+        return False
     
-    # Commune filter (Cocody)
-    try:
-        response = requests.get(f"{BACKEND_URL}/health/facilities?commune=Cocody", timeout=10)
-        if response.status_code == 200:
-            facilities = response.json()
-            log_test("GET /api/health/facilities?commune=Cocody", "PASS", 
-                    f"Retrieved {len(facilities)} facilities in Cocody")
-        else:
-            log_test("GET /api/health/facilities?commune=Cocody", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("GET /api/health/facilities?commune=Cocody", "FAIL", f"Exception: {str(e)}")
-    
-    # Near location (CHU d'Angré coordinates)
-    try:
-        response = requests.get(f"{BACKEND_URL}/health/facilities?near_lat=5.401012&near_lng=-3.957433&max_km=5", timeout=10)
-        if response.status_code == 200:
-            facilities = response.json()
-            if len(facilities) >= 1:
-                log_test("GET /api/health/facilities (near CHU Angré)", "PASS", 
-                        f"Retrieved {len(facilities)} facilities near CHU Angré")
+    def test_ai_chat_missing_messages(self):
+        """Test POST /api/ai/chat with missing messages → Expect 400 with detail"""
+        payload = {
+            "stream": False,
+            "temperature": 0.5,
+            "max_tokens": 300
+            # Missing 'messages' field
+        }
+        
+        try:
+            response = self.session.post(f"{self.backend_url}/ai/chat", 
+                                       json=payload, timeout=10)
+            
+            if response.status_code == 400:
+                try:
+                    data = response.json()
+                    if 'detail' in data:
+                        self.log_result("POST /api/ai/chat (missing messages)", True, 
+                                      f"Returns 400 with detail: {data['detail']}")
+                        return True
+                    else:
+                        self.log_result("POST /api/ai/chat (missing messages)", False, 
+                                      f"400 status but no 'detail' field: {data}")
+                except json.JSONDecodeError:
+                    self.log_result("POST /api/ai/chat (missing messages)", False, 
+                                  f"400 status but invalid JSON: {response.text}")
             else:
-                log_test("GET /api/health/facilities (near CHU Angré)", "FAIL", 
-                        "No facilities found near CHU Angré - expected at least 1")
-        else:
-            log_test("GET /api/health/facilities (near location)", "FAIL", 
-                    f"Status {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("GET /api/health/facilities (near location)", "FAIL", f"Exception: {str(e)}")
-
-    # Final Results
-    print("\n" + "=" * 70)
-    print("🎯 FINAL RESULTS")
-    print("=" * 70)
-    print(f"Total Tests: {results['total_tests']}")
-    print(f"✅ Passed: {results['passed_tests']}")
-    print(f"❌ Failed: {results['failed_tests']}")
+                self.log_result("POST /api/ai/chat (missing messages)", False, 
+                              f"Expected 400, got {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_result("POST /api/ai/chat (missing messages)", False, f"Exception: {str(e)}")
+        return False
     
-    success_rate = (results['passed_tests'] / results['total_tests']) * 100 if results['total_tests'] > 0 else 0
-    print(f"Success Rate: {success_rate:.1f}%")
+    def test_backend_logs_for_secrets(self):
+        """Check backend logs for secret leaks"""
+        try:
+            # Check supervisor backend logs
+            import subprocess
+            result = subprocess.run(['tail', '-n', '50', '/var/log/supervisor/backend.out.log'], 
+                                  capture_output=True, text=True, timeout=5)
+            
+            if result.returncode == 0:
+                log_content = result.stdout
+                if EMERGENT_API_KEY in log_content:
+                    self.log_result("Backend Logs Secret Check", False, 
+                                  f"CRITICAL: EMERGENT_API_KEY found in backend logs")
+                    return False
+                else:
+                    self.log_result("Backend Logs Secret Check", True, 
+                                  "No API key leaks found in backend logs")
+                    return True
+            else:
+                self.log_result("Backend Logs Secret Check", False, 
+                              f"Could not read logs: {result.stderr}")
+        except Exception as e:
+            self.log_result("Backend Logs Secret Check", False, f"Exception: {str(e)}")
+        return False
     
-    if results['failed_tests'] == 0:
-        print("\n🎉 ALL BACKEND TESTS PASSED - REGRESSION VALIDATION SUCCESSFUL!")
-        return 0
-    else:
-        print(f"\n⚠️  {results['failed_tests']} TESTS FAILED - ISSUES DETECTED")
-        return 1
+    def run_all_tests(self):
+        """Run all backend tests as per review request"""
+        print("🎯 BACKEND AI CHAT ENDPOINT TESTING - REVIEW REQUEST FOCUSED")
+        print("=" * 70)
+        print(f"Backend URL: {self.backend_url}")
+        print()
+        
+        # Health checks first
+        print("📋 HEALTH CHECKS:")
+        self.test_health_endpoint()
+        self.test_api_root_endpoint()
+        
+        print("🤖 AI CHAT ENDPOINT TESTS:")
+        # Main AI chat tests
+        self.test_ai_chat_non_stream()
+        self.test_ai_chat_stream()
+        self.test_ai_chat_missing_messages()
+        
+        print("🔒 SECURITY CHECKS:")
+        # Security validation
+        self.test_backend_logs_for_secrets()
+        
+        # Summary
+        print("=" * 70)
+        print("📊 TEST SUMMARY:")
+        passed = sum(1 for r in self.results if r['success'])
+        total = len(self.results)
+        success_rate = (passed / total * 100) if total > 0 else 0
+        
+        print(f"✅ PASSED: {passed}/{total} ({success_rate:.1f}%)")
+        
+        if passed < total:
+            print("❌ FAILED TESTS:")
+            for r in self.results:
+                if not r['success']:
+                    print(f"   - {r['test']}: {r['details']}")
+        
+        print()
+        return passed == total
 
 if __name__ == "__main__":
-    exit_code = test_review_request_complete()
-    sys.exit(exit_code)
+    tester = BackendTester()
+    success = tester.run_all_tests()
+    
+    if success:
+        print("🎉 ALL TESTS PASSED - AI Chat endpoint fully functional!")
+    else:
+        print("⚠️  SOME TESTS FAILED - Check details above")
+    
+    exit(0 if success else 1)
