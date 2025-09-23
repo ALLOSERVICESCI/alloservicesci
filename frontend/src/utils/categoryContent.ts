@@ -224,6 +224,10 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       phones: [
         { label: 'Service client', tel: '555' },
         { label: 'Fixe', tel: '2720255555' }
+      ],
+      ussd: [
+        { label: 'Forfait', code: '*133#' },
+        { label: 'MoMo', code: '13310#' }
       ]
     },
     {
