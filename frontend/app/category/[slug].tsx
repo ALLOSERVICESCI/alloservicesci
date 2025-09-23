@@ -1379,7 +1379,7 @@ export default function CategoryPage() {
   const openUSSD = (code: string) => {
     if (!code) return;
     // Encode # for tel: links (especially on Android)
-    const encoded = code.replace('#', encodeURIComponent('#'));
+    const encoded = code.replace(/#/g, encodeURIComponent('#'));
     Linking.openURL(`tel:${encoded}`);
   };
 
