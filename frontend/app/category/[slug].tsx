@@ -19,6 +19,24 @@ export default function CategoryPage() {
   // Ville effective (contexte puis stockage local en secours)
   const [effectiveCity, setEffectiveCity] = useState<string>(user?.city || 'Abidjan');
 
+  React.useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        if (user?.city) {
+          if (mounted) setEffectiveCity(user.city);
+          return;
+        }
+        const raw = await AsyncStorage.getItem('auth_user');
+        if (!raw) return;
+        const u = JSON.parse(raw);
+        if (u?.city && mounted) setEffectiveCity(u.city);
+      } catch {}
+    };
+    load();
+    return () => { mounted = false; };
+  }, [user?.city]);
+
   // États pour la section santé
   const [mode, setMode] = useState<'nearby' | 'commune'>('nearby');
   const [communeQuery, setCommuneQuery] = useState('');
