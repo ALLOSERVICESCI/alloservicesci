@@ -1575,9 +1575,13 @@ export default function CategoryPage() {
   return (
     <View style={styles.container}>
       {/* En-tête avec image */}
-      <ImageBackground source={bg} style={styles.header} resizeMode="cover">
-        <LinearGradient colors={s === 'urgence' ? ['transparent', 'transparent'] : ['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
-          {s !== 'urgence' && (
+      {s === 'urgence' ? (
+        <View style={styles.headerWrapperUrgence}>
+          <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover" />
+        </View>
+      ) : (
+        <ImageBackground source={bg} style={styles.header} resizeMode="cover">
+          <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
             <View style={[
               styles.headerContent,
               s === 'sante' && styles.headerContentLower
@@ -1590,9 +1594,9 @@ export default function CategoryPage() {
               </Text>
               <Text style={styles.headerSubtitle}>Services disponibles en Côte d'Ivoire</Text>
             </View>
-          )}
-        </LinearGradient>
-      </ImageBackground>
+          </LinearGradient>
+        </ImageBackground>
+      )}
 
       {/* Contenu spécifique par catégorie */}
       {s === 'urgence' ? (
