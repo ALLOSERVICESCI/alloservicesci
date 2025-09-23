@@ -1579,7 +1579,13 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperUrgence}>
           <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover">
             <View style={styles.headerUrgenceContent}>
-              <Text style={styles.headerTitleUrg}>Les unités d'Urgence</Text>
+              <View style={styles.titleWrapUrg}>
+                <Text style={[styles.headerTitleUrgOutline, { transform: [{ translateX: 1 }, { translateY: 0 }] }]}>Les unités d'Urgence</Text>
+                <Text style={[styles.headerTitleUrgOutline, { transform: [{ translateX: -1 }, { translateY: 0 }] }]}>Les unités d'Urgence</Text>
+                <Text style={[styles.headerTitleUrgOutline, { transform: [{ translateX: 0 }, { translateY: 1 }] }]}>Les unités d'Urgence</Text>
+                <Text style={[styles.headerTitleUrgOutline, { transform: [{ translateX: 0 }, { translateY: -1 }] }]}>Les unités d'Urgence</Text>
+                <Text style={styles.headerTitleUrg}>Les unités d'Urgence</Text>
+              </View>
               <Text style={styles.headerSubtitleUrg}>Services disponibles en Côte d'Ivoire</Text>
             </View>
           </ImageBackground>
