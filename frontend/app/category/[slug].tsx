@@ -1938,7 +1938,7 @@ const styles = StyleSheet.create({
   headerContent: { padding: 20, paddingBottom: 30 },
   headerContentLower: { paddingBottom: 36 },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '900', marginBottom: 6 },
-  headerTitleSante: { color: '#FF8A00' },
+  headerTitleSante: { color: '#FF8A00', marginBottom: 2 },
   headerSubtitle: { color: '#fff', fontSize: 14, opacity: 0.9 },
   headerNote: { backgroundColor: '#FF8A00', padding: 16, borderRadius: 12, marginBottom: 20 },
   headerNoteTitle: { color: '#FF8A00', fontSize: 20, fontWeight: '900' },
