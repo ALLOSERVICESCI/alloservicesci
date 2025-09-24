@@ -154,6 +154,17 @@ export default function Alerts() {
 }
 
 const styles = StyleSheet.create({
+  backBtnUrgence: {
+    position: 'absolute',
+    top: Platform.select({ ios: 52, android: 22, default: 16 }) as number,
+    left: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    paddingHorizontal: 12,
+    height: 40,
+    borderRadius: 20,
+  },
   container: { flex: 1, backgroundColor: '#fff', paddingTop: 260 },
   header: { height: 260, justifyContent: 'center' },
   headerImage: {},
