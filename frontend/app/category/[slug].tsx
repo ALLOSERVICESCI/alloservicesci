@@ -1617,6 +1617,10 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperAgriculture}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
+      ) : s === 'loisirs_tourisme' ? (
+        <View style={styles.headerWrapperLoisirs}>
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+        </View>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
