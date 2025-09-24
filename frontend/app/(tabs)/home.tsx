@@ -128,7 +128,7 @@ export default function Home() {
   useEffect(() => {
     if (!textW || marqueeItems.length === 0) return;
     cancelAnimation(marqueeX);
-    const speed = 60; // px/s
+    const speed = Platform.OS === 'web' ? 50 : 60; // px/s (web légèrement plus lent = animation plus fluide)
     const distance = textW; // with double-buffer, shift by exactly one text width
     const duration = (distance / speed) * 1000;
     marqueeX.value = 0;
