@@ -1596,7 +1596,7 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperUrgence}>
           <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover" />
         </View>
-      ) : s === 'sante' ? (
+      ) : sKey === 'sante' ? (
         <View style={styles.headerWrapperSante}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
