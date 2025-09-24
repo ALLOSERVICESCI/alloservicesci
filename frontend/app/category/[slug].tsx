@@ -1609,6 +1609,10 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperEducation}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
+      ) : s === 'examens_concours' ? (
+        <View style={styles.headerWrapperExamens}>
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+        </View>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
