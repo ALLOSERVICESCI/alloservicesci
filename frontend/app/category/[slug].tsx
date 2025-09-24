@@ -1571,7 +1571,14 @@ export default function CategoryPage() {
     services_publics: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/7mhah4lt_services_publics_bg.png' },
   };
 
-  const bg = backgroundImages[s] || COMMON_HEADER;
+  // Assure alias support (e.g., loisir_tourisme, loisirs-tourisme)
+  const slugAliases: Record<string, string> = {
+    'loisir_tourisme': 'loisirs_tourisme',
+    'loisir-tourisme': 'loisirs_tourisme',
+    'loisirs-tourisme': 'loisirs_tourisme',
+  };
+  const sKey = slugAliases[s] || s;
+  const bg = backgroundImages[sKey] || COMMON_HEADER;
 
   return (
     <View style={[
