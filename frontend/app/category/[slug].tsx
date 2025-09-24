@@ -1561,7 +1561,7 @@ export default function CategoryPage() {
     pharmacies: require('../../assets/headers/pharmacies_header.png'),
     sante: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/bgconh5v_santebis_bg.png' },
     urgence: require('../../assets/headers/headers/urgence_bg.png'),
-    transport: require('../../assets/headers/headers/transport_bg.png'),
+    transport: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/b4gvhwle_transport_bg.png' },
     alertes: require('../../assets/headers/headers/alertes_bg.png'),
     examens_concours: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/if6ljosz_examens_concours_bg.png' },
     education: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/wdyf0nu5_education_bg.png' },
