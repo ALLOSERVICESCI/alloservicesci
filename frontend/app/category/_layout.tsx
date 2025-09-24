@@ -11,7 +11,9 @@ export default function CategoryLayout() {
         animation: Platform.select({ ios: 'slide_from_right', android: 'slide_from_right', default: 'slide_from_right' }) as any,
         presentation: 'card',
         gestureEnabled: true,
-        animationDuration: 750,
+        animationDuration: 800,
+        animationTypeForReplace: 'push',
+        // Expo Router/React Navigation uses native easing; we can approximate a softer curve via longer duration and push replace
       }}
     >
       <Stack.Screen name="[slug]" options={{}} />
