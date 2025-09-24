@@ -467,7 +467,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
+    - "Automated Frontend E2E (Web/iOS/Android) — Validate headers across categories"
+    - "Emplois & Offres header: fixed absolute top, height=250, shadow, image cover, no title/subtitle, scroll under; slug aliases"
+    - "Pharmacies header consistency across platforms; dynamic header text when filters change"
+    - "Category transitions: slide_from_right ~800ms easing"
+    - "Telephone links on web use tel: scheme where applicable"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
