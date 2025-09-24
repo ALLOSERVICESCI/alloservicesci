@@ -1624,9 +1624,9 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperServices}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
-      ) : s === 'emplois_offres' ? (
+      ) : sKey === 'emplois_offres' ? (
         <View style={styles.headerWrapperEmplois}>
-          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <ImageBackground source={bg} style={styles.headerFill} resizeMode="cover" />
         </View>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
