@@ -1640,7 +1640,7 @@ export default function CategoryPage() {
       )}
 
       {/* Contenu spécifique par catégorie */}
-      {s === 'urgence' ? (
+      {sKey === 'urgence' ? (
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
           {(CONTENT_BY_CATEGORY[s] || []).map((item, idx) => (
             <View key={`urg-card-${idx}`}>{renderContentItem({ item, index: idx } as any)}</View>
