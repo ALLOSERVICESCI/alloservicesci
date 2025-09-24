@@ -1641,13 +1641,13 @@ export default function CategoryPage() {
 
       {/* Contenu spécifique par catégorie */}
       {sKey === 'urgence' ? (
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: padTop, paddingHorizontal: 16, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
           {(CONTENT_BY_CATEGORY[s] || []).map((item, idx) => (
             <View key={`urg-card-${idx}`}>{renderContentItem({ item, index: idx } as any)}</View>
           ))}
         </ScrollView>
-      ) : s === 'sante' ? (
-        <View style={{ flex: 1, padding: 16 }}>
+      ) : sKey === 'sante' ? (
+        <View style={{ flex: 1, padding: 16, paddingTop: padTop }}>
           {/* Localités avec badge Réinitialiser */}
           <View style={{ marginBottom: 16 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
