@@ -1593,20 +1593,7 @@ export default function CategoryPage() {
         </View>
       ) : s === 'sante' ? (
         <View style={styles.headerWrapperSante}>
-          <ImageBackground source={bg} style={styles.header} resizeMode="cover">
-            <View style={[
-              styles.headerContent,
-              styles.headerContentLower
-            ]}>
-              <Text style={[
-                styles.headerTitle,
-                styles.headerTitleSante
-              ]}>
-                Les unités de santé
-              </Text>
-              <Text style={styles.headerSubtitle}>Services disponibles en Côte d'Ivoire</Text>
-            </View>
-          </ImageBackground>
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
       ) : s === 'education' ? (
         <View style={styles.headerWrapperEducation}>
