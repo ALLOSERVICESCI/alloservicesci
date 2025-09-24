@@ -2054,6 +2054,8 @@ const styles = StyleSheet.create({
       default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
     }),
   },
+  headerFill: { width: '100%', height: '100%', justifyContent: 'flex-end' },
+
   headerUrgence: { width: '100%', height: '100%', justifyContent: 'flex-end' },
   headerWrapperSante: {
     position: 'absolute',
