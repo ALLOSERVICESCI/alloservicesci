@@ -11,7 +11,7 @@ export default function CategoryLayout() {
         animation: Platform.select({ ios: 'slide_from_right', android: 'slide_from_right', default: 'slide_from_right' }) as any,
         presentation: 'card',
         gestureEnabled: true,
-        animationDuration: 450,
+        animationDuration: 750,
       }}
     >
       <Stack.Screen name="[slug]" options={{}} />
