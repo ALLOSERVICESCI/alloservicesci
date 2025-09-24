@@ -1563,7 +1563,7 @@ export default function CategoryPage() {
     urgence: require('../../assets/headers/headers/urgence_bg.png'),
     transport: require('../../assets/headers/headers/transport_bg.png'),
     alertes: require('../../assets/headers/headers/alertes_bg.png'),
-    examens_concours: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/sgs3f0rz_examens_concours_bg.png' },
+    examens_concours: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/if6ljosz_examens_concours_bg.png' },
     education: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/wdyf0nu5_education_bg.png' },
     services_utiles: require('../../assets/headers/headers/services_utiles_bg.png'),
     agriculture: require('../../assets/headers/headers/agriculture_bg.png'),
