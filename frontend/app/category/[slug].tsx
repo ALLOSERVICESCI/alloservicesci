@@ -1586,11 +1586,11 @@ export default function CategoryPage() {
   const sKey = slugAliases[s] || s;
   const bg = backgroundImages[sKey] || COMMON_HEADER;
 
+  const fixedHeaderKeys = ['urgence','sante','education','examens_concours','agriculture','loisirs_tourisme','transport','services_publics','emplois_offres'];
+  const padTop = fixedHeaderKeys.includes(sKey) ? (sKey === 'education' ? eduHeaderHeight : 250) : 0;
+
   return (
-    <View style={[
-      styles.container,
-      sKey === 'urgence' ? { paddingTop: 250 } : sKey === 'sante' ? { paddingTop: 250 } : sKey === 'education' ? { paddingTop: eduHeaderHeight } : sKey === 'examens_concours' ? { paddingTop: 250 } : sKey === 'agriculture' ? { paddingTop: 250 } : sKey === 'loisirs_tourisme' ? { paddingTop: 250 } : sKey === 'transport' ? { paddingTop: 250 } : sKey === 'services_publics' ? { paddingTop: 250 } : sKey === 'emplois_offres' ? { paddingTop: 250 } : null
-    ]}>
+    <View style={styles.container}>
       {/* En-tête avec image */}
       {s === 'urgence' ? (
         <View style={styles.headerWrapperUrgence}>
