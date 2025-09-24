@@ -1589,7 +1589,7 @@ export default function CategoryPage() {
   return (
     <View style={[
       styles.container,
-      s === 'urgence' ? { paddingTop: 250 } : s === 'sante' ? { paddingTop: 250 } : s === 'education' ? { paddingTop: eduHeaderHeight } : s === 'examens_concours' ? { paddingTop: 250 } : s === 'agriculture' ? { paddingTop: 250 } : s === 'loisirs_tourisme' ? { paddingTop: 250 } : s === 'transport' ? { paddingTop: 250 } : s === 'services_publics' ? { paddingTop: 250 } : s === 'emplois_offres' ? { paddingTop: 250 } : null
+      sKey === 'urgence' ? { paddingTop: 250 } : sKey === 'sante' ? { paddingTop: 250 } : sKey === 'education' ? { paddingTop: eduHeaderHeight } : sKey === 'examens_concours' ? { paddingTop: 250 } : sKey === 'agriculture' ? { paddingTop: 250 } : sKey === 'loisirs_tourisme' ? { paddingTop: 250 } : sKey === 'transport' ? { paddingTop: 250 } : sKey === 'services_publics' ? { paddingTop: 250 } : sKey === 'emplois_offres' ? { paddingTop: 250 } : null
     ]}>
       {/* En-tête avec image */}
       {s === 'urgence' ? (
