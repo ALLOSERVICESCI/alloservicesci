@@ -1577,6 +1577,11 @@ export default function CategoryPage() {
     'loisir_tourisme': 'loisirs_tourisme',
     'loisir-tourisme': 'loisirs_tourisme',
     'loisirs-tourisme': 'loisirs_tourisme',
+    'emplois': 'emplois_offres',
+    'emploi': 'emplois_offres',
+    'offres': 'emplois_offres',
+    'emplois-offres': 'emplois_offres',
+    'offres-emploi': 'emplois_offres',
   };
   const sKey = slugAliases[s] || s;
   const bg = backgroundImages[sKey] || COMMON_HEADER;
