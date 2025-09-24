@@ -1590,7 +1590,7 @@ export default function CategoryPage() {
   const padTop = fixedHeaderKeys.includes(sKey) ? (sKey === 'education' ? eduHeaderHeight : 250) : 0;
 
   return (
-    <View style={[styles.container, { paddingTop: padTop }]}>
+    <View style={styles.container}>
       {/* En-tête avec image */}
       {sKey === 'urgence' ? (
         <View style={styles.headerWrapperUrgence}>
