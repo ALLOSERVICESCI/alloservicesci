@@ -477,6 +477,7 @@ test_plan:
   test_priority: "high_first"
   backend_health_testing_completed: true
   frontend_sante_testing_completed: true
+  comprehensive_e2e_testing_completed: true
 
 agent_communication:
   - agent: "main"
