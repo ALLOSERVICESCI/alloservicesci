@@ -1629,6 +1629,14 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperLoisirs}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
+      ) : s === 'transport' ? (
+        <View style={styles.headerWrapperTransport}>
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+        </View>
+      ) : s === 'services_publics' ? (
+        <View style={styles.headerWrapperServices}>
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+        </View>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
