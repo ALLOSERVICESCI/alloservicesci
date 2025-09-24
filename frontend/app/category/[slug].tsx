@@ -1646,7 +1646,7 @@ export default function CategoryPage() {
             <View key={`urg-card-${idx}`}>{renderContentItem({ item, index: idx } as any)}</View>
           ))}
         </ScrollView>
-      ) : s === 'sante' ? (
+      ) : sKey === 'sante' ? (
         <View style={{ flex: 1, padding: 16 }}>
           {/* Localités avec badge Réinitialiser */}
           <View style={{ marginBottom: 16 }}>
