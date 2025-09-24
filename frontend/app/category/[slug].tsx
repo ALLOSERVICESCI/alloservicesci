@@ -1619,6 +1619,10 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperServices}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
+      ) : s === 'emplois_offres' ? (
+        <View style={styles.headerWrapperEmplois}>
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+        </View>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
