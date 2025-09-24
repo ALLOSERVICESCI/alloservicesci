@@ -13,7 +13,7 @@ from typing import Dict, Any, List
 from datetime import datetime
 
 # Load backend URL from frontend .env
-BACKEND_URL = "https://allo-assistance.preview.emergentagent.com/api"
+BACKEND_URL = "https://urgent-services-ci.preview.emergentagent.com/api"
 EMERGENT_API_KEY = "sk-emergent-5F8959dC8249919584"  # For leak detection
 
 class BackendTester:

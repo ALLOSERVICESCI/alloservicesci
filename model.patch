@@ -1651,9 +1651,9 @@ index c36b929..e69de29 100644
 ----------------------------------------------from typing import Dict, Any, Optional
 --------------------------------------------- 
 ----------------------------------------------# Base URL from frontend environment
-----------------------------------------------BASE_URL = "https://allo-assistance.preview.emergentagent.com/api"
+----------------------------------------------BASE_URL = "https://urgent-services-ci.preview.emergentagent.com/api"
 ---------------------------------------------+# Get backend URL from frontend .env
----------------------------------------------+BACKEND_URL = "https://allo-assistance.preview.emergentagent.com/api"
+---------------------------------------------+BACKEND_URL = "https://urgent-services-ci.preview.emergentagent.com/api"
 --------------------------------------------- 
 ----------------------------------------------class BackendTester:
 ----------------------------------------------    def __init__(self):
