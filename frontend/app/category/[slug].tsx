@@ -2161,9 +2161,9 @@ const styles = StyleSheet.create({
     zIndex: 10,
     backgroundColor: 'transparent',
     ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
+      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.34, shadowRadius: 18 },
+      android: { elevation: 18 },
+      default: { boxShadow: '0px 24px 36px rgba(0,0,0,0.28)' as any },
     }),
   },
   headerUrgenceContent: { padding: 20, paddingBottom: 6, alignItems: 'flex-start' },
