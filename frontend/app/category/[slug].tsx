@@ -3,7 +3,7 @@ import { View, Text, ImageBackground, StyleSheet, FlatList, SectionList, Touchab
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useLocalSearchParams, Link } from 'expo-router';
+import { useLocalSearchParams, router } from 'expo-router';
 import { useI18n } from '../../src/i18n/i18n';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 import { useAuth } from '../../src/context/AuthContext';
