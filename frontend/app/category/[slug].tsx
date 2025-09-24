@@ -1576,7 +1576,7 @@ export default function CategoryPage() {
   return (
     <View style={[
       styles.container,
-      s === 'urgence' ? { paddingTop: 250 } : s === 'sante' ? { paddingTop: 250 } : s === 'education' ? { paddingTop: eduHeaderHeight } : s === 'examens_concours' ? { paddingTop: 250 } : s === 'agriculture' ? { paddingTop: 250 } : null
+      s === 'urgence' ? { paddingTop: 250 } : s === 'sante' ? { paddingTop: 250 } : s === 'education' ? { paddingTop: eduHeaderHeight } : s === 'examens_concours' ? { paddingTop: 250 } : s === 'agriculture' ? { paddingTop: 250 } : s === 'loisirs_tourisme' ? { paddingTop: 250 } : null
     ]}>
       {/* En-tête avec image */}
       {s === 'urgence' ? (
