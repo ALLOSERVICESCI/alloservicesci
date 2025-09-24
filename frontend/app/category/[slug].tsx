@@ -1597,7 +1597,6 @@ export default function CategoryPage() {
           <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover" />
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
-            <Text style={styles.backBtnText}>Accueil</Text>
           </TouchableOpacity>
         </View>
       ) : sKey === 'sante' ? (
