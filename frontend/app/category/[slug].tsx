@@ -1611,7 +1611,7 @@ export default function CategoryPage() {
         </View>
       ) : s === 'examens_concours' ? (
         <View style={styles.headerWrapperExamens}>
-          <ImageBackground source={bg} style={styles.header} resizeMode="contain" />
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
