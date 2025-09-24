@@ -1565,7 +1565,7 @@ export default function CategoryPage() {
     alertes: require('../../assets/headers/headers/alertes_bg.png'),
     examens_concours: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/if6ljosz_examens_concours_bg.png' },
     education: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/wdyf0nu5_education_bg.png' },
-    services_utiles: require('../../assets/headers/headers/services_utiles_bg.png'),
+    services_utiles: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/d23v2qjj_services_utiles_bg.png' },
     agriculture: require('../../assets/headers/headers/agriculture_bg.png'),
     loisirs_tourisme: require('../../assets/headers/headers/loisirs_tourisme_bg.png'),
     services_publics: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/7mhah4lt_services_publics_bg.png' },
