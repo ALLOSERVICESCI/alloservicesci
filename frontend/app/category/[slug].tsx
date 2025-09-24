@@ -1588,6 +1588,7 @@ export default function CategoryPage() {
 
   const fixedHeaderKeys = ['urgence','sante','education','examens_concours','agriculture','loisirs_tourisme','transport','services_publics','emplois_offres'];
   const padTop = fixedHeaderKeys.includes(sKey) ? (sKey === 'education' ? eduHeaderHeight : 250) : 0;
+  const containerPad = sKey === 'emplois_offres' ? 0 : padTop;
 
   return (
     <View style={[styles.container, { paddingTop: padTop }]}>
