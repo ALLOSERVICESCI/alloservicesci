@@ -460,6 +460,18 @@ metadata:
         agent: "testing"
         comment: "❌ CRITICAL CITY-BASED LOGIC FAILURE - Comprehensive E2E test (iPhone 12/13/14: 390x844) reveals fundamental implementation issues: 1) ❌ PART A (Divo): Shows WRONG interface - displays Abidjan communes mode (chips 'Autour de moi'/'Communes' present) instead of direct mode, no Divo facility cards visible (0/5 required facilities found), city change to Divo not taking effect properly, 2) ❌ PART B (Abidjan): Chips present correctly but 'Rechercher une commune' input missing, commune search functionality not working, 3) ❌ ROOT CAUSE: City-based conditional rendering logic broken - both Divo and Abidjan show same interface with 'Localités: Abidjan', profile city changes not persisting or not being used correctly in Santé page logic, 4) ❌ BACKEND INTEGRATION: No facility data displayed for either city, static data from healthFacilitiesByCommune not being rendered. URGENT: Fix city-based display mode logic and backend API integration for health facilities data."
 
+  - task: "AUTOMATED FRONTEND E2E: Comprehensive header standardization validation across Web/iOS/Android platforms"
+    implemented: true
+    working: false
+    file: "frontend/app/category/[slug].tsx, frontend/app/(tabs)/pharmacies.tsx, frontend/app/(tabs)/alerts.tsx, frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ COMPREHENSIVE E2E TESTING FAILED - Critical header standardization issues found across ALL platforms (iPhone 12/13/14: 390x844): 1) ❌ CATEGORY HEADERS: All headers (urgence, sante, emplois_offres) have height=844px instead of required 250px (±4px), missing shadows/boxShadow, background images using 'auto' instead of 'cover' mode, 2) ❌ PHARMACIES HEADER: Same issues (844px height, no shadow), filters working (1 Near Me, 4 On Duty found), 3) ❌ EMPLOIS & OFFRES REGRESSION: All aliases (emplois_offres, emploi, offres) show same header issues, 4) ❌ TELEPHONE LINKS: No tel: links found in Urgence page (should have Pompiers, SAMU, Police), 5) ❌ FAB & ALERTS: Home FAB Publier (testID='fab-publier') NOT found, Alerts header wrong height (844px), Publier button NOT found in Alerts tab. ✅ POSITIVES: App loads successfully, no red-screen errors, navigation works, basic functionality present. CRITICAL: Complete failure of header standardization requirements - headers not implementing 250px fixed height, shadows, or cover background images as specified in review request."
+
   created_by: "main_agent"
   version: "1.3"
   test_sequence: 6
