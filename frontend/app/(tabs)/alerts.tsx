@@ -77,7 +77,7 @@ export default function Alerts() {
       <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} imageStyle={styles.headerImage} resizeMode="cover">
         <View style={styles.headerContentRight}>
           <Link href="/alerts/new" asChild>
-            <TouchableOpacity style={styles.btn} accessibilityRole="button"><Text style={styles.btnText}>{t('newAlert')}</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.btn} accessibilityRole="button"><Text style={styles.btnText}>Publier</Text></TouchableOpacity>
           </Link>
         </View>
       </ImageBackground>
