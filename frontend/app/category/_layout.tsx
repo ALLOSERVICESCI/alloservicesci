@@ -7,10 +7,11 @@ export default function CategoryLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        // Smooth slide from right to left when opening any category page (incl. Urgence)
+        // Smooth slide from right to left (slow) when opening any category page (incl. Urgence)
         animation: Platform.select({ ios: 'slide_from_right', android: 'slide_from_right', default: 'slide_from_right' }) as any,
         presentation: 'card',
         gestureEnabled: true,
+        animationDuration: 450,
       }}
     >
       <Stack.Screen name="[slug]" options={{}} />
