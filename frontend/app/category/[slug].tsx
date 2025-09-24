@@ -1569,7 +1569,7 @@ export default function CategoryPage() {
     agriculture: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/6bg34mgh_agriculture_bg.png' },
     loisirs_tourisme: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/s7mbb0g4_loisirs_bg.png' },
     services_publics: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/7mhah4lt_services_publics_bg.png' },
-    emplois_offres: COMMON_HEADER,
+    emplois_offres: { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/wexk9qlh_emplois_offres_bg.png' },
   };
 
   // Assure alias support (e.g., loisir_tourisme, loisirs-tourisme)
