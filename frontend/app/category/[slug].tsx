@@ -1596,35 +1596,35 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperUrgence}>
           <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover" />
         </View>
-      ) : s === 'sante' ? (
+      ) : sKey === 'sante' ? (
         <View style={styles.headerWrapperSante}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
-      ) : s === 'education' ? (
+      ) : sKey === 'education' ? (
         <View style={styles.headerWrapperEducation}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
-      ) : s === 'examens_concours' ? (
+      ) : sKey === 'examens_concours' ? (
         <View style={styles.headerWrapperExamens}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
-      ) : s === 'agriculture' ? (
+      ) : sKey === 'agriculture' ? (
         <View style={styles.headerWrapperAgriculture}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
-      ) : s === 'loisirs_tourisme' ? (
+      ) : sKey === 'loisirs_tourisme' ? (
         <View style={styles.headerWrapperLoisirs}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
-      ) : s === 'transport' ? (
+      ) : sKey === 'transport' ? (
         <View style={styles.headerWrapperTransport}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
-      ) : s === 'services_publics' ? (
+      ) : sKey === 'services_publics' ? (
         <View style={styles.headerWrapperServices}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
-      ) : s === 'emplois_offres' ? (
+      ) : sKey === 'emplois_offres' ? (
         <View style={styles.headerWrapperEmplois}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
         </View>
@@ -1632,7 +1632,7 @@ export default function CategoryPage() {
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
             <View style={styles.headerContent}>
-              <Text style={styles.headerTitle}>{t(`categories.${s}`)}</Text>
+              <Text style={styles.headerTitle}>{t(`categories.${sKey}`)}</Text>
               <Text style={styles.headerSubtitle}>Services disponibles en Côte d'Ivoire</Text>
             </View>
           </LinearGradient>
