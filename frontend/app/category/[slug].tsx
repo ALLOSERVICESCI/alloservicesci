@@ -1592,7 +1592,7 @@ export default function CategoryPage() {
   return (
     <View style={[styles.container, { paddingTop: padTop }]}>
       {/* En-tête avec image */}
-      {s === 'urgence' ? (
+      {sKey === 'urgence' ? (
         <View style={styles.headerWrapperUrgence}>
           <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover" />
         </View>
