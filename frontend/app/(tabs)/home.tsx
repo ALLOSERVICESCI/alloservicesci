@@ -346,12 +346,7 @@ export default function Home() {
           ]
         },
       ]}>
-        {tooltipVisible && (
-          <View style={styles.tooltip} pointerEvents="none">
 
-            <View style={styles.tooltipArrow} />
-          </View>
-        )}
         <TouchableOpacity onPress={() => router.push('/ai/chat')} activeOpacity={0.9} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View style={styles.aiMask}><Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/qn4qcqls_logoia.png' }} style={styles.aiImgCover} /></View>
         </TouchableOpacity>
