@@ -1616,6 +1616,9 @@ export default function CategoryPage() {
       ) : sKey === 'examens_concours' ? (
         <View style={styles.headerWrapperExamens}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
+          </TouchableOpacity>
         </View>
       ) : sKey === 'agriculture' ? (
         <View style={styles.headerWrapperAgriculture}>
