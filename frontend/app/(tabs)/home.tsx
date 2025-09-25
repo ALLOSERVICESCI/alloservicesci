@@ -348,7 +348,7 @@ export default function Home() {
       ]}>
         {tooltipVisible && (
           <View style={styles.tooltip} pointerEvents="none">
-            <View style={styles.tooltipBubble}><Text style={styles.tooltipText}>Allô IA</Text></View>
+
             <View style={styles.tooltipArrow} />
           </View>
         )}
