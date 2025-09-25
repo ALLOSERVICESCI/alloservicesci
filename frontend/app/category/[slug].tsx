@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, ImageBackground, StyleSheet, FlatList, SectionList, TouchableOpacity, Linking, TextInput, ScrollView, Platform, Image, Dimensions } from 'react-native';
+import { View, Text, ImageBackground, StyleSheet, FlatList, SectionList, TouchableOpacity, Linking, TextInput, ScrollView, Platform, Image, Dimensions, Animated, Easing, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
