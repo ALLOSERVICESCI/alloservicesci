@@ -2291,11 +2291,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 12,
     right: 16,
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
   },
   eduListText: {
     fontSize: 13,
     color: '#f9f9f9',
+    textAlign: 'left',
     textShadowColor: 'rgba(0,0,0,0.35)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
