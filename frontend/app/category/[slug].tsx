@@ -1610,22 +1610,10 @@ export default function CategoryPage() {
         <View style={styles.headerWrapperEducation}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover">
             <View style={styles.eduListOverlay}>
-              <View style={styles.eduItemRow}>
-                <Text style={styles.eduBullet}>{'\u2022'}</Text>
-                <Text style={styles.eduItemText}>Etablissements scolaires</Text>
-              </View>
-              <View style={styles.eduItemRow}>
-                <Text style={styles.eduBullet}>{'\u2022'}</Text>
-                <Text style={styles.eduItemText}>Collèges et Lycées</Text>
-              </View>
-              <View style={styles.eduItemRow}>
-                <Text style={styles.eduBullet}>{'\u2022'}</Text>
-                <Text style={styles.eduItemText}>Universités</Text>
-              </View>
-              <View style={styles.eduItemRow}>
-                <Text style={styles.eduBullet}>{'\u2022'}</Text>
-                <Text style={styles.eduItemText}>Centres de Formations</Text>
-              </View>
+              <Text style={styles.eduListText}>• Etablissements scolaires</Text>
+              <Text style={styles.eduListText}>• Collèges et Lycées</Text>
+              <Text style={styles.eduListText}>• Universités</Text>
+              <Text style={styles.eduListText}>• Centres de Formations</Text>
             </View>
           </ImageBackground>
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
