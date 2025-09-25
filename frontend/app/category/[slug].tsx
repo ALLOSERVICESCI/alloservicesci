@@ -2289,11 +2289,11 @@ const styles = StyleSheet.create({
   // Education list styles
   eduListBox: {
     position: 'absolute',
-    top: 20,
+    bottom: 20,
     right: 16,
     alignSelf: 'flex-end',
     maxWidth: 280,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 12,
     padding: 16,
     ...Platform.select({
