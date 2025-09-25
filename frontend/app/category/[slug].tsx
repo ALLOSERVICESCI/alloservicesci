@@ -1611,23 +1611,7 @@ export default function CategoryPage() {
         </View>
       ) : sKey === 'education' ? (
         <View style={styles.headerWrapperEducation}>
-          <ImageBackground source={bg} style={styles.header} resizeMode="cover">
-            <View style={styles.eduDropdownContainer}>
-              <TouchableOpacity style={styles.eduDropdownTrigger} onPress={() => setEduMenuOpen(!eduMenuOpen)}>
-                <Text style={styles.eduDropdownTriggerText}>Etablissements</Text>
-                <Ionicons name={eduMenuOpen ? 'chevron-up' : 'chevron-down'} size={18} color="#333" />
-              </TouchableOpacity>
-              {eduMenuOpen && (
-                <View style={styles.eduDropdownMenu}>
-                  {['Public','Privée','Semi-privé','Coranique','Formation professionnelle'].map((opt) => (
-                    <TouchableOpacity key={opt} style={styles.eduDropdownItem} onPress={() => setEduMenuOpen(false)}>
-                      <Text style={styles.eduDropdownItemText}>{opt}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )}
-            </View>
-          </ImageBackground>
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
