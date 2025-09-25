@@ -2120,7 +2120,296 @@ export default function CategoryPage() {
           )}
         </View>
       ) : sKey === 'education' ? (
-        <View style={{ flex: 1, paddingTop: padTop }} />
+        <View style={{ flex: 1, padding: 16, paddingTop: padTop + 12 }}>
+          {/* Localités avec badge Réinitialiser */}
+          <View style={{ marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.locationText}>
+                  <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localités: </Text>
+                  <Text style={{ color: '#555' }}>{userCity}</Text>
+                  {displayMode === 'direct' && userSelectedCity !== userCity && (
+                    <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
+                      {' '}(données par défaut - {userSelectedCity} non disponible)
+                    </Text>
+                  )}
+                </Text>
+              </View>
+
+              {/* Badge Réinitialiser - en face de Localités */}
+              {displayMode === 'communes' && (mode === 'commune' && communeQuery) && (
+                <TouchableOpacity 
+                  onPress={resetFilters} 
+                  style={styles.chipReset}
+                >
+                  <Ionicons name="refresh-outline" size={18} color="#FF8A00" style={{ marginRight: 8 }} />
+                  <Text style={styles.chipTextReset}>Réinitialiser</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {/* Chips de filtres - alignés sous le badge Réinitialiser */}
+            {displayMode === 'communes' && (
+              <View style={styles.filtersRowAligned}>
+                <TouchableOpacity 
+                  onPress={() => setMode('nearby')} 
+                  style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
+                >
+                  <Ionicons name="location-outline" size={18} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+                  <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                  onPress={() => setMode('commune')} 
+                  style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}
+                >
+                  <Ionicons name="map-outline" size={18} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+                  <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+
+          {/* Barre de recherche communes (visible seulement en mode commune ET si la ville a des communes) */}
+          {displayMode === 'communes' && mode === 'commune' && (
+            <View style={{ marginTop: 16 }}>
+              <Text style={styles.searchLabel}>Rechercher une commune</Text>
+              <View style={styles.searchContainer}>
+                <TextInput
+                  value={communeQuery}
+                  onChangeText={(text) => {
+                    setCommuneQuery(text);
+                    setShowCommuneSuggestions(true);
+                  }}
+                  onFocus={() => setShowCommuneSuggestions(true)}
+                  placeholder={`Rechercher dans ${userCity}...`}
+                  style={styles.searchInput}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                {communeQuery.length > 0 && (
+                  <TouchableOpacity 
+                    onPress={() => {
+                      setCommuneQuery('');
+                      setShowCommuneSuggestions(false);
+                    }} 
+                    style={styles.clearButton}
+                  >
+                    <Ionicons name="close-circle" size={20} color="#666" />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {/* Suggestions de communes */}
+              {showCommuneSuggestions && communeQuery.length > 0 && (
+                <View style={styles.suggestionsContainer}>
+                  <ScrollView style={{ maxHeight: 200 }} nestedScrollEnabled>
+                    {filteredCommunes.length > 0 ? (
+                      filteredCommunes.map((commune, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          onPress={() => {
+                            setCommuneQuery(commune);
+                            setShowCommuneSuggestions(false);
+                          }}
+                          style={styles.suggestionItem}
+                        >
+                          <Text style={styles.suggestionText}>{commune}</Text>
+                        </TouchableOpacity>
+                      ))
+                    ) : (
+                      <View style={styles.suggestionItem}>
+                        <Text style={[styles.suggestionText, { color: '#999' }]}>Aucune commune trouvée</Text>
+                      </View>
+                    )}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
+          )}
+
+          {/* Contenu principal (Éducation) */}
+          {displayMode === 'communes' ? (
+            // Mode avec communes (comme Abidjan)
+            mode === 'nearby' ? (
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+                <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+                  Recherche d'établissements scolaires autour de vous dans {userCity}...
+                </Text>
+                <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
+                  Fonctionnalité en cours de développement
+                </Text>
+              </View>
+            ) : (
+              <View style={{ flex: 1, marginTop: 20 }}>
+                {selectedSchoolFacilities.length > 0 ? (
+                  <>
+                    <Text style={styles.facilitiesCount}>
+                      {selectedSchoolFacilities.length} établissement{selectedSchoolFacilities.length > 1 ? 's' : ''} trouvé{selectedSchoolFacilities.length > 1 ? 's' : ''} à {communeQuery}
+                    </Text>
+                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                      {selectedSchoolFacilities.map((facility) => (
+                        <View key={facility.id} style={styles.facilityCard}>
+                          {/* En-tête avec nom et type */}
+                          <View style={styles.facilityHeader}>
+                            <Text style={styles.facilityName}>{facility.name}</Text>
+                            <View style={[styles.typeBadge, facility.type === 'public' ? styles.badgePublic : styles.badgeClinic]}>
+                              <Text style={styles.typeBadgeText}>
+                                {facility.type === 'public' ? 'Public' : (facility.type === 'prive' ? 'Privé' : (facility.type === 'formation' ? 'Form. prof.' : (facility.type || 'Autre')))}
+                              </Text>
+                            </View>
+                          </View>
+
+                          {/* Niveaux/Services */}
+                          {facility.services && (
+                            <Text style={styles.facilityServices}>
+                              <Text style={{ fontWeight: '600', color: '#0A7C3A' }}>Niveaux: </Text>
+                              {facility.services}
+                            </Text>
+                          )}
+
+                          {/* Adresse */}
+                          {facility.address && (
+                            <Text style={styles.facilityAddress}>
+                              <Ionicons name="location-outline" size={14} color="#666" />
+                              {' '}{facility.address}
+                            </Text>
+                          )}
+
+                          {/* Actions */}
+                          <View style={styles.facilityActions}>
+                            {/* Téléphones */}
+                            {facility.phones && facility.phones.map((phone: string, index: number) => (
+                              <TouchableOpacity
+                                key={index}
+                                onPress={() => openPhone(phone)}
+                                style={styles.actionButton}
+                              >
+                                <Ionicons name="call" size={16} color="#fff" />
+                                <Text style={styles.actionButtonText}>
+                                  {phone}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+
+                            {/* Site web */}
+                            {facility.website && (
+                              <TouchableOpacity
+                                onPress={() => openWebsite(facility.website)}
+                                style={styles.actionButtonAlt}
+                              >
+                                <Ionicons name="globe" size={16} color="#0A7C3A" />
+                                <Text style={styles.actionButtonAltText}>
+                                  {facility.website}
+                                </Text>
+                              </TouchableOpacity>
+                            )}
+                          </View>
+                        </View>
+                      ))}
+                    </ScrollView>
+                  </>
+                ) : communeQuery ? (
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+                    <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+                      Aucun établissement scolaire disponible pour {communeQuery}
+                    </Text>
+                    <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
+                      Essayez une autre commune comme Cocody
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+                    <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+                      Sélectionnez une commune pour voir les établissements scolaires
+                    </Text>
+                  </View>
+                )}
+              </View>
+            )
+          ) : (
+            // Mode direct (villes comme Divo)
+            <View style={{ flex: 1, marginTop: 20 }}>
+              {selectedSchoolFacilities.length > 0 ? (
+                <>
+                  <Text style={styles.facilitiesCount}>
+                    {selectedSchoolFacilities.length} établissement{selectedSchoolFacilities.length > 1 ? 's' : ''} trouvé{selectedSchoolFacilities.length > 1 ? 's' : ''} à {userCity}
+                  </Text>
+                  <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                    {selectedSchoolFacilities.map((facility) => (
+                      <View key={facility.id} style={styles.facilityCard}>
+                        {/* En-tête avec nom et type */}
+                        <View style={styles.facilityHeader}>
+                          <Text style={styles.facilityName}>{facility.name}</Text>
+                          <View style={[styles.typeBadge, facility.type === 'public' ? styles.badgePublic : styles.badgeClinic]}>
+                            <Text style={styles.typeBadgeText}>
+                              {facility.type === 'public' ? 'Public' : (facility.type === 'prive' ? 'Privé' : (facility.type === 'formation' ? 'Form. prof.' : (facility.type || 'Autre')))}
+                            </Text>
+                          </View>
+                        </View>
+
+                        {/* Niveaux/Services */}
+                        {facility.services && (
+                          <Text style={styles.facilityServices}>
+                            <Text style={{ fontWeight: '600', color: '#0A7C3A' }}>Niveaux: </Text>
+                            {facility.services}
+                          </Text>
+                        )}
+
+                        {/* Adresse */}
+                        {facility.address && (
+                          <Text style={styles.facilityAddress}>
+                            <Ionicons name="location-outline" size={14} color="#666" />
+                            {' '}{facility.address}
+                          </Text>
+                        )}
+
+                        {/* Actions */}
+                        <View style={styles.facilityActions}>
+                          {/* Téléphones */}
+                          {facility.phones && facility.phones.map((phone: string, index: number) => (
+                            <TouchableOpacity
+                              key={index}
+                              onPress={() => openPhone(phone)}
+                              style={styles.actionButton}
+                            >
+                              <Ionicons name="call" size={16} color="#fff" />
+                              <Text style={styles.actionButtonText}>
+                                {phone}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+
+                          {/* Site web */}
+                          {facility.website && (
+                            <TouchableOpacity
+                              onPress={() => openWebsite(facility.website)}
+                              style={styles.actionButtonAlt}
+                            >
+                              <Ionicons name="globe" size={16} color="#0A7C3A" />
+                              <Text style={styles.actionButtonAltText}>
+                                {facility.website}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                        </View>
+                      </View>
+                    ))}
+                  </ScrollView>
+                </>
+              ) : (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+                  <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+                    Aucun établissement scolaire disponible pour {userCity}
+                  </Text>
+                  <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
+                    Données en cours d'ajout
+                  </Text>
+                </View>
+              )}
+            </View>
+          )}
+        </View>
       ) : (
         <View style={{ padding: 16, paddingBottom: 40, paddingTop: padTop }}>
           <FlatList
