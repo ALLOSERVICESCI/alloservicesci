@@ -2289,9 +2289,10 @@ const styles = StyleSheet.create({
   // Education list styles
   eduListBox: {
     position: 'absolute',
-    bottom: 30,
-    left: 20,
-    right: 20,
+    top: 20,
+    right: 16,
+    alignSelf: 'flex-end',
+    maxWidth: 280,
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 12,
     padding: 16,
