@@ -2033,24 +2033,7 @@ export default function CategoryPage() {
           )}
         </View>
       ) : sKey === 'education' ? (
-        <View style={{ flex: 1, paddingTop: padTop, paddingHorizontal: 16 }}>
-          <View style={styles.eduDropdownBar}>
-            {/* Nouveau design élégant du menu déroulant */}
-            <TouchableOpacity style={styles.eduDropdownTrigger} onPress={() => setEduMenuOpen(!eduMenuOpen)}>
-              <Text style={styles.eduDropdownTriggerText}>Etablissements</Text>
-              <Ionicons name={eduMenuOpen ? 'chevron-up' : 'chevron-down'} size={18} color="#333" />
-            </TouchableOpacity>
-            {eduMenuOpen && (
-              <View style={styles.eduDropdownMenu}>
-                {['Public','Privée','Semi-privé','Coranique','Formation professionnelle'].map((opt) => (
-                  <TouchableOpacity key={opt} style={styles.eduDropdownItem} onPress={() => setEduMenuOpen(false)}>
-                    <Text style={styles.eduDropdownItemText}>{opt}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </View>
-        </View>
+        <View style={{ flex: 1, paddingTop: padTop }} />
       ) : (
         <View style={{ padding: 16, paddingBottom: 40, paddingTop: padTop }}>
           <FlatList
