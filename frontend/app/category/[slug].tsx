@@ -1608,7 +1608,14 @@ export default function CategoryPage() {
         </View>
       ) : sKey === 'education' ? (
         <View style={styles.headerWrapperEducation}>
-          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover">
+            <View style={styles.eduListOverlay}>
+              <Text style={styles.eduListText}>• Etablissements scolaires</Text>
+              <Text style={styles.eduListText}>• Collèges et Lycées</Text>
+              <Text style={styles.eduListText}>• Universités</Text>
+              <Text style={styles.eduListText}>• Centres de Formations</Text>
+            </View>
+          </ImageBackground>
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
