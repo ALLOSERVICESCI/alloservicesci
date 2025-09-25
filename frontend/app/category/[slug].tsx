@@ -45,6 +45,9 @@ export default function CategoryPage() {
   const [communeQuery, setCommuneQuery] = useState('');
   const [showCommuneSuggestions, setShowCommuneSuggestions] = useState(false);
 
+  // Education dropdown state
+  const [eduMenuOpen, setEduMenuOpen] = useState(false);
+
   // Fonction pour réinitialiser les filtres
   const resetFilters = () => {
     setMode('nearby');
