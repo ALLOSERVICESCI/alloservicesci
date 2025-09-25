@@ -2285,5 +2285,28 @@ const styles = StyleSheet.create({
   actionBtnAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 1, borderColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, marginRight: 8, marginBottom: 8 },
   actionBtnAltText: { color: '#0A7C3A', fontSize: 12, fontWeight: '600', marginLeft: 6 },
   tipBtnText: { fontSize: 12, fontWeight: '600', color: '#333' },
+  
+  // Education list styles
+  eduListBox: {
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+    right: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 12,
+    padding: 16,
+    ...Platform.select({
+      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
+      android: { elevation: 4 },
+      default: { boxShadow: '0px 2px 8px rgba(0,0,0,0.1)' as any },
+    }),
+  },
+  eduListItem: {
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '500',
+    marginBottom: 8,
+    lineHeight: 20,
+  },
 
 });
