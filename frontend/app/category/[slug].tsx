@@ -2029,6 +2029,8 @@ export default function CategoryPage() {
             </View>
           )}
         </View>
+      ) : sKey === 'education' ? (
+        <View style={{ flex: 1, paddingTop: padTop }} />
       ) : (
         <View style={{ padding: 16, paddingBottom: 40, paddingTop: padTop }}>
           <FlatList
