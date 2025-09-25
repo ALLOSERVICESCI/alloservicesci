@@ -1370,6 +1370,85 @@ export default function CategoryPage() {
     ]
   };
 
+
+  // Établissements scolaires par ville/commune (échantillon)
+  const schoolFacilitiesByCommune: Record<string, any[]> = {
+    'Abidjan': [], // placeholder for direct mode if needed
+    'Cocody': [
+      {
+        id: 'lycee-classique',
+        name: "Lycée Classique d'Abidjan",
+        type: 'public',
+        services: 'Secondaire général, séries Littéraires & Scientifiques',
+        address: 'Bd de l’Université, Cocody',
+        phones: ['+225 27 22 44 00 00'],
+        commune: 'Cocody',
+        city: 'Abidjan',
+      },
+      {
+        id: 'insaac',
+        name: 'INSAAC – Institut National Supérieur des Arts et de l’Action Culturelle',
+        type: 'public',
+        services: 'Formations supérieures artistiques et culturelles',
+        address: 'Cocody, près de RTI',
+        website: 'https://www.insaac.ci',
+        commune: 'Cocody',
+        city: 'Abidjan',
+      },
+    ],
+    'Yopougon': [
+      {
+        id: 'lycee-moderne-yop',
+        name: 'Lycée Moderne de Yopougon',
+        type: 'public',
+        services: 'Secondaire général',
+        address: 'Yopougon',
+        phones: ['+225 27 23 45 67 89'],
+        commune: 'Yopougon',
+        city: 'Abidjan',
+      },
+      {
+        id: 'groupe-scolaire-prive-yop',
+        name: 'Groupe Scolaire Privé Académie Yopougon',
+        type: 'prive',
+        services: 'Maternelle, Primaire, Collège',
+        address: 'Yopougon',
+        commune: 'Yopougon',
+        city: 'Abidjan',
+      },
+    ],
+    'Treichville': [
+      {
+        id: 'cfp-treich',
+        name: 'Centre de Formation Professionnelle de Treichville',
+        type: 'formation',
+        services: 'Formations qualifiantes, techniques & professionnelles',
+        address: 'Treichville',
+        commune: 'Treichville',
+        city: 'Abidjan',
+      },
+    ],
+    // Mode direct pour quelques villes
+    'Divo': [
+      {
+        id: 'lycee-moderne-divo',
+        name: 'Lycée Moderne de Divo',
+        type: 'public',
+        services: 'Secondaire général',
+        address: 'Divo centre',
+        city: 'Divo',
+      },
+      {
+        id: 'groupe-scolaire-prive-divo',
+        name: 'Groupe Scolaire Privé Les Étoiles',
+        type: 'prive',
+        services: 'Maternelle, Primaire',
+        address: 'Quartier Résidentiel, Divo',
+        city: 'Divo',
+      },
+    ],
+  };
+
   const userSelectedCity = effectiveCity || 'Abidjan';
   
   // Règle demandée: Seule Abidjan utilise les communes, toutes les autres villes affichent directement leurs établissements
