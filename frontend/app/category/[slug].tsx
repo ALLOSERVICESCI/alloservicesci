@@ -2286,28 +2286,21 @@ const styles = StyleSheet.create({
   actionBtnAltText: { color: '#0A7C3A', fontSize: 12, fontWeight: '600', marginLeft: 6 },
   tipBtnText: { fontSize: 12, fontWeight: '600', color: '#333' },
   
-  // Education list styles
-  eduListBox: {
+  // Education overlay text styles
+  eduListOverlay: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 12,
     right: 16,
-    alignSelf: 'flex-end',
-    maxWidth: 280,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    borderRadius: 12,
-    padding: 16,
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
-      android: { elevation: 4 },
-      default: { boxShadow: '0px 2px 8px rgba(0,0,0,0.1)' as any },
-    }),
+    alignItems: 'flex-end',
   },
-  eduListItem: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: '500',
-    marginBottom: 8,
-    lineHeight: 20,
-  },
+  eduListText: {
+    fontSize: 13,
+    color: '#f9f9f9',
+    textShadowColor: 'rgba(0,0,0,0.35)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+    marginBottom: 4,
+    opacity: 0.95,
+  }
 
 });
