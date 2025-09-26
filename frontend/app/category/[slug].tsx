@@ -2828,7 +2828,7 @@ export default function CategoryPage() {
               )}
             </View>
           )}
-        </View>
+        </ScrollView>
       ) : (
         <View style={{ padding: 16, paddingBottom: 40, paddingTop: padTop }}>
           <FlatList
