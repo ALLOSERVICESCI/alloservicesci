@@ -47,6 +47,7 @@ export default function CategoryPage() {
 
   // Education dropdown state
   const [eduMenuOpen, setEduMenuOpen] = useState(false);
+  const [selectedEduType, setSelectedEduType] = useState<null | 'scolaire' | 'college_lycee' | 'formation'>(null);
 
   // Fonction pour réinitialiser les filtres
   const resetFilters = () => {
