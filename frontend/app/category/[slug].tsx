@@ -1419,7 +1419,6 @@ export default function CategoryPage() {
         city: 'Abidjan',
       },
     ],
-    ],
     'Marcory': [
       {
         id: 'lycee-moderne-marcory',
