@@ -40,6 +40,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ RÉGRESSION BACKEND COMPLÈTE FINALE VALIDÉE - POST /api/payments/cinetpay/initiate endpoint confirmed working in final comprehensive regression test. Successfully created payment with payment_url: https://checkout.cinetpay.com/payment/0873697b3791... + transaction_id: SUB_d8783f71028e4a. Returns 200 with payment_url and transaction_id as specified. Live CinetPay integration fully functional selon review request."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE BACKEND REGRESSION COMPLETED - POST /api/payments/cinetpay/initiate endpoint confirmed working in full backend regression test suite. Successfully created payment with payment_url: https://checkout.cinetpay.com/payment/c2866cff0750... + transaction_id: SUB_ec47230e4e124b. Returns 200 with payment_url and transaction_id as specified. Live CinetPay integration fully functional. All 18/18 backend tests PASSED (100% success rate)."
 
   - task: "PATCH /api/users/<id> (pseudo, show_pseudo) → 200 + champs mis à jour"
     implemented: true
