@@ -2662,7 +2662,10 @@ const styles = StyleSheet.create({
   typeBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, borderWidth: 1 },
   // Harmonisation: Public vert
   badgePublic: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
-  badgeClinic: { backgroundColor: '#FFF3E0', borderColor: '#FF8A00' },
+  // Harmonisation: Privé bleu (utilisé aussi pour cliniques en Santé)
+  badgeClinic: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
+  // Formation pro: orange
+  badgeFormation: { backgroundColor: '#FFF3E0', borderColor: '#FF8A00' },
   typeBadgeText: { fontSize: 12, fontWeight: '600', color: '#0A7C3A' },
   facilityServices: { fontSize: 14, color: '#555', marginBottom: 8, lineHeight: 20 },
   facilityAddress: { fontSize: 14, color: '#666', marginBottom: 8, flexDirection: 'row', alignItems: 'center' },
