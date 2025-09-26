@@ -2173,9 +2173,14 @@ export default function CategoryPage() {
                 { key: 'college_lycee', label: 'Collèges & Lycées' },
                 { key: 'formation', label: 'Formation technique & professionnelle' },
               ].map(opt => (
-                <TouchableOpacity key={opt.key} style={styles.ovalCheck} activeOpacity={0.8}>
-                  <View style={styles.ovalBullet} />
-                  <Text style={styles.ovalLabel}>{opt.label}</Text>
+                <TouchableOpacity 
+                  key={opt.key} 
+                  style={[styles.ovalCheck, selectedEduType === opt.key && styles.ovalCheckActive]} 
+                  activeOpacity={0.8}
+                  onPress={() => setSelectedEduType(selectedEduType === opt.key ? null : opt.key as any)}
+                >
+                  <View style={[styles.ovalBullet, selectedEduType === opt.key && styles.ovalBulletActive]} />
+                  <Text style={[styles.ovalLabel, selectedEduType === opt.key && styles.ovalLabelActive]}>{opt.label}</Text>
                 </TouchableOpacity>
               ))}
             </View>
