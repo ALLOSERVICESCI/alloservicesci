@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { View, Text, ImageBackground, StyleSheet, FlatList, SectionList, TouchableOpacity, Linking, TextInput, ScrollView, Platform, Image, Dimensions, Animated, Easing, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
