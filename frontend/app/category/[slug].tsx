@@ -50,6 +50,8 @@ export default function CategoryPage() {
   const [selectedEduType, setSelectedEduType] = useState<null | 'scolaire' | 'college_lycee' | 'formation'>(null);
 
   // Fonction pour réinitialiser les filtres
+  const [eduUIHidden, setEduUIHidden] = useState(false);
+
   const resetFilters = () => {
     setMode('nearby');
     setCommuneQuery('');
