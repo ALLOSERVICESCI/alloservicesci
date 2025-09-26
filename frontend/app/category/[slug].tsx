@@ -2455,7 +2455,7 @@ export default function CategoryPage() {
           )}
         </View>
       ) : sKey === 'education' ? (
-        <View style={{ flex: 1, padding: 16, paddingTop: padTop + 20 }}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
           {/* Icône pour réafficher les filtres quand masqués */}
           {eduUIHidden && (
             <View style={{ marginBottom: 8 }}>
