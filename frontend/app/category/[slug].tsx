@@ -2475,7 +2475,7 @@ export default function CategoryPage() {
           {/* Filtres (capsules) */}
           {displayMode === 'communes' && (
             <View style={{ marginBottom: 12 }}>
-              <View style={[styles.filtersRowAligned, { justifyContent: 'flex-start' }]}>
+              <View style={[styles.filtersRowAligned, eduUIHidden && { display: 'none' }, { justifyContent: 'flex-start' }]}>
                 <TouchableOpacity 
                   onPress={() => setMode('nearby')} 
                   style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
