@@ -2122,7 +2122,7 @@ export default function CategoryPage() {
           )}
 
           {/* Localités (en dessous des capsules) */}
-          <View style={{ marginBottom: 16 }}>
+          <View style={{ marginBottom: 8 }}>
             <Text style={styles.locationText}>
               <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localités: </Text>
               <Text style={{ color: '#555' }}>{userCity}</Text>
