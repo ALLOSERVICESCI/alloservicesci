@@ -50,6 +50,11 @@ export default function CategoryPage() {
   const [selectedEduType, setSelectedEduType] = useState<null | 'scolaire' | 'college_lycee' | 'formation'>(null);
   const [eduHasAutoHidden, setEduHasAutoHidden] = useState(false);
 
+  // Ne pas masquer l'UI Éducation au chargement
+  useEffect(() => {
+    setEduUIHidden(false);
+  }, []);
+
   // Fonction pour réinitialiser les filtres
   const [eduUIHidden, setEduUIHidden] = useState(false);
 
