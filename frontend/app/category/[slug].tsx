@@ -1775,7 +1775,7 @@ export default function CategoryPage() {
                   onPress={() => setMode('commune')} 
                   style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}
                 >
-                  <Ionicons name="map-outline" size={18} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+                  <Ionicons name="map-outline" size={16} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
                   <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
