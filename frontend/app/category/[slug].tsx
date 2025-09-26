@@ -2134,6 +2134,28 @@ export default function CategoryPage() {
             </Text>
           </View>
 
+          {/* Établissement - filtres type (toujours sous Localités) */}
+          <View style={{ marginBottom: 8 }}>
+            <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 8 }}>Établissement :</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 8 as any, rowGap: 8 as any }}>
+              {[
+                { key: 'scolaire', label: 'Scolaires' },
+                { key: 'college_lycee', label: 'Collèges & Lycées' },
+                { key: 'formation', label: 'Formation technique & professionnelle' },
+              ].map(opt => (
+                <TouchableOpacity 
+                  key={opt.key} 
+                  style={[styles.ovalCheck, selectedEduType === opt.key && styles.ovalCheckActive]} 
+                  activeOpacity={0.8}
+                  onPress={() => setSelectedEduType(selectedEduType === opt.key ? null : opt.key as any)}
+                >
+                  <View style={[styles.ovalBullet, selectedEduType === opt.key && styles.ovalBulletActive]} />
+                  <Text style={[styles.ovalLabel, selectedEduType === opt.key && styles.ovalLabelActive]}>{opt.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
           {/* Barre de recherche communes (visible seulement en mode commune ET si la ville a des communes) */}
           {displayMode === 'communes' && mode === 'commune' && (
             <View style={{ marginTop: 16 }}>
