@@ -13,6 +13,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE BACKEND REGRESSION COMPLETED - POST /api/auth/register endpoint confirmed working in full backend regression test suite. Successfully created user Kouadio N'Guessan (ID: 68d671c1c2c14a0017ae0c69) with realistic Ivorian data. Returns 200 with user ID as expected. All 18/18 backend tests PASSED (100% success rate)."
+      - working: true
+        agent: "testing"
+        comment: "✅ FRESH COMPREHENSIVE BACKEND REGRESSION VALIDATED - POST /api/auth/register endpoint confirmed working in latest comprehensive regression test. Successfully created user Jean-Baptiste Kouamé (ID: 68d6acac8b7bb75e97c989f8) with realistic Ivorian data including first_name, last_name, email, phone, preferred_lang. Returns 200 with user ID as expected. Note: pseudo/show_pseudo fields not supported by current backend implementation but no regression detected. All 18/18 backend tests PASSED (100% success rate)."
 
   - task: "POST /api/payments/cinetpay/initiate → 200 + payment_url + transaction_id"
     implemented: true
