@@ -2499,7 +2499,7 @@ export default function CategoryPage() {
               {selectedSchoolFacilities.length > 0 ? (
                 <>
                   <Text style={styles.facilitiesCount}>
-                    {selectedSchoolFacilities.length} établissement{selectedSchoolFacilities.length > 1 ? 's' : ''} trouvé{selectedSchoolFacilities.length > 1 ? 's' : ''} à {userCity}
+                    {eduFiltered.length} établissement{eduFiltered.length > 1 ? 's' : ''} trouvé{eduFiltered.length > 1 ? 's' : ''} à {userCity}
                   </Text>
                   <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                     {selectedSchoolFacilities.map((facility) => (
