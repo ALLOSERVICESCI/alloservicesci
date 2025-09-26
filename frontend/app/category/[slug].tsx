@@ -2268,7 +2268,7 @@ export default function CategoryPage() {
                       {selectedSchoolFacilities.length} établissement{selectedSchoolFacilities.length > 1 ? 's' : ''} trouvé{selectedSchoolFacilities.length > 1 ? 's' : ''} à {communeQuery}
                     </Text>
                     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                      {(selectedEduType ? selectedSchoolFacilities.filter(f => f.eduType === selectedEduType) : selectedSchoolFacilities).map((facility) => (
+                      {eduFiltered.map((facility) => (
                         <View key={facility.id} style={styles.facilityCard}>
                           {/* En-tête avec nom et type */}
                           <View style={styles.facilityHeader}>
