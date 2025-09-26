@@ -2408,7 +2408,7 @@ export default function CategoryPage() {
               </View>
             ) : (
               <View style={{ flex: 1, marginTop: 20 }}>
-                {(selectedEduType ? selectedSchoolFacilities.filter(f => f.type === selectedEduType) : selectedSchoolFacilities).length > 0 ? (
+                {eduFiltered.length > 0 ? (
                   <>
                     <Text style={styles.facilitiesCount}>
                       {eduFiltered.length} établissement{eduFiltered.length > 1 ? 's' : ''} trouvé{eduFiltered.length > 1 ? 's' : ''} à {communeQuery}
