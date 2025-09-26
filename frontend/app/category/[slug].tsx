@@ -2966,6 +2966,14 @@ const styles = StyleSheet.create({
       android: { textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4 },
       default: { textShadow: '0px 2px 6px rgba(0,0,0,0.5)' as any },
     }),
+  // Education ovals
+  ovalCheck: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 18, borderWidth: 1, borderColor: '#DADADA', backgroundColor: '#fff' },
+  ovalCheckActive: { borderColor: '#0A7C3A', backgroundColor: '#E6F4EA' },
+  ovalBullet: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#DADADA', marginRight: 8 },
+  ovalBulletActive: { backgroundColor: '#0A7C3A' },
+  ovalLabel: { color: '#333', fontSize: 13, fontWeight: '600' },
+  ovalLabelActive: { color: '#0A7C3A' },
+
   },
 
   // Brand badge styles
