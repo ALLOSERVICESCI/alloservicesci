@@ -56,6 +56,8 @@ export default function CategoryPage() {
     setMode('nearby');
     setCommuneQuery('');
     setShowCommuneSuggestions(false);
+    setSelectedEduType(null);
+    setEduUIHidden(false);
   };
 
   // Communes par ville
