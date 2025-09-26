@@ -1763,7 +1763,7 @@ export default function CategoryPage() {
           {/* Filtres (capsules) */}
           {displayMode === 'communes' && (
             <View style={{ marginBottom: 12 }}>
-              <View style={styles.filtersRowAligned}>
+              <View style={[styles.filtersRowAligned, { justifyContent: 'flex-start' }]}>
                 <TouchableOpacity 
                   onPress={() => setMode('nearby')} 
                   style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
