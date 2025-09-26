@@ -1782,7 +1782,7 @@ export default function CategoryPage() {
                   onPress={resetFilters} 
                   style={styles.chipReset}
                 >
-                  <Ionicons name="refresh-outline" size={18} color="#FF8A00" style={{ marginRight: 8 }} />
+                  <Ionicons name="refresh-outline" size={16} color="#FF8A00" style={{ marginRight: 8 }} />
                   <Text style={styles.chipTextReset}>Réinitialiser</Text>
                 </TouchableOpacity>
               </View>
