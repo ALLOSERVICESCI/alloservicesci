@@ -2116,7 +2116,7 @@ export default function CategoryPage() {
                 {(mode === 'commune' && communeQuery) && (
                   <TouchableOpacity 
                     onPress={resetFilters} 
-                    style={styles.chipReset}
+                    style={{ paddingHorizontal: 4, paddingVertical: 4 }}
                   >
                     <Ionicons name="refresh-outline" size={16} color="#FF8A00" />
                   </TouchableOpacity>
@@ -2484,7 +2484,7 @@ export default function CategoryPage() {
                 {(mode === 'commune' && communeQuery) && (
                   <TouchableOpacity 
                     onPress={resetFilters} 
-                    style={styles.chipReset}
+                    style={{ paddingHorizontal: 4, paddingVertical: 4 }}
                   >
                     <Ionicons name="refresh-outline" size={16} color="#FF8A00" />
                   </TouchableOpacity>
