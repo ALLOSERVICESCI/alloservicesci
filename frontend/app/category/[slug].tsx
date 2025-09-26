@@ -2660,7 +2660,8 @@ const styles = StyleSheet.create({
   facilityHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
   facilityName: { fontSize: 18, fontWeight: '700', color: '#0A7C3A', flex: 1, marginRight: 12 },
   typeBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, borderWidth: 1 },
-  badgePublic: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
+  // Harmonisation: Public vert
+  badgePublic: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
   badgeClinic: { backgroundColor: '#FFF3E0', borderColor: '#FF8A00' },
   typeBadgeText: { fontSize: 12, fontWeight: '600', color: '#0A7C3A' },
   facilityServices: { fontSize: 14, color: '#555', marginBottom: 8, lineHeight: 20 },
