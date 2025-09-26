@@ -244,6 +244,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE BACKEND REGRESSION COMPLETED - POST /api/ai/chat endpoint confirmed working in full backend regression test suite. Both stream=false and stream=true modes working perfectly: 1) Non-streaming: 200 + JSON response with 482 characters content, 2) Streaming: 200 + SSE event-stream with 3 chunks received and [DONE] termination confirmed. AI integration with Emergent API fully functional. All 18/18 backend tests PASSED (100% success rate)."
+      - working: true
+        agent: "testing"
+        comment: "✅ FRESH COMPREHENSIVE BACKEND REGRESSION VALIDATED - POST /api/ai/chat endpoint confirmed working in latest comprehensive regression test. Both stream=false and stream=true modes working perfectly: 1) Non-streaming: 200 + JSON response with 482 characters content about Abidjan, 2) Streaming: 200 + SSE event-stream with 3 chunks received and [DONE] termination confirmed. AI integration with Emergent API fully functional. All 18/18 backend tests PASSED (100% success rate)."
 
   - task: "GET /api/health/facilities (Santé APIs) → 200 + établissements de santé"
     implemented: true
