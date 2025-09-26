@@ -2474,7 +2474,7 @@ export default function CategoryPage() {
         <View style={{ flex: 1, padding: 16, paddingTop: padTop + 20 }}>
           {/* Icône pour réafficher les filtres quand masqués */}
           {eduUIHidden && (
-            <View style={{ marginBottom: 8 }}>
+            <View style={{ marginBottom: 4 }}>
               <TouchableOpacity onPress={() => setEduUIHidden(false)} style={{ alignSelf: 'flex-start', paddingVertical: 4, paddingHorizontal: 8 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Ionicons name="filter-outline" size={18} color="#0A7C3A" />
