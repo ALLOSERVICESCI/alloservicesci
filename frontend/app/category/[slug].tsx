@@ -1759,7 +1759,7 @@ export default function CategoryPage() {
           ))}
         </ScrollView>
       ) : sKey === 'sante' ? (
-        <View style={{ flex: 1, padding: 16, paddingTop: padTop + 12 }}>
+        <View style={{ flex: 1, padding: 16, paddingTop: padTop + 20 }}>
           {/* Filtres (capsules) */}
           {displayMode === 'communes' && (
             <View style={{ marginBottom: 12 }}>
