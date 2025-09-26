@@ -466,13 +466,13 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus:
-    - "POST /api/ai/chat (stream=false) → 200 + réponse contrôlée"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
   backend_health_testing_completed: true
   frontend_sante_testing_completed: true
+  comprehensive_backend_regression_completed: true
 
 agent_communication:
   - agent: "main"
