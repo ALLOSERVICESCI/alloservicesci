@@ -3008,7 +3008,8 @@ const styles = StyleSheet.create({
   // Styles pour la section santé
   locationText: { fontSize: 16, marginBottom: 8 },
   filtersRow: { flexDirection: 'row', marginBottom: 16 },
-  filtersRowAligned: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 8 as any, rowGap: 8 as any, marginBottom: 16 },
+  // Santé (styles init)
+  filtersRowAligned: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 },
   chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, paddingVertical: 5, borderRadius: 16, borderWidth: 1, marginRight: 6 },
   chipNear: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
   chipCommune: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
