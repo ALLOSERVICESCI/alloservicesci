@@ -1404,6 +1404,7 @@ export default function CategoryPage() {
         id: 'lycee-moderne-yop',
         name: 'Lycée Moderne de Yopougon',
         type: 'public',
+        eduType: 'college_lycee',
         services: 'Secondaire général',
         address: 'Yopougon',
         phones: ['+225 27 23 45 67 89'],
