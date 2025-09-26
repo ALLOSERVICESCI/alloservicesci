@@ -2509,27 +2509,28 @@ export default function CategoryPage() {
           </View>
 
 
-          {/* Établissement - filtres type (toujours sous Localités) */}
-          <View style={{ marginBottom: 4 }}>
-            <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 4 }}>Établissement :</Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' }}>
-              {[
-                { key: 'scolaire', label: 'Scolaires' },
-                { key: 'college_lycee', label: 'Collèges & Lycées' },
-                { key: 'formation', label: 'Formation technique & professionnelle' },
-              ].map(opt => (
-                <TouchableOpacity 
-                  key={opt.key}
-                  testID={`edu-oval-${opt.key}`}
-                  style={[styles.ovalCheck, selectedEduType === opt.key && styles.ovalCheckActive]} 
-                  activeOpacity={0.8}
-                  onPress={() => setSelectedEduType(selectedEduType === opt.key ? null : (opt.key as any))}
-                >
-                  <View style={[styles.ovalBullet, selectedEduType === opt.key && styles.ovalBulletActive]} />
-                  <Text style={[styles.ovalLabel, selectedEduType === opt.key && styles.ovalLabelActive]}>{opt.label}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+          {/* Établissement - sélecteur type (liste radio) */}
+          <View style={{ marginBottom: 8 }}>
+            <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 6 }}>Établissement :</Text>
+            {[
+              { key: 'scolaire', label: 'Scolaires' },
+              { key: 'college_lycee', label: 'Collèges & Lycées' },
+              { key: 'formation', label: 'Formation technique & professionnelle' },
+            ].map(opt => (
+              <TouchableOpacity
+                key={opt.key}
+                testID={`edu-radio-${opt.key}`}
+                onPress={() => setSelectedEduType(selectedEduType === opt.key ? null : (opt.key as any))}
+                style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 8 }}
+              >
+                <View style={{ width: 18, height: 18, borderRadius: 9, borderWidth: 2, borderColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
+                  {selectedEduType === opt.key && (
+                    <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#0A7C3A' }} />
+                  )}
+                </View>
+                <Text style={{ fontSize: 14, color: '#0A7C3A', fontWeight: '600' }}>{opt.label}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
 
 
