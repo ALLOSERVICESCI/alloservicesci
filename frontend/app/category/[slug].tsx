@@ -2140,7 +2140,7 @@ export default function CategoryPage() {
 
           {/* Établissement - filtres type (toujours sous Localités) */}
           <View style={{ marginBottom: 4 }}>
-            <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 8 }}>Établissement :</Text>
+            <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 4 }}>Établissement :</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 8 as any, rowGap: 8 as any }}>
               {[
                 { key: 'scolaire', label: 'Scolaires' },
