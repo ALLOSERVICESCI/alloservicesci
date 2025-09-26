@@ -3009,7 +3009,7 @@ const styles = StyleSheet.create({
   chipTextNear: { color: '#0D6EFD', fontSize: 13, fontWeight: '600' },
   chipTextCommune: { color: '#0A7C3A', fontSize: 14, fontWeight: '600' },
   chipTextInactive: { color: '#666', fontSize: 14, fontWeight: '600' },
-  chipReset: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, paddingVertical: 5, borderRadius: 16, borderWidth: 1, backgroundColor: '#FFF3E0', borderColor: '#FF8A00', marginLeft: 'auto' as any, minHeight: 36 },
+  chipReset: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 6, paddingVertical: 4, borderRadius: 14, borderWidth: 1, backgroundColor: '#FFF3E0', borderColor: '#FF8A00', marginLeft: 6, minHeight: 32 },
   chipTextReset: { color: '#FF8A00', fontSize: 14, fontWeight: '600' },
   
   searchLabel: { color: '#0A7C3A', fontWeight: '700', marginBottom: 8, fontSize: 16 },
