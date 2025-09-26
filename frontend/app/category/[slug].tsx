@@ -2494,8 +2494,7 @@ export default function CategoryPage() {
                     onPress={resetFilters} 
                     style={styles.chipReset}
                   >
-                    <Ionicons name="refresh-outline" size={16} color="#FF8A00" style={{ marginRight: 8 }} />
-                    <Text style={styles.chipTextReset}>Réinitialiser</Text>
+                    <Ionicons name="refresh-outline" size={16} color="#FF8A00" />
                   </TouchableOpacity>
                 )}
               </View>
