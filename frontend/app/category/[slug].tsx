@@ -1391,6 +1391,7 @@ export default function CategoryPage() {
         id: 'insaac',
         name: 'INSAAC – Institut National Supérieur des Arts et de l’Action Culturelle',
         type: 'public',
+        eduType: 'formation',
         services: 'Formations supérieures artistiques et culturelles',
         address: 'Cocody, près de RTI',
         website: 'https://www.insaac.ci',
