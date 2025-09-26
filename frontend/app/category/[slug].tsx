@@ -2455,20 +2455,72 @@ export default function CategoryPage() {
           )}
         </View>
       ) : sKey === 'education' ? (
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
-          {/* Icône pour réafficher les filtres quand masqués */}
-          {eduUIHidden && (
-            <View style={{ marginBottom: 8 }}>
-              <TouchableOpacity onPress={() => setEduUIHidden(false)} style={{ alignSelf: 'flex-start', padding: 6 }}>
-                <Ionicons name="filter-outline" size={18} color="#0A7C3A" />
-              </TouchableOpacity>
+        <FlatList
+          data={
+            displayMode === 'communes'
+              ? (mode === 'commune' ? eduFiltered : [])
+              : eduFiltered
+          }
+          keyExtractor={(item: any) => item.id}
+          renderItem={({ item: facility }: any) => (
+            <View style={styles.facilityCard}>
+              {/* En-tête avec nom et type */}
+              <View style={styles.facilityHeader}>
+                <Text style={styles.facilityName}>{facility.name}</Text>
+                <View style={[styles.typeBadge, facility.eduType === 'formation' ? styles.eduBadgeFormation : (facility.type === 'public' ? styles.eduBadgePublic : styles.eduBadgePrive)]}>
+                  <Text style={styles.typeBadgeText}>
+                    {facility.type === 'public' ? 'Public' : (facility.type === 'prive' ? 'Privé' : (facility.type === 'formation' ? 'Form. prof.' : (facility.type || 'Autre')))}
+                  </Text>
+                </View>
+              </View>
+
+              {/* Niveaux/Services */}
+              {facility.services && (
+                <Text style={styles.facilityServices}>
+                  <Text style={{ fontWeight: '600', color: '#0A7C3A' }}>Niveaux: </Text>
+                  {facility.services}
+                </Text>
+              )}
+
+              {/* Adresse */}
+              {facility.address && (
+                <Text style={styles.facilityAddress}>
+                  <Ionicons name="location-outline" size={14} color="#666" />{' '}{facility.address}
+                </Text>
+              )}
+
+              {/* Actions */}
+              <View style={styles.facilityActions}>
+                {facility.phones && facility.phones.map((phone: string, index: number) => (
+                  <TouchableOpacity key={index} onPress={() => openPhone(phone)} style={styles.actionButton}>
+                    <Ionicons name="call" size={16} color="#fff" />
+                    <Text style={styles.actionButtonText}>{phone}</Text>
+                  </TouchableOpacity>
+                ))}
+                {facility.website && (
+                  <TouchableOpacity onPress={() => openWebsite(facility.website)} style={styles.actionButtonAlt}>
+                    <Ionicons name="globe" size={16} color="#0A7C3A" />
+                    <Text style={styles.actionButtonAltText}>{facility.website}</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           )}
+          ListHeaderComponent={(
+            <View>
+              {/* Icône pour réafficher les filtres quand masqués */}
+              {eduUIHidden && (
+                <View style={{ marginBottom: 8 }}>
+                  <TouchableOpacity onPress={() => setEduUIHidden(false)} style={{ alignSelf: 'flex-start', padding: 6 }}>
+                    <Ionicons name="filter-outline" size={18} color="#0A7C3A" />
+                  </TouchableOpacity>
+                </View>
+              )}
 
-          {/* Filtres (capsules) */}
-          {displayMode === 'communes' && (
-            <View style={{ marginBottom: 12 }}>
-              <View style={[styles.filtersRowAligned, eduUIHidden && { display: 'none' }, { justifyContent: 'flex-start' }]}>
+              {/* Filtres (capsules) */}
+              {displayMode === 'communes' && (
+                <View style={{ marginBottom: 12 }}>
+                  <View style={[styles.filtersRowAligned, eduUIHidden && { display: 'none' }, { justifyContent: 'flex-start' }]}>
                 <TouchableOpacity 
                   onPress={() => setMode('nearby')} 
                   style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
