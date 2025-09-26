@@ -490,6 +490,18 @@ metadata:
         agent: "testing"
         comment: "❌ CRITICAL CITY-BASED LOGIC FAILURE - Comprehensive E2E test (iPhone 12/13/14: 390x844) reveals fundamental implementation issues: 1) ❌ PART A (Divo): Shows WRONG interface - displays Abidjan communes mode (chips 'Autour de moi'/'Communes' present) instead of direct mode, no Divo facility cards visible (0/5 required facilities found), city change to Divo not taking effect properly, 2) ❌ PART B (Abidjan): Chips present correctly but 'Rechercher une commune' input missing, commune search functionality not working, 3) ❌ ROOT CAUSE: City-based conditional rendering logic broken - both Divo and Abidjan show same interface with 'Localités: Abidjan', profile city changes not persisting or not being used correctly in Santé page logic, 4) ❌ BACKEND INTEGRATION: No facility data displayed for either city, static data from healthFacilitiesByCommune not being rendered. URGENT: Fix city-based display mode logic and backend API integration for health facilities data."
 
+  - task: "FRONTEND E2E: Education page mobile testing (iPhone 12/13/14 + Samsung Galaxy S21) - Header, filters, radios, communes mode"
+    implemented: true
+    working: false
+    file: "frontend/app/category/[slug].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ COMPREHENSIVE EDUCATION MOBILE E2E TEST COMPLETED (iPhone 12/13/14: 390x844 + Samsung Galaxy S21: 360x800) - CRITICAL DOM ACCESSIBILITY ISSUES FOUND: 1) ✅ VISUAL SUCCESS: Screenshots confirm Education page renders perfectly with header image, ÉDUCATION title, bullet points (Etablissements scolaires, Collèges et Lycées, Universités, Centres de Formations), filter capsules (Autour de moi, Communes), radio options (Scolaires, Collèges & Lycées, Formation technique & professionnelle), and Localités: Abidjan label, 2) ❌ DOM DISCONNECT: Critical issue where visual elements are not accessible to automation - all key interactive elements (capsules, radios, search inputs) not found in DOM queries despite being visually present, 3) ❌ FUNCTIONAL TESTING BLOCKED: Unable to test filter interactions, radio selections, commune search, or facility card behaviors due to DOM accessibility issues, 4) ✅ NON-REGRESSION PASSED: Santé page correctly has no Établissement block, Home page correctly has no Allô IA FAB, 5) ✅ RESPONSIVE: Both iPhone and Samsung viewports display correctly. CONCLUSION: Education page UI implemented and visually working but DOM structure prevents automated testing - likely React Native Web rendering issue affecting testability."
+
   created_by: "main_agent"
   version: "1.3"
   test_sequence: 7
