@@ -1420,6 +1420,135 @@ export default function CategoryPage() {
         city: 'Abidjan',
       },
     ],
+    ],
+    'Marcory': [
+      {
+        id: 'lycee-moderne-marcory',
+        name: 'Lycée Moderne de Marcory',
+        type: 'public',
+        eduType: 'college_lycee',
+        services: 'Secondaire général',
+        address: 'Marcory Résidentiel',
+        commune: 'Marcory',
+        city: 'Abidjan',
+      },
+      {
+        id: 'ecole-privee-saint-marc',
+        name: 'École Privée Saint-Marc',
+        type: 'prive',
+        eduType: 'scolaire',
+        services: 'Maternelle, Primaire',
+        address: 'Marcory Zone 4',
+        commune: 'Marcory',
+        city: 'Abidjan',
+      }
+    ],
+    'Koumassi': [
+      {
+        id: 'lycee-moderne-koumassi',
+        name: 'Lycée Moderne de Koumassi',
+        type: 'public',
+        eduType: 'college_lycee',
+        services: 'Secondaire général',
+        address: 'Koumassi Quartier Divo',
+        commune: 'Koumassi',
+        city: 'Abidjan',
+      },
+      {
+        id: 'cfp-koumassi',
+        name: 'Centre de Formation Professionnelle de Koumassi',
+        type: 'public',
+        eduType: 'formation',
+        services: 'Formations qualifiantes & techniques',
+        address: 'Koumassi Sicogi',
+        commune: 'Koumassi',
+        city: 'Abidjan',
+      }
+    ],
+    'Plateau': [
+      {
+        id: 'lycee-technique-plateau',
+        name: 'Lycée Technique d’Abidjan',
+        type: 'public',
+        eduType: 'formation',
+        services: 'Formations techniques & professionnelles',
+        address: 'Plateau, Bd de la République',
+        commune: 'Plateau',
+        city: 'Abidjan',
+      },
+      {
+        id: 'ecole-privee-le-plateau',
+        name: 'École Privée Le Plateau',
+        type: 'prive',
+        eduType: 'scolaire',
+        services: 'Maternelle, Primaire',
+        address: 'Avenue Lamblin, Plateau',
+        commune: 'Plateau',
+        city: 'Abidjan',
+      }
+    ],
+    // Autres villes
+    'Bouaké': [
+      {
+        id: 'lycee-moderne-bouake',
+        name: 'Lycée Moderne de Bouaké',
+        type: 'public',
+        eduType: 'college_lycee',
+        services: 'Secondaire général',
+        address: 'Bouaké centre',
+        city: 'Bouaké',
+      },
+      {
+        id: 'groupe-scolaire-prive-bouake',
+        name: 'Groupe Scolaire Privé Notre Avenir',
+        type: 'prive',
+        eduType: 'scolaire',
+        services: 'Maternelle, Primaire',
+        address: 'Bouaké Koko',
+        city: 'Bouaké',
+      }
+    ],
+    'Yamoussoukro': [
+      {
+        id: 'lycee-scientifique-yao',
+        name: 'Lycée Scientifique de Yamoussoukro',
+        type: 'public',
+        eduType: 'college_lycee',
+        services: 'Secondaire scientifique d’excellence',
+        address: 'Yamoussoukro',
+        city: 'Yamoussoukro',
+      },
+      {
+        id: 'cfp-yamoussoukro',
+        name: 'Centre de Formation Professionnelle de Yamoussoukro',
+        type: 'public',
+        eduType: 'formation',
+        services: 'Formations qualifiantes & techniques',
+        address: 'Yamoussoukro',
+        city: 'Yamoussoukro',
+      }
+    ],
+    'San Pedro': [
+      {
+        id: 'lycee-moderne-sanpedro',
+        name: 'Lycée Moderne de San Pedro',
+        type: 'public',
+        eduType: 'college_lycee',
+        services: 'Secondaire général',
+        address: 'San Pedro centre',
+        city: 'San Pedro',
+      },
+      {
+        id: 'ecole-privee-sapphire',
+        name: 'École Privée Sapphire',
+        type: 'prive',
+        eduType: 'scolaire',
+        services: 'Maternelle, Primaire',
+        address: 'Quartier Bardot, San Pedro',
+        city: 'San Pedro',
+      }
+    ],
+
     'Treichville': [
       {
         id: 'cfp-treich',
