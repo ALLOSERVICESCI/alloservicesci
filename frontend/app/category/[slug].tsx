@@ -2497,9 +2497,8 @@ export default function CategoryPage() {
               </View>
             </View>
           )}
-          ListHeaderComponent={(
+          ListHeaderComponent={
             <View>
-              {/* Icône pour réafficher les filtres quand masqués */}
               {eduUIHidden && (
                 <View style={{ marginBottom: 8 }}>
                   <TouchableOpacity onPress={() => setEduUIHidden(false)} style={{ alignSelf: 'flex-start', padding: 6 }}>
@@ -2507,36 +2506,91 @@ export default function CategoryPage() {
                   </TouchableOpacity>
                 </View>
               )}
-
-              {/* Filtres (capsules) */}
               {displayMode === 'communes' && (
                 <View style={{ marginBottom: 12 }}>
-                  <View style={[styles.filtersRowAligned, eduUIHidden && { display: 'none' }, { justifyContent: 'flex-start' }]}>
-                <TouchableOpacity 
-                  onPress={() => setMode('nearby')} 
-                  style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
-                >
-                  <Ionicons name="location-outline" size={16} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
-                  <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                  onPress={() => setMode('commune')} 
-                  style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}
-                >
-                  <Ionicons name="map-outline" size={16} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
-                  <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
-                </TouchableOpacity>
-                {(mode === 'commune' && communeQuery) && (
-                  <TouchableOpacity 
-                    onPress={resetFilters} 
-                    style={{ paddingHorizontal: 4, paddingVertical: 4 }}
-                  >
-                    <Ionicons name="refresh-outline" size={18} color="#000" />
-                  </TouchableOpacity>
-                )}
+                  <View style={[styles.filtersRowAligned, eduUIHidden && { display: 'none' }, { justifyContent: 'flex-start' }]}> 
+                    <TouchableOpacity onPress={() => setMode('nearby')} style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}>
+                      <Ionicons name="location-outline" size={16} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+                      <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setMode('commune')} style={[styles.chip, mode === 'commune' ? styles.chipCommune : styles.chipInactive]}>
+                      <Ionicons name="map-outline" size={16} color={mode === 'commune' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+                      <Text style={mode === 'commune' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
+                    </TouchableOpacity>
+                    {(mode === 'commune' && communeQuery) && (
+                      <TouchableOpacity onPress={resetFilters} style={{ paddingHorizontal: 4, paddingVertical: 4 }}>
+                        <Ionicons name="refresh-outline" size={18} color="#000" />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              )}
+              <View style={{ marginBottom: 4 }}>
+                <Text style={styles.locationText}>
+                  <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localités: </Text>
+                  <Text style={{ color: '#555' }}>{userCity}</Text>
+                  {displayMode === 'direct' && userSelectedCity !== userCity && (
+                    <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
+                      {' '}(données par défaut - {userSelectedCity} non disponible)
+                    </Text>
+                  )}
+                </Text>
               </View>
+              <View style={{ marginBottom: 8 }}>
+                <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 6 }}>Établissement :</Text>
+                {[
+                  { key: 'scolaire', label: 'Scolaires' },
+                  { key: 'college_lycee', label: 'Collèges & Lycées' },
+                  { key: 'formation', label: 'Formation technique & professionnelle' },
+                ].map(opt => (
+                  <TouchableOpacity key={opt.key} testID={`edu-radio-${opt.key}`} onPress={() => setSelectedEduType(selectedEduType === opt.key ? null : (opt.key as any))} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 8 }}>
+                    <View style={{ width: 18, height: 18, borderRadius: 9, borderWidth: 2, borderColor: '#0A7C3A', alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
+                      {selectedEduType === opt.key && (<View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#0A7C3A' }} />)}
+                    </View>
+                    <Text style={{ fontSize: 14, color: '#0A7C3A', fontWeight: '600' }}>{opt.label}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              {displayMode === 'communes' && mode === 'commune' && (
+                <View style={{ marginTop: 16 }}>
+                  <Text style={styles.searchLabel}>Rechercher une commune</Text>
+                  <View style={styles.searchContainer}>
+                    <TextInput
+                      value={communeQuery}
+                      onChangeText={(text) => { setCommuneQuery(text); setShowCommuneSuggestions(true); }}
+                      onFocus={() => setShowCommuneSuggestions(true)}
+                      placeholder={`Rechercher dans ${userCity}...`}
+                      style={styles.searchInput}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                    />
+                    {communeQuery.length > 0 && (
+                      <TouchableOpacity onPress={() => { setCommuneQuery(''); setShowCommuneSuggestions(false); }} style={styles.clearButton}>
+                        <Ionicons name="close-circle" size={20} color="#666" />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  {showCommuneSuggestions && communeQuery.length > 0 && (
+                    <View style={styles.suggestionsContainer}>
+                      <ScrollView style={{ maxHeight: 200 }} nestedScrollEnabled>
+                        {filteredCommunes.length > 0 ? (
+                          filteredCommunes.map((commune, index) => (
+                            <TouchableOpacity key={index} onPress={() => { setCommuneQuery(commune); setShowCommuneSuggestions(false); }} style={styles.suggestionItem}>
+                              <Text style={styles.suggestionText}>{commune}</Text>
+                            </TouchableOpacity>
+                          ))
+                        ) : (
+                          <View style={styles.suggestionItem}>
+                            <Text style={[styles.suggestionText, { color: '#999' }]}>Aucune commune trouvée</Text>
+                          </View>
+                        )}
+                      </ScrollView>
+                    </View>
+                  )}
+                </View>
+              )}
             </View>
-          )}
+          }
 
 
           {displayMode === 'communes' ? (
