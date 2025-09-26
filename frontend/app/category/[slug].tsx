@@ -2456,11 +2456,7 @@ export default function CategoryPage() {
         </View>
       ) : sKey === 'education' ? (
         <FlatList
-          data={
-            displayMode === 'communes'
-              ? (mode === 'commune' ? eduFiltered : [])
-              : eduFiltered
-          }
+          data={displayMode === 'communes' ? (mode === 'commune' ? eduFiltered : []) : eduFiltered}
           keyExtractor={(item: any, idx: number) => (item?.id ? String(item.id) : `edu-${idx}`)}
           contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
