@@ -2163,6 +2163,23 @@ export default function CategoryPage() {
           {/* Barre de recherche communes (visible seulement en mode commune ET si la ville a des communes) */}
           {displayMode === 'communes' && mode === 'commune' && (
             <View style={{ marginTop: 16 }}>
+          {/* Établissement - filtres type */}
+          <View style={{ marginBottom: 8 }}>
+            <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 8 }}>Établissement :</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 8 as any, rowGap: 8 as any }}>
+              {[
+                { key: 'scolaire', label: 'Scolaires' },
+                { key: 'college_lycee', label: 'Collèges & Lycées' },
+                { key: 'formation', label: 'Formation technique & professionnelle' },
+              ].map(opt => (
+                <TouchableOpacity key={opt.key} style={styles.ovalCheck} activeOpacity={0.8}>
+                  <View style={styles.ovalBullet} />
+                  <Text style={styles.ovalLabel}>{opt.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
               <Text style={styles.searchLabel}>Rechercher une commune</Text>
               <View style={styles.searchContainer}>
                 <TextInput
