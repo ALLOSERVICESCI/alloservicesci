@@ -2118,7 +2118,7 @@ export default function CategoryPage() {
                     onPress={resetFilters} 
                     style={{ paddingHorizontal: 4, paddingVertical: 4 }}
                   >
-                    <Ionicons name="refresh-outline" size={16} color="#FF8A00" />
+                    <Ionicons name="refresh-outline" size={18} color="#000" />
                   </TouchableOpacity>
                 )}
               </View>
@@ -2486,7 +2486,7 @@ export default function CategoryPage() {
                     onPress={resetFilters} 
                     style={{ paddingHorizontal: 4, paddingVertical: 4 }}
                   >
-                    <Ionicons name="refresh-outline" size={16} color="#FF8A00" />
+                    <Ionicons name="refresh-outline" size={18} color="#000" />
                   </TouchableOpacity>
                 )}
               </View>
