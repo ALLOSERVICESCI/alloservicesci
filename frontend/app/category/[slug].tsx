@@ -2510,28 +2510,27 @@ export default function CategoryPage() {
 
 
           {/* Établissement - filtres type (toujours sous Localités) */}
-          {!eduUIHidden && (
-            <View style={{ marginBottom: 4 }}>
-              <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 4 }}>Établissement :</Text>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' }}>
-                {[
-                  { key: 'scolaire', label: 'Scolaires' },
-                  { key: 'college_lycee', label: 'Collèges & Lycées' },
-                  { key: 'formation', label: 'Formation technique & professionnelle' },
-                ].map(opt => (
-                  <TouchableOpacity 
-                    key={opt.key} 
-                    style={[styles.ovalCheck, selectedEduType === opt.key && styles.ovalCheckActive]} 
-                    activeOpacity={0.8}
-                    onPress={() => setSelectedEduType(selectedEduType === opt.key ? null : (opt.key as any))}
-                  >
-                    <View style={[styles.ovalBullet, selectedEduType === opt.key && styles.ovalBulletActive]} />
-                    <Text style={[styles.ovalLabel, selectedEduType === opt.key && styles.ovalLabelActive]}>{opt.label}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+          <View style={{ marginBottom: 4 }}>
+            <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 4 }}>Établissement :</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' }}>
+              {[
+                { key: 'scolaire', label: 'Scolaires' },
+                { key: 'college_lycee', label: 'Collèges & Lycées' },
+                { key: 'formation', label: 'Formation technique & professionnelle' },
+              ].map(opt => (
+                <TouchableOpacity 
+                  key={opt.key}
+                  testID={`edu-oval-${opt.key}`}
+                  style={[styles.ovalCheck, selectedEduType === opt.key && styles.ovalCheckActive]} 
+                  activeOpacity={0.8}
+                  onPress={() => setSelectedEduType(selectedEduType === opt.key ? null : (opt.key as any))}
+                >
+                  <View style={[styles.ovalBullet, selectedEduType === opt.key && styles.ovalBulletActive]} />
+                  <Text style={[styles.ovalLabel, selectedEduType === opt.key && styles.ovalLabelActive]}>{opt.label}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
-          )}
+          </View>
 
 
 
