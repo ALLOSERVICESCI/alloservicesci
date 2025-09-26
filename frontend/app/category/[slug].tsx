@@ -2601,7 +2601,7 @@ const styles = StyleSheet.create({
   locationText: { fontSize: 16, marginBottom: 8 },
   filtersRow: { flexDirection: 'row', marginBottom: 16 },
   filtersRowAligned: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 8 as any, rowGap: 8 as any, marginBottom: 16 },
-  chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, marginRight: 12 },
+  chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 18, borderWidth: 1, marginRight: 8 },
   chipNear: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
   chipCommune: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
   chipInactive: { backgroundColor: '#F4F5F6', borderColor: '#DADADA' },
