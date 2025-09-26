@@ -1498,6 +1498,11 @@ export default function CategoryPage() {
     return schoolFacilitiesByCommune[userCity] || [];
   }, [mode, communeQuery, displayMode, userCity]);
 
+  // Filtre appliqué par le type d'établissement (Éducation)
+  const eduFiltered = useMemo(() => {
+    return selectedEduType ? selectedSchoolFacilities.filter(f => f.eduType === selectedEduType) : selectedSchoolFacilities;
+  }, [selectedSchoolFacilities, selectedEduType]);
+
   const getBrand = (name?: string): 'orange' | 'mtn' | 'moov' | null => {
     if (!name) return null;
     const n = name.toLowerCase();
