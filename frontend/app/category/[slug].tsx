@@ -3034,12 +3034,13 @@ const styles = StyleSheet.create({
   facilityHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
   facilityName: { fontSize: 18, fontWeight: '700', color: '#0A7C3A', flex: 1, marginRight: 12 },
   typeBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, borderWidth: 1 },
-  // Harmonisation: Public vert
-  badgePublic: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
-  // Harmonisation: Privé bleu (utilisé aussi pour cliniques en Santé)
-  badgeClinic: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
-  // Formation pro: orange
-  badgeFormation: { backgroundColor: '#FFF3E0', borderColor: '#FF8A00' },
+  // Santé (valeurs initiales)
+  badgePublic: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
+  badgeClinic: { backgroundColor: '#FFF3E0', borderColor: '#FF8A00' },
+  // Éducation (badges séparés)
+  eduBadgePublic: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
+  eduBadgePrive: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
+  eduBadgeFormation: { backgroundColor: '#FFF3E0', borderColor: '#FF8A00' },
   typeBadgeText: { fontSize: 12, fontWeight: '600', color: '#0A7C3A' },
   facilityServices: { fontSize: 14, color: '#555', marginBottom: 8, lineHeight: 20 },
   facilityAddress: { fontSize: 14, color: '#666', marginBottom: 8, flexDirection: 'row', alignItems: 'center' },
