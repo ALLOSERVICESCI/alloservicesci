@@ -2122,7 +2122,7 @@ export default function CategoryPage() {
                   onPress={() => setMode('nearby')} 
                   style={[styles.chip, mode === 'nearby' ? styles.chipNear : styles.chipInactive]}
                 >
-                  <Ionicons name="location-outline" size={18} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+                  <Ionicons name="location-outline" size={16} color={mode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
                   <Text style={mode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
