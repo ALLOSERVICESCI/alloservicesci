@@ -1504,6 +1504,24 @@ export default function CategoryPage() {
     return selectedEduType ? selectedSchoolFacilities.filter(f => f.eduType === selectedEduType) : selectedSchoolFacilities;
   }, [selectedSchoolFacilities, selectedEduType]);
 
+  // Persistance du filtre Éducation
+  useEffect(() => {
+    (async () => {
+      try {
+        const saved = await AsyncStorage.getItem('@eduType');
+        if (saved) setSelectedEduType(saved as any);
+      } catch (e) {}
+    })();
+  }, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        if (selectedEduType) await AsyncStorage.setItem('@eduType', selectedEduType);
+        else await AsyncStorage.removeItem('@eduType');
+      } catch (e) {}
+    })();
+  }, [selectedEduType]);
+
   const getBrand = (name?: string): 'orange' | 'mtn' | 'moov' | null => {
     if (!name) return null;
     const n = name.toLowerCase();
