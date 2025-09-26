@@ -2461,7 +2461,9 @@ export default function CategoryPage() {
               ? (mode === 'commune' ? eduFiltered : [])
               : eduFiltered
           }
-          keyExtractor={(item: any) => item.id}
+          keyExtractor={(item: any, idx: number) => (item?.id ? String(item.id) : `edu-${idx}`)}
+          contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item: facility }: any) => (
             <View style={styles.facilityCard}>
               {/* En-tête avec nom et type */}
