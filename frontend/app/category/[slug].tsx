@@ -1381,6 +1381,7 @@ export default function CategoryPage() {
         id: 'lycee-classique',
         name: "Lycée Classique d'Abidjan",
         type: 'public',
+        eduType: 'college_lycee',
         services: 'Secondaire général, séries Littéraires & Scientifiques',
         address: 'Bd de l’Université, Cocody',
         phones: ['+225 27 22 44 00 00'],
