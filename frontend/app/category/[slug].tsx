@@ -2605,7 +2605,7 @@ const styles = StyleSheet.create({
   chipNear: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
   chipCommune: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
   chipInactive: { backgroundColor: '#F4F5F6', borderColor: '#DADADA' },
-  chipTextNear: { color: '#0D6EFD', fontSize: 14, fontWeight: '600' },
+  chipTextNear: { color: '#0D6EFD', fontSize: 13, fontWeight: '600' },
   chipTextCommune: { color: '#0A7C3A', fontSize: 14, fontWeight: '600' },
   chipTextInactive: { color: '#666', fontSize: 14, fontWeight: '600' },
   chipReset: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, backgroundColor: '#FFF3E0', borderColor: '#FF8A00', marginLeft: 8 },
