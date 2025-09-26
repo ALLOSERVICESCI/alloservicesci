@@ -2419,7 +2419,7 @@ export default function CategoryPage() {
                           {/* En-tête avec nom et type */}
                           <View style={styles.facilityHeader}>
                             <Text style={styles.facilityName}>{facility.name}</Text>
-                            <View style={[styles.typeBadge, facility.type === 'public' ? styles.badgePublic : styles.badgeClinic]}>
+                            <View style={[styles.typeBadge, facility.eduType === 'formation' ? styles.badgeFormation : (facility.type === 'public' ? styles.badgePublic : styles.badgeClinic)]}>
                               <Text style={styles.typeBadgeText}>
                                 {facility.type === 'public' ? 'Public' : (facility.type === 'prive' ? 'Privé' : (facility.type === 'formation' ? 'Form. prof.' : (facility.type || 'Autre')))}
                               </Text>
