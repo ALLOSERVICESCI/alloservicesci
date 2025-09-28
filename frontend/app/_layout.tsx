@@ -17,6 +17,11 @@ const TEST_USER = {
 };
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
+    InterBlack: require('../assets/fonts/Inter-Black.ttf'),
+  });
+
   useEffect(() => {
     // Inject demo user for automated tests only (web dev env)
     (async () => {
@@ -28,6 +33,20 @@ export default function RootLayout() {
       } catch {}
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!fontsLoaded) {
+          await SplashScreen.preventAutoHideAsync();
+        } else {
+          await SplashScreen.hideAsync();
+        }
+      } catch {}
+    })();
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) return null;
 
   return (
     <I18nProvider>
