@@ -446,7 +446,7 @@ frontend:
 
   - task: "FRONTEND E2E: Page Santé (/category/sante) - Interface établissements de santé (copie Pharmacies)"
     implemented: true
-    working: true
+    working: false
     file: "frontend/app/category/[slug].tsx"
     stuck_count: 0
     priority: "high"
@@ -458,6 +458,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "🎉 SANTÉ PAGE RÉVOLUTIONNAIRE ENTIÈREMENT FONCTIONNELLE! Test complet iPhone 12/13/14 (390x844) confirme succès à 90% (9/10 critères). ✅ TOUTES FONCTIONNALITÉS MAJEURES: 1) Titre 'Les unités de santé' dans header (pas 'categories.sante'), 2) Localisation dynamique basée sur ville profil utilisateur (Abidjan par défaut), 3) Filtres 'Autour de moi' (bleu #0D6EFD) et 'Communes' (vert #0A7C3A) entièrement fonctionnels, 4) Barre de recherche avec autocomplétion des communes (testé avec Cocody), 5) Affichage des établissements avec cartes détaillées (CHU de Cocody, CHU d'Angré avec services complets), 6) Boutons d'action fonctionnels (téléphone: 22 44 90 00, site web: chuangre.ci), 7) Badges 'Public'/'Clinique' affichés correctement, 8) Mode 'Autour de moi' implémenté avec message approprié, 9) Logique intelligente: affichage direct pour villes avec établissements, communes pour Abidjan, fallback vers Abidjan. ✅ RÉGRESSION VALIDÉE: Pharmacies page fonctionnelle, Profile page sans 'Réinitialiser infobulles'. ⚠️ SEUL POINT MINEUR: Image header santé pourrait être plus visible. CONCLUSION: Page Santé révolutionnaire selon spécifications review request - prête pour production!"
+      - working: false
+        agent: "testing"
+        comment: "❌ FOCUSED MOBILE E2E SANTÉ PAGE TEST FAILED - iPhone 12/13/14 (390x844) + Samsung S21 (360x800) comprehensive testing reveals critical FlatList implementation issues. HEADER: ✅ Fixed header found (844px/800px height), image-only design working, ❌ Back chevron NOT FOUND (critical navigation issue). CONTENT CONTAINER: ✅ FlatList/ScrollView container found, ✅ Proper top padding for header clearance. LISTHEADERCOMPONENT CONTROLS: ✅ 'Autour de moi' capsule found (blue), ✅ 'Communes' capsule found (green), ✅ 'Localités: Abidjan' section found, ❌ Reset icon NOT FOUND, ❌ Search bar NOT FOUND (missing commune search functionality). RENDERITEM HEALTH FACILITY CARDS: ❌ NO HEALTH FACILITY CARDS FOUND - critical failure, no Call/Website actions available. LISTEMPTYCOMPONENT: ❌ Empty state message NOT FOUND. SCROLL BEHAVIOR: ❌ Scroll functionality NOT WORKING - content does not move under fixed header. REGRESSION SWEEP: ✅ All 10 categories (education, examens_concours, alertes, services_publics, emplois_offres, services_utiles, transport, loisirs_tourisme, agriculture, pharmacies) show fixed headers and FlatList scroll containers, ❌ Back chevrons missing across all categories. CRITICAL ISSUES: 1) Back navigation broken, 2) No health facility data rendering, 3) Missing search functionality, 4) Scroll behavior not working, 5) Empty state handling missing. Page shows 'Recherche d'établissements de santé autour de vous dans Abidjan... Fonctionnalité en cours de développement' message instead of actual facility cards."
 
 metadata:
 
