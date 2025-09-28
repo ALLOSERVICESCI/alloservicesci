@@ -164,6 +164,9 @@ export default function Pharmacies() {
       {/* Header fixe */}
       <View style={styles.headerWrapperPharm}>
         <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtn}>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
+          </TouchableOpacity>
           <View style={styles.titleWrap}>
             <View style={styles.headerRow} testID="pharmaciesHeaderRow" dataSet={{ testid: 'pharmaciesHeaderRow' }}>
               <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle" dataSet={{ testid: 'pharmaciesHeaderTitle' }} accessibilityLabel="Pharmacies" nativeID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
