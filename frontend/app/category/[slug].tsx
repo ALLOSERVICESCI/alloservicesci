@@ -2552,7 +2552,7 @@ export default function CategoryPage() {
                   </TouchableOpacity>
                 ))}
               </View>
-              {displayMode === 'communes' && mode === 'commune' && !communeQuery && selectedFacilities.length === 0 && (
+              {displayMode === 'communes' && mode === 'commune' && (!communeChosen || showCommuneSuggestions) && (
                 <View style={{ marginTop: 16 }}>
                   <Text style={styles.searchLabel}>Rechercher une commune</Text>
                   <View style={styles.searchContainer}>
