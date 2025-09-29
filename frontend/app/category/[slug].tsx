@@ -44,6 +44,7 @@ export default function CategoryPage() {
   const [mode, setMode] = useState<'nearby' | 'commune'>('nearby');
   const [communeQuery, setCommuneQuery] = useState('');
   const [showCommuneSuggestions, setShowCommuneSuggestions] = useState(false);
+  const [communeChosen, setCommuneChosen] = useState(false);
 
   // Education dropdown state
   const [eduMenuOpen, setEduMenuOpen] = useState(false);
