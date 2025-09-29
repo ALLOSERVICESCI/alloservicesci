@@ -2017,7 +2017,7 @@ export default function CategoryPage() {
   const bg = backgroundImages[sKey] || COMMON_HEADER;
 
   const fixedHeaderKeys = ['urgence','sante','education','examens_concours','agriculture','loisirs_tourisme','transport','services_publics','emplois_offres'];
-  const padTop = fixedHeaderKeys.includes(sKey) ? (sKey === 'education' ? eduHeaderHeight : 250) : 0;
+  const padTop = fixedHeaderKeys.includes(sKey) ? (sKey === 'education' ? eduHeaderHeight : (sKey === 'sante' ? 270 : 250)) : 0;
 
   return (
     <View style={styles.container}>
