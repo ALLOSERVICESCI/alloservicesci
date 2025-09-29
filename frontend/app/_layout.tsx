@@ -46,6 +46,26 @@ export default function RootLayout() {
     })();
   }, [fontsLoaded]);
 
+  // Web-only: patch FontFaceObserver timeouts to avoid noisy errors in RN Web
+  useEffect(() => {
+    try {
+      const w: any = globalThis as any;
+      if (w && w.FontFaceObserver && !w.__ffoPatched) {
+        const proto = w.FontFaceObserver.prototype;
+        const originalLoad = proto.load;
+        proto.load = function (text?: string, timeout?: number) {
+          const safeTimeout = typeof timeout === 'number' ? timeout : 6000;
+          return originalLoad.call(this, text, safeTimeout).catch((err: any) => {
+            // Ignore font load timeouts to prevent breaking the app on web
+            console.warn('[web] FontFaceObserver timeout ignored:', err?.message || err);
+            return Promise.resolve();
+          });
+        };
+        w.__ffoPatched = true;
+      }
+    } catch {}
+  }, []);
+
   if (!fontsLoaded) return null;
 
   return (
