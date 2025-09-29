@@ -2576,7 +2576,7 @@ export default function CategoryPage() {
                       <ScrollView style={{ maxHeight: 200 }} nestedScrollEnabled>
                         {filteredCommunes.length > 0 ? (
                           filteredCommunes.map((commune, index) => (
-                            <TouchableOpacity key={index} onPress={() => { setCommuneQuery(commune); setShowCommuneSuggestions(false); }} style={styles.suggestionItem}>
+                            <TouchableOpacity key={index} onPress={() => { setCommuneQuery(commune); setCommuneChosen(true); setShowCommuneSuggestions(false); }} style={styles.suggestionItem}>
                               <Text style={styles.suggestionText}>{commune}</Text>
                             </TouchableOpacity>
                           ))
