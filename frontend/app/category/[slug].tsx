@@ -2551,7 +2551,7 @@ export default function CategoryPage() {
                   </TouchableOpacity>
                 ))}
               </View>
-              {displayMode === 'communes' && mode === 'commune' && (
+              {displayMode === 'communes' && mode === 'commune' && !communeQuery && (
                 <View style={{ marginTop: 16 }}>
                   <Text style={styles.searchLabel}>Rechercher une commune</Text>
                   <View style={styles.searchContainer}>
