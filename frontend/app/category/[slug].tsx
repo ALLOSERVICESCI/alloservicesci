@@ -2558,7 +2558,7 @@ export default function CategoryPage() {
                   <View style={styles.searchContainer}>
                     <TextInput
                       value={communeQuery}
-                      onChangeText={(text) => { setCommuneQuery(text); setShowCommuneSuggestions(true); }}
+                      onChangeText={(text) => { setCommuneQuery(text); setShowCommuneSuggestions(true); setCommuneChosen(false); }}
                       onFocus={() => setShowCommuneSuggestions(true)}
                       placeholder={`Rechercher dans ${userCity}...`}
                       style={styles.searchInput}
