@@ -2146,7 +2146,7 @@ export default function CategoryPage() {
 
 
           {/* Barre de recherche communes (visible seulement en mode commune ET si la ville a des communes) */}
-          {displayMode === 'communes' && mode === 'commune' && (!communeChosen || showCommuneSuggestions) && (
+          {displayMode === 'communes' && mode === 'commune' && (showCommuneSuggestions || !communeChosen || selectedFacilities.length === 0) && (
             <View style={{ marginTop: 16 }}>
               <Text style={styles.searchLabel}>Rechercher une commune</Text>
               <View style={styles.searchContainer}>
