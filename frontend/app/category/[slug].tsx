@@ -2068,21 +2068,36 @@ export default function CategoryPage() {
       ) : sKey === 'loisirs_tourisme' ? (
         <View style={styles.headerWrapperLoisirs}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
+          </TouchableOpacity>
         </View>
       ) : sKey === 'transport' ? (
         <View style={styles.headerWrapperTransport}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
+          </TouchableOpacity>
         </View>
       ) : sKey === 'services_publics' ? (
         <View style={styles.headerWrapperServices}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
+          </TouchableOpacity>
         </View>
       ) : sKey === 'emplois_offres' ? (
         <View style={styles.headerWrapperEmplois}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
+          </TouchableOpacity>
         </View>
       ) : (
         <ImageBackground source={bg} style={styles.header} resizeMode="cover">
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
+          </TouchableOpacity>
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.headerGradient}>
             <View style={styles.headerContent}>
               <Text style={styles.headerTitle}>{t(`categories.${sKey}`)}</Text>
