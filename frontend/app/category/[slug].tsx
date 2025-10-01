@@ -2166,7 +2166,7 @@ export default function CategoryPage() {
           contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
           renderItem={({ item, index }) => renderContentItem({ item, index } as any)}
-          ListHeaderComponent={<ExamensConcoursHeader />}
+          ListHeaderComponent={<ExamensConcoursHeader xcTab={xcTab} setXcTab={setXcTab} xcExamensFilter={xcExamensFilter} setXcExamensFilter={setXcExamensFilter} xcResultatsScope={xcResultatsScope} setXcResultatsScope={setXcResultatsScope} />}
           ListEmptyComponent={(
             <View style={{ paddingVertical: 24 }}>
               <Text style={{ color: '#666', textAlign: 'center' }}>Aucun élément à afficher pour ce filtre</Text>
