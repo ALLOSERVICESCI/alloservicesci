@@ -11,7 +11,7 @@ import sys
 from typing import Dict, Any, Optional
 
 # Base URL from frontend/.env
-BASE_URL = "https://expo-header-refine.preview.emergentagent.com/api"
+BASE_URL = "https://ci-app-upgrade.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):
