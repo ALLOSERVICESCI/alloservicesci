@@ -2107,6 +2107,34 @@ export default function CategoryPage() {
         </ImageBackground>
       )}
 
+      ) : sKey === 'examens_concours' ? (
+        <FlatList
+          data={(
+            () => {
+              const xcBase = CONTENT_BY_CATEGORY['examens_concours'] || [];
+              const xcMore = (CONTENT_BY_CATEGORY as any)['examens_concours_more'] || [];
+              // Local UI states stored on global component state keys to keep single render tree
+              // Initialize once using refs to avoid re-creates in render
+              return [] as any[];
+            }
+          )()}
+          keyExtractor={(item: any, idx: number) => item?.title ? `${idx}-${item.title}` : `xc-${idx}`}
+          contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }: any) => (
+            <View style={styles.contentCard}>{renderContentItem({ item, index: 0 } as any)}</View>
+          )}
+          ListHeaderComponent={(
+            <ExamensConcoursHeader />
+          )}
+          ListEmptyComponent={(
+            <View style={{ paddingVertical: 24 }}>
+              <Text style={{ color: '#666', textAlign: 'center' }}>Aucun élément à afficher pour ce filtre</Text>
+            </View>
+          )}
+        />
+      ) : sKey === 'sante' ? (
+
       {/* Contenu spécifique par catégorie */}
       {sKey === 'urgence' ? (
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: padTop, paddingHorizontal: 16, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
