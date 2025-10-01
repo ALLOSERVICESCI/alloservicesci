@@ -163,7 +163,7 @@ export default function Pharmacies() {
       {/* Header fixe */}
       <View style={styles.headerWrapperPharm}>
         <ImageBackground source={HEADER_IMG} style={styles.header} imageStyle={styles.headerImg}>
-          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtn}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID="backBtn-pharmacies" style={styles.backBtn}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
           <View style={styles.titleWrap}>
