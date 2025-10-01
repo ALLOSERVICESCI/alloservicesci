@@ -177,7 +177,8 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       date: 'Période: session annuelle',
       source: 'https://www.ena.ci/'
     },
-    ,
+  ],
+  examens_concours_more: [
     {
       title: 'DECO — Résultats BEPC / BAC',
       summary: 'Consultez en ligne les résultats officiels des examens scolaires (BEPC, BAC).',
