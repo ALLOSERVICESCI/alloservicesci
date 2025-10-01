@@ -2104,36 +2104,7 @@ export default function CategoryPage() {
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
         </View>
-      ) : sKey === 'examens_concours' ? (
-        <FlatList
-          data={(() => {
-            const base = CONTENT_BY_CATEGORY['examens_concours'] || [];
-            const more = (CONTENT_BY_CATEGORY as any)['examens_concours_more'] || [];
-            if (xcTab === 'examens') {
-              if (xcExamensFilter === 'scolaires') {
-                return base.filter((it) => (it.title || '').match(/CEP|BEPC|BAC|DECO/i));
-              }
-              return base.filter((it) => (it.title || '').match(/BTS/i));
-            }
-            if (xcTab === 'concours') {
-              return base.filter((it) => (it.title || '').match(/ENA|Fonction publique|INFAS|ENS|CAFOP/i));
-            }
-            if (xcResultatsScope === 'examens') {
-              return more.filter((it) => (it.title || '').match(/DECO|BTS/i));
-            }
-            return more.filter((it) => (it.title || '').match(/Fonction publique|ENA|INFAS|ENS|CAFOP|BTS/i));
-          })()}
-          keyExtractor={(item: any, idx: number) => (item?.title ? `${idx}-${item.title}` : `xc-${idx}`)}
-          contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => renderContentItem({ item, index } as any)}
-          ListHeaderComponent={<ExamensConcoursHeader xcTab={xcTab} setXcTab={setXcTab} xcExamensFilter={xcExamensFilter} setXcExamensFilter={setXcExamensFilter} xcResultatsScope={xcResultatsScope} setXcResultatsScope={setXcResultatsScope} />}
-          ListEmptyComponent={(
-            <View style={{ paddingVertical: 24 }}>
-              <Text style={{ color: '#666', textAlign: 'center' }}>Aucun élément à afficher pour ce filtre</Text>
-            </View>
-          )}
-        />
+      ) : sKey === 'sante' ? (
       ) : sKey === 'sante' ? (
         <View style={styles.headerWrapperSante}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
