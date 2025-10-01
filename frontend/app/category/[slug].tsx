@@ -2111,7 +2111,7 @@ export default function CategoryPage() {
             const more = (CONTENT_BY_CATEGORY as any)['examens_concours_more'] || [];
             if (xcTab === 'examens') {
               if (xcExamensFilter === 'scolaires') {
-                return base.filter((it) => (it.title || '').match(/CEPE|BEPC|BAC|DECO/i));
+                return base.filter((it) => (it.title || '').match(/CEP|BEPC|BAC|DECO/i));
               }
               return base.filter((it) => (it.title || '').match(/BTS/i));
             }
@@ -2147,7 +2147,7 @@ export default function CategoryPage() {
             const more = (CONTENT_BY_CATEGORY as any)['examens_concours_more'] || [];
             if (xcTab === 'examens') {
               if (xcExamensFilter === 'scolaires') {
-                return base.filter((it) => (it.title || '').match(/CEPE|BEPC|BAC|DECO/i));
+                return base.filter((it) => (it.title || '').match(/CEP|BEPC|BAC|DECO/i));
               }
               // grande_ecole → BTS
               return base.filter((it) => (it.title || '').match(/BTS/i));
