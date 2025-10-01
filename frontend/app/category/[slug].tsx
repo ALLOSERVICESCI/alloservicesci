@@ -2263,7 +2263,7 @@ export default function CategoryPage() {
             <View style={styles.contentCard}>{renderContentItem({ item, index: 0 } as any)}</View>
           )}
           ListHeaderComponent={(
-            <ExamensConcoursHeader />
+            <ExamensConcoursHeader xcTab={xcTab} setXcTab={setXcTab} xcExamensFilter={xcExamensFilter} setXcExamensFilter={setXcExamensFilter} xcResultatsScope={xcResultatsScope} setXcResultatsScope={setXcResultatsScope} />
           )}
           ListEmptyComponent={(
             <View style={{ paddingVertical: 24 }}>
