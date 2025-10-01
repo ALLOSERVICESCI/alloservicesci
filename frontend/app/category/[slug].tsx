@@ -13,7 +13,7 @@ const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home
 const eduHeaderHeight = 250; // Header Education (fixe)
 
 // En-tête Examens & Concours
-const ExamensConcoursHeader = () => {
+const ExamensConcoursHeader = ({ xcTab, setXcTab, xcExamensFilter, setXcExamensFilter, xcResultatsScope, setXcResultatsScope }: any) => {
   return (
     <View>
       {/* Capsules principales */}
