@@ -12,72 +12,7 @@ import { useAuth } from '../../src/context/AuthContext';
 const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' };
 const eduHeaderHeight = 250; // Header Education (fixe)
 
-// En-tête Examens & Concours (supprimé)
-  return (
-    <View>
-      {/* Capsules principales */}
-      <View style={[styles.filtersRowAligned, { justifyContent: 'flex-start', marginBottom: 8 }]}>
-        <TouchableOpacity onPress={() => setXcTab('examens')} style={[styles.chip, xcTab === 'examens' ? styles.chipCommune : styles.chipInactive]}>
-          <Ionicons name="school-outline" size={16} color={xcTab === 'examens' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
-          <Text style={xcTab === 'examens' ? styles.chipTextCommune : styles.chipTextInactive}>Examens</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setXcTab('concours')} style={[styles.chip, xcTab === 'concours' ? styles.chipCommune : styles.chipInactive]}>
-          <Ionicons name="trophy-outline" size={16} color={xcTab === 'concours' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
-          <Text style={xcTab === 'concours' ? styles.chipTextCommune : styles.chipTextInactive}>Concours</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setXcTab('resultats')} style={[styles.chip, xcTab === 'resultats' ? styles.chipCommune : styles.chipInactive]}>
-          <Ionicons name="reader-outline" size={16} color={xcTab === 'resultats' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
-          <Text style={xcTab === 'resultats' ? styles.chipTextCommune : styles.chipTextInactive}>Résultats</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Sous-filtres selon l’onglet */}
-      {xcTab === 'examens' && (
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 6 }}>Examens :</Text>
-          <View style={[styles.filtersRowAligned, { justifyContent: 'flex-start' }]}>
-            <TouchableOpacity onPress={() => setXcExamensFilter('scolaires')} style={[styles.ovalCheck, xcExamensFilter === 'scolaires' && styles.ovalCheckActive]}>
-              <View style={[styles.ovalBullet, xcExamensFilter === 'scolaires' && styles.ovalBulletActive]} />
-              <Text style={[styles.ovalLabel, xcExamensFilter === 'scolaires' && styles.ovalLabelActive]}>Scolaires (CEP, BEPC, BAC)</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setXcExamensFilter('grande_ecole')} style={[styles.ovalCheck, xcExamensFilter === 'grande_ecole' && styles.ovalCheckActive]}>
-              <View style={[styles.ovalBullet, xcExamensFilter === 'grande_ecole' && styles.ovalBulletActive]} />
-              <Text style={[styles.ovalLabel, xcExamensFilter === 'grande_ecole' && styles.ovalLabelActive]}>Grande école (BTS)</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-
-      {xcTab === 'concours' && (
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 6 }}>Concours :</Text>
-          <View style={[styles.filtersRowAligned, { justifyContent: 'flex-start' }]}>
-            <TouchableOpacity disabled style={[styles.ovalCheck, styles.ovalCheckActive]}>
-              <View style={[styles.ovalBullet, styles.ovalBulletActive]} />
-              <Text style={[styles.ovalLabel, styles.ovalLabelActive]}>National</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-
-      {xcTab === 'resultats' && (
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ color: '#0A7C3A', fontWeight: '700', marginBottom: 6 }}>Résultats :</Text>
-          <View style={[styles.filtersRowAligned, { justifyContent: 'flex-start' }]}>
-            <TouchableOpacity onPress={() => setXcResultatsScope('examens')} style={[styles.ovalCheck, xcResultatsScope === 'examens' && styles.ovalCheckActive]}>
-              <View style={[styles.ovalBullet, xcResultatsScope === 'examens' && styles.ovalBulletActive]} />
-              <Text style={[styles.ovalLabel, xcResultatsScope === 'examens' && styles.ovalLabelActive]}>Examens</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setXcResultatsScope('concours')} style={[styles.ovalCheck, xcResultatsScope === 'concours' && styles.ovalCheckActive]}>
-              <View style={[styles.ovalBullet, xcResultatsScope === 'concours' && styles.ovalBulletActive]} />
-              <Text style={[styles.ovalLabel, xcResultatsScope === 'concours' && styles.ovalLabelActive]}>Concours</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-    </View>
-  );
-};
+// En-tête Examens & Concours (retiré suite à demande)
 
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams();
