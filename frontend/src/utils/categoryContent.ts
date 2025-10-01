@@ -177,7 +177,6 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       date: 'Période: session annuelle',
       source: 'https://www.ena.ci/'
     },
-  ],
     ,
     {
       title: 'DECO — Résultats BEPC / BAC',
@@ -215,6 +214,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       tag: 'Fonction publique',
       source: 'https://www.fonctionpublique.gouv.ci/'
     }
+  ],
 
   services_publics: [
     {
