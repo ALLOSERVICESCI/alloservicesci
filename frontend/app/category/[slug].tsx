@@ -13,6 +13,14 @@ import { useAuth } from '../../src/context/AuthContext';
 const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' };
 const eduHeaderHeight = 250; // Header Education (fixe)
 
+// Sous-composant header Examens & Concours (FlatList header)
+const ExamensConcoursHeader = memo(function ExamensConcoursHeader() {
+  // Accès aux états via closure du composant parent (déjà déclarés au-dessus)
+  // On réutilise les styles existants (chips)
+  // Note: Cette fonction sera définie après les hooks d'état pour capter les setters
+  return null as any;
+});
+
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams();
   const s = Array.isArray(slug) ? slug[0] : (slug || 'urgence');
