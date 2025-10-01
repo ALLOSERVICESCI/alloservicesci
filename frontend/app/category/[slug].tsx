@@ -13,6 +13,7 @@ const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home
 const eduHeaderHeight = 250; // Header Education (fixe)
 
 /*
+*/
 // En-tête Examens & Concours (retiré suite à demande)
 
 export default function CategoryPage() {
