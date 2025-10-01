@@ -51,6 +51,11 @@ export default function CategoryPage() {
   const [selectedEduType, setSelectedEduType] = useState<null | 'scolaire' | 'college_lycee' | 'formation'>(null);
   const [eduHasAutoHidden, setEduHasAutoHidden] = useState(false);
 
+  // Examens & Concours UI state (capsules + sélecteur résultats)
+  const [xcTab, setXcTab] = useState<'examens'|'concours'|'resultats'>('examens');
+  const [xcExamensFilter, setXcExamensFilter] = useState<'scolaires'|'grande_ecole'>('scolaires');
+  const [xcResultatsScope, setXcResultatsScope] = useState<'examens'|'concours'>('examens');
+
   // Ne pas masquer l'UI Éducation au chargement
   useEffect(() => {
     setEduUIHidden(false);
