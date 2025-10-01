@@ -178,6 +178,44 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       source: 'https://www.ena.ci/'
     },
   ],
+    ,
+    {
+      title: 'DECO — Résultats BEPC / BAC',
+      summary: 'Consultez en ligne les résultats officiels des examens scolaires (BEPC, BAC).',
+      tag: 'Résultats',
+      source: 'https://www.men-deco.org/'
+    },
+    {
+      title: 'BTS Côte d’Ivoire — Inscriptions et résultats',
+      summary: 'Examens du Brevet de Technicien Supérieur (BTS): calendriers, inscriptions, résultats.',
+      tag: 'Enseignement supérieur',
+      source: 'https://bts.mesrs.ci/'
+    },
+    {
+      title: 'CAFOP — Concours instituteurs',
+      summary: 'Concours d’entrée aux CAFOP (formation des instituteurs).',
+      tag: 'Concours',
+      source: 'https://www.men-deco.org/'
+    },
+    {
+      title: 'ENS Abidjan — Concours',
+      summary: 'Concours d’accès à l’École Normale Supérieure (enseignants).',
+      tag: 'Concours',
+      source: 'https://www.ensabidjan.ci/'
+    },
+    {
+      title: 'INFAS — Concours paramédicaux',
+      summary: 'Concours d’accès à l’INFAS (santé): filières et modalités.',
+      tag: 'Concours',
+      source: 'https://www.infas.ci/'
+    },
+    {
+      title: 'Fonction publique — Recrutements & concours',
+      summary: 'Annonces officielles des concours et recrutements (tous ministères).',
+      tag: 'Fonction publique',
+      source: 'https://www.fonctionpublique.gouv.ci/'
+    }
+
   services_publics: [
     {
       title: 'CNPS (Caisse Nationale de Prévoyance Sociale)',
