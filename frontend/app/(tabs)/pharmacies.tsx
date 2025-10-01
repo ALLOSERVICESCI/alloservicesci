@@ -338,6 +338,18 @@ const styles = StyleSheet.create({
   headerDot: { color: '#fff', fontSize: 20, fontWeight: '600', marginHorizontal: 6 },
   nearHeader: { color: '#0D6EFD', fontSize: 16, fontWeight: '700' },
   cityHeader: { color: '#FF8A00', fontSize: 16, fontWeight: '700' },
+  backBtn: {
+    position: 'absolute',
+    top: Platform.select({ ios: 52, android: 22, default: 16 }) as number,
+    left: 16,
+    height: 40,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
 
   filters: { paddingHorizontal: 16, paddingTop: 12 },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between' },
