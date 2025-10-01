@@ -12,8 +12,7 @@ import { useAuth } from '../../src/context/AuthContext';
 const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' };
 const eduHeaderHeight = 250; // Header Education (fixe)
 
-// En-tête Examens & Concours
-const ExamensConcoursHeader = ({ xcTab, setXcTab, xcExamensFilter, setXcExamensFilter, xcResultatsScope, setXcResultatsScope }: any) => {
+// En-tête Examens & Concours (supprimé)
   return (
     <View>
       {/* Capsules principales */}
