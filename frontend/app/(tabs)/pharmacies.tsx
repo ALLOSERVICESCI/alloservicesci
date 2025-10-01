@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
   badge: { marginTop: 6, alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, borderWidth: 1, fontSize: 12, fontWeight: '700' },
   badgeOnDuty: { color: '#0A7C3A', borderColor: '#0A7C3A', backgroundColor: '#E6F4EA' },
 
-  activeFiltersRow: { flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 8 },
+  activeFiltersRow: { flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 8, marginTop: 8 },
   chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, marginRight: 8 },
   chipNear: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
   chipOnDuty: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
