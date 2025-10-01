@@ -39,7 +39,7 @@ const ExamensConcoursHeader = () => {
           <View style={[styles.filtersRowAligned, { justifyContent: 'flex-start' }]}>
             <TouchableOpacity onPress={() => setXcExamensFilter('scolaires')} style={[styles.ovalCheck, xcExamensFilter === 'scolaires' && styles.ovalCheckActive]}>
               <View style={[styles.ovalBullet, xcExamensFilter === 'scolaires' && styles.ovalBulletActive]} />
-              <Text style={[styles.ovalLabel, xcExamensFilter === 'scolaires' && styles.ovalLabelActive]}>Scolaires (CEPE, BEPC, BAC)</Text>
+              <Text style={[styles.ovalLabel, xcExamensFilter === 'scolaires' && styles.ovalLabelActive]}>Scolaires (CEP, BEPC, BAC)</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setXcExamensFilter('grande_ecole')} style={[styles.ovalCheck, xcExamensFilter === 'grande_ecole' && styles.ovalCheckActive]}>
               <View style={[styles.ovalBullet, xcExamensFilter === 'grande_ecole' && styles.ovalBulletActive]} />
