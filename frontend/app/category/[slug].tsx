@@ -2026,14 +2026,14 @@ export default function CategoryPage() {
       {sKey === 'urgence' ? (
         <View style={styles.headerWrapperUrgence}>
           <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover" />
-          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
         </View>
       ) : sKey === 'sante' ? (
         <View style={styles.headerWrapperSante}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
-          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -2047,21 +2047,21 @@ export default function CategoryPage() {
               <Text style={styles.eduListText}>• Centres de Formations</Text>
             </View>
           </ImageBackground>
-          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
         </View>
       ) : sKey === 'examens_concours' ? (
         <View style={styles.headerWrapperExamens}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
-          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
         </View>
       ) : sKey === 'agriculture' ? (
         <View style={styles.headerWrapperAgriculture}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
-          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
         </View>
