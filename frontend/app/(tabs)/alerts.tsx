@@ -75,7 +75,7 @@ export default function Alerts() {
   const renderHeader = () => (
     <View style={styles.headerWrapperAlerts}>
       <ImageBackground source={headerSource} defaultSource={LOCAL_ALERTS_BG as any} style={styles.header} imageStyle={styles.headerImage} resizeMode="cover">
-        <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" style={styles.backBtnUrgence}>
+        <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID="backBtn-alertes" style={styles.backBtnUrgence}>
           <Ionicons name="chevron-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={styles.headerContentRight}>
