@@ -427,7 +427,7 @@ export default function EmploisOffresIsolated() {
             {/* Contrôles */}
             <View style={styles.controls}>
               {/* Ligne localisation: capsules */}
-              <View style={[styles.capsulesRow, { marginBottom: 6 }]}>
+              <View style={[styles.capsulesRow, { marginBottom: 6, alignItems: 'center' }]}>
                 <TouchableOpacity onPress={() => setNearMe(v => !v)} style={[styles.locCapsule, { backgroundColor: nearMe ? '#E3F2FD' : '#F0F3F6', borderColor: nearMe ? '#0D6EFD' : '#DDE3EA' }]}
                   accessibilityLabel="Autour de moi">
                   <Ionicons name="location-outline" size={16} color={nearMe ? '#0D6EFD' : '#666'} />
