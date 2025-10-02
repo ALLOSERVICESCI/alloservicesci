@@ -398,6 +398,14 @@ export default function EmploisOffresIsolated() {
             <View style={styles.subtitleWrap}>
               <Text style={styles.headerSubtitle}>Postes • Stages • Missions</Text>
             </View>
+            {/* Lien secondaire: Conseils (sous Publier) */}
+            <View style={{ alignItems: 'flex-end', marginTop: 8 }}>
+              <TouchableOpacity onPress={() => router.push('/category/emplois/conseil')} style={styles.tipsBtn} accessibilityRole="button" accessibilityLabel="Conseils pour postuler">
+                <Ionicons name="bulb-outline" size={16} color="#fff" />
+                <Text style={styles.tipsText}>Conseils</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
         </ImageBackground>
       </View>
