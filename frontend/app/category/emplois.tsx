@@ -316,36 +316,21 @@ export default function EmploisOffresIsolated() {
             </TouchableOpacity>
           ) : null}
 
-          {/* Candidats: Voir CV + Télécharger (web) */}
-          {isCandidate && (item.cvUrl || item.cvBase64) ? (
-            <>
-              <TouchableOpacity onPress={() => viewPdf('cv.pdf', item.cvUrl, item.cvBase64)} style={[styles.badgeBtn, styles.badgeCV]}>
-                <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
-                <Text style={styles.badgeCVText}>Voir CV</Text>
-              </TouchableOpacity>
-              {Platform.OS === 'web' ? (
-                <TouchableOpacity onPress={() => downloadPdfWeb('cv.pdf', item.cvUrl, item.cvBase64)} style={[styles.badgeBtn, styles.badgeDownload]}>
-                  <Ionicons name="download-outline" size={16} color="#FF8A00" />
-                  <Text style={styles.badgeDownloadText}>Télécharger</Text>
-                </TouchableOpacity>
-              ) : null}
-            </>
-          ) : null}
-
-          {/* Offres: Voir fiche + Télécharger (web) */}
-          {hasOfferAttachment ? (
-            <>
-              <TouchableOpacity onPress={() => viewPdf(item.attachmentName || 'fiche.pdf', undefined, item.attachmentBase64)} style={[styles.badgeBtn, styles.badgeDoc]}>
-                <Ionicons name="document-text-outline" size={16} color="#8B5CF6" />
-                <Text style={styles.badgeDocText}>Voir fiche</Text>
-              </TouchableOpacity>
-              {Platform.OS === 'web' ? (
-                <TouchableOpacity onPress={() => downloadPdfWeb(item.attachmentName || 'fiche.pdf', undefined, item.attachmentBase64)} style={[styles.badgeBtn, styles.badgeDownload]}>
-                  <Ionicons name="download-outline" size={16} color="#FF8A00" />
-                  <Text style={styles.badgeDownloadText}>Télécharger</Text>
-                </TouchableOpacity>
-              ) : null}
-            </>
+          {/* Actions document regroupées dans menu '…' */}
+          {hasDoc ? (
+            <Pressable
+              onPress={(e) => {
+                const { pageX, pageY } = (e as any).nativeEvent || { pageX: 0, pageY: 0 };
+                setMenuAnchor({ x: pageX, y: pageY });
+                setMenuItem(item);
+                setMenuVisible(true);
+              }}
+              style={styles.moreBtn}
+              accessibilityLabel="Plus d'actions"
+              accessibilityHint="Ouvrir les actions du document"
+            >
+              <Ionicons name="ellipsis-horizontal" size={18} color="#222" />
+            </Pressable>
           ) : null}
         </View>
       </View>
