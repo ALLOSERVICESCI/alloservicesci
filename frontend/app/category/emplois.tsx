@@ -20,8 +20,18 @@ type Job = {
   location: string; // commune ou ville
   type: JobType;
   postedAt: string;
-  applyUrl?: string;
+  applyUrl?: string; // lien de candidature ou mailto pour candidats
   phone?: string;
+  summary?: string;
+};
+
+type Candidate = {
+  name: string;
+  role: string;
+  location: string;
+  updatedAt: string;
+  phone?: string;
+  email?: string;
   summary?: string;
 };
 
@@ -32,6 +42,23 @@ const LOCAL_JOBS: Job[] = [
   { title: 'Chargé de communication', company: 'ONG Alpha', location: 'Yopougon', type: 'emploi', postedAt: 'aujourd’hui', applyUrl: 'https://example.com/apply/2', summary: 'Réseaux sociaux, rédaction contenus, événements.' },
 ];
 
+const LOCAL_CANDIDATES: Candidate[] = [
+  { name: 'Marie K.', role: 'Assistante admin', location: 'Cocody', updatedAt: 'aujourd’hui', phone: '0505050505', email: 'marie.k@example.ci', summary: '2 ans d’expérience en gestion d’accueil et secrétariat.' },
+  { name: 'Adama T.', role: 'Développeur mobile', location: 'Plateau', updatedAt: 'il y a 1 jour', email: 'adama.t@example.ci', summary: 'React Native, Expo, TypeScript. Projets freelance et stagiaire.' },
+  { name: 'Nadine B.', role: 'Community manager', location: 'Marcory', updatedAt: 'il y a 3 jours', phone: '0708080808', summary: 'Création de contenu, analytics, live events.' },
+];
+
+const CANDIDATES_JOBS: Job[] = LOCAL_CANDIDATES.map((c) => ({
+  title: `${c.name} — ${c.role}`,
+  company: 'Candidat',
+  location: c.location,
+  type: 'candidats',
+  postedAt: c.updatedAt,
+  applyUrl: c.email ? `mailto:${c.email}` : undefined,
+  phone: c.phone,
+  summary: c.summary,
+}));
+
 export default function EmploisOffresIsolated() {
   const router = useRouter();
 
@@ -39,10 +66,10 @@ export default function EmploisOffresIsolated() {
   const [query, setQuery] = useState('');
 
   const dataset = useMemo(() => {
-    const base = LOCAL_JOBS.filter(j => j.type === tab);
+    const source = tab === 'candidats' ? CANDIDATES_JOBS : LOCAL_JOBS.filter(j => j.type === tab);
     const q = query.trim().toLowerCase();
-    if (!q) return base;
-    return base.filter(j => (j.title + ' ' + j.company + ' ' + j.location).toLowerCase().includes(q));
+    if (!q) return source;
+    return source.filter(j => (j.title + ' ' + j.company + ' ' + j.location).toLowerCase().includes(q));
   }, [tab, query]);
 
   const openApply = async (applyUrl?: string) => {
@@ -55,6 +82,7 @@ export default function EmploisOffresIsolated() {
   };
 
   const renderItem = useCallback(({ item }: { item: Job }) => {
+    const isCandidate = item.type === 'candidats';
     return (
       <View style={styles.card}>
         <View style={styles.cardHeaderRow}>
@@ -64,23 +92,23 @@ export default function EmploisOffresIsolated() {
           </View>
           <View style={[styles.badgeChip, styles.badgeType]}>
             <Text style={styles.badgeChipText}>
-              {item.type === 'emploi' ? 'Emploi' : item.type === 'stage' ? 'Stage' : 'Freelance'}
+              {item.type === 'emploi' ? 'Emploi' : item.type === 'stage' ? 'Stage' : item.type === 'freelance' ? 'Freelance' : 'Candidats'}
             </Text>
           </View>
         </View>
         {item.summary ? <Text style={styles.cardSummary}>{item.summary}</Text> : null}
-        <Text style={styles.cardMeta}>Publié: {item.postedAt}</Text>
+        <Text style={styles.cardMeta}>{isCandidate ? 'Mis à jour' : 'Publié'}: {item.postedAt}</Text>
         <View style={styles.actionsRow}>
           {item.applyUrl ? (
             <TouchableOpacity onPress={() => openApply(item.applyUrl)} style={[styles.badgeBtn, styles.badgePrimary]}>
-              <Ionicons name="open-outline" size={16} color="#0D6EFD" />
-              <Text style={styles.badgePrimaryText}>Postuler</Text>
+              <Ionicons name={isCandidate ? 'mail' : 'open-outline'} size={16} color="#0D6EFD" />
+              <Text style={styles.badgePrimaryText}>{isCandidate ? 'Contacter' : 'Postuler'}</Text>
             </TouchableOpacity>
           ) : null}
           {item.phone ? (
             <TouchableOpacity onPress={() => callPhone(item.phone)} style={[styles.badgeBtn, styles.badgeGreen]}>
               <Ionicons name="call" size={16} color="#fff" />
-              <Text style={styles.badgeText}>Appeler</Text>
+              <Text style={styles.badgeText}>{isCandidate ? 'Appeler' : 'Appeler'}</Text>
             </TouchableOpacity>
           ) : null}
         </View>
@@ -121,6 +149,7 @@ export default function EmploisOffresIsolated() {
           <Capsule label="Emplois" active={tab === 'emploi'} onPress={() => setTab('emploi')} color="#0D6EFD" />
           <Capsule label="Stages" active={tab === 'stage'} onPress={() => setTab('stage')} color="#6C63FF" />
           <Capsule label="Freelance" active={tab === 'freelance'} onPress={() => setTab('freelance')} color="#0A7C3A" />
+          <Capsule label="Candidats" active={tab === 'candidats'} onPress={() => setTab('candidats')} color="#FF8A00" />
         </View>
         <View style={styles.searchRow}>
           <Ionicons name="search" size={18} color="#888" />
@@ -128,7 +157,7 @@ export default function EmploisOffresIsolated() {
             style={styles.searchInput}
             value={query}
             onChangeText={setQuery}
-            placeholder="Rechercher (poste, entreprise, ville)"
+            placeholder={tab === 'candidats' ? 'Rechercher (nom, rôle, commune)' : 'Rechercher (poste, entreprise, ville)'}
             placeholderTextColor="#999"
             returnKeyType="search"
           />
@@ -141,7 +170,7 @@ export default function EmploisOffresIsolated() {
         data={dataset}
         renderItem={renderItem}
         keyExtractor={(it, idx) => `${it.title}-${idx}`}
-        ListEmptyComponent={<View style={styles.emptyBox}><Text style={styles.emptyText}>Aucune offre trouvée pour cette sélection.</Text></View>}
+        ListEmptyComponent={<View style={styles.emptyBox}><Text style={styles.emptyText}>Aucun résultat pour cette sélection.</Text></View>}
       />
     </View>
   );
@@ -165,7 +194,8 @@ const styles = StyleSheet.create({
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
   headerTitleBox: { position: 'absolute', bottom: 16, left: 16, right: 16 },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '800' },
-  headerSubtitle: { color: '#fff', opacity: 0.95, marginTop: 4 },
+  headerSubtitle: { color: '#fff' },
+  subtitleWrap: { alignSelf: 'flex-start', backgroundColor: 'rgba(0,0,0,0.25)', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, marginTop: 4 },
 
   headerShadow: { height: 10, width: '100%', backgroundColor: 'transparent' },
 
