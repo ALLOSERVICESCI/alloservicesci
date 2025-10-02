@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Platform, FlatList, Linking } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Platform, FlatList, Linking, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../../src/context/AuthContext';
 
-// PAGE ISOLÉE: Services publics
-// - Autonome (pas de dépendance à [slug].tsx)
-// - Données locales propres à la page
-// - Toutes les modifs ici n'impactent PAS les autres pages
+// PAGE ISOLÉE: Services publics (n'impacte pas les autres pages)
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/7mhah4lt_services_publics_bg.png' };
 
@@ -27,60 +24,33 @@ type ListCard = {
   query?: string; // fallback itinéraire
 };
 
-// Contenu générique (inchangé)
+// Contenu générique
 const GENERIC_CONTENT: ListCard[] = [
-  {
-    title: 'CNPS (Caisse Nationale de Prévoyance Sociale)',
-    summary: 'Protection sociale des travailleurs et prestations (allocations, pensions).',
-    source: 'https://www.cnps.ci',
-    phones: [{ label: 'Service client', tel: '2720251000' }],
-  },
-  {
-    title: 'CNAM (Couverture Maladie Universelle)',
-    summary: 'Information et prise en charge santé via la CMU (assurance maladie).',
-    source: 'https://www.cnam.ci',
-    phones: [{ label: 'Numéro vert', tel: '143' }],
-  },
-  {
-    title: "Impôts Côte d’Ivoire (DGI)",
-    summary: 'Déclarations et paiements en ligne, informations fiscales (particuliers et entreprises).',
-    source: 'https://www.dgi.gouv.ci',
-    phones: [{ label: 'Standard', tel: '2720252525' }],
-  },
-  {
-    title: 'Douanes ivoiriennes',
-    summary: 'Renseignements et formalités douanières (import/export).',
-    source: 'https://www.douanes.ci',
-    phones: [{ label: 'Ligne info', tel: '2720210800' }],
-  },
+  { title: 'CNPS (Caisse Nationale de Prévoyance Sociale)', summary: 'Protection sociale des travailleurs et prestations (allocations, pensions).', source: 'https://www.cnps.ci', phones: [{ label: 'Service client', tel: '2720251000' }] },
+  { title: 'CNAM (Couverture Maladie Universelle)', summary: 'Information et prise en charge santé via la CMU (assurance maladie).', source: 'https://www.cnam.ci', phones: [{ label: 'Numéro vert', tel: '143' }] },
+  { title: "Impôts Côte d’Ivoire (DGI)", summary: 'Déclarations et paiements en ligne, informations fiscales (particuliers et entreprises).', source: 'https://www.dgi.gouv.ci', phones: [{ label: 'Standard', tel: '2720252525' }] },
+  { title: 'Douanes ivoiriennes', summary: 'Renseignements et formalités douanières (import/export).', source: 'https://www.douanes.ci', phones: [{ label: 'Ligne info', tel: '2720210800' }] },
 ];
 
-// Données locales « terrain » par capsule (exemples guidés)
-// NB: Coordonnées approximatives uniquement à titre d’orientation — l’itinéraire peut aussi s’ouvrir via requête texte
-const LOCAL_ENTRIES: ListCard & { key: FilterKey }[] = [
-  // Mairies
-  { key: 'mairies', title: 'Mairie de Cocody', summary: 'Accueil, état civil, démarches locales', city: 'Abidjan', commune: 'Cocody', lat: 5.355, lng: -3.985, query: 'Mairie de Cocody, Abidjan', phones: [] },
-  { key: 'mairies', title: 'Mairie du Plateau', summary: 'Services municipaux du Plateau', city: 'Abidjan', commune: 'Plateau', lat: 5.325, lng: -4.019, query: 'Mairie du Plateau, Abidjan', phones: [] },
+// Données locales par capsule (exemples)
+const LOCAL_ENTRIES: (ListCard & { key: FilterKey })[] = [
+  { key: 'mairies', title: 'Mairie de Cocody', summary: 'Accueil, état civil, démarches locales', city: 'Abidjan', commune: 'Cocody', lat: 5.355, lng: -3.985, query: 'Mairie de Cocody, Abidjan' },
+  { key: 'mairies', title: 'Mairie du Plateau', summary: 'Services municipaux du Plateau', city: 'Abidjan', commune: 'Plateau', lat: 5.325, lng: -4.019, query: 'Mairie du Plateau, Abidjan' },
 
-  // Commissariats
   { key: 'commissariats', title: 'Commissariat de Police – Cocody 8e', summary: 'Police nationale (Cocody)', city: 'Abidjan', commune: 'Cocody', lat: 5.36, lng: -3.99, query: 'Commissariat Cocody 8e, Abidjan', phones: [{ label: 'Police Secours', tel: '100' }] },
   { key: 'commissariats', title: 'Commissariat de Police – Plateau', summary: 'Police nationale (Plateau)', city: 'Abidjan', commune: 'Plateau', lat: 5.326, lng: -4.018, query: 'Commissariat Plateau, Abidjan', phones: [{ label: 'Police Secours', tel: '100' }] },
 
-  // Préfecture de police
   { key: 'prefecture', title: 'Préfecture de Police d’Abidjan', summary: 'Direction Police (Abidjan)', city: 'Abidjan', commune: 'Plateau', lat: 5.330, lng: -4.020, query: 'Préfecture de Police Abidjan', phones: [{ label: 'Police Secours', tel: '100' }] },
 
-  // Palais de justice
-  { key: 'palais', title: 'Palais de Justice du Plateau', summary: 'Tribunaux & services judiciaires', city: 'Abidjan', commune: 'Plateau', lat: 5.324, lng: -4.017, query: 'Palais de Justice Plateau Abidjan', phones: [] },
+  { key: 'palais', title: 'Palais de Justice du Plateau', summary: 'Tribunaux & services judiciaires', city: 'Abidjan', commune: 'Plateau', lat: 5.324, lng: -4.017, query: 'Palais de Justice Plateau Abidjan' },
 
-  // Pompiers (GSPM)
   { key: 'pompiers', title: 'GSPM – Groupement Sapeurs-Pompiers Militaires', summary: 'Urgences & secours 24/7', city: 'Abidjan', commune: 'Plateau', lat: null, lng: null, query: 'GSPM Abidjan', phones: [{ label: 'Numéro court', tel: '180' }] },
 
-  // CNI (ONECI)
-  { key: 'cni', title: 'Centre CNI – Cocody (ONECI)', summary: 'Carte Nationale d’Identité', city: 'Abidjan', commune: 'Cocody', lat: null, lng: null, query: 'ONECI Cocody Abidjan', phones: [], source: 'https://oneci.ci' },
-  { key: 'cni', title: 'Centre CNI – Plateau (ONECI)', summary: 'Carte Nationale d’Identité', city: 'Abidjan', commune: 'Plateau', lat: null, lng: null, query: 'ONECI Plateau Abidjan', phones: [], source: 'https://oneci.ci' },
+  { key: 'cni', title: 'Centre CNI – Cocody (ONECI)', summary: 'Carte Nationale d’Identité', city: 'Abidjan', commune: 'Cocody', lat: null, lng: null, query: 'ONECI Cocody Abidjan', source: 'https://oneci.ci' },
+  { key: 'cni', title: 'Centre CNI – Plateau (ONECI)', summary: 'Carte Nationale d’Identité', city: 'Abidjan', commune: 'Plateau', lat: null, lng: null, query: 'ONECI Plateau Abidjan', source: 'https://oneci.ci' },
 ];
 
-// Capsules de filtre
+// Capsules
 const CAPS: { key: FilterKey; label: string; color: string }[] = [
   { key: 'mairies', label: 'Mairies', color: '#0D6EFD' },
   { key: 'commissariats', label: 'Commissariats', color: '#0A7C3A' },
@@ -91,6 +61,9 @@ const CAPS: { key: FilterKey; label: string; color: string }[] = [
 ];
 
 type FilterKey = 'all' | 'mairies' | 'commissariats' | 'prefecture' | 'palais' | 'pompiers' | 'cni';
+
+// Communes connues (suffisant pour l'autocomplétion locale)
+const ABJ_COMMUNES = ['Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon'];
 
 export default function ServicesPublicsIsolated() {
   const router = useRouter();
@@ -118,17 +91,25 @@ export default function ServicesPublicsIsolated() {
 
   const [filter, setFilter] = useState<FilterKey>('all');
 
+  // Recherche par commune
+  const [communeQuery, setCommuneQuery] = useState('');
+  const [selectedCommune, setSelectedCommune] = useState<string | null>(null);
+  const suggestions = useMemo(() => {
+    const q = communeQuery.trim().toLowerCase();
+    if (!q) return [] as string[];
+    return ABJ_COMMUNES.filter(c => c.toLowerCase().includes(q)).slice(0, 8);
+  }, [communeQuery]);
+
   const norm = (s?: string) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
-  const isAbidjan = norm(effectiveCity) === norm('Abidjan');
+  const locality = selectedCommune || effectiveCity;
+  const isAbidjan = norm(locality) === norm('Abidjan');
 
   const computeLocalEntries = useCallback((key: Exclude<FilterKey, 'all'>): ListCard[] => {
-    // Filtre par clé, puis par localité: si Abidjan, on garde city==='Abidjan'; si commune (ex: Cocody), on privilégie commune
     return LOCAL_ENTRIES.filter((e) => e.key === key).filter((e) => {
       if (isAbidjan) return norm(e.city) === norm('Abidjan');
-      // Commune spécifique
-      return norm(e.commune) === norm(effectiveCity) || norm(e.city) === norm(effectiveCity);
+      return norm(e.commune) === norm(locality) || norm(e.city) === norm(locality);
     });
-  }, [effectiveCity, isAbidjan]);
+  }, [locality, isAbidjan]);
 
   const listData: ListCard[] = useMemo(() => {
     if (filter === 'all') return GENERIC_CONTENT;
@@ -136,37 +117,22 @@ export default function ServicesPublicsIsolated() {
   }, [filter, computeLocalEntries]);
 
   // Actions
-  const openPhone = (phone: string) => {
-    const clean = (phone || '').replace(/\s+/g, '');
-    Linking.openURL(`tel:${clean}`);
-  };
-  const openSource = async (url?: string) => {
-    if (!url) return;
-    const safe = url.startsWith('http') ? url : `https://${url}`;
-    try { await Linking.openURL(safe); } catch {}
-  };
+  const openPhone = (phone: string) => { const clean = (phone || '').replace(/\s+/g, ''); Linking.openURL(`tel:${clean}`); };
+  const openSource = async (url?: string) => { if (!url) return; const safe = url.startsWith('http') ? url : `https://${url}`; try { await Linking.openURL(safe); } catch {} };
   const openDirections = async (label?: string, lat?: number | null, lng?: number | null, query?: string) => {
     const q = encodeURIComponent(query || label || 'Itinéraire');
     let url: string;
     if (lat != null && lng != null) {
-      url = Platform.select({
-        ios: `http://maps.apple.com/?ll=${lat},${lng}&q=${q}`,
-        android: `geo:${lat},${lng}?q=${lat},${lng}(${q})`,
-        default: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
-      }) as string;
+      url = Platform.select({ ios: `http://maps.apple.com/?ll=${lat},${lng}&q=${q}`, android: `geo:${lat},${lng}?q=${lat},${lng}(${q})`, default: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}` }) as string;
     } else {
-      url = Platform.select({
-        ios: `http://maps.apple.com/?q=${q}`,
-        android: `geo:0,0?q=${q}`,
-        default: `https://www.google.com/maps/search/?api=1&query=${q}`,
-      }) as string;
+      url = Platform.select({ ios: `http://maps.apple.com/?q=${q}`, android: `geo:0,0?q=${q}`, default: `https://www.google.com/maps/search/?api=1&query=${q}` }) as string;
     }
     try { await Linking.openURL(url); } catch {}
   };
 
-  // Rendu item (ajout Itinéraire)
+  // Rendu item
   const renderItem = useCallback(({ item }: { item: ListCard }) => {
-    const { title, summary, source, phones, lat, lng, query } = item || {} as ListCard;
+    const { title, summary, source, phones, lat, lng, query } = item || ({} as ListCard);
     return (
       <View style={styles.card}>
         <Text style={styles.cardTitle}>{title}</Text>
@@ -193,16 +159,48 @@ export default function ServicesPublicsIsolated() {
     );
   }, []);
 
-  // Header de la liste: Localité + Capsules
+  // Header de la liste: Localité + Recherche commune + Capsules
   const ListHeader = () => (
     <View style={styles.headerControls}>
-      <Text style={styles.localityText}>Localité : <Text style={styles.localityStrong}>{effectiveCity}</Text></Text>
+      <Text style={styles.localityText}>Localité : <Text style={styles.localityStrong}>{selectedCommune || effectiveCity}</Text></Text>
+
+      {/* Barre de recherche par commune */}
+      <View style={styles.searchRow}>
+        <Ionicons name="search" size={18} color="#888" />
+        <TextInput
+          style={styles.searchInput}
+          value={communeQuery}
+          onChangeText={setCommuneQuery}
+          placeholder="Rechercher une commune"
+          placeholderTextColor="#999"
+          returnKeyType="search"
+          onSubmitEditing={() => {
+            if (suggestions.length > 0) { setSelectedCommune(suggestions[0]); setCommuneQuery(''); }
+          }}
+        />
+        {selectedCommune ? (
+          <TouchableOpacity onPress={() => setSelectedCommune(null)} accessibilityRole="button" accessibilityLabel="Effacer la sélection">
+            <Ionicons name="close-circle" size={18} color="#999" />
+          </TouchableOpacity>
+        ) : null}
+      </View>
+      {communeQuery && suggestions.length > 0 ? (
+        <View style={styles.suggestBox}>
+          {suggestions.map((s) => (
+            <TouchableOpacity key={s} onPress={() => { setSelectedCommune(s); setCommuneQuery(''); }} style={styles.suggestItem}>
+              <Text style={styles.suggestText}>{s}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : null}
+
       <View style={styles.capsRow}>
         {CAPS.map((c) => (
           <PressableCapsule key={c.key} label={c.label} color={c.color} active={filter === c.key} onPress={() => setFilter(c.key)} />
         ))}
         <PressableCapsule key="all" label="Tous" color="#607D8B" active={filter === 'all'} onPress={() => setFilter('all')} />
       </View>
+
       <Text style={styles.sectionTitle}>
         {filter === 'all' ? 'Administrations & Portails' : CAPS.find(x => x.key === filter)?.label}
       </Text>
@@ -227,11 +225,11 @@ export default function ServicesPublicsIsolated() {
         </ImageBackground>
       </View>
 
-      {/* Ombre sous header */}
+      {/* Ombre sous header (opacité augmentée) */}
       <View style={[styles.headerShadow, Platform.select({
-        web: { boxShadow: '0 16px 28px rgba(0,0,0,0.18)' } as any,
-        ios: { shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 0, height: 10 } },
-        android: { elevation: 10 },
+        web: { boxShadow: '0 18px 32px rgba(0,0,0,0.28)' } as any,
+        ios: { shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 14, shadowOffset: { width: 0, height: 14 } },
+        android: { elevation: 14 },
       })]} pointerEvents="none" />
 
       <FlatList
@@ -271,10 +269,16 @@ const styles = StyleSheet.create({
   listContent: { paddingTop: 16, paddingHorizontal: 16, paddingBottom: 24 },
 
   headerControls: { marginBottom: 10 },
-  localityText: { color: '#222', fontSize: 14, marginBottom: 8 },
+  localityText: { color: '#222', fontSize: 18, marginBottom: 8 },
   localityStrong: { fontWeight: '800' },
 
-  capsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 8 },
+  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
+  searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
+  suggestBox: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, marginTop: 4, overflow: 'hidden' },
+  suggestItem: { paddingVertical: 10, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
+  suggestText: { color: '#222' },
+
+  capsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8, marginBottom: 8 },
   capsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, borderWidth: 1 },
   capsuleText: { fontWeight: '700' },
 
