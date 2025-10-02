@@ -2041,7 +2041,6 @@ export default function CategoryPage() {
           </TouchableOpacity>
         </View>
       ) : sKey === 'sante' ? (
-      ) : sKey === 'sante' ? (
         <View style={styles.headerWrapperSante}>
           <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
