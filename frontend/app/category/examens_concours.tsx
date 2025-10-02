@@ -161,9 +161,9 @@ export default function ExamensConcoursPage() {
 
       {/* Ombre sous le header */}
       <View style={[styles.headerShadow, Platform.select({
-        web: { boxShadow: '0 8px 16px rgba(0,0,0,0.12)' } as any,
-        ios: { shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 8, shadowOffset: { width: 0, height: 8 } },
-        android: { elevation: 6 },
+        web: { boxShadow: '0 16px 28px rgba(0,0,0,0.22)' } as any,
+        ios: { shadowColor: '#000', shadowOpacity: 0.25, shadowRadius: 12, shadowOffset: { width: 0, height: 12 } },
+        android: { elevation: 12 },
         default: {},
       })]} pointerEvents="none" />
 
