@@ -385,9 +385,51 @@ export default function EmploisOffresIsolated() {
 
       {/* Contrôles */}
       <View style={styles.controls}>
-        <View style={styles.capsulesRow}>
+        {/* Ligne localisation: capsules */}
+        <View style={[styles.capsulesRow, { marginBottom: 6 }]}>
+          <TouchableOpacity onPress={() => setNearMe(v => !v)} style={[styles.locCapsule, { backgroundColor: nearMe ? '#E3F2FD' : '#F0F3F6', borderColor: nearMe ? '#0D6EFD' : '#DDE3EA' }]}
+            accessibilityLabel="Autour de moi">
+            <Ionicons name="location-outline" size={16} color={nearMe ? '#0D6EFD' : '#666'} />
+            <Text style={[styles.locCapsuleText, { color: nearMe ? '#0D6EFD' : '#222' }]}>Autour de moi</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setNearMe(false)} style={[styles.locCapsule, { backgroundColor: !nearMe ? '#E6F4EA' : '#F0F3F6', borderColor: !nearMe ? '#0A7C3A' : '#DDE3EA' }]}
+            accessibilityLabel="Ville">
+            <Ionicons name="business-outline" size={16} color={!nearMe ? '#0A7C3A' : '#666'} />
+            <Text style={[styles.locCapsuleText, { color: !nearMe ? '#0A7C3A' : '#222' }]}>Ville</Text>
+          </TouchableOpacity>
+        </View>
+        {/* Ligne localité: icône + ville */}
+        <View style={[styles.searchRow, { justifyContent: 'space-between' }]}> 
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Ionicons name="navigate-outline" size={18} color="#888" />
+            <Text style={{ color: '#222', fontWeight: '700' }}>{city}</Text>
+          </View>
+          {/* Garde la loupe pour une recherche future */}
+          <Ionicons name="search" size={18} color="#CCC" />
+        </View>
+
+        {/* Filtres par type */}
+        <View style={[styles.capsulesRow, { marginTop: 10 }]}>
           <Capsule label="Emplois" active={tab === 'emploi'} onPress={() => setTab('emploi')} color="#0D6EFD" />
           <Capsule label="Stages" active={tab === 'stage'} onPress={() => setTab('stage')} color="#6C63FF" />
+          <Capsule label="Freelance" active={tab === 'freelance'} onPress={() => setTab('freelance')} color="#0A7C3A" />
+          <Capsule label="Candidats" active={tab === 'candidats'} onPress={() => setTab('candidats')} color="#FF8A00" />
+        </View>
+
+        {/* Barre de recherche */}
+        <View style={[styles.searchRow, { marginTop: 6 }]}>
+          <Ionicons name="search" size={18} color="#888" />
+          <TextInput
+            style={styles.searchInput}
+            value={query}
+            onChangeText={setQuery}
+            placeholder={tab === 'candidats' ? 'Rechercher (nom, rôle, commune)' : 'Rechercher (poste, entreprise, ville)'}
+            placeholderTextColor="#999"
+            returnKeyType="search"
+          />
+        </View>
+      </View>
+
       {/* Menu contextuel '…' */}
       <Modal
         visible={menuVisible}
@@ -425,21 +467,6 @@ export default function EmploisOffresIsolated() {
           </View>
         </Pressable>
       </Modal>
-          <Capsule label="Freelance" active={tab === 'freelance'} onPress={() => setTab('freelance')} color="#0A7C3A" />
-          <Capsule label="Candidats" active={tab === 'candidats'} onPress={() => setTab('candidats')} color="#FF8A00" />
-        </View>
-        <View style={styles.searchRow}>
-          <Ionicons name="search" size={18} color="#888" />
-          <TextInput
-            style={styles.searchInput}
-            value={query}
-            onChangeText={setQuery}
-            placeholder={tab === 'candidats' ? 'Rechercher (nom, rôle, commune)' : 'Rechercher (poste, entreprise, ville)'}
-            placeholderTextColor="#999"
-            returnKeyType="search"
-          />
-        </View>
-      </View>
 
       {/* Liste */}
       <FlatList
