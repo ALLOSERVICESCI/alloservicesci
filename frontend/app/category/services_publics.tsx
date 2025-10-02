@@ -251,7 +251,10 @@ export default function ServicesPublicsIsolated() {
         <PressableCapsule label="Communes" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
       </View>
 
-      <Text style={styles.localityText}>Localité : <Text style={styles.localityStrong}>{selectedCommune || effectiveCity}</Text></Text>
+      <View style={styles.localityRow}>
+        <Text style={styles.localityLabel}>Localité :</Text>
+        <Text style={styles.localityValue}> {selectedCommune || effectiveCity}</Text>
+      </View>
 
       {/* Barre de recherche par commune (visible en mode Communes) */}
       {mode === 'communes' ? (
