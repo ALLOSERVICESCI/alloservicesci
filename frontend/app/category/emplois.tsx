@@ -220,6 +220,25 @@ export default function EmploisOffresIsolated() {
     } catch {}
   };
 
+  const sharePdfNative = async (filename: string, url?: string, base64?: string) => {
+    if (Platform.OS === 'web') return;
+    try {
+      let path: string | null = null;
+      if (url) {
+        // Télécharge le pdf vers le cache local pour partage
+        const dl = await FileSystem.downloadAsync(url, `${FileSystem.cacheDirectory}${filename || 'doc'}.pdf`);
+        path = dl?.uri || null;
+      } else if (base64) {
+        const p = `${FileSystem.cacheDirectory}${filename || 'doc'}.pdf`;
+        await FileSystem.writeAsStringAsync(p, base64, { encoding: FileSystem.EncodingType.Base64 });
+        path = p;
+      }
+      if (path && (await Sharing.isAvailableAsync())) {
+        await Sharing.shareAsync(path, { mimeType: 'application/pdf', dialogTitle: 'Partager le document' });
+      }
+    } catch {}
+  };
+
   const renderItem = useCallback(({ item }: { item: Job }) => {
     const isCandidate = item.type === 'candidats';
     const hasOfferAttachment = !isCandidate && !!item.attachmentBase64;
