@@ -39,7 +39,7 @@ export default function ConseilsPostuler() {
           <Text style={styles.p}>• Générer un CV structuré en quelques minutes</Text>
           <Text style={styles.p}>• Rédiger une lettre de motivation adaptée à l'offre</Text>
           <Text style={styles.p}>• Améliorer la formulation de vos expériences</Text>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/assistant')} style={styles.aiBtn} accessibilityLabel="Ouvrir Allô IA">
+          <TouchableOpacity onPress={() => router.push('/ai/chat')} style={styles.aiBtn} accessibilityLabel="Ouvrir Allô IA">
             <Ionicons name="chatbubble-ellipses-outline" size={16} color="#fff" />
             <Text style={styles.aiText}>Ouvrir Allô IA</Text>
           </TouchableOpacity>
