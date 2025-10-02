@@ -1,8 +1,10 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Linking, Platform, FlatList, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 // PAGE ISOLÉE: Emplois & Offres
 // - Autonome (aucune dépendance aux données partagées)
@@ -34,6 +36,7 @@ type Candidate = {
   phone?: string;
   email?: string;
   summary?: string;
+  cvUrl?: string;
 };
 
 const LOCAL_JOBS: Job[] = [
@@ -49,7 +52,7 @@ const LOCAL_CANDIDATES: Candidate[] = [
   { name: 'Nadine B.', role: 'Community manager', location: 'Marcory', updatedAt: 'il y a 3 jours', phone: '0708080808', summary: 'Création de contenu, analytics, live events.' },
 ];
 
-const CANDIDATES_JOBS: Job[] = LOCAL_CANDIDATES.map((c) => ({
+const CANDIDATES_JOBS_BASE: Job[] = LOCAL_CANDIDATES.map((c) => ({
   title: `${c.name} — ${c.role}`,
   company: 'Candidat',
   location: c.location,
@@ -58,7 +61,7 @@ const CANDIDATES_JOBS: Job[] = LOCAL_CANDIDATES.map((c) => ({
   applyUrl: c.email ? `mailto:${c.email}` : undefined,
   phone: c.phone,
   summary: c.summary,
-  cvUrl: 'https://example.com/cv.pdf',
+  cvUrl: c.cvUrl,
 }));
 
 export default function EmploisOffresIsolated() {
@@ -66,13 +69,53 @@ export default function EmploisOffresIsolated() {
 
   const [tab, setTab] = useState<JobType>('emploi');
   const [query, setQuery] = useState('');
+  const [extraJobs, setExtraJobs] = useState<Job[]>([]);
+  const [extraCandidates, setExtraCandidates] = useState<Candidate[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      let mounted = true;
+      (async () => {
+        try {
+          const rawJobs = await AsyncStorage.getItem('jobs_offers');
+          const listJobs = rawJobs ? JSON.parse(rawJobs) : [];
+          const jobsOK: Job[] = Array.isArray(listJobs) ? listJobs : [];
+          const rawCands = await AsyncStorage.getItem('jobs_candidates');
+          const listCands = rawCands ? JSON.parse(rawCands) : [];
+          const candsOK: Candidate[] = Array.isArray(listCands) ? listCands : [];
+          if (mounted) {
+            setExtraJobs(jobsOK);
+            setExtraCandidates(candsOK);
+          }
+        } catch {}
+      })();
+      return () => { mounted = false; };
+    }, [])
+  );
+
+  const extraCandidatesToJobs: Job[] = useMemo(() => (extraCandidates || []).map((c) => ({
+    title: `${c.name} — ${c.role}`,
+    company: 'Candidat',
+    location: c.location,
+    type: 'candidats' as const,
+    postedAt: c.updatedAt,
+    applyUrl: c.email ? `mailto:${c.email}` : undefined,
+    phone: c.phone,
+    summary: c.summary,
+    cvUrl: c.cvUrl,
+  })), [extraCandidates]);
 
   const dataset = useMemo(() => {
-    const source = tab === 'candidats' ? CANDIDATES_JOBS : LOCAL_JOBS.filter(j => j.type === tab);
+    const baseCandidates = [...CANDIDATES_JOBS_BASE, ...extraCandidatesToJobs];
+    if (tab === 'candidats') {
+      return baseCandidates;
+    }
+    const baseOffers = [...LOCAL_JOBS, ...extraJobs.filter(j => j.type === 'emploi' || j.type === 'stage' || j.type === 'freelance')];
+    const filteredByType = baseOffers.filter(j => j.type === tab);
     const q = query.trim().toLowerCase();
-    if (!q) return source;
-    return source.filter(j => (j.title + ' ' + j.company + ' ' + j.location).toLowerCase().includes(q));
-  }, [tab, query]);
+    if (!q) return filteredByType;
+    return filteredByType.filter(j => (j.title + ' ' + j.company + ' ' + j.location).toLowerCase().includes(q));
+  }, [tab, query, extraJobs, extraCandidatesToJobs]);
 
   const openApply = async (applyUrl?: string) => {
     if (!applyUrl) return;
@@ -115,7 +158,7 @@ export default function EmploisOffresIsolated() {
           {item.phone ? (
             <TouchableOpacity onPress={() => callPhone(item.phone)} style={[styles.badgeBtn, styles.badgeGreen]}>
               <Ionicons name="call" size={16} color="#fff" />
-              <Text style={styles.badgeText}>{isCandidate ? 'Appeler' : 'Appeler'}</Text>
+              <Text style={styles.badgeText}>Appeler</Text>
             </TouchableOpacity>
           ) : null}
           {isCandidate && item.cvUrl ? (
@@ -212,11 +255,12 @@ const styles = StyleSheet.create({
   headerTopRow: { paddingTop: Platform.select({ ios: 52, android: 24, default: 16 }), paddingHorizontal: 16 },
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
   headerTitleBox: { position: 'absolute', bottom: 16, left: 16, right: 16 },
+  headerTitleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '800' },
   headerSubtitle: { color: '#fff' },
   subtitleWrap: { alignSelf: 'flex-start', backgroundColor: 'rgba(0,0,0,0.25)', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, marginTop: 4 },
 
-  publishBtn: { position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#FF8A00', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, opacity: 0.95 },
+  publishBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#FF8A00', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, opacity: 0.95 },
   publishText: { color: '#fff', fontWeight: '800' },
 
   headerShadow: { height: 10, width: '100%', backgroundColor: 'transparent' },
