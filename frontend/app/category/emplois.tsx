@@ -58,7 +58,7 @@ const LOCAL_JOBS: Job[] = [
 ];
 
 const LOCAL_CANDIDATES: Candidate[] = [
-  { name: 'Marie K.', role: 'Assistante admin', location: 'Cocody', updatedAt: 'aujourd’hui', phone: '0505050505', email: 'marie.k@example.ci', summary: '2 ans d’expérience en gestion d’accueil et secrétariat.' },
+  { name: 'Marie K.', role: 'Assistante admin', location: 'Cocody', updatedAt: 'aujourd’hui', phone: '0505050505', email: 'marie.k@example.ci', summary: '2 ans d’expérience en gestion d’accueil et secrétariat.', cvUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
   { name: 'Adama T.', role: 'Développeur mobile', location: 'Plateau', updatedAt: 'il y a 1 jour', email: 'adama.t@example.ci', summary: 'React Native, Expo, TypeScript. Projets freelance et stagiaire.' },
   { name: 'Nadine B.', role: 'Community manager', location: 'Marcory', updatedAt: 'il y a 3 jours', phone: '0708080808', summary: 'Création de contenu, analytics, live events.' },
 ];
