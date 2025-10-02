@@ -159,6 +159,14 @@ export default function ExamensConcoursPage() {
         </ImageBackground>
       </View>
 
+      {/* Ombre sous le header */}
+      <View style={[styles.headerShadow, Platform.select({
+        web: { boxShadow: '0 8px 16px rgba(0,0,0,0.12)' } as any,
+        ios: { shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 8, shadowOffset: { width: 0, height: 8 } },
+        android: { elevation: 6 },
+        default: {},
+      })]} pointerEvents="none" />
+
       {/* Liste principale */}
       <FlatList
         contentContainerStyle={styles.listContent}
