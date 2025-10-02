@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
   headerTitleBox: { position: 'absolute', bottom: 16, left: 16, right: 16 },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '800' },
-  headerSubtitle: { color: '#fff', opacity: 0.9, marginTop: 4 },
+  headerSubtitle: { color: '#000', marginTop: 4 },
 
   headerShadow: { height: 10, width: '100%', backgroundColor: 'transparent' },
 
