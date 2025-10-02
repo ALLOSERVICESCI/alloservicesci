@@ -450,7 +450,7 @@ export default function EmploisOffresIsolated() {
                 </TouchableOpacity>
                 {/* Ampoule après la capsule Ville (dans la rangée) */}
                 <Animated.View style={[{ marginLeft: 10 }, ampouleStyle]}> 
-                  <TouchableOpacity onPress={() => router.push('/category/emplois/conseil')} accessibilityLabel="Conseils pour postuler">
+                  <TouchableOpacity onPress={() => router.push('/category/emplois/conseil')} accessibilityLabel="Conseils pour postuler" testID="tips-bulb" dataSet={{ testid: 'tips-bulb' }}>
                     <Ionicons name="bulb" size={36} color="#FFD54F" />
                   </TouchableOpacity>
                 </Animated.View>
