@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
   listContent: { paddingTop: 16, paddingHorizontal: 16, paddingBottom: 24 },
 
   headerControls: { marginBottom: 10 },
-  modeRow: { flexDirection: 'row', gap: 8, marginBottom: 6, flexWrap: 'wrap' },
+  modeRow: { flexDirection: 'row', gap: 12, marginBottom: 10, flexWrap: 'wrap' },
   localityRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   localityValue: { color: '#222', fontSize: 18 },
 
