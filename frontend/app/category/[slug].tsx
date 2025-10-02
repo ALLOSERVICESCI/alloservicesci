@@ -2046,6 +2046,7 @@ export default function CategoryPage() {
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
+        </View>
       ) : sKey === 'examens_concours' ? (
         <FlatList
           data={(() => {
