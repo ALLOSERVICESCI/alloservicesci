@@ -7,51 +7,80 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../../src/context/AuthContext';
 
 // PAGE ISOLÉE: Services publics
-// - Cette page n'utilise PAS le layout dynamique [slug].tsx
-// - Elle ne lit/modifie PAS les données partagées (categoryContent)
-// - Tout le contenu nécessaire est défini localement pour éviter tout impact ailleurs
+// - Autonome (pas de dépendance à [slug].tsx)
+// - Données locales propres à la page
+// - Toutes les modifs ici n'impactent PAS les autres pages
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/7mhah4lt_services_publics_bg.png' };
 
-// Données locales (copie indépendante)
-const SERVICES_PUBLICS_CONTENT: {
+type Phone = { label?: string; tel?: string };
+
+type ListCard = {
   title: string;
-  summary: string;
-  tag?: string;
+  summary?: string;
   source?: string;
-  phones?: { label: string; tel: string }[];
-}[] = [
+  phones?: Phone[];
+  lat?: number | null;
+  lng?: number | null;
+  city?: string;
+  commune?: string;
+  query?: string; // fallback itinéraire
+};
+
+// Contenu générique (inchangé)
+const GENERIC_CONTENT: ListCard[] = [
   {
     title: 'CNPS (Caisse Nationale de Prévoyance Sociale)',
     summary: 'Protection sociale des travailleurs et prestations (allocations, pensions).',
-    tag: 'CNPS',
     source: 'https://www.cnps.ci',
     phones: [{ label: 'Service client', tel: '2720251000' }],
   },
   {
     title: 'CNAM (Couverture Maladie Universelle)',
     summary: 'Information et prise en charge santé via la CMU (assurance maladie).',
-    tag: 'CNAM',
     source: 'https://www.cnam.ci',
     phones: [{ label: 'Numéro vert', tel: '143' }],
   },
   {
     title: "Impôts Côte d’Ivoire (DGI)",
     summary: 'Déclarations et paiements en ligne, informations fiscales (particuliers et entreprises).',
-    tag: 'Fiscalité',
     source: 'https://www.dgi.gouv.ci',
     phones: [{ label: 'Standard', tel: '2720252525' }],
   },
   {
     title: 'Douanes ivoiriennes',
     summary: 'Renseignements et formalités douanières (import/export).',
-    tag: 'Douanes',
     source: 'https://www.douanes.ci',
     phones: [{ label: 'Ligne info', tel: '2720210800' }],
   },
 ];
 
-// Filtres capsules disponibles
+// Données locales « terrain » par capsule (exemples guidés)
+// NB: Coordonnées approximatives uniquement à titre d’orientation — l’itinéraire peut aussi s’ouvrir via requête texte
+const LOCAL_ENTRIES: ListCard & { key: FilterKey }[] = [
+  // Mairies
+  { key: 'mairies', title: 'Mairie de Cocody', summary: 'Accueil, état civil, démarches locales', city: 'Abidjan', commune: 'Cocody', lat: 5.355, lng: -3.985, query: 'Mairie de Cocody, Abidjan', phones: [] },
+  { key: 'mairies', title: 'Mairie du Plateau', summary: 'Services municipaux du Plateau', city: 'Abidjan', commune: 'Plateau', lat: 5.325, lng: -4.019, query: 'Mairie du Plateau, Abidjan', phones: [] },
+
+  // Commissariats
+  { key: 'commissariats', title: 'Commissariat de Police – Cocody 8e', summary: 'Police nationale (Cocody)', city: 'Abidjan', commune: 'Cocody', lat: 5.36, lng: -3.99, query: 'Commissariat Cocody 8e, Abidjan', phones: [{ label: 'Police Secours', tel: '100' }] },
+  { key: 'commissariats', title: 'Commissariat de Police – Plateau', summary: 'Police nationale (Plateau)', city: 'Abidjan', commune: 'Plateau', lat: 5.326, lng: -4.018, query: 'Commissariat Plateau, Abidjan', phones: [{ label: 'Police Secours', tel: '100' }] },
+
+  // Préfecture de police
+  { key: 'prefecture', title: 'Préfecture de Police d’Abidjan', summary: 'Direction Police (Abidjan)', city: 'Abidjan', commune: 'Plateau', lat: 5.330, lng: -4.020, query: 'Préfecture de Police Abidjan', phones: [{ label: 'Police Secours', tel: '100' }] },
+
+  // Palais de justice
+  { key: 'palais', title: 'Palais de Justice du Plateau', summary: 'Tribunaux & services judiciaires', city: 'Abidjan', commune: 'Plateau', lat: 5.324, lng: -4.017, query: 'Palais de Justice Plateau Abidjan', phones: [] },
+
+  // Pompiers (GSPM)
+  { key: 'pompiers', title: 'GSPM – Groupement Sapeurs-Pompiers Militaires', summary: 'Urgences & secours 24/7', city: 'Abidjan', commune: 'Plateau', lat: null, lng: null, query: 'GSPM Abidjan', phones: [{ label: 'Numéro court', tel: '180' }] },
+
+  // CNI (ONECI)
+  { key: 'cni', title: 'Centre CNI – Cocody (ONECI)', summary: 'Carte Nationale d’Identité', city: 'Abidjan', commune: 'Cocody', lat: null, lng: null, query: 'ONECI Cocody Abidjan', phones: [], source: 'https://oneci.ci' },
+  { key: 'cni', title: 'Centre CNI – Plateau (ONECI)', summary: 'Carte Nationale d’Identité', city: 'Abidjan', commune: 'Plateau', lat: null, lng: null, query: 'ONECI Plateau Abidjan', phones: [], source: 'https://oneci.ci' },
+];
+
+// Capsules de filtre
 const CAPS: { key: FilterKey; label: string; color: string }[] = [
   { key: 'mairies', label: 'Mairies', color: '#0D6EFD' },
   { key: 'commissariats', label: 'Commissariats', color: '#0A7C3A' },
@@ -69,7 +98,6 @@ export default function ServicesPublicsIsolated() {
 
   // Localité affichée
   const [effectiveCity, setEffectiveCity] = useState<string>(user?.city || (user as any)?.commune || 'Abidjan');
-
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -88,27 +116,26 @@ export default function ServicesPublicsIsolated() {
     return () => { mounted = false; };
   }, [user?.city]);
 
-  // Filtre sélectionné
   const [filter, setFilter] = useState<FilterKey>('all');
 
-  // Mapping simple mots-clés pour filtrer (actuellement set vide car contenu local ne contient pas encore ces entités)
-  const listData = useMemo(() => {
-    if (filter === 'all') return SERVICES_PUBLICS_CONTENT;
-    const keywords: Record<Exclude<FilterKey, 'all'>, string[]> = {
-      mairies: ['mairie'],
-      commissariats: ['commissariat', 'police'],
-      prefecture: ['préfecture de police', 'prefecture'],
-      palais: ['palais de justice', 'tribunal', 'justice'],
-      pompiers: ['pompiers', 'gspm'],
-      cni: ['cni', 'identit'],
-    } as any;
-    const k = (keywords as any)[filter] as string[];
-    return SERVICES_PUBLICS_CONTENT.filter(it => {
-      const hay = (it.title + ' ' + (it.summary || '')).toLowerCase();
-      return k?.some((kk) => hay.includes(kk));
-    });
-  }, [filter]);
+  const norm = (s?: string) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+  const isAbidjan = norm(effectiveCity) === norm('Abidjan');
 
+  const computeLocalEntries = useCallback((key: Exclude<FilterKey, 'all'>): ListCard[] => {
+    // Filtre par clé, puis par localité: si Abidjan, on garde city==='Abidjan'; si commune (ex: Cocody), on privilégie commune
+    return LOCAL_ENTRIES.filter((e) => e.key === key).filter((e) => {
+      if (isAbidjan) return norm(e.city) === norm('Abidjan');
+      // Commune spécifique
+      return norm(e.commune) === norm(effectiveCity) || norm(e.city) === norm(effectiveCity);
+    });
+  }, [effectiveCity, isAbidjan]);
+
+  const listData: ListCard[] = useMemo(() => {
+    if (filter === 'all') return GENERIC_CONTENT;
+    return computeLocalEntries(filter as Exclude<FilterKey, 'all'>);
+  }, [filter, computeLocalEntries]);
+
+  // Actions
   const openPhone = (phone: string) => {
     const clean = (phone || '').replace(/\s+/g, '');
     Linking.openURL(`tel:${clean}`);
@@ -118,24 +145,47 @@ export default function ServicesPublicsIsolated() {
     const safe = url.startsWith('http') ? url : `https://${url}`;
     try { await Linking.openURL(safe); } catch {}
   };
+  const openDirections = async (label?: string, lat?: number | null, lng?: number | null, query?: string) => {
+    const q = encodeURIComponent(query || label || 'Itinéraire');
+    let url: string;
+    if (lat != null && lng != null) {
+      url = Platform.select({
+        ios: `http://maps.apple.com/?ll=${lat},${lng}&q=${q}`,
+        android: `geo:${lat},${lng}?q=${lat},${lng}(${q})`,
+        default: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+      }) as string;
+    } else {
+      url = Platform.select({
+        ios: `http://maps.apple.com/?q=${q}`,
+        android: `geo:0,0?q=${q}`,
+        default: `https://www.google.com/maps/search/?api=1&query=${q}`,
+      }) as string;
+    }
+    try { await Linking.openURL(url); } catch {}
+  };
 
-  const renderItem = useCallback(({ item }: { item: any }) => {
-    const { title, summary, source, phones } = item || {};
+  // Rendu item (ajout Itinéraire)
+  const renderItem = useCallback(({ item }: { item: ListCard }) => {
+    const { title, summary, source, phones, lat, lng, query } = item || {} as ListCard;
     return (
       <View style={styles.card}>
         <Text style={styles.cardTitle}>{title}</Text>
         {summary ? <Text style={styles.cardSummary}>{summary}</Text> : null}
         <View style={styles.actionsRow}>
-          {(phones || []).map((p: any, idx: number) => (
-            <TouchableOpacity key={`ph-${idx}`} onPress={() => p?.tel && openPhone(p.tel)} style={[styles.badgeBtn, styles.badgeGreen]}>
+          {(phones || []).map((p, idx) => (
+            <TouchableOpacity key={`ph-${idx}`} onPress={() => p?.tel && openPhone(p.tel!)} style={[styles.badgeBtn, styles.badgeGreen]}>
               <Ionicons name="call" size={16} color="#fff" />
-              <Text style={styles.badgeText}>{`${p?.label || ''} • ${p?.tel || ''}`}</Text>
+              <Text style={styles.badgeText}>{p?.label ? `${p.label} • ${p.tel}` : p?.tel}</Text>
             </TouchableOpacity>
           ))}
+          <TouchableOpacity onPress={() => openDirections(title, lat, lng, query)} style={[styles.badgeBtn, styles.badgeBlue]} accessibilityRole="button" accessibilityLabel="Itinéraire">
+            <Ionicons name="navigate" size={16} color="#0D6EFD" />
+            <Text style={styles.badgeTextBlue}>Itinéraire</Text>
+          </TouchableOpacity>
           {source ? (
             <TouchableOpacity onPress={() => openSource(source)} style={[styles.badgeBtn, styles.badgeAlt]} accessibilityRole="button" accessibilityLabel="Site officiel">
               <Ionicons name="globe" size={16} color="#0A7C3A" />
-              <Text style={[styles.badgeTextAlt]}>Site officiel</Text>
+              <Text style={styles.badgeTextAlt}>Site officiel</Text>
             </TouchableOpacity>
           ) : null}
         </View>
@@ -241,6 +291,9 @@ const styles = StyleSheet.create({
 
   badgeAlt: { backgroundColor: '#E6F4EA' },
   badgeTextAlt: { marginLeft: 6, color: '#0A7C3A', fontWeight: '700' },
+
+  badgeBlue: { backgroundColor: '#E3F2FD' },
+  badgeTextBlue: { marginLeft: 6, color: '#0D6EFD', fontWeight: '700' },
 
   emptyBox: { paddingVertical: 24, alignItems: 'center' },
   emptyText: { color: '#666' },
