@@ -502,14 +502,7 @@ export default function EmploisOffresIsolated() {
         </Pressable>
       </Modal>
 
-      {/* Liste */}
-      <FlatList
-        contentContainerStyle={styles.listContent}
-        data={dataset}
-        renderItem={renderItem}
-        keyExtractor={(it, idx) => `${it.title}-${idx}`}
-        ListEmptyComponent={<View style={styles.emptyBox}><Text style={styles.emptyText}>Aucun résultat pour cette sélection.</Text></View>}
-      />
+      {/* Liste intégrée dans FlatList principal avec ListHeaderComponent */}
     </View>
   );
 }
