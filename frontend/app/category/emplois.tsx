@@ -426,7 +426,7 @@ export default function EmploisOffresIsolated() {
         </View>
         {/* Ligne localité: icône + ville (sans barre de recherche) */}
         <View style={styles.localityRow}>
-          <Ionicons name="location-outline" size={18} color="#888" />
+          <Ionicons name="location-outline" size={22} color="#FF8A00" />
           <Text style={styles.localityText}>{city}</Text>
         </View>
 
