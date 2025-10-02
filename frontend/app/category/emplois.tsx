@@ -23,6 +23,7 @@ type Job = {
   applyUrl?: string; // lien de candidature ou mailto pour candidats
   phone?: string;
   summary?: string;
+  cvUrl?: string; // lien CV pour candidats
 };
 
 type Candidate = {
