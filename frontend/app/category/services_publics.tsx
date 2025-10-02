@@ -252,7 +252,7 @@ export default function ServicesPublicsIsolated() {
       </View>
 
       <View style={styles.localityRow}>
-        <Ionicons name="location" size={22} color="#FF8A00" />
+        <Ionicons name="location" size={26} color="#FF8A00" />
         <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
       </View>
 
