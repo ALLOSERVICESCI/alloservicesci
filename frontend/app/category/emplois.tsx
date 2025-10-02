@@ -375,6 +375,41 @@ export default function EmploisOffresIsolated() {
         <View style={styles.capsulesRow}>
           <Capsule label="Emplois" active={tab === 'emploi'} onPress={() => setTab('emploi')} color="#0D6EFD" />
           <Capsule label="Stages" active={tab === 'stage'} onPress={() => setTab('stage')} color="#6C63FF" />
+      {/* Menu contextuel '…' */}
+      <Modal
+        visible={menuVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <Pressable style={styles.menuBackdrop} onPress={() => setMenuVisible(false)}>
+          <View
+            style={[
+              styles.menuContainer,
+              {
+                left: Math.min(Math.max(menuAnchor.x - 160, 12), (dims.width - 12 - 180)),
+                top: Math.max(menuAnchor.y - 56, 100),
+              },
+            ]}
+          >
+            <View style={styles.menuRow}>
+              <Pressable style={styles.menuIconBtn} onPress={handleOpenView} accessibilityLabel="Voir">
+                <Ionicons name="document-text-outline" size={18} color="#222" />
+              </Pressable>
+              {Platform.OS === 'web' ? (
+                <Pressable style={styles.menuIconBtn} onPress={handleDownloadWeb} accessibilityLabel="Télécharger">
+                  <Ionicons name="download-outline" size={18} color="#222" />
+                </Pressable>
+              ) : null}
+              {Platform.OS !== 'web' ? (
+                <Pressable style={styles.menuIconBtn} onPress={handleShareNative} accessibilityLabel="Partager">
+                  <Ionicons name="share-social-outline" size={18} color="#222" />
+                </Pressable>
+              ) : null}
+            </View>
+          </View>
+        </Pressable>
+      </Modal>
           <Capsule label="Freelance" active={tab === 'freelance'} onPress={() => setTab('freelance')} color="#0A7C3A" />
           <Capsule label="Candidats" active={tab === 'candidats'} onPress={() => setTab('candidats')} color="#FF8A00" />
         </View>
