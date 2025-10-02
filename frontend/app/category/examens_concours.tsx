@@ -37,7 +37,7 @@ export default function ExamensConcoursPage() {
   };
 
   const matchAny = (s: string, keys: string[]) => {
-    const t = (s || '').normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+    const t = (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     return keys.some(k => t.includes(k));
   };
 
