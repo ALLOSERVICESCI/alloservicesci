@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Pressable, Modal, Linking, Platform, FlatList, TextInput, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Pressable, Modal, Linking, Platform, FlatList, TextInput, useWindowDimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
