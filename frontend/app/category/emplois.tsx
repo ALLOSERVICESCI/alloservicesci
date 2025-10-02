@@ -1,6 +1,8 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Pressable, Modal, Linking, Platform, FlatList, TextInput, useWindowDimensions, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import * as Location from 'expo-location';
+import { useAuth } from '../../src/context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
