@@ -102,14 +102,25 @@ export default function EmploisOffresIsolated() {
   // Animation ampoule type "cloche" (oscillation)
   const ampouleAngle = useSharedValue(0);
   useEffect(() => {
-    ampouleAngle.value = withRepeat(
-      withSequence(
+    // Fallback animation for React Native Web compatibility
+    try {
+      ampouleAngle.value = withRepeat(
         withTiming(14, { duration: 350, easing: Easing.inOut(Easing.ease) }),
-        withTiming(-14, { duration: 350, easing: Easing.inOut(Easing.ease) })
-      ),
-      -1,
-      true
-    );
+        -1,
+        true
+      );
+    } catch (e) {
+      // Fallback for web - simple oscillation
+      const animate = () => {
+        ampouleAngle.value = withTiming(14, { duration: 350 });
+        setTimeout(() => {
+          ampouleAngle.value = withTiming(-14, { duration: 350 });
+        }, 350);
+      };
+      animate();
+      const interval = setInterval(animate, 700);
+      return () => clearInterval(interval);
+    }
   }, []);
   const ampouleStyle = useAnimatedStyle(() => ({ transform: [{ rotateZ: `${ampouleAngle.value}deg` }] }));
 
