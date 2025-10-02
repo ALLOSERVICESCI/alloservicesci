@@ -65,9 +65,8 @@ export default function PublierEmplois() {
     }
     const tld = parts[parts.length - 1];
     if (!/^[A-Za-z]{2,24}$/.test(tld)) return false;
-    // Restriction de domaine: doit se terminer par un suffixe autorisé (.ci ou whitelist)
-    const okSuffix = EMAIL_ALLOWED_SUFFIXES.some(suf => domain.endsWith(suf));
-    return okSuffix;
+    // Pas de restriction de domaine: validation basée uniquement sur la structure email
+    return true;
   };
 
   const validPhone = (p: string) => {
