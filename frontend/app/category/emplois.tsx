@@ -58,6 +58,7 @@ const CANDIDATES_JOBS: Job[] = LOCAL_CANDIDATES.map((c) => ({
   applyUrl: c.email ? `mailto:${c.email}` : undefined,
   phone: c.phone,
   summary: c.summary,
+  cvUrl: 'https://example.com/cv.pdf',
 }));
 
 export default function EmploisOffresIsolated() {
