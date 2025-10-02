@@ -74,12 +74,12 @@ const CANDIDATES_JOBS_BASE: Job[] = LOCAL_CANDIDATES.map((c) => ({
   summary: c.summary,
   cvUrl: c.cvUrl,
   cvBase64: c.cvBase64,
+}));
 
 function normalizeId(s: string) {
   try { return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); } catch { return 'item'; }
 }
 
-}));
 
 export default function EmploisOffresIsolated() {
   const router = useRouter();
