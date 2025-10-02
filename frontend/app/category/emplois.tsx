@@ -1,10 +1,12 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Linking, Platform, FlatList, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import * as FileSystem from 'expo-file-system';
+import * as WebBrowser from 'expo-web-browser';
 
 // PAGE ISOLÉE: Emplois & Offres
 // - Autonome (aucune dépendance aux données partagées)
@@ -129,9 +131,91 @@ export default function EmploisOffresIsolated() {
 
   const openApply = async (applyUrl?: string) => { if (!applyUrl) return; try { await Linking.openURL(applyUrl); } catch {} };
   const callPhone = async (phone?: string) => { if (!phone) return; try { await Linking.openURL(`tel:${phone.replace(/\s+/g, '')}`); } catch {} };
-  const openPDF = async (url?: string, base64?: string) => {
-    const target = url || (base64 ? `data:application/pdf;base64,${base64}` : undefined);
-    if (!target) return; try { await Linking.openURL(target); } catch {}
+
+  // PDF helpers
+  const base64ToBlobWeb = (b64: string, mime = 'application/pdf') => {
+    try {
+      const byteCharacters = atob(b64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      return new Blob([byteArray], { type: mime });
+    } catch {
+      return null;
+    }
+  };
+
+  const viewPdf = async (filename: string, url?: string, base64?: string) => {
+    try {
+      if (Platform.OS === 'web') {
+        if (url) {
+          window.open(url, '_blank');
+          return;
+        }
+        if (base64) {
+          const blob = base64ToBlobWeb(base64);
+          if (!blob) return;
+          const blobUrl = URL.createObjectURL(blob);
+          const win = window.open(blobUrl, '_blank');
+          if (!win) {
+            // fallback download
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filename || 'document.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }
+          return;
+        }
+        return;
+      }
+      // Native
+      if (url) {
+        await Linking.openURL(url);
+        return;
+      }
+      if (base64) {
+        const path = `${FileSystem.cacheDirectory}${filename || 'document'}.pdf`;
+        await FileSystem.writeAsStringAsync(path, base64, { encoding: FileSystem.EncodingType.Base64 });
+        if (Platform.OS === 'android') {
+          const contentUri = await FileSystem.getContentUriAsync(path);
+          await Linking.openURL(contentUri);
+        } else {
+          // iOS: ouvrir dans un viewer
+          try { await WebBrowser.openBrowserAsync(path.startsWith('file://') ? path : `file://${path}`); } catch { await Linking.openURL(`file://${path}`); }
+        }
+      }
+    } catch {}
+  };
+
+  const downloadPdfWeb = (filename: string, url?: string, base64?: string) => {
+    if (Platform.OS !== 'web') return;
+    try {
+      if (url) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename || 'document.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      }
+      if (base64) {
+        const blob = base64ToBlobWeb(base64);
+        if (!blob) return;
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename || 'document.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      }
+    } catch {}
   };
 
   const renderItem = useCallback(({ item }: { item: Job }) => {
@@ -165,17 +249,37 @@ export default function EmploisOffresIsolated() {
               <Text style={styles.badgeText}>Appeler</Text>
             </TouchableOpacity>
           ) : null}
+
+          {/* Candidats: Voir CV + Télécharger (web) */}
           {isCandidate && (item.cvUrl || item.cvBase64) ? (
-            <TouchableOpacity onPress={() => openPDF(item.cvUrl, item.cvBase64)} style={[styles.badgeBtn, styles.badgeCV]}>
-              <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
-              <Text style={styles.badgeCVText}>Voir CV</Text>
-            </TouchableOpacity>
+            <>
+              <TouchableOpacity onPress={() => viewPdf('cv.pdf', item.cvUrl, item.cvBase64)} style={[styles.badgeBtn, styles.badgeCV]}>
+                <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
+                <Text style={styles.badgeCVText}>Voir CV</Text>
+              </TouchableOpacity>
+              {Platform.OS === 'web' ? (
+                <TouchableOpacity onPress={() => downloadPdfWeb('cv.pdf', item.cvUrl, item.cvBase64)} style={[styles.badgeBtn, styles.badgeDownload]}>
+                  <Ionicons name="download-outline" size={16} color="#FF8A00" />
+                  <Text style={styles.badgeDownloadText}>Télécharger</Text>
+                </TouchableOpacity>
+              ) : null}
+            </>
           ) : null}
+
+          {/* Offres: Voir fiche + Télécharger (web) */}
           {hasOfferAttachment ? (
-            <TouchableOpacity onPress={() => openPDF(undefined, item.attachmentBase64)} style={[styles.badgeBtn, styles.badgeDoc]}>
-              <Ionicons name="document-text-outline" size={16} color="#8B5CF6" />
-              <Text style={styles.badgeDocText}>Voir fiche</Text>
-            </TouchableOpacity>
+            <>
+              <TouchableOpacity onPress={() => viewPdf(item.attachmentName || 'fiche.pdf', undefined, item.attachmentBase64)} style={[styles.badgeBtn, styles.badgeDoc]}>
+                <Ionicons name="document-text-outline" size={16} color="#8B5CF6" />
+                <Text style={styles.badgeDocText}>Voir fiche</Text>
+              </TouchableOpacity>
+              {Platform.OS === 'web' ? (
+                <TouchableOpacity onPress={() => downloadPdfWeb(item.attachmentName || 'fiche.pdf', undefined, item.attachmentBase64)} style={[styles.badgeBtn, styles.badgeDownload]}>
+                  <Ionicons name="download-outline" size={16} color="#FF8A00" />
+                  <Text style={styles.badgeDownloadText}>Télécharger</Text>
+                </TouchableOpacity>
+              ) : null}
+            </>
           ) : null}
         </View>
       </View>
@@ -306,6 +410,8 @@ const styles = StyleSheet.create({
   badgeCVText: { marginLeft: 6, color: '#6C63FF', fontWeight: '700' },
   badgeDoc: { backgroundColor: '#F3E8FF' },
   badgeDocText: { marginLeft: 6, color: '#8B5CF6', fontWeight: '700' },
+  badgeDownload: { backgroundColor: '#FFF4E5' },
+  badgeDownloadText: { marginLeft: 6, color: '#FF8A00', fontWeight: '700' },
 
   emptyBox: { paddingVertical: 24, alignItems: 'center' },
   emptyText: { color: '#666' },
