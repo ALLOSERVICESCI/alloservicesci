@@ -607,3 +607,14 @@ agent_communication:
       - working: "NA"
         agent: "testing"
         comment: "Plan: Sur /category/emplois, onglet Candidats → carte 'Marie K. — Assistante admin' (a un CV). Cliquer le bouton '…' pour ouvrir le menu popover. Vérifier: 1) icône Voir présente (web+mobile), 2) icône Télécharger seulement sur web, 3) icône Partager seulement sur mobile, 4) tap backdrop ferme le menu, 5) l'icône '…' n'apparaît que sur cartes avec pièce jointe. Exécuter sur viewport iPhone 12/13/14 (390x844) en mode web pour valider Voir+Télécharger, et marquer la partie Partager comme non testable sur web (natifs uniquement)."
+  - task: "FRONTEND E2E: Emplois & Offres – Icône ampoule animée + navigation Conseil, Menu '…' sur Marie K. (web iPhone 12/13/14)"
+    implemented: true
+    working: false
+    file: "frontend/app/category/emplois.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Plan: 1) Aller directement sur /category/emplois (sinon passer par Accueil → cliquer la tuile Emplois), 2) Vérifier présence des capsules Autour de moi/Ville, 3) Vérifier l’icône ampoule animée après la capsule Ville via testID='tips-bulb' et capturer, 4) Cliquer l’ampoule → vérifier la page /category/emplois/conseil (titre 'Conseils pour postuler'), 5) Revenir en arrière, 6) Activer l’onglet 'Candidats', 7) Cliquer le bouton '…' via testID='more-actions-marie-k-assistante-admin', 8) Vérifier menu popover testID='menu-container' + actions 'action-view' et 'action-download' (web) visibles, 9) Cliquer 'menu-backdrop' pour fermer. Captures aux étapes 3,4,8."
