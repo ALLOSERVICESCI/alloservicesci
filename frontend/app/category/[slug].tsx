@@ -2048,39 +2048,11 @@ export default function CategoryPage() {
           </TouchableOpacity>
         </View>
       ) : sKey === 'examens_concours' ? (
-        <FlatList
-          data={(() => {
-            const base = CONTENT_BY_CATEGORY['examens_concours'] || [];
-            const more = (CONTENT_BY_CATEGORY as any)['examens_concours_more'] || [];
-            if (xcTab === 'examens') {
-              if (xcExamensFilter === 'scolaires') {
-                return base.filter((it) => (it.title || '').match(/CEP|BEPC|BAC|DECO/i));
-              }
-              // grande_ecole → BTS
-              return base.filter((it) => (it.title || '').match(/BTS/i));
-            }
-            if (xcTab === 'concours') {
-              // Concours nationaux (ENA, Fonction Publique, INFAS, ENS, etc.)
-              return base.filter((it) => (it.title || '').match(/ENA|Fonction publique|INFAS|ENS|CAFOP/i));
-            }
-            // Résultats: curseur (examens ou concours)
-            if (xcResultatsScope === 'examens') {
-              return more.filter((it) => (it.title || '').match(/DECO|BTS/i));
-            }
-            return more.filter((it) => (it.title || '').match(/Fonction publique|ENA|INFAS|ENS|CAFOP|BTS/i));
-          })()}
-          keyExtractor={(item: any, idx: number) => (item?.title ? `${idx}-${item.title}` : `xc-${idx}`)}
-          contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => renderContentItem({ item, index } as any)}
-          ListHeaderComponent={null /* restauration: en-tête custom retiré */}
-          ListEmptyComponent={(
-            <View style={{ paddingVertical: 24 }}>
-              <Text style={{ color: '#666', textAlign: 'center' }}>Aucun élément à afficher pour ce filtre</Text>
-            </View>
-          )}
-        />
-
+        <View style={styles.headerWrapperExamens}>
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
+          </TouchableOpacity>
         </View>
       ) : sKey === 'education' ? (
         <View style={styles.headerWrapperEducation}>
