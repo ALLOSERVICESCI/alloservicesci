@@ -3,23 +3,35 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Keyboard
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system';
 
 // Page de publication (offres et candidatures) — isolée pour la section Emplois
 // Aucune dépendance aux autres pages
 
 type PublishTab = 'offre' | 'candidature';
+const MIN_PDF_BYTES = 20000; // ~20KB min
 
 export default function PublierEmplois() {
   const router = useRouter();
   const [tab, setTab] = useState<PublishTab>('offre');
 
-  // Champs simples contrôlés localement (pas d'intégration backend pour le moment)
+  // Champs communs
   const [title, setTitle] = useState('');
   const [companyOrName, setCompanyOrName] = useState('');
   const [location, setLocation] = useState('');
-  const [contact, setContact] = useState(''); // email ou téléphone ou url
   const [summary, setSummary] = useState('');
-  const [cvUrl, setCvUrl] = useState(''); // pour candidature
+
+  // Contacts obligatoires
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  // Pièces jointes PDF
+  const [offerPdfName, setOfferPdfName] = useState<string | null>(null);
+  const [offerPdfBase64, setOfferPdfBase64] = useState<string | null>(null);
+
+  const [cvPdfName, setCvPdfName] = useState<string | null>(null);
+  const [cvPdfBase64, setCvPdfBase64] = useState<string | null>(null);
 
   // Types d'offre cochés
   const [types, setTypes] = useState({ emploi: true, stage: false, freelance: false });
@@ -27,7 +39,48 @@ export default function PublierEmplois() {
 
   const nowLabel = () => 'aujourd\'hui';
 
+  const pickPdf = async (forOffer: boolean) => {
+    try {
+      const res = await DocumentPicker.getDocumentAsync({ type: 'application/pdf', multiple: false, copyToCacheDirectory: true });
+      if (res.canceled) return;
+      const file = res.assets?.[0];
+      if (!file) return;
+      if (file.mimeType !== 'application/pdf') {
+        Alert.alert('Fichier invalide', 'Veuillez sélectionner un fichier PDF.');
+        return;
+      }
+      const info = await FileSystem.getInfoAsync(file.uri, { size: true });
+      const size = (info as any)?.size ?? file.size ?? 0;
+      if (size < MIN_PDF_BYTES) {
+        Alert.alert('Fichier trop léger', 'Le PDF sélectionné est trop petit. Merci de choisir un fichier plus volumineux.');
+        return;
+      }
+      const b64 = await FileSystem.readAsStringAsync(file.uri, { encoding: FileSystem.EncodingType.Base64 });
+      if (forOffer) {
+        setOfferPdfName(file.name || 'offre.pdf');
+        setOfferPdfBase64(b64);
+      } else {
+        setCvPdfName(file.name || 'cv.pdf');
+        setCvPdfBase64(b64);
+      }
+    } catch (e) {
+      Alert.alert('Erreur', 'Impossible de joindre le fichier.');
+    }
+  };
+
+  const validateContacts = () => {
+    const hasPhoneDigits = /\d/.test(phone || '');
+    const hasEmail = (email || '').includes('@');
+    if (!hasPhoneDigits || !hasEmail) {
+      Alert.alert('Contacts requis', 'Veuillez renseigner un numéro et un email valides.');
+      return false;
+    }
+    return true;
+  };
+
   const onSubmit = async () => {
+    if (!validateContacts()) return;
+
     if (tab === 'offre') {
       if (!title || !companyOrName || !location) {
         Alert.alert('Champs requis', 'Titre, Entreprise et Localisation sont requis.');
@@ -37,13 +90,12 @@ export default function PublierEmplois() {
         Alert.alert('Type requis', 'Sélectionnez au moins un type: Emplois, Stage, Freelance.');
         return;
       }
-      // Construire entrées pour chaque type coché
       const selected: { type: 'emploi'|'stage'|'freelance'; }[] = [];
       if (types.emploi) selected.push({ type: 'emploi' });
       if (types.stage) selected.push({ type: 'stage' });
       if (types.freelance) selected.push({ type: 'freelance' });
 
-      const applyUrl = contact ? (contact.includes('@') && !contact.startsWith('http') ? `mailto:${contact}` : contact) : undefined;
+      const applyUrl = email ? `mailto:${email}` : undefined;
       const entries = selected.map(s => ({
         title,
         company: companyOrName,
@@ -51,8 +103,11 @@ export default function PublierEmplois() {
         type: s.type,
         postedAt: nowLabel(),
         applyUrl,
-        phone: contact && !contact.includes('@') && !contact.startsWith('http') ? contact : undefined,
+        phone: phone || undefined,
+        email: email || undefined,
         summary,
+        attachmentName: offerPdfName || undefined,
+        attachmentBase64: offerPdfBase64 || undefined,
       }));
 
       try {
@@ -77,10 +132,11 @@ export default function PublierEmplois() {
       role: title || 'Candidat',
       location,
       updatedAt: nowLabel(),
-      phone: contact && /\d/.test(contact) ? contact : undefined,
-      email: contact && contact.includes('@') ? contact : undefined,
+      phone: phone || undefined,
+      email: email || undefined,
       summary,
-      cvUrl: cvUrl || undefined,
+      cvBase64: cvPdfBase64 || undefined,
+      cvName: cvPdfName || undefined,
     };
     try {
       const raw = await AsyncStorage.getItem('jobs_candidates');
@@ -120,10 +176,25 @@ export default function PublierEmplois() {
                 <CheckboxCapsule label="Stage" checked={types.stage} color="#6C63FF" onPress={() => toggleType('stage')} />
                 <CheckboxCapsule label="Freelance" checked={types.freelance} color="#0A7C3A" onPress={() => toggleType('freelance')} />
               </View>
+
               <LabeledInput label="Titre du poste" value={title} onChangeText={setTitle} placeholder="Ex: Assistant administratif" />
               <LabeledInput label="Entreprise" value={companyOrName} onChangeText={setCompanyOrName} placeholder="Ex: Société X" />
               <LabeledInput label="Localisation (commune/ville)" value={location} onChangeText={setLocation} placeholder="Ex: Cocody" />
-              <LabeledInput label="Contact (lien/email/téléphone)" value={contact} onChangeText={setContact} placeholder="Ex: https://..., nom@exemple.ci ou 07.." />
+
+              {/* Contacts obligatoires */}
+              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={setEmail} placeholder="nom@exemple.ci" keyboardType="email-address" />
+              <LabeledInput label="Numéro (obligatoire)" value={phone} onChangeText={setPhone} placeholder="07.." keyboardType="phone-pad" />
+
+              {/* Pièce jointe PDF (optionnelle) */}
+              <Text style={styles.label}>Joindre un PDF (fiche de poste) — min 20KB</Text>
+              <View style={styles.attachmentRow}>
+                <TouchableOpacity onPress={() => pickPdf(true)} style={styles.attachBtn} accessibilityRole="button" accessibilityLabel="Joindre un PDF">
+                  <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
+                  <Text style={styles.attachText}>{offerPdfName ? 'Changer de fichier' : 'Joindre un PDF'}</Text>
+                </TouchableOpacity>
+                {offerPdfName ? <Text style={styles.fileName}>{offerPdfName}</Text> : null}
+              </View>
+
               <LabeledInput label="Résumé" value={summary} onChangeText={setSummary} placeholder="Courte description" multiline />
             </>
           ) : (
@@ -131,8 +202,21 @@ export default function PublierEmplois() {
               <LabeledInput label="Nom & prénom" value={companyOrName} onChangeText={setCompanyOrName} placeholder="Ex: Marie K." />
               <LabeledInput label="Rôle" value={title} onChangeText={setTitle} placeholder="Ex: Assistante admin" />
               <LabeledInput label="Localisation (commune/ville)" value={location} onChangeText={setLocation} placeholder="Ex: Marcory" />
-              <LabeledInput label="Contact (email ou téléphone)" value={contact} onChangeText={setContact} placeholder="Ex: 07.. ou nom@exemple.ci" />
-              <LabeledInput label="Lien CV (PDF)" value={cvUrl} onChangeText={setCvUrl} placeholder="Ex: https://...cv.pdf" />
+
+              {/* Contacts obligatoires */}
+              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={setEmail} placeholder="nom@exemple.ci" keyboardType="email-address" />
+              <LabeledInput label="Numéro (obligatoire)" value={phone} onChangeText={setPhone} placeholder="07.." keyboardType="phone-pad" />
+
+              {/* CV PDF optionnel mais recommandé */}
+              <Text style={styles.label}>Joindre CV (PDF) — min 20KB</Text>
+              <View style={styles.attachmentRow}>
+                <TouchableOpacity onPress={() => pickPdf(false)} style={styles.attachBtn} accessibilityRole="button" accessibilityLabel="Joindre un CV PDF">
+                  <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
+                  <Text style={styles.attachText}>{cvPdfName ? 'Changer de fichier' : 'Joindre un PDF'}</Text>
+                </TouchableOpacity>
+                {cvPdfName ? <Text style={styles.fileName}>{cvPdfName}</Text> : null}
+              </View>
+
               <LabeledInput label="Résumé" value={summary} onChangeText={setSummary} placeholder="Courte présentation" multiline />
             </>
           )}
@@ -195,6 +279,11 @@ const styles = StyleSheet.create({
   checkboxRow: { flexDirection: 'row', gap: 10, marginBottom: 8, flexWrap: 'wrap' },
   checkCapsule: { flexDirection: 'row', alignItems: 'center', gap: 8, borderWidth: 1, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 8 },
   checkText: { fontWeight: '700' },
+
+  attachmentRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 },
+  attachBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#EFEAFF', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, gap: 6 },
+  attachText: { color: '#6C63FF', fontWeight: '800' },
+  fileName: { color: '#444' },
 
   submitBtn: { marginTop: 8, backgroundColor: '#0D6EFD', borderRadius: 999, paddingVertical: 12, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
   submitText: { color: '#fff', fontWeight: '800' },

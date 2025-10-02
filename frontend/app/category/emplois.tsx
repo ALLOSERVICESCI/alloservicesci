@@ -24,8 +24,12 @@ type Job = {
   postedAt: string;
   applyUrl?: string; // lien de candidature ou mailto pour candidats
   phone?: string;
+  email?: string;
   summary?: string;
   cvUrl?: string; // lien CV pour candidats
+  cvBase64?: string;
+  attachmentName?: string;
+  attachmentBase64?: string;
 };
 
 type Candidate = {
@@ -37,6 +41,8 @@ type Candidate = {
   email?: string;
   summary?: string;
   cvUrl?: string;
+  cvBase64?: string;
+  cvName?: string;
 };
 
 const LOCAL_JOBS: Job[] = [
@@ -62,6 +68,7 @@ const CANDIDATES_JOBS_BASE: Job[] = LOCAL_CANDIDATES.map((c) => ({
   phone: c.phone,
   summary: c.summary,
   cvUrl: c.cvUrl,
+  cvBase64: c.cvBase64,
 }));
 
 export default function EmploisOffresIsolated() {
@@ -103,12 +110,15 @@ export default function EmploisOffresIsolated() {
     phone: c.phone,
     summary: c.summary,
     cvUrl: c.cvUrl,
+    cvBase64: c.cvBase64,
   })), [extraCandidates]);
 
   const dataset = useMemo(() => {
     const baseCandidates = [...CANDIDATES_JOBS_BASE, ...extraCandidatesToJobs];
     if (tab === 'candidats') {
-      return baseCandidates;
+      const q = query.trim().toLowerCase();
+      if (!q) return baseCandidates;
+      return baseCandidates.filter(j => (j.title + ' ' + (j.summary || '') + ' ' + j.location).toLowerCase().includes(q));
     }
     const baseOffers = [...LOCAL_JOBS, ...extraJobs.filter(j => j.type === 'emploi' || j.type === 'stage' || j.type === 'freelance')];
     const filteredByType = baseOffers.filter(j => j.type === tab);
@@ -117,18 +127,11 @@ export default function EmploisOffresIsolated() {
     return filteredByType.filter(j => (j.title + ' ' + j.company + ' ' + j.location).toLowerCase().includes(q));
   }, [tab, query, extraJobs, extraCandidatesToJobs]);
 
-  const openApply = async (applyUrl?: string) => {
-    if (!applyUrl) return;
-    try { await Linking.openURL(applyUrl); } catch {}
-  };
-  const callPhone = async (phone?: string) => {
-    if (!phone) return;
-    try { await Linking.openURL(`tel:${phone.replace(/\s+/g, '')}`); } catch {}
-  };
-
-  const openCV = async (cvUrl?: string) => {
-    if (!cvUrl) return;
-    try { await Linking.openURL(cvUrl); } catch {}
+  const openApply = async (applyUrl?: string) => { if (!applyUrl) return; try { await Linking.openURL(applyUrl); } catch {} };
+  const callPhone = async (phone?: string) => { if (!phone) return; try { await Linking.openURL(`tel:${phone.replace(/\s+/g, '')}`); } catch {} };
+  const openCV = async (cvUrl?: string, cvBase64?: string) => {
+    const url = cvUrl || (cvBase64 ? `data:application/pdf;base64,${cvBase64}` : undefined);
+    if (!url) return; try { await Linking.openURL(url); } catch {}
   };
 
   const renderItem = useCallback(({ item }: { item: Job }) => {
@@ -161,8 +164,8 @@ export default function EmploisOffresIsolated() {
               <Text style={styles.badgeText}>Appeler</Text>
             </TouchableOpacity>
           ) : null}
-          {isCandidate && item.cvUrl ? (
-            <TouchableOpacity onPress={() => openCV(item.cvUrl)} style={[styles.badgeBtn, styles.badgeCV]}>
+          {isCandidate && (item.cvUrl || item.cvBase64) ? (
+            <TouchableOpacity onPress={() => openCV(item.cvUrl, item.cvBase64)} style={[styles.badgeBtn, styles.badgeCV]}>
               <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
               <Text style={styles.badgeCVText}>Voir CV</Text>
             </TouchableOpacity>
