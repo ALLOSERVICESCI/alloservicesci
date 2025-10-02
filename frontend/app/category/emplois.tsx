@@ -93,6 +93,9 @@ export default function EmploisOffresIsolated() {
 
   const [tab, setTab] = useState<JobType>('emploi');
   const [query, setQuery] = useState('');
+  const [nearMe, setNearMe] = useState(false);
+  const [city, setCity] = useState('Abidjan');
+
   const [extraJobs, setExtraJobs] = useState<Job[]>([]);
   const [extraCandidates, setExtraCandidates] = useState<Candidate[]>([]);
 
