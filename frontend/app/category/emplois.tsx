@@ -106,11 +106,11 @@ export default function EmploisOffresIsolated() {
         </ImageBackground>
       </View>
 
-      {/* Ombre sous header */}
+      {/* Ombre sous header (renforcée) */}
       <View style={[styles.headerShadow, Platform.select({
-        web: { boxShadow: '0 16px 28px rgba(0,0,0,0.22)' } as any,
-        ios: { shadowColor: '#000', shadowOpacity: 0.25, shadowRadius: 12, shadowOffset: { width: 0, height: 12 } },
-        android: { elevation: 12 },
+        web: { boxShadow: '0 18px 32px rgba(0,0,0,0.28)' } as any,
+        ios: { shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 14, shadowOffset: { width: 0, height: 14 } },
+        android: { elevation: 14 },
       })]} pointerEvents="none" />
 
       {/* Contrôles */}
