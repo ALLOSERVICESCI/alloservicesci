@@ -462,6 +462,18 @@ frontend:
         agent: "testing"
         comment: "❌ FOCUSED MOBILE E2E SANTÉ PAGE TEST FAILED - iPhone 12/13/14 (390x844) + Samsung S21 (360x800) comprehensive testing reveals critical FlatList implementation issues. HEADER: ✅ Fixed header found (844px/800px height), image-only design working, ❌ Back chevron NOT FOUND (critical navigation issue). CONTENT CONTAINER: ✅ FlatList/ScrollView container found, ✅ Proper top padding for header clearance. LISTHEADERCOMPONENT CONTROLS: ✅ 'Autour de moi' capsule found (blue), ✅ 'Communes' capsule found (green), ✅ 'Localités: Abidjan' section found, ❌ Reset icon NOT FOUND, ❌ Search bar NOT FOUND (missing commune search functionality). RENDERITEM HEALTH FACILITY CARDS: ❌ NO HEALTH FACILITY CARDS FOUND - critical failure, no Call/Website actions available. LISTEMPTYCOMPONENT: ❌ Empty state message NOT FOUND. SCROLL BEHAVIOR: ❌ Scroll functionality NOT WORKING - content does not move under fixed header. REGRESSION SWEEP: ✅ All 10 categories (education, examens_concours, alertes, services_publics, emplois_offres, services_utiles, transport, loisirs_tourisme, agriculture, pharmacies) show fixed headers and FlatList scroll containers, ❌ Back chevrons missing across all categories. CRITICAL ISSUES: 1) Back navigation broken, 2) No health facility data rendering, 3) Missing search functionality, 4) Scroll behavior not working, 5) Empty state handling missing. Page shows 'Recherche d'établissements de santé autour de vous dans Abidjan... Fonctionnalité en cours de développement' message instead of actual facility cards."
 
+  - task: "FRONTEND E2E: Test page Emplois & Offres - Menu contextuel « … » avec icônes seules (viewport iPhone 12/13/14: 390x844)"
+    implemented: true
+    working: false
+    file: "frontend/app/category/emplois.tsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL CONTEXTUAL MENU ISSUE FOUND - Comprehensive E2E test (iPhone 12/13/14: 390x844) reveals major implementation bug in contextual menu logic. NAVIGATION SUCCESS: ✅ Successfully navigated to /category/emplois, ✅ Candidats tab found and activated, ✅ Marie K. — Assistante admin card found and identified. CRITICAL FAILURES: ❌ Attachment icon (📎) NOT RENDERING (count: 0) despite Marie K. having cvUrl in code, ❌ Ellipsis button (⋯) NOT RENDERING (count: 0) - contextual menu completely missing, ❌ Cannot test menu popover functionality due to missing trigger button. ROOT CAUSE ANALYSIS: Code shows Marie K. has cvUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' but hasDoc logic in renderItem function not working correctly. The hasDoc variable should be true for candidates with cvUrl/cvBase64, but attachment icon and ellipsis button are not rendering. IMPACT: Complete failure of contextual menu feature - users cannot access 'Voir', 'Télécharger', or 'Partager' actions for candidate CVs. This is a blocking issue for the contextual menu testing scenario."
+
 metadata:
 
   - task: "FRONTEND E2E: Services utiles USSD + badges opérateurs (Orange/MTN/Moov) et Urgence rendering"
