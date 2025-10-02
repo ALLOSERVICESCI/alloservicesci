@@ -477,6 +477,7 @@ const styles = StyleSheet.create({
 
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cardHeaderRow: { flexDirection: 'row', alignItems: 'center' },
+  titleRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#222' },
   cardSub: { marginTop: 2, color: '#555' },
   cardSummary: { marginTop: 8, color: '#444', lineHeight: 20 },
