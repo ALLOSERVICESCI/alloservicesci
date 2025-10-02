@@ -280,12 +280,6 @@ export default function EmploisOffresIsolated() {
     setMenuVisible(false);
   }, [menuItem]);
 
-      if (path && (await Sharing.isAvailableAsync())) {
-        await Sharing.shareAsync(path, { mimeType: 'application/pdf', dialogTitle: 'Partager le document' });
-      }
-    } catch {}
-  };
-
   const renderItem = useCallback(({ item }: { item: Job }) => {
     const isCandidate = item.type === 'candidats';
     const hasOfferAttachment = !isCandidate && !!item.attachmentBase64;
