@@ -33,8 +33,10 @@ type Job = {
   summary?: string;
   cvUrl?: string; // lien CV pour candidats
   cvBase64?: string;
+  cvRejected?: boolean;
   attachmentName?: string; // offre: nom fiche pdf
   attachmentBase64?: string; // offre: fiche pdf base64
+  attachmentRejected?: boolean;
 };
 
 type Candidate = {
