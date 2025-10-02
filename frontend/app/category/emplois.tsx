@@ -500,6 +500,13 @@ const styles = StyleSheet.create({
   badgeDownload: { backgroundColor: '#FFF4E5' },
   badgeDownloadText: { marginLeft: 6, color: '#FF8A00', fontWeight: '700' },
 
+  moreBtn: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F2F4F7' },
+
+  menuBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.08)' },
+  menuContainer: { position: 'absolute', width: 180, backgroundColor: '#fff', borderRadius: 12, padding: 8, shadowColor: '#000', shadowOpacity: 0.15, shadowRadius: 12, shadowOffset: { width: 0, height: 6 }, elevation: 6 },
+  menuRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' },
+  menuIconBtn: { width: 48, height: 48, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F7F7F7' },
+
   emptyBox: { paddingVertical: 24, alignItems: 'center' },
   emptyText: { color: '#666' },
 });
