@@ -11,6 +11,7 @@ import * as WebBrowser from 'expo-web-browser';
 // PAGE ISOLÉE: Emplois & Offres
 // - Autonome (aucune dépendance aux données partagées)
 import * as Sharing from 'expo-sharing';
+import { Modal } from 'react-native';
 
 // - Les modifications ici n'impactent PAS les autres pages
 
