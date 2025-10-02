@@ -242,13 +242,13 @@ export default function ServicesPublicsIsolated() {
     );
   }, [mode]);
 
-  // Header de la liste: Pastilles mode + Localité + Recherche + Capsules
+  // Header de la liste: Pastilles mode (style capsules Éducation) + Localité + Recherche + Capsules
   const ListHeader = () => (
     <View style={styles.headerControls}>
-      {/* Pastilles mode */}
+      {/* Pastilles mode – style capsules (Éducation-like) */}
       <View style={styles.modeRow}>
-        <PressableCapsule label="Autour de moi" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
-        <PressableCapsule label="Communes" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
+        <ModeCapsule label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
+        <ModeCapsule label="Communes" icon="home" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
       </View>
 
       <View style={styles.localityRow}>
@@ -351,6 +351,15 @@ function PressableCapsule({ label, active, onPress, color }: { label: string; ac
   );
 }
 
+function ModeCapsule({ label, active, onPress, color, icon }: { label: string; active?: boolean; onPress: () => void; color: string; icon: any }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.modeCapsule, active ? { backgroundColor: color } : { backgroundColor: '#FFFFFF', borderColor: '#E1E6ED', borderWidth: 1 }, Platform.select({ web: { boxShadow: active ? '0 6px 16px rgba(0,0,0,0.12)' : 'none' } as any, ios: { shadowColor: '#000', shadowOpacity: active ? 0.12 : 0, shadowRadius: 8, shadowOffset: { width: 0, height: 6 } }, android: { elevation: active ? 4 : 0 } })]} accessibilityRole="button" accessibilityLabel={label}>
+      <Ionicons name={icon} size={16} color={active ? '#fff' : color} />
+      <Text style={[styles.modeCapsuleText, { color: active ? '#fff' : '#222' }]}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
 const HEADER_HEIGHT = 250;
 
 const styles = StyleSheet.create({
@@ -361,7 +370,7 @@ const styles = StyleSheet.create({
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
   headerTitleBox: { position: 'absolute', bottom: 16, left: 16, right: 16 },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '800' },
-  headerSubtitle: { color: '#000', marginTop: 4 },
+  headerSubtitle: { color: '#fff', marginTop: 4 },
 
   headerShadow: { height: 10, width: '100%', backgroundColor: 'transparent' },
 
@@ -369,8 +378,8 @@ const styles = StyleSheet.create({
 
   headerControls: { marginBottom: 10 },
   modeRow: { flexDirection: 'row', gap: 8, marginBottom: 6, flexWrap: 'wrap' },
-  localityText: { color: '#222', fontSize: 18, marginBottom: 8 },
-  localityStrong: { fontWeight: '800' },
+  localityRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  localityValue: { color: '#222', fontSize: 18 },
 
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
   searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
@@ -381,6 +390,10 @@ const styles = StyleSheet.create({
   capsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8, marginBottom: 8 },
   capsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, borderWidth: 1 },
   capsuleText: { fontWeight: '700' },
+
+  // Mode capsules (style Éducation-like)
+  modeCapsule: { borderRadius: 999, paddingVertical: 10, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  modeCapsuleText: { fontWeight: '800' },
 
   sectionTitle: { fontSize: 16, fontWeight: '800', color: '#222', marginTop: 4, marginBottom: 6 },
 
