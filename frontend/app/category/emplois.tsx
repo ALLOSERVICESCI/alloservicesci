@@ -247,8 +247,6 @@ export default function EmploisOffresIsolated() {
     } catch {}
   };
 
-  const dims = useWindowDimensions();
-
   const handleOpenView = useCallback(() => {
     if (!menuItem) return;
     const isCandidate = menuItem.type === 'candidats';
