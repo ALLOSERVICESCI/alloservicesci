@@ -319,7 +319,9 @@ export default function ServicesPublicsIsolated() {
           </View>
           <View style={styles.headerTitleBox}>
             <Text style={styles.headerTitle}>Services publics</Text>
-            <Text style={styles.headerSubtitle}>Démarches • Numéros utiles • Sites officiels</Text>
+            <View style={styles.subtitleWrap}>
+              <Text style={styles.headerSubtitle}>Démarches • Numéros utiles • Sites officiels</Text>
+            </View>
           </View>
         </ImageBackground>
       </View>
