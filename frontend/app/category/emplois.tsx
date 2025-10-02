@@ -424,14 +424,10 @@ export default function EmploisOffresIsolated() {
             <Text style={[styles.locCapsuleText, { color: !nearMe ? '#0A7C3A' : '#222' }]}>Ville</Text>
           </TouchableOpacity>
         </View>
-        {/* Ligne localité: icône + ville */}
-        <View style={[styles.searchRow, { justifyContent: 'space-between' }]}> 
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-            <Ionicons name="navigate-outline" size={18} color="#888" />
-            <Text style={{ color: '#222', fontWeight: '700' }}>{city}</Text>
-          </View>
-          {/* Garde la loupe pour une recherche future */}
-          <Ionicons name="search" size={18} color="#CCC" />
+        {/* Ligne localité: icône + ville (sans barre de recherche) */}
+        <View style={styles.localityRow}>
+          <Ionicons name="location-outline" size={18} color="#888" />
+          <Text style={styles.localityText}>{city}</Text>
         </View>
 
         {/* Filtres par type */}
