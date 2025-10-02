@@ -1,8 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Platform, FlatList, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../../src/context/AuthContext';
 
 // PAGE ISOLÉE: Services publics
 // - Cette page n'utilise PAS le layout dynamique [slug].tsx
@@ -49,8 +51,63 @@ const SERVICES_PUBLICS_CONTENT: {
   },
 ];
 
+// Filtres capsules disponibles
+const CAPS: { key: FilterKey; label: string; color: string }[] = [
+  { key: 'mairies', label: 'Mairies', color: '#0D6EFD' },
+  { key: 'commissariats', label: 'Commissariats', color: '#0A7C3A' },
+  { key: 'prefecture', label: 'Préfecture de police', color: '#FF8A00' },
+  { key: 'palais', label: 'Palais de justice', color: '#6C63FF' },
+  { key: 'pompiers', label: 'Caserne de pompiers', color: '#E53935' },
+  { key: 'cni', label: 'CNI', color: '#009688' },
+];
+
+type FilterKey = 'all' | 'mairies' | 'commissariats' | 'prefecture' | 'palais' | 'pompiers' | 'cni';
+
 export default function ServicesPublicsIsolated() {
   const router = useRouter();
+  const { user } = useAuth();
+
+  // Localité affichée
+  const [effectiveCity, setEffectiveCity] = useState<string>(user?.city || (user as any)?.commune || 'Abidjan');
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        if (user?.city || (user as any)?.commune) {
+          if (mounted) setEffectiveCity(user.city || (user as any)?.commune);
+          return;
+        }
+        const raw = await AsyncStorage.getItem('auth_user');
+        if (!raw) return;
+        const u = JSON.parse(raw);
+        const loc = u?.city || u?.commune || 'Abidjan';
+        if (mounted) setEffectiveCity(loc);
+      } catch {}
+    })();
+    return () => { mounted = false; };
+  }, [user?.city]);
+
+  // Filtre sélectionné
+  const [filter, setFilter] = useState<FilterKey>('all');
+
+  // Mapping simple mots-clés pour filtrer (actuellement set vide car contenu local ne contient pas encore ces entités)
+  const listData = useMemo(() => {
+    if (filter === 'all') return SERVICES_PUBLICS_CONTENT;
+    const keywords: Record<Exclude<FilterKey, 'all'>, string[]> = {
+      mairies: ['mairie'],
+      commissariats: ['commissariat', 'police'],
+      prefecture: ['préfecture de police', 'prefecture'],
+      palais: ['palais de justice', 'tribunal', 'justice'],
+      pompiers: ['pompiers', 'gspm'],
+      cni: ['cni', 'identit'],
+    } as any;
+    const k = (keywords as any)[filter] as string[];
+    return SERVICES_PUBLICS_CONTENT.filter(it => {
+      const hay = (it.title + ' ' + (it.summary || '')).toLowerCase();
+      return k?.some((kk) => hay.includes(kk));
+    });
+  }, [filter]);
 
   const openPhone = (phone: string) => {
     const clean = (phone || '').replace(/\s+/g, '');
@@ -86,6 +143,22 @@ export default function ServicesPublicsIsolated() {
     );
   }, []);
 
+  // Header de la liste: Localité + Capsules
+  const ListHeader = () => (
+    <View style={styles.headerControls}>
+      <Text style={styles.localityText}>Localité : <Text style={styles.localityStrong}>{effectiveCity}</Text></Text>
+      <View style={styles.capsRow}>
+        {CAPS.map((c) => (
+          <PressableCapsule key={c.key} label={c.label} color={c.color} active={filter === c.key} onPress={() => setFilter(c.key)} />
+        ))}
+        <PressableCapsule key="all" label="Tous" color="#607D8B" active={filter === 'all'} onPress={() => setFilter('all')} />
+      </View>
+      <Text style={styles.sectionTitle}>
+        {filter === 'all' ? 'Administrations & Portails' : CAPS.find(x => x.key === filter)?.label}
+      </Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       {/* Header image */}
@@ -113,11 +186,21 @@ export default function ServicesPublicsIsolated() {
 
       <FlatList
         contentContainerStyle={styles.listContent}
-        data={SERVICES_PUBLICS_CONTENT}
+        data={listData}
         renderItem={renderItem}
         keyExtractor={(it, idx) => `${it.title}-${idx}`}
+        ListHeaderComponent={ListHeader}
+        ListEmptyComponent={<View style={styles.emptyBox}><Text style={styles.emptyText}>Aucun contenu disponible pour cette sélection.</Text></View>}
       />
     </View>
+  );
+}
+
+function PressableCapsule({ label, active, onPress, color }: { label: string; active?: boolean; onPress: () => void; color: string; }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.capsule, { backgroundColor: active ? color : '#F0F3F6', borderColor: active ? color : '#DDE3EA' }]} accessibilityRole="button" accessibilityLabel={label}>
+      <Text style={[styles.capsuleText, { color: active ? '#fff' : '#222' }]}>{label}</Text>
+    </TouchableOpacity>
   );
 }
 
@@ -137,6 +220,16 @@ const styles = StyleSheet.create({
 
   listContent: { paddingTop: 16, paddingHorizontal: 16, paddingBottom: 24 },
 
+  headerControls: { marginBottom: 10 },
+  localityText: { color: '#222', fontSize: 14, marginBottom: 8 },
+  localityStrong: { fontWeight: '800' },
+
+  capsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 8 },
+  capsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, borderWidth: 1 },
+  capsuleText: { fontWeight: '700' },
+
+  sectionTitle: { fontSize: 16, fontWeight: '800', color: '#222', marginTop: 4, marginBottom: 6 },
+
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#222' },
   cardSummary: { marginTop: 6, color: '#444', lineHeight: 20 },
@@ -148,4 +241,7 @@ const styles = StyleSheet.create({
 
   badgeAlt: { backgroundColor: '#E6F4EA' },
   badgeTextAlt: { marginLeft: 6, color: '#0A7C3A', fontWeight: '700' },
+
+  emptyBox: { paddingVertical: 24, alignItems: 'center' },
+  emptyText: { color: '#666' },
 });
