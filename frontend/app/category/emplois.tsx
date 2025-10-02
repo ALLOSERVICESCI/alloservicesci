@@ -291,7 +291,12 @@ export default function EmploisOffresIsolated() {
           <View style={{ flex: 1 }}>
             <View style={styles.titleRow}>
               <Text style={styles.cardTitle}>{item.title}</Text>
-              {hasDoc ? <Ionicons name="attach" size={16} color={docIconColor} style={{ marginLeft: 6 }} /> : null}
+              {hasDoc ? (
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 6 }}>
+                  <Ionicons name="attach" size={18} color={docIconColor} />
+                  <View style={styles.pjChip}><Text style={styles.pjChipText}>PJ</Text></View>
+                </View>
+              ) : null}
             </View>
             <Text style={styles.cardSub}>{item.company} • {item.location}</Text>
           </View>
