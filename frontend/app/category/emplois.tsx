@@ -79,6 +79,10 @@ const CANDIDATES_JOBS_BASE: Job[] = LOCAL_CANDIDATES.map((c) => ({
 export default function EmploisOffresIsolated() {
   const router = useRouter();
 
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [menuAnchor, setMenuAnchor] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [menuItem, setMenuItem] = useState<Job | null>(null);
+
   const [tab, setTab] = useState<JobType>('emploi');
   const [query, setQuery] = useState('');
   const [extraJobs, setExtraJobs] = useState<Job[]>([]);
