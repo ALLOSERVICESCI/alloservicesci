@@ -12,7 +12,7 @@ const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_saved-ap
 
 // Données locales (exemples mock pour la démo)
 
-type JobType = 'emploi' | 'stage' | 'freelance';
+type JobType = 'emploi' | 'stage' | 'freelance' | 'candidats';
 
 type Job = {
   title: string;
