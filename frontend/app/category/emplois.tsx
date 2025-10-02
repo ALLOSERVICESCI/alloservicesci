@@ -389,7 +389,7 @@ export default function EmploisOffresIsolated() {
         animationType="fade"
         onRequestClose={() => setMenuVisible(false)}
       >
-        <Pressable style={styles.menuBackdrop} onPress={() => setMenuVisible(false)}>
+        <Pressable style={styles.menuBackdrop} onPress={() => setMenuVisible(false)} testID="menu-backdrop" dataSet={{ testid: 'menu-backdrop' }}>
           <View
             style={[
               styles.menuContainer,
@@ -398,18 +398,20 @@ export default function EmploisOffresIsolated() {
                 top: Math.max(menuAnchor.y - 56, 100),
               },
             ]}
+            testID="menu-container"
+            dataSet={{ testid: 'menu-container' }}
           >
             <View style={styles.menuRow}>
-              <Pressable style={styles.menuIconBtn} onPress={handleOpenView} accessibilityLabel="Voir">
+              <Pressable style={styles.menuIconBtn} onPress={handleOpenView} accessibilityLabel="Voir" testID="action-view" dataSet={{ testid: 'action-view' }}>
                 <Ionicons name="document-text-outline" size={18} color="#222" />
               </Pressable>
               {Platform.OS === 'web' ? (
-                <Pressable style={styles.menuIconBtn} onPress={handleDownloadWeb} accessibilityLabel="Télécharger">
+                <Pressable style={styles.menuIconBtn} onPress={handleDownloadWeb} accessibilityLabel="Télécharger" testID="action-download" dataSet={{ testid: 'action-download' }}>
                   <Ionicons name="download-outline" size={18} color="#222" />
                 </Pressable>
               ) : null}
               {Platform.OS !== 'web' ? (
-                <Pressable style={styles.menuIconBtn} onPress={handleShareNative} accessibilityLabel="Partager">
+                <Pressable style={styles.menuIconBtn} onPress={handleShareNative} accessibilityLabel="Partager" testID="action-share" dataSet={{ testid: 'action-share' }}>
                   <Ionicons name="share-social-outline" size={18} color="#222" />
                 </Pressable>
               ) : null}
