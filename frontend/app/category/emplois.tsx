@@ -119,6 +119,30 @@ export default function EmploisOffresIsolated() {
         } catch {}
       })();
       return () => { mounted = false; };
+  // Brancher la ville depuis le profil + near me
+  const { user } = useAuth();
+  useEffect(() => {
+    if (user?.city) setCity(user.city);
+  }, [user?.city]);
+
+  useEffect(() => {
+    (async () => {
+      if (!nearMe) return;
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Permission requise', 'Activez la localisation pour utiliser Autour de moi.');
+          setNearMe(false);
+          return;
+        }
+        await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+        // TODO: si lat/lng disponibles pour offres/candidats, trier/filtrer par distance ici
+      } catch (e) {
+        setNearMe(false);
+      }
+    })();
+  }, [nearMe]);
+
     }, [])
   );
 
