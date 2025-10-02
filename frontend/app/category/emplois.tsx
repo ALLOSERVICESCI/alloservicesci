@@ -99,6 +99,17 @@ export default function EmploisOffresIsolated() {
   const [nearMe, setNearMe] = useState(false);
   const [city, setCity] = useState('Abidjan');
 
+  // Animation ampoule (gauche-droite)
+  const ampouleX = useSharedValue(0);
+  useEffect(() => {
+    ampouleX.value = withRepeat(
+      withTiming(6, { duration: 900, easing: Easing.inOut(Easing.sin) }),
+      -1,
+      true
+    );
+  }, []);
+  const ampouleStyle = useAnimatedStyle(() => ({ transform: [{ translateX: ampouleX.value }] }));
+
   const [extraJobs, setExtraJobs] = useState<Job[]>([]);
   const [extraCandidates, setExtraCandidates] = useState<Candidate[]>([]);
 
