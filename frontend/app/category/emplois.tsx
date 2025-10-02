@@ -83,7 +83,7 @@ function normalizeId(s: string) {
 
 export default function EmploisOffresIsolated() {
   const router = useRouter();
-  const dims = useWindowDimensions();
+  const dims = Dimensions.get('window');
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
