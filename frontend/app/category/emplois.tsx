@@ -83,6 +83,11 @@ export default function EmploisOffresIsolated() {
     try { await Linking.openURL(`tel:${phone.replace(/\s+/g, '')}`); } catch {}
   };
 
+  const openCV = async (cvUrl?: string) => {
+    if (!cvUrl) return;
+    try { await Linking.openURL(cvUrl); } catch {}
+  };
+
   const renderItem = useCallback(({ item }: { item: Job }) => {
     const isCandidate = item.type === 'candidats';
     return (
@@ -113,6 +118,12 @@ export default function EmploisOffresIsolated() {
               <Text style={styles.badgeText}>{isCandidate ? 'Appeler' : 'Appeler'}</Text>
             </TouchableOpacity>
           ) : null}
+          {isCandidate && item.cvUrl ? (
+            <TouchableOpacity onPress={() => openCV(item.cvUrl)} style={[styles.badgeBtn, styles.badgeCV]}>
+              <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
+              <Text style={styles.badgeCVText}>Voir CV</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
     );
@@ -135,6 +146,11 @@ export default function EmploisOffresIsolated() {
               <Text style={styles.headerSubtitle}>Postes • Stages • Missions</Text>
             </View>
           </View>
+          {/* Bouton Publier (milieu à droite) */}
+          <TouchableOpacity onPress={() => router.push('/category/emplois/publier')} style={[styles.publishBtn, { top: HEADER_HEIGHT / 2 - 20 }]} accessibilityRole="button" accessibilityLabel="Publier">
+            <Ionicons name="create-outline" size={16} color="#fff" />
+            <Text style={styles.publishText}>Publier</Text>
+          </TouchableOpacity>
         </ImageBackground>
       </View>
 
@@ -199,6 +215,9 @@ const styles = StyleSheet.create({
   headerSubtitle: { color: '#fff' },
   subtitleWrap: { alignSelf: 'flex-start', backgroundColor: 'rgba(0,0,0,0.25)', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, marginTop: 4 },
 
+  publishBtn: { position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#FF8A00', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, opacity: 0.95 },
+  publishText: { color: '#fff', fontWeight: '800' },
+
   headerShadow: { height: 10, width: '100%', backgroundColor: 'transparent' },
 
   controls: { paddingHorizontal: 16, paddingTop: 12 },
@@ -228,6 +247,8 @@ const styles = StyleSheet.create({
   badgeText: { marginLeft: 6, color: '#fff', fontWeight: '700' },
   badgePrimary: { backgroundColor: '#E3F2FD' },
   badgePrimaryText: { marginLeft: 6, color: '#0D6EFD', fontWeight: '700' },
+  badgeCV: { backgroundColor: '#EFEAFF' },
+  badgeCVText: { marginLeft: 6, color: '#6C63FF', fontWeight: '700' },
 
   emptyBox: { paddingVertical: 24, alignItems: 'center' },
   emptyText: { color: '#666' },
