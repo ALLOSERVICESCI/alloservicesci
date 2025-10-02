@@ -9,7 +9,7 @@ import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 // - Autonome (styles + logique locale)
 // - N'impacte AUCUNE autre page (notamment Santé)
 
-const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/if6ljosz_examens_concours_bg.png' };
+const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_saved-app-loader/artifacts/9k8osel9_Exam.png' };
 
 // Types locaux
 type MainTab = 'examens' | 'concours' | 'resultats';
