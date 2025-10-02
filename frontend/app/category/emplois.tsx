@@ -444,6 +444,12 @@ export default function EmploisOffresIsolated() {
                   accessibilityLabel="Ville">
                   <Ionicons name="business-outline" size={16} color={!nearMe ? '#0A7C3A' : '#666'} />
                   <Text style={[styles.locCapsuleText, { color: !nearMe ? '#0A7C3A' : '#222' }]}>Ville</Text>
+                <Animated.View style={[{ marginLeft: 8 }, ampouleStyle]}>
+                  <TouchableOpacity onPress={() => router.push('/category/emplois/conseil')} accessibilityLabel="Conseils pour postuler">
+                    <Ionicons name="bulb-outline" size={32} color="#FFD54F" />
+                  </TouchableOpacity>
+                </Animated.View>
+
                 </TouchableOpacity>
               </View>
                 {/* Ampoule après la capsule Ville */}
