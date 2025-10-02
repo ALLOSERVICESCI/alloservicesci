@@ -25,6 +25,7 @@ export default function PublierEmplois() {
   // Contacts obligatoires
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [emailTouched, setEmailTouched] = useState(false);
 
   // Pièces jointes PDF
   const [offerPdfName, setOfferPdfName] = useState<string | null>(null);
@@ -39,8 +40,32 @@ export default function PublierEmplois() {
 
   const nowLabel = () => 'aujourd\'hui';
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-  const validEmail = (e: string) => emailRegex.test(e.trim());
+  // Validation e-mail renforcée (format + labels de domaine)
+  const validEmail = (value: string) => {
+    const e = (value || '').trim();
+    if (!e) return false;
+    if (e.includes('..')) return false; // pas de points consécutifs
+    const at = e.indexOf('@');
+    if (at <= 0 || at !== e.lastIndexOf('@')) return false; // une seule @ et pas en 1re position
+    const local = e.slice(0, at);
+    const domain = e.slice(at + 1);
+    // Local part basique
+    const localOk = /^[A-Za-z0-9._%+-]{1,64}$/.test(local);
+    if (!localOk) return false;
+    // Domaine: labels 1–63, alphanum + '-', pas de début/fin par '-'
+    const parts = domain.split('.');
+    if (parts.length < 2) return false; // besoin d'un TLD
+    if (parts.some(p => p.length === 0)) return false; // pas de label vide
+    for (const p of parts) {
+      if (p.length > 63) return false;
+      if (!/^[A-Za-z0-9-]+$/.test(p)) return false;
+      if (p.startsWith('-') || p.endsWith('-')) return false;
+    }
+    const tld = parts[parts.length - 1];
+    if (!/^[A-Za-z]{2,24}$/.test(tld)) return false; // TLD lettres 2–24
+    return true;
+  };
+
   const validPhone = (p: string) => {
     const digits = (p || '').replace(/\D/g, '');
     return digits.length >= 8 && digits.length <= 14; // tolérant (+225...)
@@ -76,8 +101,12 @@ export default function PublierEmplois() {
   };
 
   const validateContacts = () => {
-    if (!validEmail(email) || !validPhone(phone)) {
-      Alert.alert('Contacts requis', 'Email ou Numéro invalide. Merci de vérifier (ex: nom@exemple.ci, 07.. ou +225..).');
+    if (!validEmail(email)) {
+      Alert.alert('Email invalide', 'Merci de renseigner un email valide (ex: nom@exemple.ci).');
+      return false;
+    }
+    if (!validPhone(phone)) {
+      Alert.alert('Numéro invalide', 'Merci de renseigner un numéro valide (ex: 07.. ou +225..).');
       return false;
     }
     return true;
@@ -175,7 +204,7 @@ export default function PublierEmplois() {
         <ScrollView contentContainerStyle={styles.formContent} keyboardShouldPersistTaps="handled">
           {tab === 'offre' ? (
             <>
-              {/* Types d\'offres */}
+              {/* Types d'offres */}
               <View style={styles.checkboxRow}>
                 <CheckboxCapsule label="Emplois" checked={types.emploi} color="#0D6EFD" onPress={() => toggleType('emploi')} />
                 <CheckboxCapsule label="Stage" checked={types.stage} color="#6C63FF" onPress={() => toggleType('stage')} />
@@ -187,7 +216,8 @@ export default function PublierEmplois() {
               <LabeledInput label="Localisation (commune/ville)" value={location} onChangeText={setLocation} placeholder="Ex: Cocody" />
 
               {/* Contacts obligatoires */}
-              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={setEmail} placeholder="nom@exemple.ci" keyboardType="email-address" />
+              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={(t: string) => { setEmail(t); }} onBlur={() => setEmailTouched(true)} placeholder="nom@exemple.ci" keyboardType="email-address" />
+              {emailTouched && (!!email ? !validEmail(email) : true) ? <Text style={styles.errorText}>Email invalide</Text> : null}
               <LabeledInput label="Numéro (obligatoire)" value={phone} onChangeText={setPhone} placeholder="07.." keyboardType="phone-pad" />
 
               {/* Pièce jointe PDF (optionnelle) */}
@@ -209,7 +239,8 @@ export default function PublierEmplois() {
               <LabeledInput label="Localisation (commune/ville)" value={location} onChangeText={setLocation} placeholder="Ex: Marcory" />
 
               {/* Contacts obligatoires */}
-              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={setEmail} placeholder="nom@exemple.ci" keyboardType="email-address" />
+              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={(t: string) => { setEmail(t); }} onBlur={() => setEmailTouched(true)} placeholder="nom@exemple.ci" keyboardType="email-address" />
+              {emailTouched && (!!email ? !validEmail(email) : true) ? <Text style={styles.errorText}>Email invalide</Text> : null}
               <LabeledInput label="Numéro (obligatoire)" value={phone} onChangeText={setPhone} placeholder="07.." keyboardType="phone-pad" />
 
               {/* CV PDF optionnel mais recommandé */}
@@ -289,6 +320,8 @@ const styles = StyleSheet.create({
   attachBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#EFEAFF', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, gap: 6 },
   attachText: { color: '#6C63FF', fontWeight: '800' },
   fileName: { color: '#444' },
+
+  errorText: { color: '#D32F2F', marginTop: -6, marginBottom: 8 },
 
   submitBtn: { marginTop: 8, backgroundColor: '#0D6EFD', borderRadius: 999, paddingVertical: 12, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
   submitText: { color: '#fff', fontWeight: '800' },
