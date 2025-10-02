@@ -466,13 +466,16 @@ frontend:
     implemented: true
     working: false
     file: "frontend/app/category/emplois.tsx"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL CONTEXTUAL MENU ISSUE FOUND - Comprehensive E2E test (iPhone 12/13/14: 390x844) reveals major implementation bug in contextual menu logic. NAVIGATION SUCCESS: ✅ Successfully navigated to /category/emplois, ✅ Candidats tab found and activated, ✅ Marie K. — Assistante admin card found and identified. CRITICAL FAILURES: ❌ Attachment icon (📎) NOT RENDERING (count: 0) despite Marie K. having cvUrl in code, ❌ Ellipsis button (⋯) NOT RENDERING (count: 0) - contextual menu completely missing, ❌ Cannot test menu popover functionality due to missing trigger button. ROOT CAUSE ANALYSIS: Code shows Marie K. has cvUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' but hasDoc logic in renderItem function not working correctly. The hasDoc variable should be true for candidates with cvUrl/cvBase64, but attachment icon and ellipsis button are not rendering. IMPACT: Complete failure of contextual menu feature - users cannot access 'Voir', 'Télécharger', or 'Partager' actions for candidate CVs. This is a blocking issue for the contextual menu testing scenario."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL RUNTIME ERROR BLOCKING PAGE LOAD - iPhone 12/13/14 (390x844) testing reveals severe implementation issues: 1) ❌ RUNTIME ERROR: 'dims is not defined' causing React component crash and red error screen, preventing page from loading properly, 2) ❌ PAGE ROUTING ISSUE: Direct navigation to /category/emplois shows splash screen instead of emplois content, suggesting routing or component loading problems, 3) ❌ COMPONENT NOT RENDERING: No emplois page elements found (header, tabs, cards) - page stuck on splash screen, 4) ❌ TESTIDS INACCESSIBLE: Cannot test testID='more-actions-marie-k-assistante-admin' or menu functionality due to page not loading. TECHNICAL ANALYSIS: Fixed 'dims is not defined' error by moving useWindowDimensions() to component level, but page still not rendering correctly. Possible causes: React Native Web compatibility issues, routing configuration problems, or component lifecycle issues. IMPACT: Complete failure of emplois page functionality - users cannot access any emplois/candidats features. This is a blocking issue requiring immediate attention to fix page loading and component rendering."
 
 metadata:
 
