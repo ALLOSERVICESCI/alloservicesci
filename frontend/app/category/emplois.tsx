@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 // - Autonome (aucune dépendance aux données partagées)
 // - Les modifications ici n'impactent PAS les autres pages
 
-const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/vnkjuu6i_Background_emplois.png' };
+const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_saved-app-loader/artifacts/hcqt6cju_Emplois.png' };
 
 // Données locales (exemples mock pour la démo)
 
