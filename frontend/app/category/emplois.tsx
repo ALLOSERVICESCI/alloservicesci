@@ -10,6 +10,8 @@ import * as WebBrowser from 'expo-web-browser';
 
 // PAGE ISOLÉE: Emplois & Offres
 // - Autonome (aucune dépendance aux données partagées)
+import * as Sharing from 'expo-sharing';
+
 // - Les modifications ici n'impactent PAS les autres pages
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_saved-app-loader/artifacts/hcqt6cju_Emplois.png' };
