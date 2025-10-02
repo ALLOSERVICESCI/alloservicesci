@@ -460,7 +460,7 @@ export default function EmploisOffresIsolated() {
                   <Text style={[styles.locCapsuleText, { color: !nearMe ? '#0A7C3A' : '#222' }]}>Ville</Text>
                 </TouchableOpacity>
                 {/* Ampoule après la capsule Ville (dans la rangée) */}
-                <Animated.View style={[{ marginLeft: 16 }, ampouleStyle]}> 
+                <Animated.View style={[{ marginLeft: 24 }, ampouleStyle]}> 
                   <TouchableOpacity onPress={() => router.push('/category/emplois/conseil')} accessibilityLabel="Conseils pour postuler" testID="tips-bulb" dataSet={{ testid: 'tips-bulb' }}>
                     <Ionicons name="bulb" size={36} color="#FFD54F" />
                   </TouchableOpacity>
