@@ -16,7 +16,13 @@ export default function CategoryLayout() {
         // Expo Router/React Navigation uses native easing; we can approximate a softer curve via longer duration and push replace
       }}
     >
+      {/* Routes dynamiques et statiques enregistrées explicitement pour éviter les conflits */}
       <Stack.Screen name="[slug]" options={{}} />
+      <Stack.Screen name="emplois" options={{}} />
+      <Stack.Screen name="emplois/publier" options={{}} />
+      <Stack.Screen name="emplois/conseil" options={{}} />
+      <Stack.Screen name="examens_concours" options={{}} />
+      <Stack.Screen name="services_publics" options={{}} />
     </Stack>
   );
 }
