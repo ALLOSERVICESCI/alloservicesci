@@ -330,9 +330,11 @@ export default function EmploisOffresIsolated() {
                 setMenuItem(item);
                 setMenuVisible(true);
               }}
-              style={styles.moreBtn}
+              style={[styles.moreBtn, { width: 44, height: 44 }]}
               accessibilityLabel="Plus d'actions"
               accessibilityHint="Ouvrir les actions du document"
+              testID={`more-actions-${normalizeId(item.title)}`}
+              dataSet={{ testid: `more-actions-${normalizeId(item.title)}` }}
             >
               <Ionicons name="ellipsis-horizontal" size={18} color="#222" />
             </Pressable>
