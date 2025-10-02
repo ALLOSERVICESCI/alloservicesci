@@ -540,6 +540,9 @@ const styles = StyleSheet.create({
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
   searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
 
+  localityRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 6, marginBottom: 6 },
+  localityText: { color: '#222', fontWeight: '800' },
+
   listContent: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 24 },
 
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
