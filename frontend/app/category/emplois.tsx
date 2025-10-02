@@ -604,4 +604,6 @@ const styles = StyleSheet.create({
 
   emptyBox: { paddingVertical: 24, alignItems: 'center' },
   emptyText: { color: '#666' },
+
+  ampouleWrap: {},
 });
