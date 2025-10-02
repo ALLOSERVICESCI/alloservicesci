@@ -141,16 +141,17 @@ export default function EmploisOffresIsolated() {
             </TouchableOpacity>
           </View>
           <View style={styles.headerTitleBox}>
-            <Text style={styles.headerTitle}>Emplois &amp; Offres</Text>
+            <View style={styles.headerTitleRow}>
+              <Text style={styles.headerTitle}>Emplois &amp; Offres</Text>
+              <TouchableOpacity onPress={() => router.push('/category/emplois/publier')} style={styles.publishBtn} accessibilityRole="button" accessibilityLabel="Publier">
+                <Ionicons name="create-outline" size={16} color="#fff" />
+                <Text style={styles.publishText}>Publier</Text>
+              </TouchableOpacity>
+            </View>
             <View style={styles.subtitleWrap}>
               <Text style={styles.headerSubtitle}>Postes • Stages • Missions</Text>
             </View>
           </View>
-          {/* Bouton Publier (milieu à droite) */}
-          <TouchableOpacity onPress={() => router.push('/category/emplois/publier')} style={[styles.publishBtn, { top: HEADER_HEIGHT / 2 - 20 }]} accessibilityRole="button" accessibilityLabel="Publier">
-            <Ionicons name="create-outline" size={16} color="#fff" />
-            <Text style={styles.publishText}>Publier</Text>
-          </TouchableOpacity>
         </ImageBackground>
       </View>
 
