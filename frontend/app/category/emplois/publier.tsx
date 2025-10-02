@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, KeyboardAvoidingView, ScrollView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,9 @@ import * as FileSystem from 'expo-file-system';
 
 type PublishTab = 'offre' | 'candidature';
 const MIN_PDF_BYTES = 20000; // ~20KB min
+
+// Règles e-mail: restreindre au domaine .ci et/ou liste blanche
+const EMAIL_ALLOWED_SUFFIXES = ['.ci', 'entreprise.ci']; // 'entreprise.ci' autorise aussi sous-domaines *.entreprise.ci
 
 export default function PublierEmplois() {
   const router = useRouter();
@@ -26,6 +29,7 @@ export default function PublierEmplois() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [emailTouched, setEmailTouched] = useState(false);
+  const [phoneTouched, setPhoneTouched] = useState(false);
 
   // Pièces jointes PDF
   const [offerPdfName, setOfferPdfName] = useState<string | null>(null);
@@ -40,7 +44,7 @@ export default function PublierEmplois() {
 
   const nowLabel = () => 'aujourd\'hui';
 
-  // Validation e-mail renforcée (format + labels de domaine)
+  // Validation e-mail renforcée + restriction domaine
   const validEmail = (value: string) => {
     const e = (value || '').trim();
     if (!e) return false;
@@ -48,22 +52,22 @@ export default function PublierEmplois() {
     const at = e.indexOf('@');
     if (at <= 0 || at !== e.lastIndexOf('@')) return false; // une seule @ et pas en 1re position
     const local = e.slice(0, at);
-    const domain = e.slice(at + 1);
-    // Local part basique
+    const domain = e.slice(at + 1).toLowerCase();
     const localOk = /^[A-Za-z0-9._%+-]{1,64}$/.test(local);
     if (!localOk) return false;
-    // Domaine: labels 1–63, alphanum + '-', pas de début/fin par '-'
     const parts = domain.split('.');
-    if (parts.length < 2) return false; // besoin d'un TLD
-    if (parts.some(p => p.length === 0)) return false; // pas de label vide
+    if (parts.length < 2) return false;
+    if (parts.some(p => p.length === 0)) return false;
     for (const p of parts) {
       if (p.length > 63) return false;
       if (!/^[A-Za-z0-9-]+$/.test(p)) return false;
       if (p.startsWith('-') || p.endsWith('-')) return false;
     }
     const tld = parts[parts.length - 1];
-    if (!/^[A-Za-z]{2,24}$/.test(tld)) return false; // TLD lettres 2–24
-    return true;
+    if (!/^[A-Za-z]{2,24}$/.test(tld)) return false;
+    // Restriction de domaine: doit se terminer par un suffixe autorisé (.ci ou whitelist)
+    const okSuffix = EMAIL_ALLOWED_SUFFIXES.some(suf => domain.endsWith(suf));
+    return okSuffix;
   };
 
   const validPhone = (p: string) => {
@@ -100,20 +104,28 @@ export default function PublierEmplois() {
     }
   };
 
-  const validateContacts = () => {
-    if (!validEmail(email)) {
-      Alert.alert('Email invalide', 'Merci de renseigner un email valide (ex: nom@exemple.ci).');
-      return false;
-    }
-    if (!validPhone(phone)) {
-      Alert.alert('Numéro invalide', 'Merci de renseigner un numéro valide (ex: 07.. ou +225..).');
-      return false;
-    }
-    return true;
-  };
+  // Etats de validation temps réel
+  const emailValid = useMemo(() => validEmail(email), [email]);
+  const phoneValid = useMemo(() => validPhone(phone), [phone]);
+
+  const validateContacts = () => emailValid && phoneValid;
+
+  const canSubmitOffer = useMemo(() => {
+    const hasType = types.emploi || types.stage || types.freelance;
+    return tab === 'offre' && !!title && !!companyOrName && !!location && hasType && validateContacts();
+  }, [tab, title, companyOrName, location, types, emailValid, phoneValid]);
+
+  const canSubmitCandid = useMemo(() => {
+    return tab === 'candidature' && !!companyOrName && !!location && validateContacts();
+  }, [tab, companyOrName, location, emailValid, phoneValid]);
+
+  const disabled = tab === 'offre' ? !canSubmitOffer : !canSubmitCandid;
 
   const onSubmit = async () => {
-    if (!validateContacts()) return;
+    if (!validateContacts()) {
+      Alert.alert('Champs invalides', 'Veuillez corriger l\'email et/ou le numéro.');
+      return;
+    }
 
     if (tab === 'offre') {
       if (!title || !companyOrName || !location) {
@@ -216,9 +228,10 @@ export default function PublierEmplois() {
               <LabeledInput label="Localisation (commune/ville)" value={location} onChangeText={setLocation} placeholder="Ex: Cocody" />
 
               {/* Contacts obligatoires */}
-              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={(t: string) => { setEmail(t); }} onBlur={() => setEmailTouched(true)} placeholder="nom@exemple.ci" keyboardType="email-address" />
-              {emailTouched && (!!email ? !validEmail(email) : true) ? <Text style={styles.errorText}>Email invalide</Text> : null}
-              <LabeledInput label="Numéro (obligatoire)" value={phone} onChangeText={setPhone} placeholder="07.." keyboardType="phone-pad" />
+              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={(t: string) => { setEmail(t); setEmailTouched(true); }} placeholder="nom@exemple.ci" keyboardType="email-address" invalid={emailTouched && !emailValid} />
+              {emailTouched && !emailValid ? <Text style={styles.errorText}>Email invalide ou domaine non autorisé (.ci)</Text> : null}
+              <LabeledInput label="Numéro (obligatoire)" value={phone} onChangeText={(t: string) => { setPhone(t); setPhoneTouched(true); }} placeholder="07.." keyboardType="phone-pad" invalid={phoneTouched && !phoneValid} />
+              {phoneTouched && !phoneValid ? <Text style={styles.errorText}>Numéro invalide</Text> : null}
 
               {/* Pièce jointe PDF (optionnelle) */}
               <Text style={styles.label}>Joindre un PDF (fiche de poste) — min 20KB</Text>
@@ -239,9 +252,10 @@ export default function PublierEmplois() {
               <LabeledInput label="Localisation (commune/ville)" value={location} onChangeText={setLocation} placeholder="Ex: Marcory" />
 
               {/* Contacts obligatoires */}
-              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={(t: string) => { setEmail(t); }} onBlur={() => setEmailTouched(true)} placeholder="nom@exemple.ci" keyboardType="email-address" />
-              {emailTouched && (!!email ? !validEmail(email) : true) ? <Text style={styles.errorText}>Email invalide</Text> : null}
-              <LabeledInput label="Numéro (obligatoire)" value={phone} onChangeText={setPhone} placeholder="07.." keyboardType="phone-pad" />
+              <LabeledInput label="Email (obligatoire)" value={email} onChangeText={(t: string) => { setEmail(t); setEmailTouched(true); }} placeholder="nom@exemple.ci" keyboardType="email-address" invalid={emailTouched && !emailValid} />
+              {emailTouched && !emailValid ? <Text style={styles.errorText}>Email invalide ou domaine non autorisé (.ci)</Text> : null}
+              <LabeledInput label="Numéro (obligatoire)" value={phone} onChangeText={(t: string) => { setPhone(t); setPhoneTouched(true); }} placeholder="07.." keyboardType="phone-pad" invalid={phoneTouched && !phoneValid} />
+              {phoneTouched && !phoneValid ? <Text style={styles.errorText}>Numéro invalide</Text> : null}
 
               {/* CV PDF optionnel mais recommandé */}
               <Text style={styles.label}>Joindre CV (PDF) — min 20KB</Text>
@@ -257,7 +271,7 @@ export default function PublierEmplois() {
             </>
           )}
 
-          <TouchableOpacity onPress={onSubmit} style={styles.submitBtn} accessibilityRole="button" accessibilityLabel="Soumettre">
+          <TouchableOpacity onPress={onSubmit} style={[styles.submitBtn, disabled && styles.submitBtnDisabled]} accessibilityRole="button" accessibilityLabel="Soumettre" disabled={disabled}>
             <Ionicons name="cloud-upload-outline" size={18} color="#fff" />
             <Text style={styles.submitText}>Soumettre</Text>
           </TouchableOpacity>
@@ -285,12 +299,12 @@ function CheckboxCapsule({ label, checked, color, onPress }: { label: string; ch
   );
 }
 
-function LabeledInput({ label, multiline, ...props }: any) {
+function LabeledInput({ label, multiline, invalid, ...props }: any) {
   return (
     <View style={{ marginBottom: 12 }}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={[styles.input, multiline ? { height: 100, textAlignVertical: 'top' } : null]}
+        style={[styles.input, invalid ? { borderColor: '#D32F2F' } : null, multiline ? { height: 100, textAlignVertical: 'top' } : null]}
         placeholderTextColor="#999"
         {...props}
       />
@@ -324,5 +338,6 @@ const styles = StyleSheet.create({
   errorText: { color: '#D32F2F', marginTop: -6, marginBottom: 8 },
 
   submitBtn: { marginTop: 8, backgroundColor: '#0D6EFD', borderRadius: 999, paddingVertical: 12, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
+  submitBtnDisabled: { opacity: 0.5 },
   submitText: { color: '#fff', fontWeight: '800' },
 });
