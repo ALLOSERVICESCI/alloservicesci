@@ -39,6 +39,13 @@ export default function PublierEmplois() {
 
   const nowLabel = () => 'aujourd\'hui';
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+  const validEmail = (e: string) => emailRegex.test(e.trim());
+  const validPhone = (p: string) => {
+    const digits = (p || '').replace(/\D/g, '');
+    return digits.length >= 8 && digits.length <= 14; // tolérant (+225...)
+  };
+
   const pickPdf = async (forOffer: boolean) => {
     try {
       const res = await DocumentPicker.getDocumentAsync({ type: 'application/pdf', multiple: false, copyToCacheDirectory: true });
@@ -52,7 +59,7 @@ export default function PublierEmplois() {
       const info = await FileSystem.getInfoAsync(file.uri, { size: true });
       const size = (info as any)?.size ?? file.size ?? 0;
       if (size < MIN_PDF_BYTES) {
-        Alert.alert('Fichier trop léger', 'Le PDF sélectionné est trop petit. Merci de choisir un fichier plus volumineux.');
+        Alert.alert('Fichier trop léger', 'Le PDF sélectionné est trop petit. Taille minimale ≈ 20KB.');
         return;
       }
       const b64 = await FileSystem.readAsStringAsync(file.uri, { encoding: FileSystem.EncodingType.Base64 });
@@ -69,10 +76,8 @@ export default function PublierEmplois() {
   };
 
   const validateContacts = () => {
-    const hasPhoneDigits = /\d/.test(phone || '');
-    const hasEmail = (email || '').includes('@');
-    if (!hasPhoneDigits || !hasEmail) {
-      Alert.alert('Contacts requis', 'Veuillez renseigner un numéro et un email valides.');
+    if (!validEmail(email) || !validPhone(phone)) {
+      Alert.alert('Contacts requis', 'Email ou Numéro invalide. Merci de vérifier (ex: nom@exemple.ci, 07.. ou +225..).');
       return false;
     }
     return true;

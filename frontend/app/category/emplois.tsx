@@ -28,8 +28,8 @@ type Job = {
   summary?: string;
   cvUrl?: string; // lien CV pour candidats
   cvBase64?: string;
-  attachmentName?: string;
-  attachmentBase64?: string;
+  attachmentName?: string; // offre: nom fiche pdf
+  attachmentBase64?: string; // offre: fiche pdf base64
 };
 
 type Candidate = {
@@ -129,13 +129,14 @@ export default function EmploisOffresIsolated() {
 
   const openApply = async (applyUrl?: string) => { if (!applyUrl) return; try { await Linking.openURL(applyUrl); } catch {} };
   const callPhone = async (phone?: string) => { if (!phone) return; try { await Linking.openURL(`tel:${phone.replace(/\s+/g, '')}`); } catch {} };
-  const openCV = async (cvUrl?: string, cvBase64?: string) => {
-    const url = cvUrl || (cvBase64 ? `data:application/pdf;base64,${cvBase64}` : undefined);
-    if (!url) return; try { await Linking.openURL(url); } catch {}
+  const openPDF = async (url?: string, base64?: string) => {
+    const target = url || (base64 ? `data:application/pdf;base64,${base64}` : undefined);
+    if (!target) return; try { await Linking.openURL(target); } catch {}
   };
 
   const renderItem = useCallback(({ item }: { item: Job }) => {
     const isCandidate = item.type === 'candidats';
+    const hasOfferAttachment = !isCandidate && !!item.attachmentBase64;
     return (
       <View style={styles.card}>
         <View style={styles.cardHeaderRow}>
@@ -165,9 +166,15 @@ export default function EmploisOffresIsolated() {
             </TouchableOpacity>
           ) : null}
           {isCandidate && (item.cvUrl || item.cvBase64) ? (
-            <TouchableOpacity onPress={() => openCV(item.cvUrl, item.cvBase64)} style={[styles.badgeBtn, styles.badgeCV]}>
+            <TouchableOpacity onPress={() => openPDF(item.cvUrl, item.cvBase64)} style={[styles.badgeBtn, styles.badgeCV]}>
               <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
               <Text style={styles.badgeCVText}>Voir CV</Text>
+            </TouchableOpacity>
+          ) : null}
+          {hasOfferAttachment ? (
+            <TouchableOpacity onPress={() => openPDF(undefined, item.attachmentBase64)} style={[styles.badgeBtn, styles.badgeDoc]}>
+              <Ionicons name="document-text-outline" size={16} color="#8B5CF6" />
+              <Text style={styles.badgeDocText}>Voir fiche</Text>
             </TouchableOpacity>
           ) : null}
         </View>
@@ -297,6 +304,8 @@ const styles = StyleSheet.create({
   badgePrimaryText: { marginLeft: 6, color: '#0D6EFD', fontWeight: '700' },
   badgeCV: { backgroundColor: '#EFEAFF' },
   badgeCVText: { marginLeft: 6, color: '#6C63FF', fontWeight: '700' },
+  badgeDoc: { backgroundColor: '#F3E8FF' },
+  badgeDocText: { marginLeft: 6, color: '#8B5CF6', fontWeight: '700' },
 
   emptyBox: { paddingVertical: 24, alignItems: 'center' },
   emptyText: { color: '#666' },
