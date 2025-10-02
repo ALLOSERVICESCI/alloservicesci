@@ -243,6 +243,9 @@ export default function EmploisOffresIsolated() {
         await FileSystem.writeAsStringAsync(p, base64, { encoding: FileSystem.EncodingType.Base64 });
         path = p;
       }
+    } catch {}
+  };
+
   const dims = useWindowDimensions();
 
   const handleOpenView = useCallback(() => {
