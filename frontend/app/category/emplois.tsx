@@ -242,11 +242,16 @@ export default function EmploisOffresIsolated() {
   const renderItem = useCallback(({ item }: { item: Job }) => {
     const isCandidate = item.type === 'candidats';
     const hasOfferAttachment = !isCandidate && !!item.attachmentBase64;
+    const hasDoc = isCandidate ? (!!item.cvUrl || !!item.cvBase64) : hasOfferAttachment;
+    const docIconColor = isCandidate ? '#6C63FF' : '#8B5CF6';
     return (
       <View style={styles.card}>
         <View style={styles.cardHeaderRow}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.cardTitle}>{item.title}</Text>
+            <View style={styles.titleRow}>
+              <Text style={styles.cardTitle}>{item.title}</Text>
+              {hasDoc ? <Ionicons name="attach" size={16} color={docIconColor} style={{ marginLeft: 6 }} /> : null}
+            </View>
             <Text style={styles.cardSub}>{item.company} • {item.location}</Text>
           </View>
           <View style={[styles.badgeChip, styles.badgeType]}>
