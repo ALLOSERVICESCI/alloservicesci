@@ -101,7 +101,9 @@ export default function EmploisOffresIsolated() {
           </View>
           <View style={styles.headerTitleBox}>
             <Text style={styles.headerTitle}>Emplois &amp; Offres</Text>
-            <Text style={styles.headerSubtitle}>Postes • Stages • Missions</Text>
+            <View style={styles.subtitleWrap}>
+              <Text style={styles.headerSubtitle}>Postes • Stages • Missions</Text>
+            </View>
           </View>
         </ImageBackground>
       </View>
