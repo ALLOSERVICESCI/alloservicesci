@@ -238,6 +238,41 @@ export default function EmploisOffresIsolated() {
         await FileSystem.writeAsStringAsync(p, base64, { encoding: FileSystem.EncodingType.Base64 });
         path = p;
       }
+  const dims = useWindowDimensions();
+
+  const handleOpenView = useCallback(() => {
+    if (!menuItem) return;
+    const isCandidate = menuItem.type === 'candidats';
+    if (isCandidate) {
+      viewPdf('cv.pdf', (menuItem as any).cvUrl, (menuItem as any).cvBase64);
+    } else {
+      viewPdf((menuItem as any).attachmentName || 'fiche.pdf', undefined, (menuItem as any).attachmentBase64);
+    }
+    setMenuVisible(false);
+  }, [menuItem]);
+
+  const handleDownloadWeb = useCallback(() => {
+    if (Platform.OS !== 'web' || !menuItem) return;
+    const isCandidate = menuItem.type === 'candidats';
+    if (isCandidate) {
+      downloadPdfWeb('cv.pdf', (menuItem as any).cvUrl, (menuItem as any).cvBase64);
+    } else {
+      downloadPdfWeb((menuItem as any).attachmentName || 'fiche.pdf', undefined, (menuItem as any).attachmentBase64);
+    }
+    setMenuVisible(false);
+  }, [menuItem]);
+
+  const handleShareNative = useCallback(() => {
+    if (Platform.OS === 'web' || !menuItem) return;
+    const isCandidate = menuItem.type === 'candidats';
+    if (isCandidate) {
+      sharePdfNative('cv.pdf', (menuItem as any).cvUrl, (menuItem as any).cvBase64);
+    } else {
+      sharePdfNative((menuItem as any).attachmentName || 'fiche.pdf', undefined, (menuItem as any).attachmentBase64);
+    }
+    setMenuVisible(false);
+  }, [menuItem]);
+
       if (path && (await Sharing.isAvailableAsync())) {
         await Sharing.shareAsync(path, { mimeType: 'application/pdf', dialogTitle: 'Partager le document' });
       }
