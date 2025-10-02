@@ -402,17 +402,8 @@ export default function EmploisOffresIsolated() {
         </ImageBackground>
       </View>
 
-      {/* Ombre sous header (renforcée) */}
-      <View style={[styles.headerShadow, Platform.select({
-        web: { boxShadow: '0 18px 32px rgba(0,0,0,0.28)' } as any,
-        ios: { shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 14, shadowOffset: { width: 0, height: 14 } },
-        android: { elevation: 14 },
-      })]} pointerEvents="none" />
+      {/* Le contenu sous le header défile via FlatList (ListHeaderComponent) */}
 
-      {/* Contrôles */}
-      <View style={styles.controls}>
-        {/* Ligne localisation: capsules */}
-        <View style={[styles.capsulesRow, { marginBottom: 6 }]}>
           <TouchableOpacity onPress={() => setNearMe(v => !v)} style={[styles.locCapsule, { backgroundColor: nearMe ? '#E3F2FD' : '#F0F3F6', borderColor: nearMe ? '#0D6EFD' : '#DDE3EA' }]}
             accessibilityLabel="Autour de moi">
             <Ionicons name="location-outline" size={16} color={nearMe ? '#0D6EFD' : '#666'} />
