@@ -278,6 +278,28 @@ export default function ChatAIA() {
       }
       if (!resp.body) { setIsStreaming(false); abortRef.current = null; return false; }
 
+  const allInfosProvided = (type: 'cv' | 'lettre' | 'attestation', text: string) => {
+    const s = (text || '').toLowerCase();
+    if (type === 'cv') {
+      const checks = [/(nom|prénom)/, /(téléphone|email|mail)/, /(titre|poste)/, /(expérience|expériences)/, /(formation|diplôme)/];
+      return checks.every((r) => r.test(s));
+    }
+    if (type === 'lettre') {
+      const checks = [/(poste)/, /(entreprise)/, /(ville|commune)/, /(motivation|motivations)/, /(téléphone|email|mail)/];
+      return checks.every((r) => r.test(s));
+    }
+    const checks = [/(attestation|certificat)/, /(nom|prénom)/, /(objet|afin|pour)/, /(période|du\s+\d|au\s+\d)/, /(autorité|émettrice|mairie|entreprise)/];
+    return checks.every((r) => r.test(s));
+  };
+
+  const [canGenerate, setCanGenerate] = useState(false);
+  useEffect(() => {
+    if (!pendingDocType) { setCanGenerate(false); return; }
+    const last = [...messages].reverse().find(m => m.role === 'user');
+    if (!last) { setCanGenerate(false); return; }
+    setCanGenerate(allInfosProvided(pendingDocType, last.content));
+  }, [messages, pendingDocType]);
+
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
       const asst: Msg = { id: String(Date.now() + 2), role: 'assistant', content: '', ts: Date.now() + 2 };
