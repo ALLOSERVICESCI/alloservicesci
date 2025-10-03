@@ -109,9 +109,9 @@ export default function ServicesUtilesIsolated() {
             </TouchableOpacity>
           </View>
           <View style={styles.headerTitleBox}>
-            <Text style={styles.headerTitle}>Services utiles</Text>
+            <Text style={styles.headerTitle}>Services Utiles</Text>
             <View style={styles.subtitleWrap}>
-              <Text style={styles.headerSubtitle}>Infos pratiques • USSD • Sites officiels</Text>
+              <Text style={styles.headerSubtitle}>Accès Services client Côte d'Ivoire</Text>
             </View>
           </View>
         </ImageBackground>
