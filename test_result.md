@@ -610,6 +610,17 @@ agent_communication:
     message: "🔥 COMPREHENSIVE MOBILE E2E FRONTEND TEST COMPLETED - iPhone 12/13/14 (390x844) + Samsung Galaxy S21 (360x800). MAJOR FINDINGS: ✅ HOME: Allô IA FAB correctly REMOVED (0 found) as requested, app loads with proper title 'Allô Services CI', splash screen functional. ✅ ÉDUCATION (MAIN FOCUS): All major components working - 'Autour de moi' & 'Communes' capsules found, 'Établissement :' section with all 3 radio options (Scolaires, Collèges & Lycées, Formation technique & professionnelle), reset icon has NO text (icon-only as required), Communes mode with Cocody search functional. ✅ SANTÉ: No 'Établissement :' block found (correctly restored), scrollable content present. ✅ CATEGORIES: Content loads properly across examens_concours, alertes, urgence with adequate elements. ❌ ISSUES FOUND: Back chevron not detected in categories (may be React Native Web rendering issue), 'Localités:' line detection failed, badge colors need verification (Green: 0, Blue: 1, Orange: 0 detected). Console shows minor React Native Web warnings ('useNativeDriver not supported', 'Unexpected text node') but no critical errors blocking functionality. Screenshots captured for detailed analysis. OVERALL: Core functionality working, minor detection issues likely due to React Native Web DOM rendering differences."
   - agent: "testing"
   - task: "FRONTEND E2E: Allô IA – Détection doc + bouton fixe 'Générer maintenant (PDF)' + export PDF"
+  - task: "FRONTEND E2E: Services utiles isolée – Header conservé + ombre renforcée + FlatList sous header"
+    implemented: true
+    working: false
+    file: "frontend/app/category/services_utiles.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Plan (web iPhone 12/13/14): 1) Aller à /category/services_utiles, 2) Vérifier présence du header image + titre, 3) Vérifier présence d'une ombre sous le header (visuelle), 4) Scroller: confirmer que la liste (FlatList) défile sous le header, 5) Vérifier qu'au moins une carte affiche des actions (Appeler/USSD/Site officiel) si présentes dans les données, 6) Captures aux étapes 2, 4, 5."
     implemented: true
     working: false
     file: "frontend/app/ai/chat.tsx"
