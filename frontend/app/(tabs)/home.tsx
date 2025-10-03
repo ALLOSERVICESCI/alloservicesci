@@ -269,7 +269,7 @@ export default function Home() {
                   onPress={() => {
                     if (category.slug === 'alerts_tab') return router.push('/(tabs)/alerts');
                     if (category.slug === 'pharmacies_tab') return router.push('/(tabs)/pharmacies');
-                    if (category.slug === 'services_utiles') return router.push('/category/services_utiles');
+                    if (category.slug === 'services_utiles') return router.push('/category/blank_utiles');
                     return router.push(`/category/${category.slug}`);
                   }}
                 >
