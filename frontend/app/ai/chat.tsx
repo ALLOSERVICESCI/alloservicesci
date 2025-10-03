@@ -352,7 +352,7 @@ export default function ChatAIA() {
     try {
       const resp = await fetch('/api/ai/chat', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: conv.map(m => ({ role: m.role, content: m.content })), stream: false, temperature: temperature, max_tokens: 1000 }),
+        body: JSON.stringify({ messages: buildConv(conv).map(m => ({ role: m.role, content: m.content })), stream: false, temperature: temperature, max_tokens: 1000 }),
       });
       if (!resp.ok) { if (resp.status >= 500) { pushAssistant(IA_DOWN_MSG); return; } let detail = ''; try { const err = await resp.json(); detail = err?.detail || ''; } catch {} pushAssistant(detail || 'Une erreur est survenue.'); return; }
       const data = await resp.json(); const content = data?.content || data?.detail || ''; pushAssistant(content || '');
