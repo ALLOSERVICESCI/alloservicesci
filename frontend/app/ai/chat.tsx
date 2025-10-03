@@ -262,13 +262,40 @@ export default function ChatAIA() {
   const renderItem = ({ item }: { item: Msg }) => {
     const isUser = item.role === 'user';
     return (
-      <TouchableOpacity activeOpacity={0.8} onLongPress={() => !isUser && item.content ? copyMessage(item.content) : undefined}>
-        <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
-          <Text style={[styles.bubbleText, isUser ? styles.userText : styles.assistantText]}>{item.content}</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', justifyContent: isUser ? 'flex-end' : 'flex-start' }}>
+        <TouchableOpacity activeOpacity={0.8} onLongPress={() => !isUser && item.content ? copyMessage(item.content) : undefined}>
+          <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
+            <Text style={[styles.bubbleText, isUser ? styles.userText : styles.assistantText]}>{item.content}</Text>
+          </View>
+        </TouchableOpacity>
+        {!isUser && !!item.content ? (
+          <TouchableOpacity accessibilityLabel="Plus d'actions" onPress={() => { setMenuMsg(item); setMenuOpen(true); }} style={{ marginLeft: 6, height: 32, alignSelf: 'center', paddingHorizontal: 8, paddingVertical: 4 }}>
+            <Ionicons name="ellipsis-horizontal" size={18} color="#0A7C3A" />
+          </TouchableOpacity>
+        ) : null}
+      </View>
     );
   };
+
+  const menuContent = () => (
+    <Modal visible={menuOpen} transparent animationType="fade" onRequestClose={() => setMenuOpen(false)}>
+      <Pressable style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.1)' }} onPress={() => setMenuOpen(false)}>
+        <View style={{ position: 'absolute', left: 24, right: 24, bottom: 100, backgroundColor: '#fff', borderRadius: 14, padding: 12, borderWidth: 1, borderColor: '#E8F0E8' }}>
+          <Text style={{ fontWeight: '800', color: '#0A7C3A', marginBottom: 8 }}>Exporter</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+            <TouchableOpacity onPress={() => { if (menuMsg?.content) exportAsPdf(menuMsg.content); setMenuOpen(false); }} style={{ width: 64, height: 64, borderRadius: 16, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' }}>
+              <Ionicons name="document-outline" size={24} color="#3730A3" />
+              <Text style={{ fontSize: 11, color: '#3730A3', marginTop: 4 }}>PDF</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { if (menuMsg?.content) exportAsDocx(menuMsg.content); setMenuOpen(false); }} style={{ width: 64, height: 64, borderRadius: 16, backgroundColor: '#FFF7ED', alignItems: 'center', justifyContent: 'center' }}>
+              <Ionicons name="document-text-outline" size={24} color="#9A3412" />
+              <Text style={{ fontSize: 11, color: '#9A3412', marginTop: 4 }}>DOCX</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Pressable>
+    </Modal>
+  );
 
   if (!isPremium) {
     return (
