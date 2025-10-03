@@ -104,9 +104,6 @@ export default function ChatAIA() {
     );
   };
 
-      content: "Bonjour, je suis Allô IA — l'assistant IA d'Allô Services CI. Posez‑moi vos questions en lien avec la Côte d'Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
-    },
-  ]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
