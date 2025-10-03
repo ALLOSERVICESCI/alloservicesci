@@ -408,7 +408,8 @@ export default function ChatAIA() {
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#E5E5E5' },
-  headerTitle: { marginLeft: 8, fontSize: 16, fontWeight: '800', color: '#0A7C3A' },
+  headerLogo: { width: 28, height: 28, marginRight: 8, borderRadius: 6 },
+  headerTitle: { marginLeft: 0, fontSize: 16, fontWeight: '800', color: '#0A7C3A' },
   headerActions: { flexDirection: 'row', alignItems: 'center' },
   tempPill: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F1F5F1', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 16, borderWidth: 1, borderColor: '#DAE7DA' },
   tempBtn: { paddingHorizontal: 6, paddingVertical: 2 },
