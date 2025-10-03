@@ -217,7 +217,7 @@ export default function ChatAIA() {
         headers: { 'Content-Type': 'application/json' },
         signal: ctrl.signal,
         body: JSON.stringify({
-          messages: conv.map(m => ({ role: m.role, content: m.content })),
+          messages: buildConv(conv).map(m => ({ role: m.role, content: m.content })),
           stream: true,
           temperature: temperature,
           max_tokens: 1000,
