@@ -202,6 +202,8 @@ export default function ChatAIA() {
 
   const send = async () => sendText(input);
 
+  const makeSystemMessage = (): Msg => ({ id: 'sys', role: 'system', content: SYSTEM_POLICY, ts: Date.now() });
+
   const tryStream = async (conv: Msg[]): Promise<boolean> => {
     try {
       setIsStreaming(true);
