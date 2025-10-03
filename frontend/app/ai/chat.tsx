@@ -264,17 +264,19 @@ export default function ChatAIA() {
   const renderItem = ({ item }: { item: Msg }) => {
     const isUser = item.role === 'user';
     return (
-      <View style={{ flexDirection: 'row', justifyContent: isUser ? 'flex-end' : 'flex-start' }}>
-        <TouchableOpacity activeOpacity={0.8} onLongPress={() => !isUser && item.content ? copyMessage(item.content) : undefined}>
-          <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
-            <Text style={[styles.bubbleText, isUser ? styles.userText : styles.assistantText]}>{item.content}</Text>
-          </View>
-        </TouchableOpacity>
-        {!isUser && !!item.content ? (
-          <TouchableOpacity accessibilityLabel="Plus d'actions" onPress={() => { setMenuMsg(item); setMenuOpen(true); }} style={{ marginLeft: 6, height: 32, alignSelf: 'center', paddingHorizontal: 8, paddingVertical: 4 }}>
-            <Ionicons name="ellipsis-horizontal" size={18} color="#0A7C3A" />
+      <View style={{ flexDirection: 'row', justifyContent: isUser ? 'flex-end' : 'flex-start', width: '100%' }}>
+        <View style={{ position: 'relative', maxWidth: isUser ? '95%' : '95%' }}>
+          <TouchableOpacity activeOpacity={0.8} onLongPress={() => !isUser && item.content ? copyMessage(item.content) : undefined}>
+            <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
+              <Text style={[styles.bubbleText, isUser ? styles.userText : styles.assistantText]}>{item.content}</Text>
+            </View>
           </TouchableOpacity>
-        ) : null}
+          {!isUser && !!item.content ? (
+            <TouchableOpacity accessibilityLabel="Plus d'actions" onPress={() => { setMenuMsg(item); setMenuOpen(true); }} style={styles.bubbleMenu}>
+              <Ionicons name="ellipsis-horizontal" size={18} color="#0A7C3A" />
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
     );
   };
