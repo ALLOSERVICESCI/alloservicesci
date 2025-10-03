@@ -248,6 +248,18 @@ backend:
         agent: "testing"
         comment: "✅ FRESH COMPREHENSIVE BACKEND REGRESSION VALIDATED - POST /api/ai/chat endpoint confirmed working in latest comprehensive regression test. Both stream=false and stream=true modes working perfectly: 1) Non-streaming: 200 + JSON response with 482 characters content about Abidjan, 2) Streaming: 200 + SSE event-stream with 3 chunks received and [DONE] termination confirmed. AI integration with Emergent API fully functional. All 18/18 backend tests PASSED (100% success rate)."
 
+  - task: "POST /api/ai/export/docx → 200 + Content-Type DOCX + Content-Disposition attachment + fichier non vide"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ DOCX EXPORT ENDPOINT COMPREHENSIVE TESTING COMPLETED - ALL REVIEW REQUEST REQUIREMENTS MET! Focused testing confirms complete functionality: 1) POST /api/ai/export/docx with {content: 'Bonjour Allô IA'} → 200 ✅, 2) Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document ✅, 3) Content-Disposition: attachment; filename='alloia_973ff19a.docx' ✅, 4) File size: 36628 bytes (non-empty) ✅. DOCX export functionality fully implemented and working correctly. The endpoint generates proper Word documents with the provided content and title, returns correct MIME type and attachment headers as specified in the review request."
+
   - task: "GET /api/health/facilities (Santé APIs) → 200 + établissements de santé"
     implemented: true
     working: true
