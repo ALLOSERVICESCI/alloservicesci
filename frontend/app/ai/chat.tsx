@@ -410,7 +410,7 @@ export default function ChatAIA() {
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#E5E5E5' },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 24, paddingBottom: 12, paddingHorizontal: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#E5E5E5' },
   backBtn: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F2F4F7', marginRight: 8 },
   headerLogo: { width: 32, height: 32, marginRight: 8, borderRadius: 6 },
   headerTitle: { marginLeft: 0, fontSize: 16, fontWeight: '800', color: '#0A7C3A' },
