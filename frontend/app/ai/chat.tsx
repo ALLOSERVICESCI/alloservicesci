@@ -233,6 +233,24 @@ export default function ChatAIA() {
     setInput('');
     await pushRecent(content);
 
+    // Détection de l'intention document (CV/lettre/attestation)
+    const intent = detectDocIntent(content);
+    if (intent) {
+      setPendingDocType(intent);
+      if (!allInfosProvided(intent, content)) {
+        pushAssistant(buildQuestionsFor(intent));
+        setSending(false);
+        scrollToEnd();
+        return;
+      } else {
+        setCanGenerate(true);
+        pushAssistant("Merci. Appuyez sur « Générer maintenant » pour produire le document.");
+        setSending(false);
+        scrollToEnd();
+        return;
+      }
+    }
+
     try {
       const ok = await tryStream([...messages, userMsg]);
       if (!ok) {
