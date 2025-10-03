@@ -509,6 +509,45 @@ class BackendTester:
         except Exception as e:
             self.log_result('/ai/chat (stream=true)', 'POST', 'FAIL', f'Exception: {str(e)}')
 
+    def test_ai_docx_export(self):
+        """Test POST /api/ai/export/docx - DOCX Export with specific content"""
+        payload = {
+            "content": "Bonjour Allô IA\n\nCeci est un test d'export DOCX pour valider la nouvelle fonctionnalité.\n\nMerci pour votre service!",
+            "title": "Test Export DOCX - Allô Services CI"
+        }
+        
+        try:
+            response = self.session.post(f"{BASE_URL}/ai/export/docx", json=payload, timeout=20)
+            if response.status_code == 200:
+                # Check Content-Type header
+                content_type = response.headers.get('content-type', '')
+                expected_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                
+                if content_type == expected_type:
+                    # Check Content-Disposition header for attachment
+                    content_disposition = response.headers.get('content-disposition', '')
+                    if 'attachment' in content_disposition:
+                        # Check file is not empty
+                        content_length = len(response.content)
+                        if content_length > 0:
+                            self.log_result('/ai/export/docx', 'POST', 'PASS', 
+                                          f'DOCX export successful - Content-Type: {content_type}, '
+                                          f'Content-Disposition: {content_disposition}, '
+                                          f'File size: {content_length} bytes')
+                        else:
+                            self.log_result('/ai/export/docx', 'POST', 'FAIL', 'DOCX file is empty')
+                    else:
+                        self.log_result('/ai/export/docx', 'POST', 'FAIL', 
+                                      f'Missing attachment in Content-Disposition: {content_disposition}')
+                else:
+                    self.log_result('/ai/export/docx', 'POST', 'FAIL', 
+                                  f'Wrong Content-Type: {content_type}, expected: {expected_type}')
+            else:
+                self.log_result('/ai/export/docx', 'POST', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/ai/export/docx', 'POST', 'FAIL', f'Exception: {str(e)}')
+
     def run_all_tests(self):
         """Run comprehensive backend regression test suite"""
         print("🚀 Starting Comprehensive Backend Regression Test for Allô Services CI")
