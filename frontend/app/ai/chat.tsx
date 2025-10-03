@@ -364,7 +364,7 @@ export default function ChatAIA() {
           data={messages}
           renderItem={renderItem}
           keyExtractor={(it) => it.id}
-          contentContainerStyle={{ paddingHorizontal: 12, paddingTop: 8, paddingBottom: composerHeight + 16 }}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: composerHeight + 20 }}
           scrollIndicatorInsets={{ bottom: composerHeight }}
           keyboardShouldPersistTaps="handled"
           onContentSizeChange={scrollToEnd}
