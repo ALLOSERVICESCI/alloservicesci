@@ -2016,6 +2016,13 @@ export default function CategoryPage() {
   };
   const sKey = slugAliases[s] || s;
   const bg = backgroundImages[sKey] || COMMON_HEADER;
+  // Redirection forcée vers la page isolée pour Services utiles
+  if (sKey === 'services_utiles') {
+    useEffect(() => {
+      router.replace('/category/services_utiles');
+    }, []);
+  }
+
 
   const fixedHeaderKeys = ['urgence','sante','education','examens_concours','agriculture','loisirs_tourisme','transport','services_publics','emplois_offres'];
   const padTop = fixedHeaderKeys.includes(sKey) ? (sKey === 'education' ? eduHeaderHeight : (sKey === 'sante' ? 270 : 250)) : 0;
