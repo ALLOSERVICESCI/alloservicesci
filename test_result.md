@@ -613,6 +613,17 @@ agent_communication:
     message: "❌ COMPREHENSIVE EDUCATION CATEGORY MOBILE E2E TEST COMPLETED (iPhone 12/13/14: 390x844) - CRITICAL ISSUES FOUND: 1) ✅ VISUAL ELEMENTS: Header image, ÉDUCATION title, bullet points (Etablissements scolaires, Collèges et Lycées, Universités, Centres de Formations), back chevron, filter capsules all VISIBLE in screenshots, 2) ❌ DOM ACCESSIBILITY: Critical disconnect between visual elements and DOM - key texts not accessible to automation (0/10 key texts found in DOM), filter elements not interactive, 3) ❌ FILTER FUNCTIONALITY: 'Autour de moi' and 'Communes' capsules visible but not clickable, no color coding (#0D6EFD blue, #0A7C3A green), no establishment type checkboxes, 4) ❌ HEADER STRUCTURE: No fixed positioning with 250px height detected, content scrolling blocked, 5) ✅ BACK BUTTON: Functional and returns to Home, 6) ✅ IA FAB REMOVAL: Allô IA floating button successfully removed from Home page. CONCLUSION: Education page renders visually but lacks interactive functionality - appears to be in development/placeholder state. Core UI elements present but not functional."
   - agent: "testing"
     message: "🎉 COMPREHENSIVE BACKEND TESTING COMPLETED - ALL REVIEW REQUEST REQUIREMENTS MET! Complete general backend test performed with 100% success rate (19/19 tests PASSED): 1) ✅ Sanity GET /api → 200 (18 routes available), 2) ✅ AI non-streaming: POST /api/ai/chat {stream:false} → 200 {content: 482 chars}, 3) ✅ AI streaming: POST /api/ai/chat {stream:true} → 200 event-stream with 3 chunks + [DONE], 4) ✅ Export DOCX: POST /api/ai/export/docx → 200 + Content-Type docx + Content-Disposition attachment + 36710 bytes, 5) ✅ GET /api/alerts → 200 (2 alerts), 6) ✅ GET /api/pharmacies?city=Abidjan → 200 (0 pharmacies - valid), 7) ✅ GET /api/health/facilities?city=Abidjan → 200 (17 facilities ≥10 ✅). ADDITIONAL VALIDATIONS: Auth register, user update, subscription check, CinetPay payment initiation, alerts creation/verification, pharmacies filtering, health facilities commune/location filtering - ALL WORKING PERFECTLY. Backend is fully functional and ready for production according to all review specifications."
+  - task: "FRONTEND E2E: Services utiles (dynamique) – Capsules Autour de moi/Communes + Localité + Recherche + Scroll + Retour"
+    implemented: true
+    working: false
+    file: "frontend/app/category/[slug].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Plan (web iPhone 12/13/14): 1) Aller à /category/services_utiles; 2) Vérifier capsules 'Autour de moi' et 'Communes' visibles; 3) Vérifier ligne localité (icône localisation orange + ville, par défaut Abidjan); 4) Vérifier barre de recherche style Santé; 5) Scroller pour confirmer que la FlatList défile sous le header; 6) Cliquer chevron retour pour revenir. Captures aux étapes 2, 3, 4."
   - agent: "testing"
     message: "❌ COMPREHENSIVE E2E FRONTEND TESTING COMPLETED (iPhone 12/13/14: 390x844) - CRITICAL HEADER ISSUES FOUND: All pages have headers with height=0, no box shadow, no background images, positioned as 'absolute' instead of 'fixed'. Specific failures: 1) Headers not implementing required 250px height with shadows and cover images, 2) Pharmacies missing 'Pharmacies • City/Near Me' header format, 3) Urgence missing phone links (tel:), 4) Marque"
   - agent: "testing"
