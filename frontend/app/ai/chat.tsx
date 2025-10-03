@@ -331,7 +331,7 @@ export default function ChatAIA() {
         </View>
 
         {/* Prompts récents */}
-        {recents.length > 0 && (
+        {false && (
           <View style={{ paddingHorizontal: 12, paddingTop: 10 }}>
             <Text style={styles.sectionTitle}>Récents</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 6 }}>
