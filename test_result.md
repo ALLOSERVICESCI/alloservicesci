@@ -612,6 +612,17 @@ agent_communication:
   - agent: "testing"
     message: "❌ COMPREHENSIVE EDUCATION MOBILE E2E TEST COMPLETED (iPhone 12/13/14: 390x844 + Samsung Galaxy S21: 360x800) - CRITICAL DOM ACCESSIBILITY ISSUES FOUND: 1) ✅ VISUAL SUCCESS: Screenshots confirm Education page renders perfectly with header image, ÉDUCATION title, bullet points (Etablissements scolaires, Collèges et Lycées, Universités, Centres de Formations), filter capsules (Autour de moi, Communes), radio options (Scolaires, Collèges & Lycées, Formation technique & professionnelle), and Localités: Abidjan label, 2) ❌ DOM DISCONNECT: Critical issue where visual elements are not accessible to automation - all key interactive elements (capsules, radios, search inputs) not found in DOM queries despite being visually present, 3) ❌ FUNCTIONAL TESTING BLOCKED: Unable to test filter interactions, radio selections, commune search, or facility card behaviors due to DOM accessibility issues, 4) ✅ NON-REGRESSION PASSED: Santé page correctly has no Établissement block, Home page correctly has no Allô IA FAB, 5) ✅ RESPONSIVE: Both iPhone and Samsung viewports display correctly. CONCLUSION: Education page UI implemented and visually working but DOM structure prevents automated testing - likely React Native Web rendering issue affecting testability."ne object instead of live backend, 4) ❌ Profile city changes not persisting properly (422 error on user update), 5) ✅ Header images render correctly. ROOT CAUSE: Frontend Santé page implemented with static data, backend health facilities API not connected/working. Requires backend API integration to display real facility data according to city-based behavior rules."
 backend:
+  - task: "FRONTEND E2E: Services utiles isolée – Titre/Sous-titre mis à jour + navigation depuis Home + scroll + actions"
+    implemented: true
+    working: false
+    file: "frontend/app/category/services_utiles.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Plan (web iPhone 12/13/14): 1) Aller à / (home) → cliquer la tuile 'Services utiles' → doit ouvrir /category/services_utiles (isolée), 2) Vérifier le header: titre exact 'Services Utiles' et sous-titre exact 'Accès Services client Côte d\'Ivoire', 3) Vérifier ombre sous le header visuellement, 4) Scroller: confirmer que la FlatList défile sous le header, 5) Sur une carte, vérifier au moins une action (Appeler/USSD/Site officiel), 6) Cliquer chevron retour pour revenir en arrière (si historique), 7) Optionnel: taper /category/services_utiles directement et revérifier le header. Captures aux étapes 2, 4, 5."
   - task: "TEST GENERAL BACKEND – Sanity, IA chat (stream & non-stream), Export DOCX, Alerts, Pharmacies, Health Facilities, Subscriptions"
     implemented: true
     working: false
