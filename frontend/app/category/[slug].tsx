@@ -2016,10 +2016,10 @@ export default function CategoryPage() {
   };
   const sKey = slugAliases[s] || s;
   const bg = backgroundImages[sKey] || COMMON_HEADER;
-  // Redirection forcée vers la page isolée pour Services utiles
+  // Redirection forcée: Services utiles → page vierge
   if (sKey === 'services_utiles') {
     useEffect(() => {
-      router.replace('/category/services_utiles');
+      router.replace('/category/blank_utiles');
     }, []);
   }
 
