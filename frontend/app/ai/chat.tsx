@@ -55,6 +55,9 @@ export default function ChatAIA() {
       id: 'welcome',
       role: 'assistant',
       ts: Date.now(),
+      content: "Bonjour, je suis Allô IA — l'assistant IA d'Allô Services CI. Posez‑moi vos questions en lien avec la Côte d'Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
+    },
+  ]);
   const [pendingDocType, setPendingDocType] = useState<null | 'cv' | 'lettre' | 'attestation'>(null);
 
   const detectDocIntent = (t: string): null | 'cv' | 'lettre' | 'attestation' => {
