@@ -326,6 +326,9 @@ export default function ChatAIA() {
         {/* Header */}
         <View style={styles.header}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} accessibilityLabel="Retour">
+              <Ionicons name="chevron-back" size={20} color="#222" />
+            </TouchableOpacity>
             <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_franco-civic-app/artifacts/j68dtokn_logoAI.png' }} style={styles.headerLogo} />
             <Text style={styles.headerTitle}>Allô IA</Text>
           </View>
