@@ -185,10 +185,33 @@ def test_alerts():
         return False
 
 def test_subscriptions():
-    """7) Subscriptions: GET /api/subscriptions/check?user_id=test-user → 200 + is_premium bool"""
+    """7) Subscriptions: GET /api/subscriptions/check?user_id=<valid_id> → 200 + is_premium bool"""
     print("\n🔍 Test 7: Subscriptions")
     try:
-        response = requests.get(f"{BACKEND_URL}/subscriptions/check?user_id=test-user", timeout=10)
+        # First create a test user to get a valid user_id
+        user_payload = {
+            "first_name": "Test",
+            "last_name": "User",
+            "email": "test.subscription@example.ci",
+            "phone": "+225 01 02 03 04 05",
+            "city": "Abidjan",
+            "preferred_lang": "fr"
+        }
+        user_response = requests.post(f"{BACKEND_URL}/auth/register", json=user_payload, timeout=10)
+        
+        if user_response.status_code != 200:
+            print(f"❌ FAIL - Could not create test user: {user_response.status_code}")
+            return False
+            
+        user_data = user_response.json()
+        user_id = user_data.get('id')
+        
+        if not user_id:
+            print(f"❌ FAIL - No user ID returned from registration")
+            return False
+        
+        # Now test subscription check with valid user_id
+        response = requests.get(f"{BACKEND_URL}/subscriptions/check?user_id={user_id}", timeout=10)
         
         if response.status_code == 200:
             data = response.json()
