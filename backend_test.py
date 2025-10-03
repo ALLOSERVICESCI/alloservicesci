@@ -10,8 +10,8 @@ import time
 import sys
 from typing import Dict, Any, Optional
 
-# Base URL - using local backend for sanity check
-BASE_URL = "http://localhost:8001/api"
+# Base URL - using production backend URL from frontend config
+BASE_URL = "https://franco-civic-app.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):
