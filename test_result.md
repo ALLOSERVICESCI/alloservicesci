@@ -507,6 +507,8 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: "✅ SERVICES UTILES PAGE TEST COMPLETED - Comprehensive E2E testing completed on iPhone 12/13/14 viewport (390x844). Score: 5/6 criteria validated (83.3%). Page is functional with header background, scrolling list, action buttons (Call/USSD/Website), operator badges (ORANGE/MTN/MOOV), and back navigation. Only minor issue: shadow under header not detected. All required screenshots captured successfully."
+  - agent: "testing"
+    message: "❌ SERVICES UTILES DYNAMIC UI MISSING - E2E test (iPhone 12/13/14: 390x844) reveals that the Services utiles page is missing ALL the dynamic UI elements requested in the review: 1) ❌ 'Autour de moi' capsule: 0 found, 2) ❌ 'Communes' capsule: 0 found, 3) ❌ Location line with orange icon + city name (Abidjan): 0 found, 4) ❌ Search bar (Health style): 0 found. Current implementation uses standalone services_utiles.tsx with simple list layout instead of dynamic [slug].tsx with capsules/filters like Health page. ✅ WORKING: Header image + title, content scrolling under header, back navigation (chevron). The page needs to be updated to use the dynamic category implementation with the same UI pattern as the Health page."
 
   - task: "FRONTEND E2E: Services utiles USSD + badges opérateurs (Orange/MTN/Moov) et Urgence rendering"
     implemented: true
