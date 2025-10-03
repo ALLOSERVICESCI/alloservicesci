@@ -54,6 +54,66 @@ export default function ChatAIA() {
   const [sending, setSending] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [temperature, setTemperature] = useState(0.5);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuMsg, setMenuMsg] = useState<Msg | null>(null);
+
+  const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) binary += String.fromCharCode(bytes[i]);
+    if (typeof btoa !== 'undefined') return btoa(binary);
+    // fallback
+    // @ts-ignore
+    return Buffer.from(binary, 'binary').toString('base64');
+  };
+
+  const exportAsPdf = async (content: string) => {
+    const html = `<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><style>body{font-family:-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;padding:24px;color:#111} h1{font-size:18px;margin-bottom:12px} pre{white-space:pre-wrap;line-height:1.5}</style></head><body><h1>Document Allô IA</h1><pre>${(content||'').replace(/</g,'&lt;')}</pre></body></html>`;
+    if (Platform.OS === 'web') {
+      const w = window.open('', '_blank');
+      if (w) { w.document.write(html); w.document.close(); w.focus(); w.print(); }
+      return;
+    }
+    const { printToFileAsync } = await import('expo-print');
+    const file = await printToFileAsync({ html });
+    try {
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(file.uri);
+      } else {
+        Alert.alert('Export PDF', 'PDF généré dans le cache du téléphone.');
+      }
+    } catch (e) {
+      Alert.alert('Export PDF', 'Impossible d’ouvrir le partage. Le fichier est enregistré.');
+    }
+  };
+
+  const exportAsDocx = async (content: string) => {
+    try {
+      const resp = await fetch('/api/ai/export/docx', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content }) });
+      if (!resp.ok) { Alert.alert('Export DOCX', 'Erreur serveur.'); return; }
+      if (Platform.OS === 'web') {
+        const blob = await resp.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'document_allo_ia.docx'; a.click();
+        URL.revokeObjectURL(url);
+        return;
+      }
+      const arr = await resp.arrayBuffer();
+      const b64 = arrayBufferToBase64(arr);
+      const fileUri = FileSystem.cacheDirectory + 'document_allo_ia.docx';
+      await FileSystem.writeAsStringAsync(fileUri, b64, { encoding: FileSystem.EncodingType.Base64 });
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(fileUri);
+      } else {
+        Alert.alert('Export DOCX', 'Fichier .docx enregistré dans le cache.');
+      }
+    } catch (e) {
+      Alert.alert('Export DOCX', 'Une erreur est survenue.');
+    }
+  };
+
   const [recents, setRecents] = useState<string[]>([]);
   const listRef = useRef<FlatList>(null);
   const abortRef = useRef<AbortController | null>(null);
