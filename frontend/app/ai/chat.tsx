@@ -344,17 +344,19 @@ export default function ChatAIA() {
           </View>
         )}
 
-        {/* Quick prompts */}
-        <View style={{ paddingHorizontal: 12, paddingTop: 10 }}>
-          <Text style={styles.sectionTitle}>Exemples</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 6 }}>
-            {QUICK_PROMPTS.map((p, idx) => (
-              <TouchableOpacity key={idx} onPress={() => sendText(p)} style={styles.quickBtn} accessibilityRole="button">
-                <Text style={styles.quickBtnText} numberOfLines={1}>{p}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
+        {/* Quick prompts supprimés */}
+        {false && (
+          <View style={{ paddingHorizontal: 12, paddingTop: 10 }}>
+            <Text style={styles.sectionTitle}>Exemples</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 6 }}>
+              {QUICK_PROMPTS.map((p, idx) => (
+                <TouchableOpacity key={idx} onPress={() => sendText(p)} style={styles.quickBtn} accessibilityRole="button">
+                  <Text style={styles.quickBtnText} numberOfLines={1}>{p}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        )}
 
         {/* List */}
         <FlatList
