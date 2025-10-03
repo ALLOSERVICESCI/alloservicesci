@@ -499,7 +499,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "FRONTEND E2E: Services utiles USSD + badges opérateurs (Orange/MTN/Moov) et Urgence rendering"
+    - "FRONTEND E2E: Services utiles page dynamique - capsules 'Autour de moi' et 'Communes', ligne localité, barre de recherche (style Santé)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
