@@ -55,6 +55,52 @@ export default function ChatAIA() {
       id: 'welcome',
       role: 'assistant',
       ts: Date.now(),
+  const [pendingDocType, setPendingDocType] = useState<null | 'cv' | 'lettre' | 'attestation'>(null);
+
+  const detectDocIntent = (t: string): null | 'cv' | 'lettre' | 'attestation' => {
+    const s = (t || '').toLowerCase();
+    if (/(\bcv\b|curriculum)/i.test(s)) return 'cv';
+    if (/(lettre\s*(de|\-)\s*motivation|lettre\s*(de|\-)\s*demande|\blettre\b)/i.test(s)) return 'lettre';
+    if (/(attestation|certificat|extrait)/i.test(s)) return 'attestation';
+    return null;
+  };
+
+  const buildQuestionsFor = (type: 'cv' | 'lettre' | 'attestation'): string => {
+    if (type === 'cv') {
+      return (
+        "Pour rédiger votre CV, j’ai besoin de ces informations:\n" +
+        "• Nom et Prénom\n" +
+        "• Contacts (téléphone, email) et Ville/Commune\n" +
+        "• Titre du CV (ex: Technicien réseaux) et Résumé/Profil (2-3 lignes)\n" +
+        "• Compétences (4-8 puces)\n" +
+        "• Expériences (poste, entreprise, ville, périodes, missions)\n" +
+        "• Formations (diplôme, établissement, années)\n" +
+        "• Langues, Outils, Liens (facultatif)\n" +
+        "Répondez point par point et je vous génère un CV structuré (Côte d’Ivoire)."
+      );
+    }
+    if (type === 'lettre') {
+      return (
+        "Pour rédiger votre lettre, j’ai besoin de:\n" +
+        "• Poste visé et Entreprise\n" +
+        "• Ville/Commune\n" +
+        "• Expériences/Compétences clés liées au poste\n" +
+        "• Motivations principales\n" +
+        "• Disponibilités et coordonnées\n" +
+        "Répondez point par point et je vous génère une lettre professionnelle (Côte d’Ivoire)."
+      );
+    }
+    return (
+      "Pour rédiger l’attestation, précisez:\n" +
+      "• Type d’attestation (travail, stage, résidence, bonne conduite, etc.)\n" +
+      "• Identité du bénéficiaire (nom, prénom, né le…, CNI si utile)\n" +
+      "• Objet de l’attestation (à quelle fin) et période concernée\n" +
+      "• Organisme/Autorité émettrice, ville/commune et date\n" +
+      "• Coordonnées utiles et signataire (fonction)\n" +
+      "Répondez point par point et je vous génère un modèle conforme (Côte d’Ivoire)."
+    );
+  };
+
       content: "Bonjour, je suis Allô IA — l'assistant IA d'Allô Services CI. Posez‑moi vos questions en lien avec la Côte d'Ivoire ou demandez un document (CV, lettre, ordre de mission…).",
     },
   ]);
