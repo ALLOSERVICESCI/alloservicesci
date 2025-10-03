@@ -326,7 +326,7 @@ export default function ChatAIA() {
         {/* Header */}
         <View style={styles.header}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Ionicons name="chatbubble-ellipses" size={22} color="#0A7C3A" />
+            <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_franco-civic-app/artifacts/j68dtokn_logoAI.png' }} style={styles.headerLogo} />
             <Text style={styles.headerTitle}>Allô IA</Text>
           </View>
           <View style={styles.headerActions} />
