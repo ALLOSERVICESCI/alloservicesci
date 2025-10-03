@@ -551,6 +551,7 @@ class BackendTester:
         print("\n🤖 6) AI CHAT TESTS")
         self.test_ai_chat_non_streaming()
         self.test_ai_chat_streaming()
+        self.test_ai_docx_export()
         
         # Summary
         self.print_summary()
