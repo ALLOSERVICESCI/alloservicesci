@@ -239,35 +239,7 @@ export default function ChatAIA() {
           </View>
           <View style={styles.headerActions}>
             <View style={styles.tempPill}>
-            {/* Actions rapides génération */}
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginLeft: 8 }}>
-              <TouchableOpacity onPress={() => sendText("Écris un CV simple (1 page) structuré: En-tête (Nom, Contact, Ville), Compétences (3-5 puces), Expériences (3 postes max, bullet points), Formation (2-3 items), Divers (langues, centres d'intérêt). Format clair et court.") } style={{ paddingHorizontal: 10, paddingVertical: 6, backgroundColor: '#FFF7ED', borderRadius: 12, borderWidth: 1, borderColor: '#FED7AA' }}>
-                <Text style={{ color: '#9A3412', fontWeight: '800' }}>Générer CV</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => sendText("Rédige une lettre de motivation professionnelle (max 200 mots) pour [POSTE] chez [ENTREPRISE] à [VILLE]. Structure: intro personnalisée, expérience pertinente, motivation, disponibilité, formule de politesse." )} style={{ paddingHorizontal: 10, paddingVertical: 6, backgroundColor: '#ECFDF5', borderRadius: 12, borderWidth: 1, borderColor: '#BBF7D0' }}>
-                <Text style={{ color: '#065F46', fontWeight: '800' }}>Générer Lettre</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={async () => {
-                try {
-                  const last = [...messages].reverse().find(m => m.role === 'assistant' && m.content.trim().length > 0);
-                  if (!last) { Alert.alert('Export PDF', "Aucune réponse à exporter. Envoyez d'abord une demande."); return; }
-                  const html = `<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><style>body{font-family:-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;padding:24px;color:#111} h1{font-size:20px;margin-bottom:16px} .brand{font-size:12px;color:#888;margin-top:24px} pre{white-space:pre-wrap;line-height:1.4}</style></head><body><h1>Document généré — Allô IA</h1><pre>${last.content.replace(/</g,'&lt;')}</pre><div class='brand'>Allô Services CI</div></body></html>`;
-                  if (Platform.OS === 'web') {
-                    const w = window.open('', '_blank');
-                    if (w) { w.document.write(html); w.document.close(); w.focus(); w.print(); }
-                  } else {
-                    const { printToFileAsync } = await import('expo-print');
-                    const file = await printToFileAsync({ html });
-                    Alert.alert('Export PDF', 'PDF généré. Ouvrez-le pour partager.');
-                    // Optionnel: partage natif si souhaité (expo-sharing)
-                  }
-                } catch (e) {
-                  Alert.alert('Export PDF', 'Une erreur est survenue lors de la génération du PDF.');
-                }
-              }} style={{ paddingHorizontal: 10, paddingVertical: 6, backgroundColor: '#EEF2FF', borderRadius: 12, borderWidth: 1, borderColor: '#C7D2FE' }}>
-                <Text style={{ color: '#3730A3', fontWeight: '800' }}>Exporter en PDF</Text>
-              </TouchableOpacity>
-            </View>
+            {/* Actions rapides génération supprimées selon demande */}
 
               <TouchableOpacity onPress={() => setTemperature(Math.max(0, parseFloat((temperature - 0.1).toFixed(1))))} style={styles.tempBtn}>
                 <Ionicons name="remove" size={16} color="#0A7C3A" />
