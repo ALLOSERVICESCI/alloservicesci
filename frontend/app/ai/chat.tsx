@@ -54,6 +54,8 @@ export default function ChatAIA() {
   const [sending, setSending] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [temperature, setTemperature] = useState(0.5);
+  const [composerHeight, setComposerHeight] = useState(64);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMsg, setMenuMsg] = useState<Msg | null>(null);
 
