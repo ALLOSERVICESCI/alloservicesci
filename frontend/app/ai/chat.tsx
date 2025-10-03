@@ -389,7 +389,7 @@ export default function ChatAIA() {
         )}
 
         {/* Composer */}
-        <View style={styles.composer}>
+        <View style={styles.composer} onLayout={(e) => setComposerHeight(Math.max(56, Math.ceil(e.nativeEvent.layout.height)))}>
           <TextInput
             style={styles.input}
             value={input}
