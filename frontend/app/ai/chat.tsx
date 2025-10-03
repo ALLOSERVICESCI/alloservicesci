@@ -327,19 +327,7 @@ export default function ChatAIA() {
             <Ionicons name="chatbubble-ellipses" size={22} color="#0A7C3A" />
             <Text style={styles.headerTitle}>Allô IA</Text>
           </View>
-          <View style={styles.headerActions}>
-            <View style={styles.tempPill}>
-            {/* Actions rapides génération supprimées selon demande */}
-
-              <TouchableOpacity onPress={() => setTemperature(Math.max(0, parseFloat((temperature - 0.1).toFixed(1))))} style={styles.tempBtn}>
-                <Ionicons name="remove" size={16} color="#0A7C3A" />
-              </TouchableOpacity>
-              <Text style={styles.tempText}>Temp. {temperature.toFixed(1)}</Text>
-              <TouchableOpacity onPress={() => setTemperature(Math.min(2, parseFloat((temperature + 0.1).toFixed(1))))} style={styles.tempBtn}>
-                <Ionicons name="add" size={16} color="#0A7C3A" />
-              </TouchableOpacity>
-            </View>
-          </View>
+          <View style={styles.headerActions} />
         </View>
 
         {/* Prompts récents */}
