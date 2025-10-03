@@ -738,6 +738,36 @@ async def ai_chat(payload: ChatRequest, request: Request):
     return {"content": content}
 
 
+# ---------- DOCX GENERATION FOR ALLO IA ----------
+class DocxRequest(BaseModel):
+    content: str
+    title: str | None = None
+
+@api.post('/ai/export/docx')
+async def export_docx(payload: DocxRequest):
+    try:
+        from docx import Document
+        from docx.shared import Pt
+        doc = Document()
+        if payload.title:
+            p = doc.add_paragraph()
+            run = p.add_run(payload.title)
+            run.bold = True
+            run.font.size = Pt(14)
+        for line in (payload.content or '').split('\n'):
+            doc.add_paragraph(line)
+        tmp_name = f"alloia_{uuid.uuid4().hex[:8]}.docx"
+        tmp_path = f"/tmp/{tmp_name}"
+        doc.save(tmp_path)
+        with open(tmp_path, 'rb') as f:
+            data = f.read()
+        return Response(content=data, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', headers={
+            'Content-Disposition': f'attachment; filename="{tmp_name}"'
+        })
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # Mount API
 app.include_router(api)
 
