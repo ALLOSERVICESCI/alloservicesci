@@ -2478,7 +2478,6 @@ export default function CategoryPage() {
                         </View>
                       </View>
                     ))}
-                  </ScrollView>
                 </>
               ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
