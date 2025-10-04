@@ -18,7 +18,6 @@ export default function CategoryLayout() {
     >
       {/* Routes dynamiques et statiques enregistrées explicitement pour éviter les conflits */}
       <Stack.Screen name="[slug]" options={{}} />
-      <Stack.Screen name="services_utiles" options={{}} />
       <Stack.Screen name="emplois" options={{}} />
       <Stack.Screen name="emplois/publier" options={{}} />
       <Stack.Screen name="emplois/conseil" options={{}} />
