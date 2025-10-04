@@ -113,7 +113,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'CHU de Treichville -- Urgences 24/7',
       summary: 'Accueil des urgences medico-chirurgicales. Boulevard de Marseille, Abidjan.',
-      tag: 'Hopital,
+      tag: 'Hopital',
       location: 'Treichville (Abidjan)',
       date: 'Horaires: 24h/24',
       source: 'https://sante.gouv.ci/'
