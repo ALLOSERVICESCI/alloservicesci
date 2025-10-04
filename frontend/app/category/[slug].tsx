@@ -1915,7 +1915,8 @@ export default function CategoryPage() {
 
   const openSource = async (url?: string) => { if (!url) return; try { await Linking.openURL(url); } catch (e) {} };
 
-  const data = CONTENT_BY_CATEGORY[s] || [];
+  // use categoryData defined above as single source of truth
+  const data = categoryData;
 
   const openUSSD = (code: string) => {
     if (!code) return;
