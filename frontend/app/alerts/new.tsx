@@ -70,7 +70,10 @@ export default function NewAlert() {
 }
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, padding: 16, backgroundColor: '#fff' },
+  container: { flexGrow: 1, padding: 16, backgroundColor: '#fff', paddingTop: 8 },
+  header: { flexDirection: 'row', alignItems: 'center', marginBottom: 16, paddingTop: Platform.select({ ios: 8, android: 8, default: 4 }) },
+  backBtn: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingRight: 12 },
+  backText: { color: '#0A7C3A', fontSize: 16, fontWeight: '600', marginLeft: 4 },
   title: { fontSize: 22, fontWeight: '800', color: '#0A7C3A', marginBottom: 16 },
   input: { borderWidth: 1, borderColor: '#E8F0E8', borderRadius: 10, padding: 12, marginBottom: 12, backgroundColor: '#FAFAF8' },
   btn: { backgroundColor: '#0F5132', padding: 12, borderRadius: 10, alignItems: 'center', marginTop: 8 },
