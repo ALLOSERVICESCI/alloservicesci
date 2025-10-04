@@ -42,7 +42,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       title: 'Police Secours',
       summary: 'Agressions, troubles, detresse citoyenne',
       tag: 'Police',
-      location: 'National,
+      location: 'National',
       phones: [
         { label: 'Numero court', tel: '100' }
       ],
