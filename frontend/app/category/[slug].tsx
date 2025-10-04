@@ -2709,15 +2709,13 @@ export default function CategoryPage() {
         />
       ) : (
 
-        <View style={{ padding: 16, paddingBottom: 40, paddingTop: padTop }}>
-          <FlatList
-            data={data}
-            renderItem={renderContentItem}
-            keyExtractor={(_, idx) => `${s}-urgence-${idx}`}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
-          />
-        </View>
+        <FlatList
+          data={data}
+          renderItem={renderContentItem}
+          keyExtractor={(_, idx) => `${s}-${idx}`}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ padding: 16, paddingBottom: 40, paddingTop: padTop + 20 }}
+        />
       )}
     </View>
   );
