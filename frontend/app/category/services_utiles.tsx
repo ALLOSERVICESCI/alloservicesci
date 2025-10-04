@@ -280,6 +280,21 @@ const styles = StyleSheet.create({
 
   listContent: { paddingTop: 16, paddingHorizontal: 16, paddingBottom: 24 },
 
+  headerControls: { marginBottom: 10 },
+  modeRow: { flexDirection: 'row', gap: 12, marginBottom: 10, flexWrap: 'wrap' },
+  modeCapsule: { borderRadius: 999, paddingVertical: 10, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  modeCapsuleText: { fontWeight: '800' },
+  
+  localityRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  localityValue: { color: '#222', fontSize: 18, fontWeight: '600' },
+
+  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
+  searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
+  suggestBox: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, marginTop: 4, marginBottom: 8, overflow: 'hidden' },
+  suggestItem: { paddingVertical: 10, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
+  suggestText: { color: '#222' },
+  locErrorText: { color: '#D32F2F', fontSize: 12, marginBottom: 8 },
+
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#222', flex: 1, paddingRight: 8 },
