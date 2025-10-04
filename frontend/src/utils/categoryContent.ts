@@ -30,7 +30,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'SAMU Cote d\'Ivoire',
       summary: 'Urgences medicales, ambulances, regulation medicale',
-      tag: 'Medical',
+      tag: 'Medical,
       location: 'National, dispatch prioritaire depuis Abidjan',
       phones: [
         { label: 'Numero court', tel: '185' },
@@ -42,7 +42,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       title: 'Police Secours',
       summary: 'Agressions, troubles, detresse citoyenne',
       tag: 'Police',
-      location: 'National',
+      location: 'National,
       phones: [
         { label: 'Numero court', tel: '100' }
       ],
@@ -51,7 +51,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       title: 'Gendarmerie nationale',
       summary: 'Securite publique hors centres urbains, renforts, interventions',
       tag: 'Gendarmerie',
-      location: 'National',
+      location: 'National,
       phones: [
         { label: 'Numero court', tel: '145' }
       ],
@@ -76,7 +76,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       location: 'Siege Treichville, antennes regionales',
       source: 'mailto:info@inhp.ci',
       phones: [
-        { label: 'Standard', tel: '21259254' }
+        { label: 'Standard, tel: '21259254' }
       ],
     },
     {
@@ -85,7 +85,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       tag: 'Aide humanitaire',
       location: 'Siege Abidjan, antennes nationales',
       phones: [
-        { label: 'Standard', tel: '2523002661' }
+        { label: 'Standard, tel: '2523002661' }
       ],
     },
     {
@@ -104,8 +104,8 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       location: 'Abidjan (Plateau - DITT), couverture nationale',
       source: 'https://www.plcc.ci',
       phones: [
-        { label: 'Standard', tel: '22447270' },
-        { label: 'Standard', tel: '22447271' }
+        { label: 'Standard, tel: '22447270' },
+        { label: 'Standard, tel: '22447271' }
       ],
     },
   ],
@@ -113,7 +113,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'CHU de Treichville -- Urgences 24/7',
       summary: 'Accueil des urgences medico-chirurgicales. Boulevard de Marseille, Abidjan.',
-      tag: 'Hopital',
+      tag: 'Hopital,
       location: 'Treichville (Abidjan)',
       date: 'Horaires: 24h/24',
       source: 'https://sante.gouv.ci/'
@@ -121,7 +121,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'CHU de Cocody -- Urgences',
       summary: 'Prise en charge des urgences et specialites. Acces via Boulevard Francois Mitterrand.',
-      tag: 'Hopital',
+      tag: 'Hopital,
       location: 'Cocody (Abidjan)',
       date: 'Horaires: 24h/24'
     },
@@ -137,7 +137,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'Calendrier scolaire 2024-2025',
       summary: 'Rentree, conges et periodes d\'examens (BEPC, BAC).',
-      tag: 'Officiel',
+      tag: 'Officiel,
       date: 'Publication: selon MEN',
       source: 'https://www.education.gouv.ci/'
     },
@@ -166,7 +166,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     },
     {
       title: 'Concours de la Fonction Publique',
-      summary: "Consultez les avis d'ouverture, conditions d'eligibilite et centres d'examen.",
+      summary: "Consultez les avis douverture, conditions deligibilite et centres dexamen.",
       tag: 'Concours',
       date: 'Periode: selon arretes officiels',
       source: 'https://www.fonctionpublique.gouv.ci/'
@@ -187,26 +187,26 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       source: 'https://www.men-deco.org/'
     },
     {
-      title: 'BTS Cote d'Ivoire -- Inscriptions et resultats',
+      title: 'BTS Cote dIvoire -- Inscriptions et resultats',
       summary: 'Examens du Brevet de Technicien Superieur (BTS): calendriers, inscriptions, resultats.',
       tag: 'Enseignement superieur',
       source: 'https://bts.mesrs.ci/'
     },
     {
       title: 'CAFOP -- Concours instituteurs',
-      summary: 'Concours d'entree aux CAFOP (formation des instituteurs).',
+      summary: 'Concours dentree aux CAFOP (formation des instituteurs).',
       tag: 'Concours',
       source: 'https://www.men-deco.org/'
     },
     {
       title: 'ENS Abidjan -- Concours',
-      summary: 'Concours d'acces a l'Ecole Normale Superieure (enseignants).',
+      summary: 'Concours dacces a lEcole Normale Superieure (enseignants).',
       tag: 'Concours',
       source: 'https://www.ensabidjan.ci/'
     },
     {
       title: 'INFAS -- Concours paramedicaux',
-      summary: 'Concours d'acces a l'INFAS (sante): filieres et modalites.',
+      summary: 'Concours dacces a lINFAS (sante): filieres et modalites.',
       tag: 'Concours',
       source: 'https://www.infas.ci/'
     },
@@ -238,12 +238,12 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'Impots Cote d'Ivoire (DGI)',
+      title: 'Impots Cote dIvoire (DGI)',
       summary: 'Declarations et paiements en ligne, informations fiscales (particuliers et entreprises).',
       tag: 'Fiscalite',
       source: 'https://www.dgi.gouv.ci',
       phones: [
-        { label: 'Standard', tel: '2720252525' }
+        { label: 'Standard, tel: '2720252525' }
       ]
     },
     {
@@ -259,7 +259,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   services_utiles: [
     // Eau & Electricite
     {
-      title: 'SODECI (Societe de Distribution d'Eau de Cote d'Ivoire)',
+      title: 'SODECI (Societe de Distribution dEau de Cote dIvoire)',
       summary: 'Eau & Electricite -- Assistance eau potable et signalements de fuites',
       source: 'https://www.sodeci.ci/',
       phones: [
@@ -268,7 +268,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'CIE (Compagnie Ivoirienne d'Electricite)',
+      title: 'CIE (Compagnie Ivoirienne dElectricite)',
       summary: 'Eau & Electricite -- Service client electricite et signalements de pannes',
       source: 'https://www.cie.ci/',
       phones: [
@@ -279,7 +279,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
 
     // Operateurs Telecoms & Mobile
     {
-      title: 'Orange Cote d'Ivoire - Plateau',
+      title: 'Orange Cote dIvoire - Plateau',
       summary: 'Agence Orange -- Mobile, Internet, Orange Money',
       commune: 'Plateau',
       source: 'https://www.orange.ci',
@@ -292,7 +292,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'Orange Cote d'Ivoire - Cocody',
+      title: 'Orange Cote dIvoire - Cocody',
       summary: 'Agence Orange -- Mobile, Internet, Orange Money',
       commune: 'Cocody',
       source: 'https://www.orange.ci',
@@ -305,7 +305,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'Orange Cote d'Ivoire - Yopougon',
+      title: 'Orange Cote dIvoire - Yopougon',
       summary: 'Agence Orange -- Mobile, Internet, Orange Money',
       commune: 'Yopougon',
       source: 'https://www.orange.ci',
@@ -318,7 +318,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'MTN Cote d'Ivoire - Plateau',
+      title: 'MTN Cote dIvoire - Plateau',
       summary: 'Agence MTN -- Mobile, Internet, MoMo',
       commune: 'Plateau',
       source: 'https://www.mtn.ci',
@@ -331,7 +331,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'MTN Cote d'Ivoire - Marcory',
+      title: 'MTN Cote dIvoire - Marcory',
       summary: 'Agence MTN -- Mobile, Internet, MoMo',
       commune: 'Marcory',
       source: 'https://www.mtn.ci',
@@ -372,7 +372,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
 
     // Internet Fixe & TV
     {
-      title: 'Canal+ Cote d'Ivoire - Plateau',
+      title: 'Canal+ Cote dIvoire - Plateau',
       summary: 'TV par satellite -- Abonnements et decodeurs',
       commune: 'Plateau',
       source: 'https://www.canalplus-afrique.com/ci',
@@ -381,7 +381,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'Canal+ Cote d'Ivoire - Cocody',
+      title: 'Canal+ Cote dIvoire - Cocody',
       summary: 'TV par satellite -- Abonnements et decodeurs',
       commune: 'Cocody',
       source: 'https://www.canalplus-afrique.com/ci',
@@ -418,7 +418,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
 
     // Banques
     {
-      title: 'Societe Generale Cote d'Ivoire - Plateau',
+      title: 'Societe Generale Cote dIvoire - Plateau',
       summary: 'Services bancaires -- Comptes, cartes, credits',
       commune: 'Plateau',
       source: 'https://societegenerale.ci',
@@ -463,7 +463,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'Ecobank Cote d'Ivoire - Plateau',
+      title: 'Ecobank Cote dIvoire - Plateau',
       summary: 'Services bancaires et mobile banking',
       commune: 'Plateau',
       source: 'https://www.ecobank.com/ci',
@@ -499,7 +499,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'UBA Cote d'Ivoire - Plateau',
+      title: 'UBA Cote dIvoire - Plateau',
       summary: 'Services bancaires internationaux',
       commune: 'Plateau',
       source: 'https://www.ubagroup.com',
@@ -573,7 +573,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       date: 'Acces: libre (zones publiques)'
     },
     {
-      title: 'Musee des Civilisations de Cote d'Ivoire',
+      title: 'Musee des Civilisations de Cote dIvoire',
       summary: 'Collections et expositions permanentes.',
       tag: 'Musee',
       location: 'Plateau (Abidjan)',
@@ -582,7 +582,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   ],
   transport: [
     {
-      title: 'SOTRA -- Reseau d'Abidjan',
+      title: 'SOTRA -- Reseau dAbidjan',
       summary: 'Lignes de bus et bateaux-bus (horaires et plans).',
       tag: 'Urbain',
       location: 'Abidjan',
@@ -614,7 +614,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     },
     {
       title: 'Astuces de securite',
-      summary: "Gardez les numeros d'urgence a portee de main et partagez des infos verifiees.",
+      summary: "Gardez les numeros durgence a portee de main et partagez des infos verifiees.",
       tag: 'Conseils'
     },
   ],
