@@ -187,7 +187,7 @@ export default function Pharmacies() {
       <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}> 
 
         {/* Filtres actifs (badges) */}
-        <View style={styles.activeFiltersRow}>
+        <View style={[styles.activeFiltersRow, { marginTop: 20 }]}>
           <TouchableOpacity onPress={handleNearPress} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={[styles.chip, nearMe ? styles.chipNear : styles.chipInactive]} accessible accessibilityLabel="chipNear">
             <Ionicons name="location-outline" size={18} color={nearMe ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
             <Text style={nearMe ? styles.chipTextNear : styles.chipTextInactive}>{t('nearMe')}</Text>
