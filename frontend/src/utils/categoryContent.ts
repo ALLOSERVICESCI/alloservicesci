@@ -28,9 +28,9 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ],
     },
     {
-      title: 'SAMU Cote d\'Ivoire',
+      title: 'SAMU Cote Ivoire',
       summary: 'Urgences medicales, ambulances, regulation medicale',
-      tag: 'Medical,
+      tag: 'Medical',
       location: 'National, dispatch prioritaire depuis Abidjan',
       phones: [
         { label: 'Numero court', tel: '185' },
