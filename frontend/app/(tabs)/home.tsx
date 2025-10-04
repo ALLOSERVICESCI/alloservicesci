@@ -296,7 +296,7 @@ export default function Home() {
                   ) : category.slug === 'services_publics' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/d40242y4_Background_services_publics.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'services_utiles' ? (
-                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/mggq3vgi_Background_services_utiles.png' }} style={styles.categoryIconImg} />
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_74996fed-469a-4770-ac1c-e84e14d54bce/artifacts/b46yu9eu_services_utiles.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'transport' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/b0h611zz_Background_transport.png' }} style={styles.categoryIconImg} />
                   ) : (
