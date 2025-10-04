@@ -2070,7 +2070,7 @@ export default function CategoryPage() {
               <View style={styles.santeListContainer}>
                 <Text style={styles.santeListItem}>• Hôpitaux publics</Text>
                 <Text style={styles.santeListItem}>• Cliniques privées</Text>
-                <Text style={styles.santeListItem}>• Centres de santé communautaire</Text>
+                <Text style={styles.santeListItem}>• Centres de santé</Text>
                 <Text style={styles.santeListItem}>• Centre de vaccination</Text>
                 <Text style={styles.santeListItem}>• Service d'hygiène publique</Text>
               </View>
