@@ -358,6 +358,8 @@ const styles = StyleSheet.create({
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#222', flex: 1, paddingRight: 8 },
   cardSummary: { marginTop: 6, color: '#444', lineHeight: 20 },
+  communeBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4, marginBottom: 6 },
+  communeBadgeText: { fontSize: 13, color: '#FF8A00', fontWeight: '600' },
 
   brandBadge: { borderRadius: 999, paddingHorizontal: 8, paddingVertical: 4 },
   brandBadgeText: { fontSize: 11, fontWeight: '800', color: '#fff' },
