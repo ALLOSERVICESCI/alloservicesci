@@ -2065,7 +2065,17 @@ export default function CategoryPage() {
         </View>
       ) : sKey === 'sante' ? (
         <View style={styles.headerWrapperSante}>
-          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover">
+            <LinearGradient colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.7)']} style={styles.headerGradient}>
+              <View style={styles.santeListContainer}>
+                <Text style={styles.santeListItem}>• Hôpitaux publics</Text>
+                <Text style={styles.santeListItem}>• Cliniques privées</Text>
+                <Text style={styles.santeListItem}>• Centres de santé communautaire</Text>
+                <Text style={styles.santeListItem}>• Centre de vaccination</Text>
+                <Text style={styles.santeListItem}>• Service d'hygiène publique</Text>
+              </View>
+            </LinearGradient>
+          </ImageBackground>
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
