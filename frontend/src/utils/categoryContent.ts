@@ -51,7 +51,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       title: 'Gendarmerie nationale',
       summary: 'Securite publique hors centres urbains, renforts, interventions',
       tag: 'Gendarmerie',
-      location: 'National,
+      location: 'National',
       phones: [
         { label: 'Numero court', tel: '145' }
       ],
