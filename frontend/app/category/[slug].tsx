@@ -2770,6 +2770,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   backBtnText: { color: '#fff', marginLeft: 4, fontWeight: '600' },
+  santeListContainer: { 
+    paddingHorizontal: 20, 
+    paddingBottom: 20, 
+    justifyContent: 'flex-end', 
+    flex: 1,
+    alignItems: 'flex-start'
+  },
+  santeListItem: { 
+    color: '#fff', 
+    fontSize: 15, 
+    fontWeight: '600', 
+    marginBottom: 6,
+    lineHeight: 22
+  },
   headerWrapperSante: {
     position: 'absolute',
     top: 0,
