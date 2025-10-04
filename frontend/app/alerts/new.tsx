@@ -53,7 +53,6 @@ export default function NewAlert() {
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
             <Ionicons name="chevron-back" size={24} color="#0A7C3A" />
-            <Text style={styles.backText}>Retour</Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.title}>Nouvelle alerte</Text>
