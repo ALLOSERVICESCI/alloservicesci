@@ -519,6 +519,22 @@ agent_communication:
     priority: "high"
     needs_retesting: false
     status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ Services Utiles USSD + badges opérateurs working correctly. All operator badges (Orange/MTN/Moov) rendering with proper USSD codes (*144#, *111#, *133#, *155#, etc.) and call buttons. Urgence rendering confirmed."
+
+  - task: "FRONTEND E2E: Services Utiles page dynamique - iPhone 12/13/14 viewport (390x844) comprehensive testing"
+    implemented: true
+    working: true
+    file: "frontend/app/category/services_utiles.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎉 PERFECT 100% SUCCESS RATE! Comprehensive iPhone 12/13/14 viewport (390x844) testing completed with all review request requirements met: A) Home tile order & navigation (3/3 PASS): Categories carousel present, tile order correct (Emplois & Offres → Services Utiles → Agriculture), Services Utiles navigation working. B) Services Utiles page header & shadow & scroll (5/5 PASS): Header title 'Services Utiles', subtitle 'Accéder à votre service client en une touche', header background image visible, shadow under header detected, list scrolls under fixed header. C) Services Utiles controls (4/4 PASS): 'Autour de moi' and 'Communes' capsules present, location line with orange icon and Abidjan text, commune search input with correct placeholder, service search input with correct placeholder. D) Card actions (3/3 PASS): 10 Call buttons found, 4 USSD buttons found, 5 Website buttons found. All service cards (SODECI, CIE, Orange, MTN, Moov) rendering correctly with proper action buttons. OVERALL RESULT: 15/15 tests PASSED (100.0%). Services Utiles page fully functional and ready for production!"
+    status_history:
       - working: "NA"
         agent: "testing"
 
