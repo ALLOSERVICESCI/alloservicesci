@@ -136,14 +136,14 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   education: [
     {
       title: 'Calendrier scolaire 2024–2025',
-      summary: 'Rentrée, congés et périodes d’examens (BEPC, BAC).',
+      summary: 'Rentrée, congés et périodes d'examens (BEPC, BAC).',
       tag: 'Officiel',
       date: 'Publication: selon MEN',
       source: 'https://www.education.gouv.ci/'
     },
     {
       title: 'Orientation et bourses',
-      summary: "Procédures d’orientation et demandes de bourses pour élèves et étudiants.",
+      summary: "Procédures d'orientation et demandes de bourses pour élèves et étudiants.",
       tag: 'Études',
       date: 'Horaires: Lun–Ven 08:00–16:00',
       source: 'https://www.education.gouv.ci/'
@@ -159,21 +159,21 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   examens_concours: [
     {
       title: 'Inscriptions en ligne — Examens (DECO)',
-      summary: 'BEPC, BAC: vérifiez les dates d’inscription et modalités chaque session.',
+      summary: 'BEPC, BAC: vérifiez les dates d'inscription et modalités chaque session.',
       tag: 'Examens',
       date: 'Période: selon calendrier DECO',
       source: 'https://www.men-deco.org/'
     },
     {
       title: 'Concours de la Fonction Publique',
-      summary: "Consultez les avis d’ouverture, conditions d’éligibilité et centres d’examen.",
+      summary: "Consultez les avis d'ouverture, conditions d'éligibilité et centres d'examen.",
       tag: 'Concours',
       date: 'Période: selon arrêtés officiels',
       source: 'https://www.fonctionpublique.gouv.ci/'
     },
     {
-      title: 'ENA — École Nationale d’Administration',
-      summary: 'Concours d’accès aux cycles de formation (annuel).',
+      title: 'ENA — École Nationale d'Administration',
+      summary: 'Concours d'accès aux cycles de formation (annuel).',
       tag: 'Carrière',
       date: 'Période: session annuelle',
       source: 'https://www.ena.ci/'
@@ -187,26 +187,26 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       source: 'https://www.men-deco.org/'
     },
     {
-      title: 'BTS Côte d’Ivoire — Inscriptions et résultats',
+      title: 'BTS Côte d'Ivoire — Inscriptions et résultats',
       summary: 'Examens du Brevet de Technicien Supérieur (BTS): calendriers, inscriptions, résultats.',
       tag: 'Enseignement supérieur',
       source: 'https://bts.mesrs.ci/'
     },
     {
       title: 'CAFOP — Concours instituteurs',
-      summary: 'Concours d’entrée aux CAFOP (formation des instituteurs).',
+      summary: 'Concours d'entrée aux CAFOP (formation des instituteurs).',
       tag: 'Concours',
       source: 'https://www.men-deco.org/'
     },
     {
       title: 'ENS Abidjan — Concours',
-      summary: 'Concours d’accès à l’École Normale Supérieure (enseignants).',
+      summary: 'Concours d'accès à l'École Normale Supérieure (enseignants).',
       tag: 'Concours',
       source: 'https://www.ensabidjan.ci/'
     },
     {
       title: 'INFAS — Concours paramédicaux',
-      summary: 'Concours d’accès à l’INFAS (santé): filières et modalités.',
+      summary: 'Concours d'accès à l'INFAS (santé): filières et modalités.',
       tag: 'Concours',
       source: 'https://www.infas.ci/'
     },
@@ -238,7 +238,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'Impôts Côte d’Ivoire (DGI)',
+      title: 'Impôts Côte d'Ivoire (DGI)',
       summary: 'Déclarations et paiements en ligne, informations fiscales (particuliers et entreprises).',
       tag: 'Fiscalité',
       source: 'https://www.dgi.gouv.ci',
@@ -257,8 +257,9 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     },
   ],
   services_utiles: [
+    // Eau & Électricité
     {
-      title: 'SODECI (Société de Distribution d’Eau de Côte d’Ivoire)',
+      title: 'SODECI (Société de Distribution d'Eau de Côte d'Ivoire)',
       summary: 'Eau & Électricité — Assistance eau potable et signalements de fuites',
       source: 'https://www.sodeci.ci/',
       phones: [
@@ -267,7 +268,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'CIE (Compagnie Ivoirienne d’Électricité)',
+      title: 'CIE (Compagnie Ivoirienne d'Électricité)',
       summary: 'Eau & Électricité — Service client électricité et signalements de pannes',
       source: 'https://www.cie.ci/',
       phones: [
@@ -275,13 +276,15 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
         { label: 'Fixe', tel: '2721233333' },
       ]
     },
+
+    // Opérateurs Télécoms & Mobile
     {
-      title: 'Orange Côte d’Ivoire',
-      summary: 'Opérateurs télécoms & internet — Services USSD : *144# (forfait), *111# (argent mobile)',
+      title: 'Orange Côte d'Ivoire - Plateau',
+      summary: 'Agence Orange — Mobile, Internet, Orange Money',
+      commune: 'Plateau',
       source: 'https://www.orange.ci',
       phones: [
-        { label: 'Service client (mobile Orange)', tel: '070707' },
-        { label: 'Fixe', tel: '2720221212' }
+        { label: 'Service client', tel: '070707' },
       ],
       ussd: [
         { label: 'Forfait', code: '*144#' },
@@ -289,13 +292,38 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'MTN Côte d’Ivoire',
-      summary: 'Services USSD : *133# (forfait), 13310# (MoMo)',
-      tag: 'Opérateurs télécoms & internet',
+      title: 'Orange Côte d'Ivoire - Cocody',
+      summary: 'Agence Orange — Mobile, Internet, Orange Money',
+      commune: 'Cocody',
+      source: 'https://www.orange.ci',
+      phones: [
+        { label: 'Service client', tel: '070707' },
+      ],
+      ussd: [
+        { label: 'Forfait', code: '*144#' },
+        { label: 'Orange Money', code: '*111#' }
+      ]
+    },
+    {
+      title: 'Orange Côte d'Ivoire - Yopougon',
+      summary: 'Agence Orange — Mobile, Internet, Orange Money',
+      commune: 'Yopougon',
+      source: 'https://www.orange.ci',
+      phones: [
+        { label: 'Service client', tel: '070707' },
+      ],
+      ussd: [
+        { label: 'Forfait', code: '*144#' },
+        { label: 'Orange Money', code: '*111#' }
+      ]
+    },
+    {
+      title: 'MTN Côte d'Ivoire - Plateau',
+      summary: 'Agence MTN — Mobile, Internet, MoMo',
+      commune: 'Plateau',
       source: 'https://www.mtn.ci',
       phones: [
         { label: 'Service client', tel: '555' },
-        { label: 'Fixe', tel: '2720255555' }
       ],
       ussd: [
         { label: 'Forfait', code: '*133#' },
@@ -303,13 +331,25 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'Moov Africa Côte d’Ivoire',
-      summary: 'Opérateurs télécoms & internet — Services USSD : *155# (forfait), 1554# (Moov Money)',
-      tag: 'Opérateurs télécoms & internet',
+      title: 'MTN Côte d'Ivoire - Marcory',
+      summary: 'Agence MTN — Mobile, Internet, MoMo',
+      commune: 'Marcory',
+      source: 'https://www.mtn.ci',
+      phones: [
+        { label: 'Service client', tel: '555' },
+      ],
+      ussd: [
+        { label: 'Forfait', code: '*133#' },
+        { label: 'MoMo', code: '13310#' }
+      ]
+    },
+    {
+      title: 'Moov Africa - Adjamé',
+      summary: 'Agence Moov — Mobile, Internet, Moov Money',
+      commune: 'Adjamé',
       source: 'https://www.moov-africa.ci',
       phones: [
         { label: 'Service client', tel: '1010' },
-        { label: 'Fixe', tel: '2720311010' }
       ],
       ussd: [
         { label: 'Forfait', code: '*155#' },
@@ -317,10 +357,182 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       ]
     },
     {
-      title: 'La Poste de Côte d’Ivoire',
-      summary: 'Services postaux, colis et mandats.',
-      tag: 'Services',
-      location: 'Agences (Plateau, Treichville, etc.)',
+      title: 'Moov Africa - Treichville',
+      summary: 'Agence Moov — Mobile, Internet, Moov Money',
+      commune: 'Treichville',
+      source: 'https://www.moov-africa.ci',
+      phones: [
+        { label: 'Service client', tel: '1010' },
+      ],
+      ussd: [
+        { label: 'Forfait', code: '*155#' },
+        { label: 'Moov Money', code: '1554#' }
+      ]
+    },
+
+    // Internet Fixe & TV
+    {
+      title: 'Canal+ Côte d'Ivoire - Plateau',
+      summary: 'TV par satellite — Abonnements et décodeurs',
+      commune: 'Plateau',
+      source: 'https://www.canalplus-afrique.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722400000' },
+      ]
+    },
+    {
+      title: 'Canal+ Côte d'Ivoire - Cocody',
+      summary: 'TV par satellite — Abonnements et décodeurs',
+      commune: 'Cocody',
+      source: 'https://www.canalplus-afrique.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722400000' },
+      ]
+    },
+    {
+      title: 'Startime CI - Adjamé',
+      summary: 'TV par satellite — Décodeurs et recharges',
+      commune: 'Adjamé',
+      phones: [
+        { label: 'Service client', tel: '2722424242' },
+      ]
+    },
+    {
+      title: 'Orange Internet Fixe - Plateau',
+      summary: 'Internet Fibre & ADSL — Installation et assistance technique',
+      commune: 'Plateau',
+      source: 'https://www.orange.ci',
+      phones: [
+        { label: 'Service client', tel: '070707' },
+      ]
+    },
+    {
+      title: 'MTN Fiber - Cocody',
+      summary: 'Internet Fibre optique — Installation et SAV',
+      commune: 'Cocody',
+      source: 'https://www.mtn.ci',
+      phones: [
+        { label: 'Service client', tel: '555' },
+      ]
+    },
+
+    // Banques
+    {
+      title: 'Société Générale Côte d'Ivoire - Plateau',
+      summary: 'Services bancaires — Comptes, cartes, crédits',
+      commune: 'Plateau',
+      source: 'https://societegenerale.ci',
+      phones: [
+        { label: 'Service client', tel: '2720272727' },
+      ]
+    },
+    {
+      title: 'Société Générale CI - Cocody Angré',
+      summary: 'Services bancaires — Comptes, cartes, crédits',
+      commune: 'Cocody',
+      source: 'https://societegenerale.ci',
+      phones: [
+        { label: 'Service client', tel: '2720272727' },
+      ]
+    },
+    {
+      title: 'SGBCI - Marcory Zone 4',
+      summary: 'Services bancaires — Comptes, cartes, crédits',
+      commune: 'Marcory',
+      source: 'https://societegenerale.ci',
+      phones: [
+        { label: 'Service client', tel: '2720272727' },
+      ]
+    },
+    {
+      title: 'Banque Atlantique CI - Plateau',
+      summary: 'Services bancaires — Épargne, virements, prêts',
+      commune: 'Plateau',
+      source: 'https://www.atlantiquefinance.com',
+      phones: [
+        { label: 'Service client', tel: '2720303030' },
+      ]
+    },
+    {
+      title: 'Banque Atlantique - Adjamé',
+      summary: 'Services bancaires — Épargne, virements, prêts',
+      commune: 'Adjamé',
+      source: 'https://www.atlantiquefinance.com',
+      phones: [
+        { label: 'Service client', tel: '2720303030' },
+      ]
+    },
+    {
+      title: 'Ecobank Côte d'Ivoire - Plateau',
+      summary: 'Services bancaires et mobile banking',
+      commune: 'Plateau',
+      source: 'https://www.ecobank.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2720252525' },
+      ]
+    },
+    {
+      title: 'Ecobank - Treichville',
+      summary: 'Services bancaires et mobile banking',
+      commune: 'Treichville',
+      source: 'https://www.ecobank.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2720252525' },
+      ]
+    },
+    {
+      title: 'NSIA Banque - Plateau',
+      summary: 'Banque et assurance — Comptes, cartes, assurances',
+      commune: 'Plateau',
+      source: 'https://www.nsia.com',
+      phones: [
+        { label: 'Service client', tel: '2720444444' },
+      ]
+    },
+    {
+      title: 'NSIA Banque - Yopougon',
+      summary: 'Banque et assurance — Comptes, cartes, assurances',
+      commune: 'Yopougon',
+      source: 'https://www.nsia.com',
+      phones: [
+        { label: 'Service client', tel: '2720444444' },
+      ]
+    },
+    {
+      title: 'UBA Côte d'Ivoire - Plateau',
+      summary: 'Services bancaires internationaux',
+      commune: 'Plateau',
+      source: 'https://www.ubagroup.com',
+      phones: [
+        { label: 'Service client', tel: '2720282828' },
+      ]
+    },
+    {
+      title: 'Coris Bank - Adjamé',
+      summary: 'Services bancaires — Transferts et épargne',
+      commune: 'Adjamé',
+      phones: [
+        { label: 'Service client', tel: '2722505050' },
+      ]
+    },
+
+    // Services Postaux
+    {
+      title: 'La Poste CI - Plateau',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Plateau',
+      date: 'Horaires: Lun–Ven 08:00–16:00'
+    },
+    {
+      title: 'La Poste CI - Treichville',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Treichville',
+      date: 'Horaires: Lun–Ven 08:00–16:00'
+    },
+    {
+      title: 'La Poste CI - Cocody',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Cocody',
       date: 'Horaires: Lun–Ven 08:00–16:00'
     },
   ],
@@ -361,7 +573,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       date: 'Accès: libre (zones publiques)'
     },
     {
-      title: 'Musée des Civilisations de Côte d’Ivoire',
+      title: 'Musée des Civilisations de Côte d'Ivoire',
       summary: 'Collections et expositions permanentes.',
       tag: 'Musée',
       location: 'Plateau (Abidjan)',
@@ -370,7 +582,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   ],
   transport: [
     {
-      title: 'SOTRA — Réseau d’Abidjan',
+      title: 'SOTRA — Réseau d'Abidjan',
       summary: 'Lignes de bus et bateaux-bus (horaires et plans).',
       tag: 'Urbain',
       location: 'Abidjan',
