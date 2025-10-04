@@ -2051,7 +2051,14 @@ export default function CategoryPage() {
 
       {sKey === 'urgence' ? (
         <View style={styles.headerWrapperUrgence}>
-          <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover" />
+          <ImageBackground source={bg} style={styles.headerUrgence} resizeMode="cover">
+            <LinearGradient colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.7)']} style={styles.headerGradient}>
+              <View style={styles.headerContentUrgence}>
+                <Text style={styles.headerTitleUrgence}>Les unités d'urgence</Text>
+                <Text style={styles.headerSubtitleUrgence}>La réactivité sauve des vies</Text>
+              </View>
+            </LinearGradient>
+          </ImageBackground>
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
