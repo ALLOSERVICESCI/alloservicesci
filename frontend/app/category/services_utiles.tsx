@@ -23,28 +23,33 @@ type Item = {
   communes?: string[]; // points de service par commune / ville
 };
 
-// Contenu initial (services clients)
+// Contenu initial (services clients) — les 4 opérateurs demandés sont placés en haut pour visibilité QA
 const DATA: Item[] = [
+  // Priorisés pour tests
+  { title: 'CANALBOX Côte d’Ivoire', summary: 'Internet fibre & box – assistance', source: 'https://www.canalbox.com', communes: ['Cocody','Marcory','Yopougon','Plateau','San-Pédro'] },
+  { title: 'Moov Fibre', summary: 'Fibre optique – installation & support', source: 'https://www.moov-africa.ci', communes: ['Cocody','Plateau','Marcory','Port-Bouët','Bouaké'] },
+  { title: 'Wave Mobile Money', summary: 'Service client & assistance', source: 'https://www.wave.com', communes: ['Cocody','Yopougon','Abobo','Marcory','Bouaké','San-Pédro'] },
+  { title: 'Orange Bank Africa', summary: 'Banque mobile – assistance clients', source: 'https://orangebankafrica.com', communes: ['Plateau','Cocody','Marcory','Yamoussoukro'] },
+
+  // Réseau & services essentiels
   { title: 'SODECI — Eau', summary: 'Assistance eau potable et signalements de fuites', source: 'https://www.sodeci.ci/', phones: [ { label: 'Service client', tel: '175' }, { label: 'Fixe', tel: '2721230000' } ], communes: ['Cocody','Yopougon','Marcory','Treichville','Plateau','Abobo','Bouaké','Yamoussoukro'] },
   { title: 'CIE — Électricité', summary: 'Pannes et service client électricité', source: 'https://www.cie.ci/', phones: [ { label: 'Service client', tel: '179' }, { label: 'Fixe', tel: '2721233333' } ], communes: ['Cocody','Yopougon','Marcory','Treichville','Plateau','Abobo','Bouaké','Yamoussoukro'] },
   { title: 'Orange Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.orange.ci', phones: [ { label: 'Service client', tel: '070707' }, { label: 'Fixe', tel: '2720221212' } ], ussd: [ { label: 'Forfait', code: '*144#' }, { label: 'Orange Money', code: '*111#' } ], communes: ['Cocody','Marcory','Plateau','Yopougon','Bouaké','San-Pédro'] },
   { title: 'MTN Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.mtn.ci', phones: [ { label: 'Service client', tel: '555' }, { label: 'Fixe', tel: '2720255555' } ], ussd: [ { label: 'Forfait', code: '*133#' }, { label: 'MoMo', code: '13310#' } ], communes: ['Cocody','Marcory','Abobo','Yopougon','Daloa','Korhogo'] },
   { title: 'Moov Africa Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.moov-africa.ci', phones: [ { label: 'Service client', tel: '1010' }, { label: 'Fixe', tel: '2720311010' } ], ussd: [ { label: 'Forfait', code: '*155#' }, { label: 'Moov Money', code: '1554#' } ], communes: ['Cocody','Plateau','Yopougon','Man','Abengourou'] },
   { title: 'La Poste de Côte d’Ivoire', summary: 'Services postaux, colis et mandats', communes: ['Plateau','Treichville','Yopougon','Cocody','Gagnoa'] },
+
   // Banques
   { title: 'Société Générale Côte d’Ivoire', summary: 'Agence bancaire & services clients', source: 'https://societegenerale.ci', communes: ['Plateau','Cocody','Marcory','Yopougon','Bouaké'] },
   { title: 'NSIA Banque', summary: 'Agence bancaire & assistance clients', source: 'https://nsiabanque.ci', communes: ['Plateau','Cocody','Marcory','San-Pédro'] },
   { title: 'BNI', summary: 'Banque Nationale d’Investissement', source: 'https://bni.ci', communes: ['Plateau','Cocody','Yopougon','Abobo'] },
   { title: 'Ecobank Côte d’Ivoire', summary: 'Agence bancaire & services digitaux', source: 'https://ecobank.com/ci', communes: ['Plateau','Cocody','Marcory','Yopougon','Daloa'] },
-  { title: 'Orange Bank Africa', summary: 'Banque mobile – assistance clients', source: 'https://orangebankafrica.com', communes: ['Plateau','Cocody','Marcory'] },
+
   // TV & Internet fixe
-  { title: 'CANAL+ Côte d’Ivoire', summary: 'Abonnements TV & assistance', source: 'https://www.canalplus-afrique.com', communes: ['Cocody','Marcory','Yopougon','Plateau','Divo'] },
+  { title: 'CANAL+ Côte d’Ivoire', summary: 'Abonnements TV & assistance', source: 'https://www.canalplus-afrique.com', communes: ['Cocody','Marcory','Yopougon','Plateau','Divo','San-Pédro'] },
   { title: 'StarTimes Côte d’Ivoire', summary: 'TV numérique & support client', source: 'https://www.startimestv.com', communes: ['Cocody','Yopougon','Abobo'] },
-  { title: 'CANALBOX Côte d’Ivoire', summary: 'Internet fibre & box – assistance', source: 'https://www.canalbox.com', communes: ['Cocody','Marcory','Yopougon','Plateau'] },
   { title: 'Orange Fibre', summary: 'Internet fibre optique (installation & support)', source: 'https://www.orange.ci', communes: ['Cocody','Marcory','Plateau','Yopougon','Grand-Bassam'] },
   { title: 'MTN Home Fibre', summary: 'Internet fixe & assistance', source: 'https://www.mtn.ci', communes: ['Cocody','Marcory','Yopougon','Port-Bouët'] },
-  { title: 'Moov Fibre', summary: 'Fibre optique – installation & support', source: 'https://www.moov-africa.ci', communes: ['Cocody','Plateau','Marcory','Port-Bouët'] },
-  { title: 'Wave Mobile Money', summary: 'Service client & assistance', source: 'https://www.wave.com', communes: ['Cocody','Yopougon','Abobo','Marcory','Bouaké'] },
 ];
 
 // Communes & grandes villes (suggestions étendues)
@@ -131,9 +136,11 @@ export default function ServicesUtilesPage() {
     });
   }, [textQuery, baseByCommune]);
 
+  const slugify = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
   const renderItem = ({ item }: { item: Item }) => {
     return (
-      <View style={styles.card}>
+      <View style={styles.card} testID={`servicesUtiles-card-${slugify(item.title)}`}>
         <Text style={styles.cardTitle}>{item.title}</Text>
         {item.summary ? <Text style={styles.cardSummary}>{item.summary}</Text> : null}
         <View style={styles.actionsRow}>
