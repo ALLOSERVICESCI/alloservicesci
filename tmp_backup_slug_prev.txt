@@ -1,0 +1,1 @@
+Backup note: [slug].tsx was overwritten by the agent during Services Utiles removal. This temp file marks that a simplified version was re-implemented to keep other categories working. If needed, restore previous complex implementation from VCS.
