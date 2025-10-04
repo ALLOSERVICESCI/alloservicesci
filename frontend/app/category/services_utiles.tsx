@@ -80,18 +80,33 @@ export default function ServicesUtilesIsolated() {
     return Array.isArray(raw) ? raw : [];
   }, []);
 
-  // Données filtrées par recherche de service
+  // Données filtrées par commune et recherche de service
   const data = useMemo(() => {
-    if (!serviceQuery.trim()) return rawData;
-    const q = serviceQuery.trim().toLowerCase();
-    return rawData.filter((item: any) => {
-      const title = (item?.title || item?.name || '').toString().toLowerCase();
-      const summary = (item?.summary || item?.description || '').toString().toLowerCase();
-      const phones = Array.isArray(item?.phones) ? item.phones.map((p: any) => (p?.tel || '').toLowerCase()).join(' ') : '';
-      const ussd = Array.isArray(item?.ussd) ? item.ussd.map((u: any) => (u?.code || '').toLowerCase()).join(' ') : '';
-      return title.includes(q) || summary.includes(q) || phones.includes(q) || ussd.includes(q);
-    });
-  }, [rawData, serviceQuery]);
+    let filtered = rawData;
+
+    // Filtrage par commune sélectionnée
+    if (selectedCommune) {
+      filtered = filtered.filter((item: any) => {
+        const itemCommune = (item?.commune || '').toLowerCase();
+        return itemCommune === selectedCommune.toLowerCase();
+      });
+    }
+
+    // Filtrage par recherche de service
+    if (serviceQuery.trim()) {
+      const q = serviceQuery.trim().toLowerCase();
+      filtered = filtered.filter((item: any) => {
+        const title = (item?.title || item?.name || '').toString().toLowerCase();
+        const summary = (item?.summary || item?.description || '').toString().toLowerCase();
+        const phones = Array.isArray(item?.phones) ? item.phones.map((p: any) => (p?.tel || '').toLowerCase()).join(' ') : '';
+        const ussd = Array.isArray(item?.ussd) ? item.ussd.map((u: any) => (u?.code || '').toLowerCase()).join(' ') : '';
+        const commune = (item?.commune || '').toLowerCase();
+        return title.includes(q) || summary.includes(q) || phones.includes(q) || ussd.includes(q) || commune.includes(q);
+      });
+    }
+
+    return filtered;
+  }, [rawData, selectedCommune, serviceQuery]);
 
   const openPhone = (phone: string) => {
     const clean = (phone || '').replace(/\s+/g, '');
