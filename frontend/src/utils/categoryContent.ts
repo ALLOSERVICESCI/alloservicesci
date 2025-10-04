@@ -104,8 +104,8 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       location: 'Abidjan (Plateau - DITT), couverture nationale',
       source: 'https://www.plcc.ci',
       phones: [
-        { label: 'Standard, tel: '22447270' },
-        { label: 'Standard, tel: '22447271' }
+        { label: 'Standard', tel: '22447270' },
+        { label: 'Standard', tel: '22447271' }
       ],
     },
   ],
