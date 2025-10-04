@@ -68,7 +68,7 @@ export default function Home() {
     { slug: 'examens_concours', label: t('examens'), icon: '📚', isPremium: true },
     { slug: 'services_publics', label: t('services_publics'), icon: '🏛️', isPremium: true },
     { slug: 'emplois', label: t('emplois'), icon: '💼', isPremium: true },
-    /* removed services_utiles tile */
+    // services_utiles supprimé définitivement
     { slug: 'agriculture', label: t('agriculture'), icon: '🌾', isPremium: true },
     { slug: 'loisirs_tourisme', label: t('loisirs_tourisme'), icon: '🏖️', isPremium: true },
     { slug: 'transport', label: t('transport'), icon: '🚌', isPremium: true },
@@ -269,7 +269,6 @@ export default function Home() {
                   onPress={() => {
                     if (category.slug === 'alerts_tab') return router.push('/(tabs)/alerts');
                     if (category.slug === 'pharmacies_tab') return router.push('/(tabs)/pharmacies');
-                    if (category.slug === 'services_utiles') return router.push('/category/services_utiles');
                     return router.push(`/category/${category.slug}`);
                   }}
                 >
@@ -295,8 +294,6 @@ export default function Home() {
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/26f9vvri_Background_loisir.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'services_publics' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/d40242y4_Background_services_publics.png' }} style={styles.categoryIconImg} />
-                  ) : category.slug === 'services_utiles' ? (
-                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/mggq3vgi_Background_services_utiles.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'transport' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/b0h611zz_Background_transport.png' }} style={styles.categoryIconImg} />
                   ) : (

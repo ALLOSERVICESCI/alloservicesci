@@ -1,4 +1,4 @@
-export type CatSlug = 'urgence' | 'sante' | 'education' | 'examens_concours' | 'services_publics' | 'services_utiles' | 'agriculture' | 'loisirs_tourisme' | 'transport' | 'alertes' | 'pharmacies';
+export type CatSlug = 'urgence' | 'sante' | 'education' | 'examens_concours' | 'services_publics' | 'agriculture' | 'loisirs_tourisme' | 'transport' | 'alertes' | 'pharmacies';
 
 export interface CatItem {
   title: string;
@@ -253,74 +253,6 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       phones: [
         { label: 'Ligne info', tel: '2720210800' }
       ]
-    },
-  ],
-  services_utiles: [
-    {
-      title: 'SODECI (Société de Distribution d’Eau de Côte d’Ivoire)',
-      summary: 'Eau & Électricité — Assistance eau potable et signalements de fuites',
-      source: 'https://www.sodeci.ci/',
-      phones: [
-        { label: 'Service client', tel: '175' },
-        { label: 'Fixe', tel: '2721230000' },
-      ]
-    },
-    {
-      title: 'CIE (Compagnie Ivoirienne d’Électricité)',
-      summary: 'Eau & Électricité — Service client électricité et signalements de pannes',
-      source: 'https://www.cie.ci/',
-      phones: [
-        { label: 'Service client', tel: '179' },
-        { label: 'Fixe', tel: '2721233333' },
-      ]
-    },
-    {
-      title: 'Orange Côte d’Ivoire',
-      summary: 'Opérateurs télécoms & internet — Services USSD : *144# (forfait), *111# (argent mobile)',
-      source: 'https://www.orange.ci',
-      phones: [
-        { label: 'Service client (mobile Orange)', tel: '070707' },
-        { label: 'Fixe', tel: '2720221212' }
-      ],
-      ussd: [
-        { label: 'Forfait', code: '*144#' },
-        { label: 'Orange Money', code: '*111#' }
-      ]
-    },
-    {
-      title: 'MTN Côte d’Ivoire',
-      summary: 'Services USSD : *133# (forfait), 13310# (MoMo)',
-      tag: 'Opérateurs télécoms & internet',
-      source: 'https://www.mtn.ci',
-      phones: [
-        { label: 'Service client', tel: '555' },
-        { label: 'Fixe', tel: '2720255555' }
-      ],
-      ussd: [
-        { label: 'Forfait', code: '*133#' },
-        { label: 'MoMo', code: '13310#' }
-      ]
-    },
-    {
-      title: 'Moov Africa Côte d’Ivoire',
-      summary: 'Opérateurs télécoms & internet — Services USSD : *155# (forfait), 1554# (Moov Money)',
-      tag: 'Opérateurs télécoms & internet',
-      source: 'https://www.moov-africa.ci',
-      phones: [
-        { label: 'Service client', tel: '1010' },
-        { label: 'Fixe', tel: '2720311010' }
-      ],
-      ussd: [
-        { label: 'Forfait', code: '*155#' },
-        { label: 'Moov Money', code: '1554#' }
-      ]
-    },
-    {
-      title: 'La Poste de Côte d’Ivoire',
-      summary: 'Services postaux, colis et mandats.',
-      tag: 'Services',
-      location: 'Agences (Plateau, Treichville, etc.)',
-      date: 'Horaires: Lun–Ven 08:00–16:00'
     },
   ],
   agriculture: [

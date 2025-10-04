@@ -73,7 +73,7 @@ export default function Subscribe() {
     { key: 'education', icon: '🎓', title: t('education'), description: t('premiumFeature_education'), slug: 'education' },
     { key: 'jobs', icon: '💼', title: t('emplois'), description: t('premiumFeature_jobs'), slug: 'emplois' },
     { key: 'services', icon: '🏛️', title: t('services_publics'), description: t('premiumFeature_services'), slug: 'services_publics' },
-    { key: 'utilities', icon: '⚡', title: t('services_utiles'), description: t('premiumFeature_utilities'), slug: 'services_utiles' },
+    // utilities (services_utiles) supprimé définitivement
     { key: 'agriculture', icon: '🌾', title: t('agriculture'), description: t('premiumFeature_agriculture'), slug: 'agriculture' },
     { key: 'leisure', icon: '🏖️', title: t('loisirs_tourisme'), description: t('premiumFeature_leisure'), slug: 'loisirs_tourisme' },
     { key: 'transport', icon: '🚌', title: t('transport'), description: t('premiumFeature_transport'), slug: 'transport' },
@@ -149,8 +149,6 @@ export default function Subscribe() {
                   <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/d40242y4_Background_services_publics.png' }} style={styles.tileIconImg} />
                 ) : feature.slug === 'emplois' ? (
                   <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/vnkjuu6i_Background_emplois.png' }} style={styles.tileIconImg} />
-                ) : feature.slug === 'services_utiles' ? (
-                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/mggq3vgi_Background_services_utiles.png' }} style={styles.tileIconImg} />
                 ) : feature.slug === 'agriculture' ? (
                   <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pv9ygk7l_Background_agriculture.png' }} style={styles.tileIconImg} />
                 ) : feature.slug === 'loisirs_tourisme' ? (
