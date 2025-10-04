@@ -135,15 +135,15 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   ],
   education: [
     {
-      title: 'Calendrier scolaire 2024–2025',
-      summary: 'Rentrée, congés et périodes d'examens (BEPC, BAC).',
+      title: 'Calendrier scolaire 2024-2025',
+      summary: 'Rentree, conges et periodes d\'examens (BEPC, BAC).',
       tag: 'Officiel',
       date: 'Publication: selon MEN',
       source: 'https://www.education.gouv.ci/'
     },
     {
       title: 'Orientation et bourses',
-      summary: "Procédures d'orientation et demandes de bourses pour élèves et étudiants.",
+      summary: 'Procedures d\'orientation et demandes de bourses pour eleves et etudiants.',
       tag: 'Études',
       date: 'Horaires: Lun–Ven 08:00–16:00',
       source: 'https://www.education.gouv.ci/'
