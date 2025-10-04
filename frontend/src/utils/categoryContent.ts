@@ -823,6 +823,68 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       title: "🌾 AGRICULTURE EN CÔTE D'IVOIRE",
       summary: "L'agriculture reste le moteur de l'économie ivoirienne : elle emploie près de la moitié de la population active et fournit plus de 20 % du PIB. Du cacao au riz, en passant par la noix de cajou et le palmier à huile, elle fait vivre des millions de familles et nourrit le pays.\n\n🍫 Filières en mouvement\n\nLe cacao, pilier de nos exportations, se modernise : traçabilité, prix relevé à 2 800 FCFA/kg et usine de transformation locale à Abidjan.\nLes filières riz, hévéa, palmier à huile et noix de cajou bénéficient de nouveaux programmes d'appui et d'infrastructures pour renforcer la production nationale.\n\n🌍 Agriculture durable & innovation\n\nFace au climat et à la déforestation, la Côte d'Ivoire mise sur une agriculture durable et intelligente.\nDrones, capteurs, applications mobiles et formations attirent une nouvelle génération de jeunes agripreneurs.\nDes projets comme PROFIT ou PROMIRE encouragent de meilleures pratiques et la valorisation locale.\n\n📈 Nouveaux marchés & perspectives\n\nLa création de la Bourse des Matières Premières Agricoles (BMPA CI) en 2025 apporte plus de transparence et de stabilité des prix pour les producteurs.\nLe SARA 2025 a confirmé la dynamique d'un secteur qui innove et attire les investissements.\n\n🌱 Avec Allô Services CI\n\nRetrouvez dans cette rubrique :\n\nles prix officiels et actualités agricoles,\n\nles contacts utiles (coopératives, ANADER, CNACI, etc.),\n\net bientôt, des outils de mise en relation entre producteurs, acheteurs et formateurs.\n\nAllô Services CI — votre passerelle vers une agriculture moderne et connectée 🌍💡",
       tag: "Information générale"
+    },
+    {
+      title: "CAYAT - Coopérative Agricole de Yakassé Attobrou",
+      summary: "Coopérative cacao engagée dans la durabilité et la certification. Services aux producteurs : formation, équipements, commercialisation groupée, traçabilité.",
+      tag: "Coopérative cacao",
+      location: "Yakassé-Attobrou (La Mé)",
+      phones: [
+        { label: "Contact", tel: "0708763390" }
+      ],
+      source: "https://cayat-ci.com"
+    },
+    {
+      title: "UPAS COOP-CA",
+      summary: "Union des Producteurs Agricoles de San-Pedro. Coopérative cacao spécialisée dans la collecte, le tri et la commercialisation. Accompagnement technique des producteurs.",
+      tag: "Coopérative cacao",
+      location: "San-Pedro",
+      phones: [
+        { label: "Contact", tel: "2734704080" }
+      ],
+      source: "https://www.upas-ci.com"
+    },
+    {
+      title: "COOPARES - Coopérative Agricole Multi-zones",
+      summary: "Réseau de coopératives présent dans plusieurs régions. Collecte, transformation et commercialisation de produits agricoles. Services d'appui technique et financier.",
+      tag: "Coopérative multi-filières",
+      location: "Korhogo, Abidjan, San-Pedro, Bouaké, Daloa",
+      phones: [
+        { label: "Korhogo", tel: "0709237500" },
+        { label: "Abidjan", tel: "0707255330" }
+      ],
+      source: "https://coopares.com"
+    },
+    {
+      title: "YEBO-EKON - Société Coopérative Agricole",
+      summary: "Coopérative spécialisée dans la production céréalière et les produits locaux. Transformation et valorisation des cultures vivrières.",
+      tag: "Coopérative céréales",
+      location: "Daloa",
+      phones: [
+        { label: "Contact", tel: "0749995953" },
+        { label: "Contact 2", tel: "0707587791" }
+      ],
+      source: "http://coop-yeboekon.net"
+    },
+    {
+      title: "CABN COOP-CA",
+      summary: "Coopérative d'appui et d'organisation agricole. Services de structuration, formation et accompagnement des producteurs et coopératives.",
+      tag: "Organisation agricole",
+      location: "Abidjan, Immeuble TANASSA, 1er étage porte D11",
+      phones: [
+        { label: "Contact", tel: "2721333615" }
+      ],
+      source: "https://cabn-ci.com"
+    },
+    {
+      title: "ANADER - Agence Nationale d'Appui au Développement Rural",
+      summary: "Institution publique de référence pour l'appui technique, la formation et le conseil agricole. Réseau de 126 antennes à travers le pays. Services : vulgarisation, accompagnement des producteurs, diffusion des innovations.",
+      tag: "Institution publique",
+      location: "Plateau, Abidjan (siège national + antennes régionales)",
+      phones: [
+        { label: "Siège", tel: "2720216700" }
+      ],
+      source: "https://www.anader.ci"
     }
   ],
   transport: [
