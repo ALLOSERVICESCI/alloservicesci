@@ -2016,12 +2016,6 @@ export default function CategoryPage() {
   };
   const sKey = slugAliases[s] || s;
   const bg = backgroundImages[sKey] || COMMON_HEADER;
-  // Redirection forcée: Services utiles → page vierge
-  if (sKey === 'services_utiles') {
-    useEffect(() => {
-      router.replace('/category/blank_utiles');
-    }, []);
-  }
 
 
   const fixedHeaderKeys = ['urgence','sante','education','examens_concours','agriculture','loisirs_tourisme','transport','services_publics','emplois_offres'];
