@@ -10,8 +10,13 @@ import * as Location from 'expo-location';
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_74996fed-469a-4770-ac1c-e84e14d54bce/artifacts/lkuoom9e_services_utiles_bg.png' };
 
-// Communes d'Abidjan pour la recherche
-const ABJ_COMMUNES = ['Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon'];
+// Communes d'Abidjan et grandes villes de Cote d'Ivoire
+const ABJ_COMMUNES = [
+  // Abidjan
+  'Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon',
+  // Regions
+  'Yamoussoukro','Bouaké','Bouake','San-Pedro','Korhogo','Daloa','Man','Abengourou','Grand-Bassam','Gagnoa'
+];
 
 type Mode = 'nearby' | 'communes';
 
