@@ -781,6 +781,42 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       commune: 'Cocody',
       date: 'Horaires: Lun-Ven 08:00-16:00'
     },
+    {
+      title: 'La Poste CI - Yopougon',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Yopougon',
+      date: 'Horaires: Lun-Ven 08:00-16:00'
+    },
+    {
+      title: 'La Poste CI - Abobo',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Abobo',
+      date: 'Horaires: Lun-Ven 08:00-16:00'
+    },
+    {
+      title: 'La Poste CI - Adjame',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Adjame',
+      date: 'Horaires: Lun-Ven 08:00-16:00'
+    },
+    {
+      title: 'La Poste CI - Koumassi',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Koumassi',
+      date: 'Horaires: Lun-Ven 08:00-16:00'
+    },
+    {
+      title: 'La Poste CI - Yamoussoukro',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Yamoussoukro',
+      date: 'Horaires: Lun-Ven 08:00-16:00'
+    },
+    {
+      title: 'La Poste CI - Bouake',
+      summary: 'Services postaux, colis et mandats',
+      commune: 'Bouake',
+      date: 'Horaires: Lun-Ven 08:00-16:00'
+    },
   ],
   agriculture: [
     {
