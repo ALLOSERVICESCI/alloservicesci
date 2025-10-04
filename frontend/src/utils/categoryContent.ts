@@ -172,8 +172,8 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       source: 'https://www.fonctionpublique.gouv.ci/'
     },
     {
-      title: 'ENA -- Ecole Nationale d'Administration',
-      summary: 'Concours d'acces aux cycles de formation (annuel).',
+      title: 'ENA - Ecole Nationale Administration',
+      summary: 'Concours acces aux cycles de formation (annuel).',
       tag: 'Carriere',
       date: 'Periode: session annuelle',
       source: 'https://www.ena.ci/'
