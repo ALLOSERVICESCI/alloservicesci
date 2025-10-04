@@ -23,6 +23,7 @@ export default function CategoryLayout() {
       <Stack.Screen name="emplois/conseil" options={{}} />
       <Stack.Screen name="examens_concours" options={{}} />
       <Stack.Screen name="services_publics" options={{}} />
+      <Stack.Screen name="services_utiles" options={{}} />
     </Stack>
   );
 }
