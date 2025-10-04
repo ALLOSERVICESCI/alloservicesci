@@ -324,6 +324,7 @@ const styles = StyleSheet.create({
   localityRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   localityValue: { color: '#222', fontSize: 18, fontWeight: '600' },
 
+  searchLabel: { color: '#222', fontSize: 14, fontWeight: '700', marginBottom: 6, marginTop: 8 },
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
   searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
   suggestBox: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, marginTop: 4, marginBottom: 8, overflow: 'hidden' },
