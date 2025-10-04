@@ -415,6 +415,116 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
         { label: 'Service client', tel: '555' },
       ]
     },
+    {
+      title: 'Moov Fibre - Plateau',
+      summary: 'Internet Fibre optique haut debit -- Installation et support technique',
+      commune: 'Plateau',
+      source: 'https://www.moov-africa.ci',
+      phones: [
+        { label: 'Service client', tel: '1010' },
+      ]
+    },
+    {
+      title: 'Moov Fibre - Yopougon',
+      summary: 'Internet Fibre optique haut debit -- Installation et support technique',
+      commune: 'Yopougon',
+      source: 'https://www.moov-africa.ci',
+      phones: [
+        { label: 'Service client', tel: '1010' },
+      ]
+    },
+    {
+      title: 'Moov Fibre - Abobo',
+      summary: 'Internet Fibre optique haut debit -- Installation et support technique',
+      commune: 'Abobo',
+      source: 'https://www.moov-africa.ci',
+      phones: [
+        { label: 'Service client', tel: '1010' },
+      ]
+    },
+    {
+      title: 'Canalbox - Plateau',
+      summary: 'Internet Fibre + TV -- Box tout-en-un (Internet + Chaines TV)',
+      commune: 'Plateau',
+      source: 'https://www.canalplus-afrique.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722400000' },
+      ]
+    },
+    {
+      title: 'Canalbox - Marcory',
+      summary: 'Internet Fibre + TV -- Box tout-en-un (Internet + Chaines TV)',
+      commune: 'Marcory',
+      source: 'https://www.canalplus-afrique.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722400000' },
+      ]
+    },
+    {
+      title: 'Canalbox - Koumassi',
+      summary: 'Internet Fibre + TV -- Box tout-en-un (Internet + Chaines TV)',
+      commune: 'Koumassi',
+      source: 'https://www.canalplus-afrique.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722400000' },
+      ]
+    },
+
+    // Mobile Money & Banques Digitales
+    {
+      title: 'Wave - Plateau',
+      summary: 'Mobile Money -- Transferts, paiements, retraits sans frais',
+      commune: 'Plateau',
+      source: 'https://www.wave.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722500500' },
+      ]
+    },
+    {
+      title: 'Wave - Adjame',
+      summary: 'Mobile Money -- Transferts, paiements, retraits sans frais',
+      commune: 'Adjame',
+      source: 'https://www.wave.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722500500' },
+      ]
+    },
+    {
+      title: 'Wave - Yopougon',
+      summary: 'Mobile Money -- Transferts, paiements, retraits sans frais',
+      commune: 'Yopougon',
+      source: 'https://www.wave.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722500500' },
+      ]
+    },
+    {
+      title: 'Wave - Abobo',
+      summary: 'Mobile Money -- Transferts, paiements, retraits sans frais',
+      commune: 'Abobo',
+      source: 'https://www.wave.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2722500500' },
+      ]
+    },
+    {
+      title: 'Orange Bank CI - Plateau',
+      summary: 'Banque digitale -- Comptes, cartes, credits 100% mobile',
+      commune: 'Plateau',
+      source: 'https://www.orangebank.ci',
+      phones: [
+        { label: 'Service client', tel: '070707' },
+      ]
+    },
+    {
+      title: 'Orange Bank CI - Cocody',
+      summary: 'Banque digitale -- Comptes, cartes, credits 100% mobile',
+      commune: 'Cocody',
+      source: 'https://www.orangebank.ci',
+      phones: [
+        { label: 'Service client', tel: '070707' },
+      ]
+    },
 
     // Banques
     {
