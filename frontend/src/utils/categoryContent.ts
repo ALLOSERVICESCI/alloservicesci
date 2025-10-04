@@ -85,7 +85,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       tag: 'Aide humanitaire',
       location: 'Siege Abidjan, antennes nationales',
       phones: [
-        { label: 'Standard, tel: '2523002661' }
+        { label: 'Standard', tel: '2523002661' }
       ],
     },
     {
