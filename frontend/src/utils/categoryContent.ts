@@ -825,7 +825,6 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       tag: "Information générale"
     }
   ],
-  ],
   transport:transport: [
     {
       title: 'SOTRA -- Reseau dAbidjan',
