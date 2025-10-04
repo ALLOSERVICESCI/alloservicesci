@@ -2491,7 +2491,7 @@ export default function CategoryPage() {
               )}
             </View>
           )}
-        </View>
+        </ScrollView>
       ) : sKey === 'services_utiles' ? (
         <FlatList
           data={utilesQuery ? utilesFiltered : (Array.isArray(data) ? data : [])}
