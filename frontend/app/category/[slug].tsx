@@ -2263,8 +2263,7 @@ export default function CategoryPage() {
                     <Text style={styles.facilitiesCount}>
                       {selectedFacilities.length} établissement{selectedFacilities.length > 1 ? 's' : ''} trouvé{selectedFacilities.length > 1 ? 's' : ''} à {communeQuery}
                     </Text>
-                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                      {selectedFacilities.map((facility) => (
+                    {selectedFacilities.map((facility) => (
                         <View key={facility.id} style={styles.facilityCard}>
                           {/* En-tête avec nom et type */}
                           <View style={styles.facilityHeader}>
