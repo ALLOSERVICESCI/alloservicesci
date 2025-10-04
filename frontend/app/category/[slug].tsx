@@ -2490,6 +2490,56 @@ export default function CategoryPage() {
             </View>
           )}
         </View>
+      ) : sKey === 'services_utiles' ? (
+        <FlatList
+          data={utilesQuery ? utilesFiltered : (Array.isArray(data) ? data : [])}
+          keyExtractor={(_, idx) => `utiles-${idx}`}
+          contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
+          showsVerticalScrollIndicator={false}
+          renderItem={renderContentItem}
+          ListHeaderComponent={
+            <View>
+              <View style={{ marginBottom: 12 }}>
+                <View style={[styles.filtersRowAligned, { justifyContent: 'flex-start' }]}> 
+                  <TouchableOpacity testID="servicesUtiles-nearby" onPress={() => setUtilesMode('nearby')} style={[styles.chip, utilesMode === 'nearby' ? styles.chipNear : styles.chipInactive]}>
+                    <Ionicons name="location-outline" size={16} color={utilesMode === 'nearby' ? '#0D6EFD' : '#666'} style={{ marginRight: 8 }} />
+                    <Text style={utilesMode === 'nearby' ? styles.chipTextNear : styles.chipTextInactive}>Autour de moi</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity testID="servicesUtiles-communes" onPress={() => setUtilesMode('communes')} style={[styles.chip, utilesMode === 'communes' ? styles.chipCommune : styles.chipInactive]}>
+                    <Ionicons name="map-outline" size={16} color={utilesMode === 'communes' ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
+                    <Text style={utilesMode === 'communes' ? styles.chipTextCommune : styles.chipTextInactive}>Communes</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View testID="servicesUtiles-locality" style={{ marginBottom: 8, flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name="location-outline" size={20} color="#FF8A00" />
+                <Text style={{ marginLeft: 8, color: '#222', fontWeight: '800' }}>{utilesCity}</Text>
+              </View>
+
+              <View style={{ marginBottom: 12 }}>
+                <View style={styles.searchContainer}>
+                  <TextInput
+                    testID="servicesUtiles-search"
+                    value={utilesQuery}
+                    onChangeText={setUtilesQuery}
+                    placeholder="Rechercher un service (USSD, téléphone, nom, site)"
+                    style={styles.searchInput}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                  />
+                </View>
+              </View>
+            </View>
+          }
+          ListEmptyComponent={
+            <View style={{ paddingHorizontal: 16, paddingVertical: 24 }}>
+              <Text style={{ color: '#666', fontSize: 16, textAlign: 'center' }}>
+                {`Aucun service utile trouvé pour ${utilesCity}`}
+              </Text>
+            </View>
+          }
+        />
       ) : sKey === 'education' ? (
         <FlatList
           data={displayMode === 'communes' ? (mode === 'commune' ? eduFiltered : []) : eduFiltered}
