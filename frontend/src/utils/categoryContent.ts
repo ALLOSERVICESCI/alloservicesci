@@ -243,7 +243,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       tag: 'Fiscalite',
       source: 'https://www.dgi.gouv.ci',
       phones: [
-        { label: 'Standard, tel: '2720252525' }
+        { label: 'Standard', tel: '2720252525' }
       ]
     },
     {
