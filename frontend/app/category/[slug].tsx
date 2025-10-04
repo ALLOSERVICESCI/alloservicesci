@@ -2025,6 +2025,24 @@ export default function CategoryPage() {
   const padTop = fixedHeaderKeys.includes(sKey) ? (sKey === 'education' ? eduHeaderHeight : (sKey === 'sante' ? 270 : 250)) : 0;
 
   // (clean) duplicate Services Utiles hooks removed here; using effectiveCity/categoryData block below only.
+  
+  // Services Utiles specific state (only for services_utiles category)
+  const [utilesMode, setUtilesMode] = useState<'nearby' | 'communes'>('communes');
+  const [utilesCity, setUtilesCity] = useState<string>(effectiveCity || 'Abidjan');
+  const [utilesQuery, setUtilesQuery] = useState<string>('');
+  const utilesFiltered = useMemo(() => {
+    const src: any[] = Array.isArray(categoryData) ? (categoryData as any[]) : [];
+    const q = (utilesQuery || '').trim().toLowerCase();
+    if (!q) return src;
+    return src.filter((it: any) => {
+      const title = (it?.title || it?.name || '').toString().toLowerCase();
+      const summary = (it?.summary || it?.description || '').toString().toLowerCase();
+      const website = (it?.website || it?.source || '').toString().toLowerCase();
+      const phones = Array.isArray(it?.phones) ? it.phones.map((p: any) => (p?.tel || '').toLowerCase()).join(' ') : '';
+      const ussd = Array.isArray(it?.ussd) ? it.ussd.map((u: any) => (u?.code || '').toLowerCase()).join(' ') : '';
+      return title.includes(q) || summary.includes(q) || website.includes(q) || phones.includes(q) || ussd.includes(q);
+    });
+  }, [categoryData, utilesQuery]);
 
   return (
     <View style={styles.container}>
