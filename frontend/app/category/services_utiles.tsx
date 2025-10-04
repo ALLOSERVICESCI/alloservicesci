@@ -1,14 +1,75 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ImageBackground, FlatList, TouchableOpacity, Platform, Linking } from 'react-native';
+import React, { useMemo, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
+import { useAuth } from '../../src/context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_74996fed-469a-4770-ac1c-e84e14d54bce/artifacts/lkuoom9e_services_utiles_bg.png' };
 
+// Communes d'Abidjan pour la recherche
+const ABJ_COMMUNES = ['Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon'];
+
+type Mode = 'nearby' | 'communes';
+
 export default function ServicesUtilesIsolated() {
   const router = useRouter();
+  const { user } = useAuth();
+
+  const [mode, setMode] = useState<Mode>('communes');
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [locError, setLocError] = useState<string | null>(null);
+
+  // Localité affichée
+  const [effectiveCity, setEffectiveCity] = useState<string>(user?.city || (user as any)?.commune || 'Abidjan');
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        if (user?.city || (user as any)?.commune) {
+          if (mounted) setEffectiveCity(user.city || (user as any)?.commune);
+        } else {
+          const raw = await AsyncStorage.getItem('auth_user');
+          if (raw) {
+            const u = JSON.parse(raw);
+            const loc = u?.city || u?.commune || 'Abidjan';
+            if (mounted) setEffectiveCity(loc);
+          }
+        }
+      } catch {}
+    })();
+    return () => { mounted = false; };
+  }, [user?.city]);
+
+  // Demande de localisation lorsque le mode Autour de moi est activé
+  useEffect(() => {
+    (async () => {
+      if (mode !== 'nearby' || coords) return;
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setLocError("Autorisation localisation refusée");
+          return;
+        }
+        const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+        setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      } catch (e) {
+        setLocError('Localisation indisponible');
+      }
+    })();
+  }, [mode, coords]);
+
+  // Recherche par commune
+  const [communeQuery, setCommuneQuery] = useState('');
+  const [selectedCommune, setSelectedCommune] = useState<string | null>(null);
+  const suggestions = useMemo(() => {
+    const q = communeQuery.trim().toLowerCase();
+    if (!q) return [] as string[];
+    return ABJ_COMMUNES.filter(c => c.toLowerCase().includes(q)).slice(0, 8);
+  }, [communeQuery]);
 
   // Données existantes (lecture seule) issues du fichier partagé
   const data = useMemo(() => {
