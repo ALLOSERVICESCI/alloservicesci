@@ -229,13 +229,14 @@ export default function ServicesUtilesIsolated() {
             {/* Barre de recherche par commune (visible en mode Communes) */}
             {mode === 'communes' ? (
               <>
+                <Text style={styles.searchLabel}>Sélectionner une commune</Text>
                 <View style={styles.searchRow}>
                   <Ionicons name="search" size={18} color="#888" />
                   <TextInput
                     style={styles.searchInput}
                     value={communeQuery}
                     onChangeText={setCommuneQuery}
-                    placeholder="Rechercher une commune"
+                    placeholder="Sélectionner une commune"
                     placeholderTextColor="#999"
                     returnKeyType="search"
                     onSubmitEditing={() => {
@@ -262,6 +263,25 @@ export default function ServicesUtilesIsolated() {
             {mode === 'nearby' && locError ? (
               <Text style={styles.locErrorText}>{locError}</Text>
             ) : null}
+
+            {/* Barre de recherche pour les services */}
+            <Text style={styles.searchLabel}>Rechercher un service</Text>
+            <View style={styles.searchRow}>
+              <Ionicons name="search" size={18} color="#888" />
+              <TextInput
+                style={styles.searchInput}
+                value={serviceQuery}
+                onChangeText={setServiceQuery}
+                placeholder="Rechercher un service"
+                placeholderTextColor="#999"
+                returnKeyType="search"
+              />
+              {serviceQuery ? (
+                <TouchableOpacity onPress={() => setServiceQuery('')} accessibilityRole="button" accessibilityLabel="Effacer la recherche">
+                  <Ionicons name="close-circle" size={18} color="#999" />
+                </TouchableOpacity>
+              ) : null}
+            </View>
           </View>
         }
         ListEmptyComponent={<View style={styles.emptyBox}><Text style={styles.emptyText}>Aucun contenu disponible.</Text></View>}
