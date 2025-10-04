@@ -68,7 +68,7 @@ export default function Home() {
     { slug: 'examens_concours', label: t('examens'), icon: '📚', isPremium: true },
     { slug: 'services_publics', label: t('services_publics'), icon: '🏛️', isPremium: true },
     { slug: 'emplois', label: t('emplois'), icon: '💼', isPremium: true },
-    /* removed services_utiles tile */
+    { slug: 'services_utiles', label: 'Services Utiles', icon: '📞', isPremium: true },
     { slug: 'agriculture', label: t('agriculture'), icon: '🌾', isPremium: true },
     { slug: 'loisirs_tourisme', label: t('loisirs_tourisme'), icon: '🏖️', isPremium: true },
     { slug: 'transport', label: t('transport'), icon: '🚌', isPremium: true },
