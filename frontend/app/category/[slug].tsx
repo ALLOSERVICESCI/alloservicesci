@@ -2016,23 +2016,8 @@ export default function CategoryPage() {
   };
   const sKey = slugAliases[s] || s;
   const bg = backgroundImages[sKey] || COMMON_HEADER;
-  // Etats isolés pour Services Utiles (doivent être AVANT le return)
-  const [utilesMode, setUtilesMode] = useState<'nearby' | 'communes'>('communes');
-  const [utilesCity, setUtilesCity] = useState<string>(userCity || 'Abidjan');
-  const [utilesQuery, setUtilesQuery] = useState<string>('');
-  const utilesFiltered = useMemo(() => {
-    if (!Array.isArray(data)) return [] as any[];
-    const q = (utilesQuery || '').trim().toLowerCase();
-    if (!q) return data as any[];
-    return (data as any[]).filter((it: any) => {
-      const title = (it?.title || it?.name || '').toString().toLowerCase();
-      const summary = (it?.summary || it?.description || '').toString().toLowerCase();
-      const website = (it?.website || it?.source || '').toString().toLowerCase();
-      const phones = Array.isArray(it?.phones) ? it.phones.map((p: any) => (p?.tel || '').toLowerCase()).join(' ') : '';
-      const ussd = Array.isArray(it?.ussd) ? it.ussd.map((u: any) => (u?.code || '').toLowerCase()).join(' ') : '';
-      return title.includes(q) || summary.includes(q) || website.includes(q) || phones.includes(q) || ussd.includes(q);
-    });
-  }, [data, utilesQuery]);
+  // moved up: duplicate services_utiles hooks removed
+
 
 
 
