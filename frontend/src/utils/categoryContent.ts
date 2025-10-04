@@ -5,6 +5,7 @@ export interface CatItem {
   summary: string;
   tag?: string;
   location?: string;
+  commune?: string; // commune/quartier pour les services localisés
   date?: string; // ISO or human readable (peut contenir "Horaires: …")
   source?: string; // url si disponible
   phones?: { label: string; tel: string }[]; // numéros cliquables (tel:)
