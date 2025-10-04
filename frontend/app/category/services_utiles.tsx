@@ -20,16 +20,27 @@ type Item = {
   source?: string;
   phones?: Phone[];
   ussd?: { label?: string; code?: string }[];
+  communes?: string[]; // points de service par commune
 };
 
 // Contenu initial (services clients)
 const DATA: Item[] = [
-  { title: 'SODECI — Eau', summary: 'Assistance eau potable et signalements de fuites', source: 'https://www.sodeci.ci/', phones: [ { label: 'Service client', tel: '175' }, { label: 'Fixe', tel: '2721230000' } ] },
-  { title: 'CIE — Électricité', summary: 'Pannes et service client électricité', source: 'https://www.cie.ci/', phones: [ { label: 'Service client', tel: '179' }, { label: 'Fixe', tel: '2721233333' } ] },
-  { title: 'Orange Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.orange.ci', phones: [ { label: 'Service client', tel: '070707' }, { label: 'Fixe', tel: '2720221212' } ], ussd: [ { label: 'Forfait', code: '*144#' }, { label: 'Orange Money', code: '*111#' } ] },
-  { title: 'MTN Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.mtn.ci', phones: [ { label: 'Service client', tel: '555' }, { label: 'Fixe', tel: '2720255555' } ], ussd: [ { label: 'Forfait', code: '*133#' }, { label: 'MoMo', code: '13310#' } ] },
-  { title: 'Moov Africa Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.moov-africa.ci', phones: [ { label: 'Service client', tel: '1010' }, { label: 'Fixe', tel: '2720311010' } ], ussd: [ { label: 'Forfait', code: '*155#' }, { label: 'Moov Money', code: '1554#' } ] },
-  { title: 'La Poste de Côte d’Ivoire', summary: 'Services postaux, colis et mandats' },
+  { title: 'SODECI — Eau', summary: 'Assistance eau potable et signalements de fuites', source: 'https://www.sodeci.ci/', phones: [ { label: 'Service client', tel: '175' }, { label: 'Fixe', tel: '2721230000' } ], communes: ['Cocody','Yopougon','Marcory','Treichville','Plateau','Abobo'] },
+  { title: 'CIE — Électricité', summary: 'Pannes et service client électricité', source: 'https://www.cie.ci/', phones: [ { label: 'Service client', tel: '179' }, { label: 'Fixe', tel: '2721233333' } ], communes: ['Cocody','Yopougon','Marcory','Treichville','Plateau','Abobo'] },
+  { title: 'Orange Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.orange.ci', phones: [ { label: 'Service client', tel: '070707' }, { label: 'Fixe', tel: '2720221212' } ], ussd: [ { label: 'Forfait', code: '*144#' }, { label: 'Orange Money', code: '*111#' } ], communes: ['Cocody','Marcory','Plateau','Yopougon'] },
+  { title: 'MTN Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.mtn.ci', phones: [ { label: 'Service client', tel: '555' }, { label: 'Fixe', tel: '2720255555' } ], ussd: [ { label: 'Forfait', code: '*133#' }, { label: 'MoMo', code: '13310#' } ], communes: ['Cocody','Marcory','Abobo','Yopougon'] },
+  { title: 'Moov Africa Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.moov-africa.ci', phones: [ { label: 'Service client', tel: '1010' }, { label: 'Fixe', tel: '2720311010' } ], ussd: [ { label: 'Forfait', code: '*155#' }, { label: 'Moov Money', code: '1554#' } ], communes: ['Cocody','Plateau','Yopougon'] },
+  { title: 'La Poste de Côte d’Ivoire', summary: 'Services postaux, colis et mandats', communes: ['Plateau','Treichville','Yopougon','Cocody'] },
+  // Banques
+  { title: 'Société Générale Côte d’Ivoire', summary: 'Agence bancaire & services clients', source: 'https://societegenerale.ci', communes: ['Plateau','Cocody','Marcory','Yopougon'] },
+  { title: 'NSIA Banque', summary: 'Agence bancaire & assistance clients', source: 'https://nsiabanque.ci', communes: ['Plateau','Cocody','Marcory'] },
+  { title: 'BNI', summary: 'Banque Nationale d’Investissement', source: 'https://bni.ci', communes: ['Plateau','Cocody','Yopougon'] },
+  { title: 'Ecobank Côte d’Ivoire', summary: 'Agence bancaire & services digitaux', source: 'https://ecobank.com/ci', communes: ['Plateau','Cocody','Marcory','Yopougon'] },
+  // TV & Internet fixe
+  { title: 'CANAL+ Côte d’Ivoire', summary: 'Abonnements TV & assistance', source: 'https://www.canalplus-afrique.com', communes: ['Cocody','Marcory','Yopougon','Plateau'] },
+  { title: 'StarTimes Côte d’Ivoire', summary: 'TV numérique & support client', source: 'https://www.startimestv.com', communes: ['Cocody','Yopougon'] },
+  { title: 'Orange Fibre', summary: 'Internet fibre optique (installation & support)', source: 'https://www.orange.ci', communes: ['Cocody','Marcory','Plateau','Yopougon'] },
+  { title: 'MTN Home Fibre', summary: 'Internet fixe & assistance', source: 'https://www.mtn.ci', communes: ['Cocody','Marcory','Yopougon'] },
 ];
 
 const ABJ_COMMUNES = ['Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon'];
@@ -88,10 +99,19 @@ export default function ServicesUtilesPage() {
   // Recherche texte sur la liste
   const [textQuery, setTextQuery] = useState('');
   const norm = (s?: string) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+
+  // Filtrage par commune (si sélectionnée) puis recherche texte
+  const baseByCommune = useMemo(() => {
+    if (mode === 'communes' && selectedCommune) {
+      return DATA.filter(it => !it.communes || it.communes.includes(selectedCommune));
+    }
+    return DATA;
+  }, [mode, selectedCommune]);
+
   const listData = useMemo(() => {
     const q = norm(textQuery);
-    if (!q) return DATA;
-    return DATA.filter(it => {
+    if (!q) return baseByCommune;
+    return baseByCommune.filter(it => {
       const title = norm(it.title);
       const summary = norm(it.summary);
       const site = norm(it.source);
@@ -99,7 +119,7 @@ export default function ServicesUtilesPage() {
       const ussd = (it.ussd || []).map(u => norm(u.code)).join(' ');
       return title.includes(q) || summary.includes(q) || site.includes(q) || phones.includes(q) || ussd.includes(q);
     });
-  }, [textQuery]);
+  }, [textQuery, baseByCommune]);
 
   const renderItem = ({ item }: { item: Item }) => {
     return (
@@ -134,12 +154,12 @@ export default function ServicesUtilesPage() {
     <View style={styles.headerControls}>
       {/* Pastilles mode */}
       <View style={styles.modeRow}>
-        <ModeCapsule label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
-        <ModeCapsule label="Communes" icon="home" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
+        <ModeCapsule testID="servicesUtiles-mode-nearby" label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
+        <ModeCapsule testID="servicesUtiles-mode-communes" label="Communes" icon="home" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
       </View>
 
       {/* Localité */}
-      <View style={styles.localityRow}>
+      <View style={styles.localityRow} testID="servicesUtiles-locality">
         <Ionicons name="location" size={26} color="#FF8A00" />
         <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
       </View>
@@ -147,6 +167,7 @@ export default function ServicesUtilesPage() {
       {/* Barre de recherche par commune (visible en mode Communes) */}
       {mode === 'communes' ? (
         <>
+          <Text style={styles.fieldLabel}>Sélectionner une commune</Text>
           <View style={styles.searchRow}>
             <Ionicons name="search" size={18} color="#888" />
             <TextInput
@@ -156,6 +177,7 @@ export default function ServicesUtilesPage() {
               placeholder="Rechercher une commune"
               placeholderTextColor="#999"
               returnKeyType="search"
+              testID="servicesUtiles-search-commune"
               onSubmitEditing={() => { if (suggestions.length > 0) { setSelectedCommune(suggestions[0]); setCommuneQuery(''); } }}
             />
             {selectedCommune ? (
@@ -176,12 +198,9 @@ export default function ServicesUtilesPage() {
         </>
       ) : null}
 
-      {mode === 'nearby' && locError ? (
-        <Text style={styles.locErrorText}>{locError}</Text>
-      ) : null}
-
-      {/* Recherche texte libre sur la liste */}
-      <View style={[styles.searchRow, { marginTop: 8 }]}> 
+      {/* Titre + Recherche texte libre sur la liste */}
+      <Text style={[styles.fieldLabel, { marginTop: 10 }]}>Rechercher un service</Text>
+      <View style={[styles.searchRow, { marginTop: 6 }]}>
         <Ionicons name="search" size={18} color="#888" />
         <TextInput
           style={styles.searchInput}
@@ -190,6 +209,7 @@ export default function ServicesUtilesPage() {
           placeholder="Rechercher un service (ex: CIE, SODECI, Orange...)"
           placeholderTextColor="#999"
           returnKeyType="search"
+          testID="servicesUtiles-search-service"
         />
         {textQuery ? (
           <TouchableOpacity onPress={() => setTextQuery('')} accessibilityRole="button" accessibilityLabel="Effacer">
@@ -204,8 +224,8 @@ export default function ServicesUtilesPage() {
     <View style={styles.container}>
       {/* Header fixe */}
       <View style={styles.headerWrapper}>
-        <ImageBackground source={HEADER_IMG} style={styles.header} resizeMode="cover">
-          <LinearGradient colors={["rgba(0,0,0,0.55)", "rgba(0,0,0,0.25)", "rgba(0,0,0,0)"]} style={StyleSheet.absoluteFillObject as any} />
+        <ImageBackground source={HEADER_IMG} style={styles.header} resizeMode="cover" testID="servicesUtiles-header">
+          <LinearGradient colors={["rgba(0,0,0,0.58)", "rgba(0,0,0,0.28)", "rgba(0,0,0,0)"]} style={StyleSheet.absoluteFillObject as any} />
           <View style={styles.headerTopRow}>
             <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
               <Ionicons name="chevron-back" size={22} color="#fff" />
@@ -221,10 +241,10 @@ export default function ServicesUtilesPage() {
       </View>
 
       {/* Ombre sous le header - intensifiée */}
-      <View style={[styles.headerShadow, Platform.select({
-        web: { boxShadow: '0 22px 36px rgba(0,0,0,0.28)' } as any,
-        ios: { shadowColor: '#000', shadowOpacity: 0.34, shadowRadius: 16, shadowOffset: { width: 0, height: 16 } },
-        android: { elevation: 16 },
+      <View testID="servicesUtiles-header-shadow" style={[styles.headerShadow, Platform.select({
+        web: { boxShadow: '0 30px 56px rgba(0,0,0,0.42)' } as any,
+        ios: { shadowColor: '#000', shadowOpacity: 0.42, shadowRadius: 20, shadowOffset: { width: 0, height: 18 } },
+        android: { elevation: 24 },
       })]} pointerEvents="none" />
 
       {/* Liste qui défile sous le header */}
@@ -253,9 +273,9 @@ function openUSSD(code: string) {
   Linking.openURL(`tel:${encoded}`);
 }
 
-function ModeCapsule({ label, active, onPress, color, icon }: { label: string; active?: boolean; onPress: () => void; color: string; icon: any }) {
+function ModeCapsule({ label, active, onPress, color, icon, testID }: { label: string; active?: boolean; onPress: () => void; color: string; icon: any; testID?: string }) {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.modeCapsule, active ? { backgroundColor: color } : { backgroundColor: '#FFFFFF', borderColor: '#E1E6ED', borderWidth: 1 }, Platform.select({ web: { boxShadow: active ? '0 6px 16px rgba(0,0,0,0.12)' : 'none' } as any, ios: { shadowColor: '#000', shadowOpacity: active ? 0.12 : 0, shadowRadius: 8, shadowOffset: { width: 0, height: 6 } }, android: { elevation: active ? 4 : 0 } })]} accessibilityRole="button" accessibilityLabel={label}>
+    <TouchableOpacity testID={testID} onPress={onPress} style={[styles.modeCapsule, active ? { backgroundColor: color } : { backgroundColor: '#FFFFFF', borderColor: '#E1E6ED', borderWidth: 1 }, Platform.select({ web: { boxShadow: active ? '0 6px 16px rgba(0,0,0,0.12)' : 'none' } as any, ios: { shadowColor: '#000', shadowOpacity: active ? 0.12 : 0, shadowRadius: 8, shadowOffset: { width: 0, height: 6 } }, android: { elevation: active ? 4 : 0 } })]} accessibilityRole="button" accessibilityLabel={label}>
       <Ionicons name={icon} size={16} color={active ? '#fff' : color} />
       <Text style={[styles.modeCapsuleText, { color: active ? '#fff' : '#222' }]}>{label}</Text>
     </TouchableOpacity>
@@ -283,6 +303,7 @@ const styles = StyleSheet.create({
   localityRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   localityValue: { color: '#222', fontSize: 18 },
 
+  fieldLabel: { color: '#0F5132', fontWeight: '800', marginBottom: 6 },
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
   searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
   suggestBox: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, marginTop: 4, overflow: 'hidden' },
