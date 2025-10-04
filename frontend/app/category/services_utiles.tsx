@@ -24,43 +24,12 @@ type Item = {
 
 // Contenu initial (services clients)
 const DATA: Item[] = [
-  {
-    title: 'SODECI — Eau',
-    summary: 'Assistance eau potable et signalements de fuites',
-    source: 'https://www.sodeci.ci/',
-    phones: [ { label: 'Service client', tel: '175' }, { label: 'Fixe', tel: '2721230000' } ],
-  },
-  {
-    title: 'CIE — Électricité',
-    summary: 'Pannes et service client électricité',
-    source: 'https://www.cie.ci/',
-    phones: [ { label: 'Service client', tel: '179' }, { label: 'Fixe', tel: '2721233333' } ],
-  },
-  {
-    title: 'Orange Côte d’Ivoire',
-    summary: 'Opérateur télécoms & internet',
-    source: 'https://www.orange.ci',
-    phones: [ { label: 'Service client', tel: '070707' }, { label: 'Fixe', tel: '2720221212' } ],
-    ussd: [ { label: 'Forfait', code: '*144#' }, { label: 'Orange Money', code: '*111#' } ],
-  },
-  {
-    title: 'MTN Côte d’Ivoire',
-    summary: 'Opérateur télécoms & internet',
-    source: 'https://www.mtn.ci',
-    phones: [ { label: 'Service client', tel: '555' }, { label: 'Fixe', tel: '2720255555' } ],
-    ussd: [ { label: 'Forfait', code: '*133#' }, { label: 'MoMo', code: '13310#' } ],
-  },
-  {
-    title: 'Moov Africa Côte d’Ivoire',
-    summary: 'Opérateur télécoms & internet',
-    source: 'https://www.moov-africa.ci',
-    phones: [ { label: 'Service client', tel: '1010' }, { label: 'Fixe', tel: '2720311010' } ],
-    ussd: [ { label: 'Forfait', code: '*155#' }, { label: 'Moov Money', code: '1554#' } ],
-  },
-  {
-    title: 'La Poste de Côte d’Ivoire',
-    summary: 'Services postaux, colis et mandats',
-  },
+  { title: 'SODECI — Eau', summary: 'Assistance eau potable et signalements de fuites', source: 'https://www.sodeci.ci/', phones: [ { label: 'Service client', tel: '175' }, { label: 'Fixe', tel: '2721230000' } ] },
+  { title: 'CIE — Électricité', summary: 'Pannes et service client électricité', source: 'https://www.cie.ci/', phones: [ { label: 'Service client', tel: '179' }, { label: 'Fixe', tel: '2721233333' } ] },
+  { title: 'Orange Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.orange.ci', phones: [ { label: 'Service client', tel: '070707' }, { label: 'Fixe', tel: '2720221212' } ], ussd: [ { label: 'Forfait', code: '*144#' }, { label: 'Orange Money', code: '*111#' } ] },
+  { title: 'MTN Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.mtn.ci', phones: [ { label: 'Service client', tel: '555' }, { label: 'Fixe', tel: '2720255555' } ], ussd: [ { label: 'Forfait', code: '*133#' }, { label: 'MoMo', code: '13310#' } ] },
+  { title: 'Moov Africa Côte d’Ivoire', summary: 'Opérateur télécoms & internet', source: 'https://www.moov-africa.ci', phones: [ { label: 'Service client', tel: '1010' }, { label: 'Fixe', tel: '2720311010' } ], ussd: [ { label: 'Forfait', code: '*155#' }, { label: 'Moov Money', code: '1554#' } ] },
+  { title: 'La Poste de Côte d’Ivoire', summary: 'Services postaux, colis et mandats' },
 ];
 
 const ABJ_COMMUNES = ['Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon'];
@@ -236,7 +205,7 @@ export default function ServicesUtilesPage() {
       {/* Header fixe */}
       <View style={styles.headerWrapper}>
         <ImageBackground source={HEADER_IMG} style={styles.header} resizeMode="cover">
-          <LinearGradient colors={["rgba(0,0,0,0.45)", "rgba(0,0,0,0.2)", "rgba(0,0,0,0)"]} style={StyleSheet.absoluteFillObject as any} />
+          <LinearGradient colors={["rgba(0,0,0,0.55)", "rgba(0,0,0,0.25)", "rgba(0,0,0,0)"]} style={StyleSheet.absoluteFillObject as any} />
           <View style={styles.headerTopRow}>
             <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
               <Ionicons name="chevron-back" size={22} color="#fff" />
@@ -251,11 +220,11 @@ export default function ServicesUtilesPage() {
         </ImageBackground>
       </View>
 
-      {/* Ombre sous le header */}
+      {/* Ombre sous le header - intensifiée */}
       <View style={[styles.headerShadow, Platform.select({
-        web: { boxShadow: '0 16px 28px rgba(0,0,0,0.16)' } as any,
-        ios: { shadowColor: '#000', shadowOpacity: 0.28, shadowRadius: 12, shadowOffset: { width: 0, height: 12 } },
-        android: { elevation: 10 },
+        web: { boxShadow: '0 22px 36px rgba(0,0,0,0.28)' } as any,
+        ios: { shadowColor: '#000', shadowOpacity: 0.34, shadowRadius: 16, shadowOffset: { width: 0, height: 16 } },
+        android: { elevation: 16 },
       })]} pointerEvents="none" />
 
       {/* Liste qui défile sous le header */}
@@ -307,7 +276,6 @@ const styles = StyleSheet.create({
 
   listContent: { paddingTop: HEADER_HEIGHT + 10, paddingHorizontal: 16, paddingBottom: 30 },
 
-  // Contrôles copiés de Services Publics
   headerControls: { marginBottom: 10 },
   modeRow: { flexDirection: 'row', gap: 12, marginBottom: 10, flexWrap: 'wrap' },
   modeCapsule: { borderRadius: 999, paddingVertical: 10, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
