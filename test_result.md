@@ -498,8 +498,7 @@ metadata:
   test_sequence: 1
 
 test_plan:
-  current_focus:
-    - "FRONTEND E2E: Services utiles page dynamique - capsules 'Autour de moi' et 'Communes', ligne localité, barre de recherche (style Santé)"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
