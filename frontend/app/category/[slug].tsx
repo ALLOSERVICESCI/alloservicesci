@@ -2745,6 +2745,9 @@ const styles = StyleSheet.create({
     }),
   },
   headerUrgence: { width: '100%', height: '100%', justifyContent: 'flex-end' },
+  headerContentUrgence: { paddingHorizontal: 16, paddingBottom: 20 },
+  headerTitleUrgence: { color: '#fff', fontSize: 26, fontWeight: '900', marginBottom: 4 },
+  headerSubtitleUrgence: { color: '#fff', fontSize: 15, fontWeight: '600', opacity: 0.95 },
   backBtnUrgence: {
     position: 'absolute',
     top: Platform.select({ ios: 52, android: 22, default: 16 }) as number,
