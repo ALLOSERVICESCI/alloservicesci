@@ -819,6 +819,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     },
   ],
   agriculture: [
+    // Data from agriculture_ci_full.json - 2025
     // === Filieres strategiques & Innovations ===
     {
       title: 'Cacao - 1er producteur mondial',
