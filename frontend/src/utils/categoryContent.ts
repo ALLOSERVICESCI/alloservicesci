@@ -819,956 +819,208 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     },
   ],
   agriculture: [
+    // Data from agriculture_ci_full.json - 2025
+    // === Filieres strategiques & Innovations ===
     {
-      title: 'Ministère d\\'État, Ministère de l’Agriculture, du Développement Rural et des Productions Vivrières',
-      summary: 'Pilotage des politiques agricoles, filières, sécurité alimentaire, projets structurants.',
-      tag: 'Ministère',
-      phones: [{ label: 'Contact', tel: '2720212460' }],
-      source: 'https://web.agriculture.gouv.ci'
+      title: 'Cacao - 1er producteur mondial',
+      summary: 'Production: 2,2 millions de tonnes (2023-2024). Prix bord champ: 1500 FCFA/kg. Transformation locale en hausse avec 35% du cacao transforme sur place.',
+      tag: 'Filiere strategique',
+      source: 'https://www.conseilcafecacao.ci/'
     },
     {
-      title: 'ANADER (Agence Nationale d’Appui au Développement Rural)',
-      summary: 'Conseil agricole, vulgarisation, formation et appui aux producteurs.',
-      tag: 'ANADER',
-      phones: [{ label: 'Contact', tel: '2720216700' }],
-      source: 'https://www.anader.ci'
+      title: 'Cafe - Relance de la filiere',
+      summary: 'Production: 120 000 tonnes (robusta + arabusta). Prix: 750 FCFA/kg. Objectif 2025: doublement de la production avec nouvelles plantations.',
+      tag: 'Filiere strategique',
+      source: 'https://www.conseilcafecacao.ci/'
     },
     {
-      title: 'Chambre Nationale d’Agriculture de Côte d’Ivoire (CNACI)',
-      summary: 'Représentation professionnelle, information marché, plaidoyer.',
-      tag: 'CNACI',
-      source: 'https://www.chambragri.ci'
+      title: 'Huile de palme - Autosuffisance visee',
+      summary: '3e producteur africain. 450 000 tonnes/an. Projet de 50 000 ha de nouvelles plantations pour reduire les importations.',
+      tag: 'Filiere strategique'
     },
     {
-      title: 'Bourse des Matières Premières Agricoles (BMPA CI)',
-      summary: 'Cotation de la noix de cajou, du maïs et de la noix de cola. Transparence prix.',
-      tag: 'BMPA CI',
-      source: 'https://bmpa.ci'
+      title: 'Anacarde - 1er exportateur mondial',
+      summary: '1 million de tonnes. Prix minimum: 400 FCFA/kg. Transformation locale passee de 10% a 22% grace aux unites de transformation.',
+      tag: 'Filiere strategique'
     },
     {
-      title: 'Projet d’Appui à la Gouvernance de la Filière Cacao',
-      summary: 'Traçabilité, conformité aux normes, amélioration revenus des cacaoculteurs.',
-      tag: 'PAGFIC'
+      title: 'Cultures vivrieres - Securite alimentaire',
+      summary: 'Riz (1,5M tonnes), manioc (7M tonnes), plantain (4M tonnes), igname (6,5M tonnes). Objectif: autosuffisance en riz d\'ici 2030.',
+      tag: 'Filiere strategique'
     },
     {
-      title: 'Pôle Agro-Industriel Nord',
-      summary: 'Renforcement de la transformation locale et structuration territoriale des filières.',
-      tag: 'PAI-Nord'
+      title: 'Innovations technologiques - Drones & IA',
+      summary: 'Utilisation de drones pour cartographie et epandage. Plateforme e-agriculture pour conseil technique. Application mobile pour suivi des prix.',
+      tag: 'Innovation'
     },
     {
-      title: 'PROFIT – Promotion de Filières Agricoles Territorialisées',
-      summary: 'Structuration de TPE agricoles, accompagnement technique et économique.',
-      tag: 'PROFIT',
-      source: 'https://www.agrisud.org'
+      title: 'Transformation locale - Valeur ajoutee',
+      summary: 'Objectif 50% de transformation locale du cacao d\'ici 2025. Construction de 15 nouvelles usines de transformation (cacao, anacarde, cafe).',
+      tag: 'Innovation'
+    },
+
+    // === Projets & Politiques en cours ===
+    {
+      title: 'PAGFIC - Projet Agriculture Gouvernance Filiere Cacao',
+      summary: 'Budget: 200 milliards FCFA. 280 000 producteurs beneficiaires. Rehabilitation de 180 000 ha. Formation et equipements modernes.',
+      tag: 'Projet majeur',
+      date: '2021-2026'
     },
     {
-      title: 'PROMIRE – Production de Cacao sans déforestation',
-      summary: 'Pratiques durables, restauration forestière, conformité réglementaire.',
-      tag: 'PROMIRE',
-      source: 'https://www.fao.org'
+      title: 'PAI-Nord - Projet Agriculture Intensive Nord',
+      summary: 'Developpement agricole dans 5 regions du nord. Cultures de rente et vivrieres. Amenagement hydro-agricole. Accompagnement de 50 000 exploitants.',
+      tag: 'Projet majeur',
+      date: '2020-2025'
     },
     {
-      title: 'Conseil du Café-Cacao',
-      summary: 'Régulation cacao & café, fixation prix bord champ, traçabilité.',
-      tag: 'Conseil Café-Cacao',
-      source: 'https://www.conseilcafecacao.ci'
+      title: 'PROFIT - Projet Filiere Oleagineux Transformation',
+      summary: 'Modernisation filieres palmier huile, cocotier, soja. 30 000 ha amenages. Soutien a 100 cooperatives. Financement BM: 150 millions USD.',
+      tag: 'Projet majeur',
+      date: '2022-2027'
     },
     {
-      title: 'Autorité de Régulation du Coton et de l’Anacarde (ARECA)',
-      summary: 'Suivi et régulation des filières coton/anacarde.',
-      tag: 'ARECA',
-      source: 'https://areca.ci'
+      title: 'PROMIRE - Projet Modernisation Irrigation Riz',
+      summary: 'Extension surfaces rizicoles de 15 000 ha. Modernisation infrastructures irrigation. Formation 25 000 riziculteurs. Objectif: production +200 000 tonnes.',
+      tag: 'Projet majeur',
+      date: '2023-2028'
     },
     {
-      title: 'Fonds Interprofessionnel pour la Recherche et le Conseil Agricoles (FIRCA)',
-      summary: 'Financement de la recherche appliquée et du conseil agricole.',
-      tag: 'FIRCA',
-      source: 'https://www.firca.ci'
+      title: 'Partenariat FIRCA - Innovation & Recherche',
+      summary: 'Fonds Interprofessionnel Recherche Conseil Agricole. Budget annuel: 25 milliards FCFA. Financement recherche, conseil, formation, equipements.',
+      tag: 'Partenariat',
+      source: 'https://www.firca.ci/'
+    },
+
+    // === Marches & Mecanismes de regulation ===
+    {
+      title: 'BMPA CI - Bourse Matieres Premieres Agricoles',
+      summary: 'Plateforme officielle negociation cacao, cafe, anacarde. Prix transparents et securises. Transactions tracees. Volume: 500 000 tonnes/an.',
+      tag: 'Marche',
+      source: 'https://www.bcc.ci/'
     },
     {
-      title: 'Office National de Développement de la Riziculture',
-      summary: 'Politique rizicole, appui technique, variétés améliorées.',
-      tag: 'ONDR',
-      source: 'https://ondr.ci'
+      title: 'Tracabilite cacao - Systeme obligatoire',
+      summary: 'Depuis 2020: tracabilite integrale du cacao (GPS, QR codes). Lutte contre deforestation. Certification UTZ, Rainforest Alliance, Bio.',
+      tag: 'Regulation'
     },
     {
-      title: 'Centre National de Recherche Agronomique',
-      summary: 'Variétés améliorées, recherches et appuis scientifiques.',
-      tag: 'CNRA',
-      source: 'https://www.cnra.ci'
+      title: 'SARA - Salon Agriculture Ressources Animales',
+      summary: 'Plus grand salon agricole Afrique de l\'Ouest. Biennale a Abidjan. 500+ exposants, 100 000 visiteurs. Prochaine edition: novembre 2025.',
+      tag: 'Evenement',
+      date: 'Novembre 2025',
+      location: 'Abidjan'
     },
     {
-      title: 'Organisation des Nations Unies pour l’alimentation et l’agriculture',
-      summary: 'Projets d’appui aux filières et à la durabilité.',
-      tag: 'FAO',
-      source: 'https://www.fao.org/cote-d-ivoire'
+      title: 'Prix planchers garantis - Protection producteurs',
+      summary: 'Cacao: 1000 FCFA/kg, Cafe: 750 FCFA/kg, Anacarde: 400 FCFA/kg. Revision annuelle selon cours mondiaux. Stabilisation revenus agricoles.',
+      tag: 'Regulation'
+    },
+
+    // === Defis & Enjeux ===
+    {
+      title: 'Defi environnemental - Lutte deforestation',
+      summary: 'Objectif zero deforestation 2025. Reforestation 20 millions arbres. Agroforesterie: integration arbres forestiers dans plantations.',
+      tag: 'Defi climat'
     },
     {
-      title: 'Banque Africaine de Développement',
-      summary: 'Financement des pôles agro-industriels et projets structurants.',
-      tag: 'BAD',
-      source: 'https://www.afdb.org'
+      title: 'Changement climatique - Adaptation necessaire',
+      summary: 'Secheresses recurrentes. Varietes resistantes. Irrigation goutte-a-goutte. Systemes alerte precoce meteorologique.',
+      tag: 'Defi climat'
     },
     {
-      title: 'Institut National de Formation Professionnelle Agricole',
-      summary: 'Réseau d’écoles agricoles (EFA, ESEMV).',
-      tag: 'INFPA',
-      source: 'https://infpa.org'
+      title: 'Financement agricole - Acces au credit',
+      summary: 'Taux interet eleve (8-12%). Garanties difficiles. Solutions: credit warrantage, financement islamique, mobile money agricole.',
+      tag: 'Defi financement'
     },
     {
-      title: 'Centres de formation rurale ANADER',
-      summary: 'Formations pratiques (Bingerville, Gagnoa, Grand-Lahou, Kotobi…).',
-      tag: 'ANADER - CFR',
-      source: 'https://www.anader.ci'
+      title: 'Attractivite jeunes - Modernisation image',
+      summary: 'Programme Agripreneur: 10 000 jeunes formes. Mecanisation agricole. Numerisation. Agriculture intelligente pour attirer nouvelle generation.',
+      tag: 'Defi attractivite'
+    },
+
+    // === Actualites & Evenements 2024-2025 ===
+    {
+      title: 'Record production cacao 2023-2024',
+      summary: 'Cote d\'Ivoire depasse 2,2 millions tonnes. Meilleure campagne histoire. Hausse revenus producteurs de 30%.',
+      tag: 'Actualite 2024',
+      date: 'Octobre 2024'
     },
     {
-      title: 'Traçabilité parcellaire cacao',
-      summary: 'Enregistrement parcelles, géolocalisation, registres de pratiques.',
-      tag: 'Traçabilité cacao'
+      title: 'Lancement plateforme e-commerce agricole',
+      summary: 'CI-Agri Market: vente directe producteurs-acheteurs. Suppression intermediaires. Paiement mobile. 5000 producteurs inscrits en 3 mois.',
+      tag: 'Actualite 2024',
+      date: 'Septembre 2024'
     },
     {
-      title: 'Agriculture de conservation des sols',
-      summary: 'Rotation, couverture permanente, labour réduit.',
-      tag: 'Agriculture de conservation'
+      title: 'Partenariat Chine - Equipements agricoles',
+      summary: 'Don de 500 tracteurs et equipements. Formation 1000 mecaniciens agricoles. Montant: 50 millions USD.',
+      tag: 'Actualite 2024',
+      date: 'Novembre 2024'
     },
     {
-      title: 'Maraîchage sous serre/tunnel',
-      summary: 'Tomate F1, piment, salade – cycles courts, demande forte.',
-      tag: 'Maraîchage périurbain'
+      title: 'Prix Nobel agriculture durable',
+      summary: 'Cooperative ECOOKIM primee pour pratiques durables cacao. 1er prix africain. Modele replication nationale.',
+      tag: 'Actualite 2024',
+      date: 'Decembre 2024'
     },
     {
-      title: 'CAYAT – Coopérative Agricole de Yakassé Attobrou',
-      summary: 'Cacao durable, formation, certification et services aux producteurs.',
-      tag: 'Cacao',
-      location: 'Yakassé-Attobrou (La Mé)',
-      phones: [{ label: 'Contact', tel: '0708763390/info@cayat-ci.com' }],
-      source: 'https://cayat-ci.com'
+      title: 'Sommet agriculture intelligente Abidjan 2025',
+      summary: 'Forum international AgTech Africa. 40 pays, 200 exposants. Thematique: digitalisation agriculture africaine.',
+      tag: 'Evenement 2025',
+      date: 'Mars 2025',
+      location: 'Abidjan'
+    },
+
+    // === Services & Appels a action ===
+    {
+      title: 'ANADER - Conseil technique gratuit',
+      summary: 'Accompagnement personnalise exploitants agricoles. Formation pratique. Distribution intrants subventionnes. 126 antennes nationales.',
+      tag: 'Service public',
+      phones: [
+        { label: 'Siege Abidjan', tel: '2720252030' }
+      ],
+      source: 'https://www.anader.ci/'
     },
     {
-      title: 'Antenne/Point d’information CNACI Abidjan',
-      summary: 'Accompagnement des coopératives et information marché.',
-      tag: 'CNACI - Abidjan',
-      location: 'Abidjan',
-      source: 'https://www.chambragri.ci'
-    },
-    {
-      title: 'ESEMV – Élevage et Métiers de la Viande',
-      summary: 'École de spécialisation en élevage et transformation.',
-      tag: 'ESEMV Bingerville',
-      location: 'Bingerville',
-      source: 'https://infpa.org'
-    },
-    {
-      title: 'Centre de Formation Rurale ANADER – Bingerville',
-      summary: 'Formations pratiques, conseil et mise à niveau.',
-      tag: 'CFR ANADER Bingerville',
-      location: 'Bingerville',
-      source: 'https://www.anader.ci'
-    },
-    {
-      title: 'Itinéraires techniques maraîchers urbains',
-      summary: 'Goutte-à-goutte, hors-sol, cultures à cycle court (tomate, laitue, concombre).',
-      tag: 'Maraîchage urbain',
-      location: 'Abidjan, zones périurbaines'
-    },
-    {
-      title: 'Pisciculture tilapia/clarias',
-      summary: 'Polyculture en bassins, cycles 4–6 mois, marché métropole.',
-      tag: 'Aquaculture',
-      location: 'Abidjan et alentours'
-    },
-    {
-      title: 'UPAS COOP-CA (San-Pedro)',
-      summary: 'Coopérative cacao : collecte, services, encadrement.',
-      tag: 'Cacao',
-      location: 'San-Pedro',
-      phones: [{ label: 'Contact', tel: '2734704080/coop-upas@gmail.com' }],
-      source: 'https://www.upas-ci.com'
-    },
-    {
-      title: 'COOPARES',
-      summary: 'Organisation multi-zones apportant appui et commercialisation.',
-      tag: 'Agricole',
-      location: 'Korhogo / Abidjan (multi-zones)',
-      phones: [{ label: 'Contact', tel: '0709237500' }],
-      source: 'https://coopares.com'
-    },
-    {
-      title: 'Bonnes pratiques palmier à huile',
-      summary: 'Sols profonds, fertilisation équilibrée, gestion eau/drainage, prophylaxie.',
-      tag: 'Palmier à huile',
-      location: 'Bas-Sassandra, Nawa, San-Pedro'
-    },
-    {
-      title: 'Valorisation locale cacao',
-      summary: 'Unité fermentation/séchage amélioré, ventes premium.',
-      tag: 'Cacao transformé',
-      location: 'Aboisso, Agboville, Divo, San-Pedro'
-    },
-    {
-      title: 'Centres ruraux ANADER (Grand-Lahou, Gagnoa-Lakota)',
-      summary: 'Techniques végétales & élevage (formations courtes).',
-      tag: 'CFP ruraux',
-      location: 'Grand-Lahou / Gagnoa-Lakota',
-      source: 'https://www.anader.ci'
-    },
-    {
-      title: 'Appui filière palmier à huile',
-      summary: 'Ateliers de validation de stratégie (2025).',
-      tag: 'Stratégie palmier à huile',
-      location: 'Yamoussoukro / Sud'
-    },
-    {
-      title: 'Station CNRA Bouaké',
-      summary: 'Recherches variétales maïs, riz, maraîchage ; diffusion itinéraires techniques.',
-      tag: 'CNRA - Station Gbêkê',
-      location: 'Bouaké',
-      source: 'https://www.cnra.ci'
-    },
-    {
-      title: 'Écoles de formation agricole (Ferentella, etc.)',
-      summary: 'Formation initiale/continue, stages pratiques.',
-      tag: 'INFPA / EFA',
-      location: 'Yamoussoukro / Bouaké',
-      source: 'https://infpa.org'
-    },
-    {
-      title: 'Itinéraire technique riz pluvial',
-      summary: 'Préparation sol, densité, désherbage, variétés cycle court.',
-      tag: 'Riz pluvial',
-      location: 'Vallées et bas-fonds du Centre'
-    },
-    {
-      title: 'Maraîchage à forte valeur',
-      summary: 'Tomate F1, piment, aubergine — cycle ~3 mois, demande urbaine.',
-      tag: 'Maraîchage sous serre',
-      location: 'Yamoussoukro & périphéries'
-    },
-    {
-      title: 'Réseau coopératives anacarde (ARECA)',
-      summary: 'Collecte, premier tri, sensibilisation qualité.',
-      tag: 'Cajou',
-      location: 'Bouaké, Katiola, Tiébissou',
-      source: 'https://areca.ci'
-    },
-    {
-      title: 'Petites unités riz/cajou',
-      summary: 'Décorticage, emballage, standardisation.',
-      tag: 'Valorisation locale',
-      location: 'Centre'
-    },
-    {
-      title: 'CFAR des Savanes (Niofoin)',
-      summary: 'Formations jeunes (production végétale, élevage, gestion).',
-      tag: 'CFAR Niofoin',
-      location: 'Niofoin (Korhogo)',
-      phones: [{ label: 'Contact', tel: '0759241188' }],
-      source: 'https://www.fert.fr/centre-de-formation-agricole-et-rurale-de-niofoin/'
-    },
-    {
-      title: 'Itinéraire technique céréales pluviales',
-      summary: 'Semis début des pluies, phosphore, désherbage maîtrisé, rotations.',
-      tag: 'Céréales pluviales',
-      location: 'Savanes, Poro, Tchologo, Bagoué'
-    },
-    {
-      title: 'Hors saison avec irrigation',
-      summary: 'Prix élevés, stockage amélioré.',
-      tag: 'Oignon/Échalote irrigué',
-      location: 'Korhogo, Ferkessédougou'
-    },
-    {
-      title: 'Unions coopératives coton-cajou',
-      summary: 'Intrants groupés, collecte, premier tri.',
-      tag: 'Coton & Cajou',
-      location: 'Korhogo / Boundiali',
-      source: 'https://areca.ci'
-    },
-    {
-      title: 'Pôle agro-industriel Nord',
-      summary: 'Structuration céréales, cajou, élevage.',
-      tag: 'PAI-Nord',
-      location: 'Nord'
-    },
-    {
-      title: 'Antenne ANADER Man',
-      summary: 'Appui cacao/café, vivriers et élevage.',
-      tag: 'ANADER Man',
-      location: 'Man (Tonkpi)',
-      source: 'https://www.anader.ci'
-    },
-    {
-      title: 'Itinéraire cacao en zone montagneuse',
-      summary: 'Ombrage partiel, clones résistants, lutte intégrée, fertilisation.',
-      tag: 'Cacao montagne',
-      location: 'Tonkpi / Guémon'
-    },
-    {
-      title: 'Café de spécialité montagne',
-      summary: 'Process humide, tri densimétrique, prime qualité.',
-      tag: 'Café spécialité',
-      location: 'Man, Danané'
-    },
-    {
-      title: 'Réseaux coopératifs cacao',
-      summary: 'Certification, traçabilité.',
-      tag: 'Cacao',
-      location: 'Guiglo, Duékoué, Man'
-    },
-    {
-      title: 'Banane plantain améliorée',
-      summary: 'Variétés résistantes (FHIA), marché régional dynamique.',
-      tag: 'Banane plantain',
-      location: 'Ouest humide'
-    },
-    {
-      title: 'Station CNRA Abengourou',
-      summary: 'Appui techniques pérennes (cacao) et vivriers.',
-      tag: 'CNRA Abengourou',
-      location: 'Abengourou',
-      source: 'https://www.cnra.ci'
-    },
-    {
-      title: 'Coopératives cacao Est',
-      summary: 'Certifications et traçabilité pour l’export.',
-      tag: 'Cacao',
-      location: 'Abengourou, Agnibilékro'
-    },
-    {
-      title: 'Itinéraire anacarde (cajou)',
-      summary: 'Taille de formation, entretien, lutte ravageurs, séchage.',
-      tag: 'Anacarde',
-      location: 'Bondoukou, Bouna'
-    },
-    {
-      title: 'Système cajou + apiculture',
-      summary: 'Diversification des revenus, pollinisation améliorée.',
-      tag: 'Anacarde + miel',
-      location: 'Gontougo/Bounkani'
-    },
-    {
-      title: 'Antenne ANADER Daloa',
-      summary: 'Conseil technique cacao/café & diversification.',
-      tag: 'ANADER Daloa',
+      title: 'Coopecaci - Cooperative cacao modele',
+      summary: 'Adhesion ouverte. Formation gratuite. Acces credit collectif. Prix premium qualite. Equipements mutualises.',
+      tag: 'Cooperative',
       location: 'Daloa',
-      source: 'https://www.anader.ci'
+      phones: [
+        { label: 'Contact', tel: '2733220145' }
+      ]
     },
     {
-      title: 'Renouvellement vergers cacao',
-      summary: 'Replantation, haies vives, lutte érosion, géolocalisation parcelles.',
-      tag: 'Cacao durable',
-      location: 'Daloa, Gagnoa'
+      title: 'Fonds garantie credit agricole',
+      summary: 'Garantie 75% prets agricoles. Taux preferentiel 5-7%. Montant max: 50 millions FCFA. Delai remboursement: 5 ans.',
+      tag: 'Financement',
+      phones: [
+        { label: 'Info credit', tel: '2720333444' }
+      ]
     },
     {
-      title: 'Exploitation hévéa productive',
-      summary: 'Clones haut rendement, saignée optimisée, contrats.',
-      tag: 'Hévéa',
-      location: 'Gagnoa, Lakota'
+      title: 'Plateforme fourniture intrants',
+      summary: 'Engrais subventionnes -30%. Semences certifiees. Phytosanitaires homologues. Commande en ligne. Livraison cooperative.',
+      tag: 'Intrants',
+      source: 'https://intrants.agriculture.gouv.ci/'
     },
     {
-      title: 'Coopératives café-cacao Centre-Ouest',
-      summary: 'Certifications UTZ/RA, primes durabilité.',
-      tag: 'Café-Cacao',
-      location: 'Daloa, Issia, Gagnoa'
+      title: 'Formation certifiante agriculture biologique',
+      summary: 'Programme 6 mois. Pratiques agroecologiques. Certification organique. Acces marches export. Cout: 150 000 FCFA (aide possible).',
+      tag: 'Formation',
+      location: 'Yamoussoukro, Korhogo, San-Pedro',
+      phones: [
+        { label: 'Inscriptions', tel: '2730445566' }
+      ]
     },
     {
-      title: 'Itinéraire technique maïs',
-      summary: 'Semis en lignes, densité, NPK/urée, désherbage post-levée.',
-      tag: 'Maïs hybride',
-      location: 'Katiola, Dabakala'
+      title: 'Meteo agricole - Alertes SMS',
+      summary: 'Previsions 7 jours par zone. Alertes pluies, secheresse. Conseils semis/recolte selon meteo. Service gratuit par SMS.',
+      tag: 'Service digital',
+      phones: [
+        { label: 'Inscription', tel: '*144*2#' }
+      ]
     },
-    {
-      title: 'Système intercalaire niébé/maïs',
-      summary: 'Sécurité alimentaire + revenus (grain).',
-      tag: 'Niébé + Maïs',
-      location: 'Katiola'
-    },
-    {
-      title: 'Groupements céréaliers',
-      summary: 'Stockage communautaire, warrantage.',
-      tag: 'Céréales',
-      location: 'Dabakala, Katiola'
-    },
-    {
-      title: 'Antenne ANADER Odienné',
-      summary: 'Appui élevage, riz, maraîchage irrigué.',
-      tag: 'ANADER Odienné',
-      location: 'Odienné',
-      source: 'https://www.anader.ci'
-    },
-    {
-      title: 'Mangue Kent/Keitt export',
-      summary: 'Traitement post-récolte, chaîne export, prime qualité.',
-      tag: 'Mangue export',
-      location: 'Odienné, Séguéla'
-    },
-    {
-      title: 'Irrigation maraîchère gravitaire',
-      summary: 'Petits périmètres, maîtrise de l’eau en saison sèche.',
-      tag: 'Irrigation gravitaire',
-      location: 'Worodougou'
-    },
-    {
-      title: 'Appui organisations paysannes',
-      summary: 'Financements locaux et renforcement (2025).',
-      tag: 'OSC appui',
-      location: 'Guémon/Cavally'
-    },
-    {
-      title: 'Ananas Cayenne lisse / MD2',
-      summary: 'Export & transformation jus (Aboisso/Adiaké).',
-      tag: 'Ananas',
-      location: 'Aboisso, Adiaké'
-    },
-    {
-      title: 'Cultures hors-sol cocopeat',
-      summary: 'Légumes-feuilles, rendements élevés près d’Abidjan.',
-      tag: 'Hors-sol (cocopeat)',
-      location: 'Grand-Bassam / Alépé'
-    },
-    {
-      title: 'Cacao premium certifié',
-      summary: 'Fermentation contrôlée, séchage solaire, certification.',
-      tag: 'Cacao premium',
-      location: 'Soubré, San-Pedro'
-    },
-    {
-      title: 'Agroforesterie cacaoyère',
-      summary: 'Arbres d’ombrage légumineux + cacao pour résilience.',
-      tag: 'Agroforesterie cacao',
-      location: 'Soubré'
-    },
-    {
-      title: 'Coopératives palmier',
-      summary: 'Régimes -> huilerie, logistique.',
-      tag: 'Palmier à huile',
-      location: 'Sassandra, Tabou'
-    },
-    {
-      title: 'Polyculture tilapia + clarias',
-      summary: 'Granulés locaux, marchés urbains (Anyama/Alépé).',
-      tag: 'Pisciculture mixte',
-      location: 'Alépé, Anyama'
-    },
-    {
-      title: 'Irrigation goutte-à-goutte',
-      summary: 'Fertigation maraîchère saison sèche.',
-      tag: 'Goutte-à-goutte',
-      location: 'Songon, Dabou'
-    },
-    {
-      title: 'Tech cacao - lutte intégrée',
-      summary: 'Traitements ciblés contre mirides, taille sanitaire, pièges, correction carences.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech riz irrigué',
-      summary: 'Nivellement, maîtrise eau, repiquage, fertilisation azotée fractionnée.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech maïs hybride',
-      summary: 'Densité 55–70k plants/ha, NPK + urée, désherbage 2 passages.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech manioc amélioré',
-      summary: 'Boutures saines, écartement 1x1 m, variétés TMS résistantes, paillage.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech igname buttage',
-      summary: 'Billons hauts, semence saine, rotations pour limiter nématodes.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech tomate sous abri',
-      summary: 'Variétés F1 tolérantes, prophylaxie, biocontrôle, pollinisation assistée.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech banane plantain',
-      summary: 'Pieds sains, désherbage manuel, tuteurs, apport organique régulier.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech oignon hors-saison',
-      summary: 'Pépinière, repiquage, irrigation régulière, séchage post-récolte.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech arachide',
-      summary: 'Semis en lignes, inoculation rhizobium, désherbage précoce, séchage gousses.',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Tech niébé',
-      summary: 'Variétés résistantes bruches, stockage hermétique (PICS).',
-      tag: 'Bonnes pratiques'
-    },
-    {
-      title: 'Maraîchage sous serre',
-      summary: 'Forte demande urbaine, cycles courts, prix premium en saison sèche.',
-      tag: 'Maraîchage sous serre',
-      location: 'Abidjan'
-    },
-    {
-      title: 'Cacao premium & transformation',
-      summary: 'Bonus qualité via fermentation contrôlée, séchage, certification.',
-      tag: 'Cacao premium & transformation',
-      location: 'Sud'
-    },
-    {
-      title: 'Riz de bas-fonds amélioré',
-      summary: 'Variétés à cycle court, mécanisation légère, débouchés régionaux.',
-      tag: 'Riz de bas-fonds amélioré',
-      location: 'Centre'
-    },
-    {
-      title: 'Oignon/échalote irrigué',
-      summary: 'Bonne marge hors-saison, conservation et stockage structuré.',
-      tag: 'Oignon/échalote irrigué',
-      location: 'Nord'
-    },
-    {
-      title: 'Café spécialité',
-      summary: 'Valorisation par process humide et tri densimétrique.',
-      tag: 'Café spécialité',
-      location: 'Ouest'
-    },
-    {
-      title: 'Anacarde + apiculture',
-      summary: 'Revenus diversifiés, pollinisation améliorée.',
-      tag: 'Anacarde + apiculture',
-      location: 'Est'
-    },
-    {
-      title: 'Hévéa',
-      summary: 'Contrats de rachat, clones productifs, demande stable.',
-      tag: 'Hévéa',
-      location: 'Centre-Ouest'
-    },
-    {
-      title: 'Mangue export',
-      summary: 'Chaîne d’export structurée, prime qualité.',
-      tag: 'Mangue export',
-      location: 'Nord-Ouest'
-    },
-    {
-      title: 'EFA Ferentella (Touba)',
-      summary: 'Formation agricole initiale et continue.',
-      tag: 'CFP/EFA',
-      location: 'Touba',
-      source: 'https://infpa.org'
-    },
-    {
-      title: 'CFP Agricole Korhogo',
-      summary: 'Techniques végétales, élevage, maraîchage irrigué.',
-      tag: 'CFP/EFA',
-      location: 'Korhogo'
-    },
-    {
-      title: 'Centre Rural Man',
-      summary: 'Formations cacao/café, diversification.',
-      tag: 'CFP/EFA',
-      location: 'Man'
-    },
-    {
-      title: 'CFP Abengourou',
-      summary: 'Techniques pérennes et vivriers.',
-      tag: 'CFP/EFA',
-      location: 'Abengourou'
-    },
-    {
-      title: 'Centre Rural Grand-Lahou',
-      summary: 'Pêche, aquaculture & vivriers côtiers.',
-      tag: 'CFP/EFA',
-      location: 'Grand-Lahou'
-    },
-    {
-      title: 'Union Coopérative Cacao Daloa',
-      summary: 'Collecte, formation, certification.',
-      tag: 'Agricole',
-      location: 'Daloa'
-    },
-    {
-      title: 'SCOOPS Café de Man',
-      summary: 'Qualité spécialité, process humide.',
-      tag: 'Agricole',
-      location: 'Man'
-    },
-    {
-      title: 'Coopérative Cacao Abengourou',
-      summary: 'Traçabilité, conformité EUDR.',
-      tag: 'Agricole',
-      location: 'Abengourou'
-    },
-    {
-      title: 'Union Céréalière Korhogo',
-      summary: 'Stockage, warrantage, intrants groupés.',
-      tag: 'Agricole',
-      location: 'Korhogo'
-    },
-    {
-      title: 'Coop Palmier Sassandra',
-      summary: 'Régimes -> huilerie, logistique.',
-      tag: 'Agricole',
-      location: 'Sassandra'
-    },
-    {
-      title: 'Coop Ananas Aboisso',
-      summary: 'Production export & jus.',
-      tag: 'Agricole',
-      location: 'Aboisso'
-    },
-    {
-      title: 'FIRCA appels à projets',
-      summary: 'Financement recherche & conseil agricoles.',
-      tag: 'Information/Financement',
-      source: 'https://www.firca.ci'
-    },
-    {
-      title: 'BMPA CI - Infos marchés',
-      summary: 'Cotation cajou, maïs, cola (transparence prix).',
-      tag: 'Information/Financement',
-      source: 'https://bmpa.ci'
-    },
-    {
-      title: 'ONDR - Appui rizicole',
-      summary: 'Conseil, variétés améliorées, périmètres irrigués.',
-      tag: 'Information/Financement',
-      source: 'https://ondr.ci'
-    },
-    {
-      title: 'Conseil Café-Cacao - Prix',
-      summary: 'Prix bord champ & notices techniques.',
-      tag: 'Information/Financement',
-      source: 'https://www.conseilcafecacao.ci'
-    },
-    {
-      title: 'Compostage urbain',
-      summary: 'Valorisation déchets organiques en compost pour maraîchage.',
-      tag: 'Pratique/Climat',
-      location: 'Abidjan'
-    },
-    {
-      title: 'Paillage cacao',
-      summary: 'Réduction évaporation et contrôle adventices.',
-      tag: 'Pratique/Climat',
-      location: 'Sud'
-    },
-    {
-      title: 'Rotations maïs/niébé',
-      summary: 'Améliore fertilité, casse cycles ravageurs.',
-      tag: 'Pratique/Climat',
-      location: 'Centre'
-    },
-    {
-      title: 'Micro-aspersion',
-      summary: 'Efficiente pour oignon/tomate en saison sèche.',
-      tag: 'Pratique/Climat',
-      location: 'Nord'
-    },
-    {
-      title: 'Brise-vent agroforestier',
-      summary: 'Réduit dégâts vent/pluie en montagne.',
-      tag: 'Pratique/Climat',
-      location: 'Ouest'
-    },
-    {
-      title: 'Séchage cajou',
-      summary: 'Sur claies, hygrométrie maîtrisée, qualité export.',
-      tag: 'Pratique/Climat',
-      location: 'Est'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Abidjan.',
-      tag: 'Sol/Fertilité',
-      location: 'Abidjan'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Abidjan.',
-      tag: 'Protection intégrée',
-      location: 'Abidjan'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Abidjan.',
-      tag: 'Volaille villageoise',
-      location: 'Abidjan'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Abidjan.',
-      tag: 'Porcs fermiers',
-      location: 'Abidjan'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Sud.',
-      tag: 'Sol/Fertilité',
-      location: 'Sud'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Sud.',
-      tag: 'Protection intégrée',
-      location: 'Sud'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Sud.',
-      tag: 'Volaille villageoise',
-      location: 'Sud'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Sud.',
-      tag: 'Porcs fermiers',
-      location: 'Sud'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Centre.',
-      tag: 'Sol/Fertilité',
-      location: 'Centre'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Centre.',
-      tag: 'Protection intégrée',
-      location: 'Centre'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Centre.',
-      tag: 'Volaille villageoise',
-      location: 'Centre'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Centre.',
-      tag: 'Porcs fermiers',
-      location: 'Centre'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Nord.',
-      tag: 'Sol/Fertilité',
-      location: 'Nord'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Nord.',
-      tag: 'Protection intégrée',
-      location: 'Nord'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Nord.',
-      tag: 'Volaille villageoise',
-      location: 'Nord'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Nord.',
-      tag: 'Porcs fermiers',
-      location: 'Nord'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Ouest.',
-      tag: 'Sol/Fertilité',
-      location: 'Ouest'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Ouest.',
-      tag: 'Protection intégrée',
-      location: 'Ouest'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Ouest.',
-      tag: 'Volaille villageoise',
-      location: 'Ouest'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Ouest.',
-      tag: 'Porcs fermiers',
-      location: 'Ouest'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Est.',
-      tag: 'Sol/Fertilité',
-      location: 'Est'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Est.',
-      tag: 'Protection intégrée',
-      location: 'Est'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Est.',
-      tag: 'Volaille villageoise',
-      location: 'Est'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Est.',
-      tag: 'Porcs fermiers',
-      location: 'Est'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Centre-Ouest.',
-      tag: 'Sol/Fertilité',
-      location: 'Centre-Ouest'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Centre-Ouest.',
-      tag: 'Protection intégrée',
-      location: 'Centre-Ouest'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Centre-Ouest.',
-      tag: 'Volaille villageoise',
-      location: 'Centre-Ouest'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Centre-Ouest.',
-      tag: 'Porcs fermiers',
-      location: 'Centre-Ouest'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Centre-Nord.',
-      tag: 'Sol/Fertilité',
-      location: 'Centre-Nord'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Centre-Nord.',
-      tag: 'Protection intégrée',
-      location: 'Centre-Nord'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Centre-Nord.',
-      tag: 'Volaille villageoise',
-      location: 'Centre-Nord'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Centre-Nord.',
-      tag: 'Porcs fermiers',
-      location: 'Centre-Nord'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Nord-Ouest.',
-      tag: 'Sol/Fertilité',
-      location: 'Nord-Ouest'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Nord-Ouest.',
-      tag: 'Protection intégrée',
-      location: 'Nord-Ouest'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Nord-Ouest.',
-      tag: 'Volaille villageoise',
-      location: 'Nord-Ouest'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Nord-Ouest.',
-      tag: 'Porcs fermiers',
-      location: 'Nord-Ouest'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Sud-Est.',
-      tag: 'Sol/Fertilité',
-      location: 'Sud-Est'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Sud-Est.',
-      tag: 'Protection intégrée',
-      location: 'Sud-Est'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Sud-Est.',
-      tag: 'Volaille villageoise',
-      location: 'Sud-Est'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Sud-Est.',
-      tag: 'Porcs fermiers',
-      location: 'Sud-Est'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Sud-Ouest.',
-      tag: 'Sol/Fertilité',
-      location: 'Sud-Ouest'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Sud-Ouest.',
-      tag: 'Protection intégrée',
-      location: 'Sud-Ouest'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Sud-Ouest.',
-      tag: 'Volaille villageoise',
-      location: 'Sud-Ouest'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Sud-Ouest.',
-      tag: 'Porcs fermiers',
-      location: 'Sud-Ouest'
-    },
-    {
-      title: 'Analyse de sol & plan de fumure',
-      summary: 'Bonnes pratiques adaptées à la zone Lagunes.',
-      tag: 'Sol/Fertilité',
-      location: 'Lagunes'
-    },
-    {
-      title: 'Biocontrôle et seuils d’intervention',
-      summary: 'Bonnes pratiques adaptées à la zone Lagunes.',
-      tag: 'Protection intégrée',
-      location: 'Lagunes'
-    },
-    {
-      title: 'Poulets améliorés, cycles 8-10 semaines',
-      summary: 'Bonnes pratiques adaptées à la zone Lagunes.',
-      tag: 'Volaille villageoise',
-      location: 'Lagunes'
-    },
-    {
-      title: 'Alimentation locale, marché urbain',
-      summary: 'Bonnes pratiques adaptées à la zone Lagunes.',
-      tag: 'Porcs fermiers',
-      location: 'Lagunes'
-    }
   ],
   loisirs_tourisme: [
     {
