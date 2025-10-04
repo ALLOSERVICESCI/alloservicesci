@@ -825,7 +825,8 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       tag: "Information générale"
     }
   ],
-  transport: [
+  ],
+  transport:transport: [
     {
       title: 'SOTRA -- Reseau dAbidjan',
       summary: 'Lignes de bus et bateaux-bus (horaires et plans).',
