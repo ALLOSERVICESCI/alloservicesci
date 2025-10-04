@@ -34,21 +34,13 @@ export default function Home() {
     return () => clearInterval(id);
   }, [user?.id]);
 
-  // Charger un aperçu récent des publications (pour alimenter la capsule)
   const loadPreviews = async () => {
-    let cancelled = false; // local guard not used across calls here
-    const toPreviewString = (a: any) => {
-      const title = (a?.title || '').trim();
-      return title;
-    };
+    let cancelled = false;
+    const toPreviewString = (a: any) => { const title = (a?.title || '').trim(); return title; };
     try {
       const res = await apiFetch('/api/alerts');
       const json = await res.json().catch(() => []);
-      const previews = (json || [])
-        .slice(0, 10)
-        .map(toPreviewString)
-        .filter((s: string) => !!s)
-        .slice(0, 6);
+      const previews = (json || []).slice(0, 10).map(toPreviewString).filter((s: string) => !!s).slice(0, 6);
       if (!cancelled) setAlertsPreview(previews);
     } catch (e) {}
   };
@@ -59,6 +51,7 @@ export default function Home() {
     return () => { clearInterval(iv); };
   }, []);
 
+  // Ordre demandé: ... Emplois & Offres, Services Utiles, Agriculture ...
   const categories = useMemo(() => [
     { slug: 'urgence', label: t('urgence'), icon: '🚨', isPremium: false },
     { slug: 'sante', label: t('sante'), icon: '🏥', isPremium: false },
@@ -68,13 +61,12 @@ export default function Home() {
     { slug: 'examens_concours', label: t('examens'), icon: '📚', isPremium: true },
     { slug: 'services_publics', label: t('services_publics'), icon: '🏛️', isPremium: true },
     { slug: 'emplois', label: t('emplois'), icon: '💼', isPremium: true },
-    // services_utiles supprimé définitivement
+    { slug: 'services_utiles', label: t('services_utiles'), icon: '⚡', isPremium: true },
     { slug: 'agriculture', label: t('agriculture'), icon: '🌾', isPremium: true },
     { slug: 'loisirs_tourisme', label: t('loisirs_tourisme'), icon: '🏖️', isPremium: true },
     { slug: 'transport', label: t('transport'), icon: '🚌', isPremium: true },
   ], [t]);
 
-  // Construire les éléments de résumé (titre coloré selon pertinence)
   const marqueeItems = useMemo(() => {
     const fromCenter = (items || []).map((i) => (i.title || i.body || '')).filter(Boolean) as string[];
     const fromPreview = alertsPreview;
@@ -92,64 +84,42 @@ export default function Home() {
 
   const marqueeText = useMemo(() => marqueeItems.join(' . '), [marqueeItems]);
 
-  const colorForKind = (kind: string) => {
-    const k = kind.toLowerCase();
-    if (k.startsWith('danger') || k.startsWith('disparition') || k.startsWith('accident')) return '#D32F2F';
-    if (k.startsWith('alerte') || k.startsWith('embouteillage') || k.startsWith('inondation')) return '#FF8A00';
-    return '#0F5132';
-  };
-
   const [marqueeW, setMarqueeW] = useState(0);
   const [textW, setTextW] = useState(0);
   const marqueeX = useSharedValue(0);
   const marqueeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: marqueeX.value }] }));
 
   // FAB Publier déplaçable
-  const publishFabX = useSharedValue(width - FAB_SIZE - FAB_MARGIN);
-  const publishFabY = useSharedValue(height - FAB_SIZE - 140);
+  const { width: W, height: H } = Dimensions.get('window');
+  const publishFabX = useSharedValue(W - FAB_SIZE - FAB_MARGIN);
+  const publishFabY = useSharedValue(H - FAB_SIZE - 140);
   const publishFabStyle = useAnimatedStyle(() => ({ transform: [{ translateX: publishFabX.value }, { translateY: publishFabY.value }] }));
   const publishPanHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx: any) => {
-      ctx.startX = publishFabX.value; ctx.startY = publishFabY.value;
-    },
-    onActive: (event, ctx: any) => {
-      publishFabX.value = ctx.startX + event.translationX;
-      publishFabY.value = ctx.startY + event.translationY;
-    },
+    onStart: (_, ctx: any) => { ctx.startX = publishFabX.value; ctx.startY = publishFabY.value; },
+    onActive: (event, ctx: any) => { publishFabX.value = ctx.startX + event.translationX; publishFabY.value = ctx.startY + event.translationY; },
     onEnd: () => {
-      // Optionnel: aimantation aux bords
-      const minX = 8; const maxX = width - FAB_SIZE - 8;
-      const minY = 80; const maxY = height - FAB_SIZE - 120;
+      const minX = 8; const maxX = W - FAB_SIZE - 8; const minY = 80; const maxY = H - FAB_SIZE - 120;
       publishFabX.value = withTiming(Math.min(Math.max(publishFabX.value, minX), maxX), { duration: 160 });
       publishFabY.value = withTiming(Math.min(Math.max(publishFabY.value, minY), maxY), { duration: 160 });
     },
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!textW || marqueeItems.length === 0) return;
     cancelAnimation(marqueeX);
-    const speed = Platform.OS === 'web' ? 50 : 60; // px/s (web légèrement plus lent = animation plus fluide)
-    const distance = textW; // with double-buffer, shift by exactly one text width
+    const speed = Platform.OS === 'web' ? 50 : 60;
+    const distance = textW;
     const duration = (distance / speed) * 1000;
     marqueeX.value = 0;
-    marqueeX.value = withRepeat(
-      withTiming(-distance, { duration, easing: REEasing.linear }),
-      -1, // infinite
-      false, // do not reverse
-    );
+    marqueeX.value = withRepeat(withTiming(-distance, { duration, easing: REEasing.linear }), -1, false);
     return () => { cancelAnimation(marqueeX); };
   }, [textW, marqueeItems]);
 
   const onRefresh = async () => {
     try {
       setRefreshing(true);
-      await Promise.all([
-        refreshAlertsUnread(user?.id),
-        loadPreviews(),
-      ]);
-    } finally {
-      setRefreshing(false);
-    }
+      await Promise.all([refreshAlertsUnread(user?.id), loadPreviews()]);
+    } finally { setRefreshing(false); }
   };
 
   const [aiPos] = React.useState<'bottom-right'|'bottom-left'|'top-right'|'top-left'>('bottom-right');
@@ -165,64 +135,29 @@ export default function Home() {
     (async () => {
       try {
         const saved = await AsyncStorage.getItem('layah_fab_pos');
-        if (saved) {
-          const pos = JSON.parse(saved);
-          setAiFabXY(pos);
-          pan.setValue(pos);
-        } else {
-          const pos = { x: width - FAB_SIZE - FAB_MARGIN, y: height - FAB_SIZE - 140 };
-          setAiFabXY(pos);
-          pan.setValue(pos);
-        }
-        setTooltipVisible(true);
-        setTimeout(() => setTooltipVisible(false), 5000);
-
+        if (saved) { const pos = JSON.parse(saved); setAiFabXY(pos); pan.setValue(pos); }
+        else { const pos = { x: width - FAB_SIZE - FAB_MARGIN, y: height - FAB_SIZE - 140 }; setAiFabXY(pos); pan.setValue(pos); }
+        setTooltipVisible(true); setTimeout(() => setTooltipVisible(false), 5000);
         const flag = await AsyncStorage.getItem('home_snack');
-        if (flag === 'ALERT_PUBLISHED') {
-          setShowSnack(true);
-          setTimeout(async () => { setShowSnack(false); try { await AsyncStorage.removeItem('home_snack'); } catch {} }, 3500);
-        }
+        if (flag === 'ALERT_PUBLISHED') { setShowSnack(true); setTimeout(async () => { setShowSnack(false); try { await AsyncStorage.removeItem('home_snack'); } catch {} }, 3500); }
       } catch (e) {}
     })();
   }, []);
 
   const pulse = useRef(new RNAnimated.Value(1)).current;
   useEffect(() => {
-    const run = () => {
-      RNAnimated.sequence([
-        RNAnimated.timing(pulse, { toValue: 1.06, duration: 900, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
-        RNAnimated.timing(pulse, { toValue: 1.0, duration: 900, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
-      ]).start(({ finished }) => { if (finished) run(); });
-    };
+    const run = () => { RNAnimated.sequence([
+      RNAnimated.timing(pulse, { toValue: 1.06, duration: 900, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+      RNAnimated.timing(pulse, { toValue: 1.0, duration: 900, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
+    ]).start(({ finished }) => { if (finished) run(); }); };
     run();
     return () => pulse.stopAnimation();
   }, [pulse]);
 
-  // Vibration subtile du mégaphone du FAB
   const megaphoneShake = useSharedValue(-1);
-  const megaphoneAnimStyle = useAnimatedStyle(() => ({
-    transform: [
-      { rotateZ: `${megaphoneShake.value * 2}deg` },
-      { translateX: megaphoneShake.value * 1.5 },
-    ],
-  }));
+  const megaphoneAnimStyle = useAnimatedStyle(() => ({ transform: [ { rotateZ: `${megaphoneShake.value * 2}deg` }, { translateX: megaphoneShake.value * 1.5 } ] }));
   useEffect(() => {
-    // Séquence plus rapide (fréquence augmentée) avec pause de 2s entre cycles
-    megaphoneShake.value = withRepeat(
-      withSequence(
-        withRepeat(
-          withSequence(
-            withTiming(1, { duration: 60, easing: REEasing.linear }),
-            withTiming(-1, { duration: 60, easing: REEasing.linear })
-          ),
-          5, // 5 oscillations rapides par cycle
-          false
-        ),
-        withDelay(2000, withTiming(-1, { duration: 0 })) // pause 2s, revient à la position de repos
-      ),
-      -1,
-      false
-    );
+    megaphoneShake.value = withRepeat(withSequence(withRepeat(withSequence(withTiming(1, { duration: 60, easing: REEasing.linear }), withTiming(-1, { duration: 60, easing: REEasing.linear })), 5, false), withDelay(2000, withTiming(-1, { duration: 0 }))), -1, false);
     return () => { cancelAnimation(megaphoneShake); };
   }, []);
 
@@ -248,7 +183,7 @@ export default function Home() {
                     <TouchableOpacity onPress={() => router.push('/(tabs)/alerts')} style={styles.infoPill} accessibilityRole="button">
                       <Text style={styles.infoPillText}>Infos</Text>
                     </TouchableOpacity>
-                    <View style={styles.marqueeClip} onLayout={(e) => setMarqueeW(e.nativeEvent.layout.width)}>
+                    <View style={styles.marqueeClip}>
                       <Reanimated.View style={[styles.marqueeRow, marqueeStyle]}>
                         <Text onLayout={(e) => setTextW(e.nativeEvent.layout.width)} style={styles.marqueeText} numberOfLines={1} ellipsizeMode="clip">{marqueeText}</Text>
                         <Text style={styles.marqueeText} numberOfLines={1} ellipsizeMode="clip">{marqueeText}</Text>
@@ -272,10 +207,8 @@ export default function Home() {
                     return router.push(`/category/${category.slug}`);
                   }}
                 >
-                  {/* cadenas premium supprimé comme demandé */}
-                  {/* pastille alerte supprimée comme demandé */}
                   {category.slug === 'urgence' ? (
-                      <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={styles.categoryIconImg} />
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'sante' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/bh94qk6w_Background_sante.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'alerts_tab' ? (
@@ -294,12 +227,13 @@ export default function Home() {
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/26f9vvri_Background_loisir.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'services_publics' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/d40242y4_Background_services_publics.png' }} style={styles.categoryIconImg} />
+                  ) : category.slug === 'services_utiles' ? (
+                    <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-ia-portal/artifacts/wvadbhsd_services_utiles.png' }} style={styles.categoryIconImg} />
                   ) : category.slug === 'transport' ? (
                     <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/b0h611zz_Background_transport.png' }} style={styles.categoryIconImg} />
                   ) : (
                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                   )}
-                  {/* titres sous les icônes supprimés comme demandé */}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -316,17 +250,9 @@ export default function Home() {
 
       <NavMenu />
 
-      {/* FAB Publier - désormais flottant et déplaçable */}
       <PanGestureHandler onGestureEvent={publishPanHandler}>
         <Reanimated.View style={[styles.publishFab, publishFabStyle]}>
-          <TouchableOpacity
-            accessibilityRole="button"
-            accessibilityLabel="Publier une alerte"
-            testID="fab-publier"
-            onPress={() => router.push('/alerts/new')}
-            activeOpacity={0.9}
-            style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
-          >
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel="Publier une alerte" testID="fab-publier" onPress={() => router.push('/alerts/new')} activeOpacity={0.9} style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
             <Reanimated.View style={megaphoneAnimStyle}>
               <Ionicons name="megaphone" size={22} color="#fff" />
             </Reanimated.View>
@@ -334,17 +260,7 @@ export default function Home() {
         </Reanimated.View>
       </PanGestureHandler>
 
-      <RNAnimated.View style={[
-        styles.aiFab,
-        styles.aiHalo,
-        { transform: [
-            { scale: pulse },
-            { translateX: pan.x },
-            { translateY: pan.y }
-          ]
-        },
-      ]}>
-
+      <RNAnimated.View style={[ styles.aiFab, styles.aiHalo, { transform: [ { scale: pulse }, { translateX: pan.x }, { translateY: pan.y } ] } ]}>
         <TouchableOpacity onPress={() => router.push('/ai/chat')} activeOpacity={0.9} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View style={styles.aiMask}><Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/qn4qcqls_logoia.png' }} style={styles.aiImgCover} /></View>
         </TouchableOpacity>
