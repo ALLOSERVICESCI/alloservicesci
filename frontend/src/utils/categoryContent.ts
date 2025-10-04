@@ -76,7 +76,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       location: 'Siege Treichville, antennes regionales',
       source: 'mailto:info@inhp.ci',
       phones: [
-        { label: 'Standard, tel: '21259254' }
+        { label: 'Standard', tel: '21259254' }
       ],
     },
     {
