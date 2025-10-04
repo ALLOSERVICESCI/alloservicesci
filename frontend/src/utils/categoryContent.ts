@@ -625,6 +625,142 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
         { label: 'Service client', tel: '2722505050' },
       ]
     },
+    {
+      title: 'SGBCI - Abobo',
+      summary: 'Services bancaires -- Comptes, cartes, credits',
+      commune: 'Abobo',
+      source: 'https://societegenerale.ci',
+      phones: [
+        { label: 'Service client', tel: '2720272727' },
+      ]
+    },
+    {
+      title: 'Ecobank - Koumassi',
+      summary: 'Services bancaires et mobile banking',
+      commune: 'Koumassi',
+      source: 'https://www.ecobank.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2720252525' },
+      ]
+    },
+    {
+      title: 'Banque Atlantique - Port-Bouet',
+      summary: 'Services bancaires -- Epargne, virements, prets',
+      commune: 'Port-Bouet',
+      source: 'https://www.atlantiquefinance.com',
+      phones: [
+        { label: 'Service client', tel: '2720303030' },
+      ]
+    },
+    {
+      title: 'NSIA Banque - Abobo',
+      summary: 'Banque et assurance -- Comptes, cartes, assurances',
+      commune: 'Abobo',
+      source: 'https://www.nsia.com',
+      phones: [
+        { label: 'Service client', tel: '2720444444' },
+      ]
+    },
+    {
+      title: 'UBA - Koumassi',
+      summary: 'Services bancaires internationaux',
+      commune: 'Koumassi',
+      source: 'https://www.ubagroup.com',
+      phones: [
+        { label: 'Service client', tel: '2720282828' },
+      ]
+    },
+    {
+      title: 'Coris Bank - Yopougon',
+      summary: 'Services bancaires -- Transferts et epargne',
+      commune: 'Yopougon',
+      phones: [
+        { label: 'Service client', tel: '2722505050' },
+      ]
+    },
+
+    // Services en regions
+    {
+      title: 'Orange - Yamoussoukro',
+      summary: 'Agence Orange -- Mobile, Internet, Orange Money',
+      commune: 'Yamoussoukro',
+      source: 'https://www.orange.ci',
+      phones: [
+        { label: 'Service client', tel: '070707' },
+      ]
+    },
+    {
+      title: 'MTN - Yamoussoukro',
+      summary: 'Agence MTN -- Mobile, Internet, MoMo',
+      commune: 'Yamoussoukro',
+      source: 'https://www.mtn.ci',
+      phones: [
+        { label: 'Service client', tel: '555' },
+      ]
+    },
+    {
+      title: 'SGBCI - Yamoussoukro',
+      summary: 'Services bancaires -- Comptes, cartes, credits',
+      commune: 'Yamoussoukro',
+      source: 'https://societegenerale.ci',
+      phones: [
+        { label: 'Service client', tel: '2720272727' },
+      ]
+    },
+    {
+      title: 'Orange - Bouake',
+      summary: 'Agence Orange -- Mobile, Internet, Orange Money',
+      commune: 'Bouake',
+      source: 'https://www.orange.ci',
+      phones: [
+        { label: 'Service client', tel: '070707' },
+      ]
+    },
+    {
+      title: 'MTN - Bouake',
+      summary: 'Agence MTN -- Mobile, Internet, MoMo',
+      commune: 'Bouake',
+      source: 'https://www.mtn.ci',
+      phones: [
+        { label: 'Service client', tel: '555' },
+      ]
+    },
+    {
+      title: 'Ecobank - Bouake',
+      summary: 'Services bancaires et mobile banking',
+      commune: 'Bouake',
+      source: 'https://www.ecobank.com/ci',
+      phones: [
+        { label: 'Service client', tel: '2720252525' },
+      ]
+    },
+    {
+      title: 'Orange - San-Pedro',
+      summary: 'Agence Orange -- Mobile, Internet, Orange Money',
+      commune: 'San-Pedro',
+      source: 'https://www.orange.ci',
+      phones: [
+        { label: 'Service client', tel: '070707' },
+      ]
+    },
+    {
+      title: 'MTN - San-Pedro',
+      summary: 'Agence MTN -- Mobile, Internet, MoMo',
+      commune: 'San-Pedro',
+      source: 'https://www.mtn.ci',
+      phones: [
+        { label: 'Service client', tel: '555' },
+      ]
+    },
+    {
+      title: 'Banque Atlantique - San-Pedro',
+      summary: 'Services bancaires -- Epargne, virements, prets',
+      commune: 'San-Pedro',
+      source: 'https://www.atlantiquefinance.com',
+      phones: [
+        { label: 'Service client', tel: '2720303030' },
+      ]
+    },
 
     // Services Postaux
     {
