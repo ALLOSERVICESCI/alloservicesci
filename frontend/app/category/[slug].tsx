@@ -2037,11 +2037,6 @@ export default function CategoryPage() {
 
 
   const fixedHeaderKeys = ['urgence','sante','education','examens_concours','agriculture','loisirs_tourisme','transport','services_publics','emplois_offres'];
-  const padTop = fixedHeaderKeys.includes(sKey) ? (sKey === 'education' ? eduHeaderHeight : (sKey === 'sante' ? 270 : 250)) : 0;
-
-  return (
-    <View style={styles.container}>
-      {/* En-tête avec image */}
   // Etats isolés pour Services Utiles (n'affecte pas les autres pages)
   const [utilesMode, setUtilesMode] = useState<'nearby' | 'communes'>('communes');
   const [utilesCity, setUtilesCity] = useState<string>(userCity || 'Abidjan');
