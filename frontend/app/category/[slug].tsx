@@ -2772,7 +2772,7 @@ const styles = StyleSheet.create({
   backBtnText: { color: '#fff', marginLeft: 4, fontWeight: '600' },
   santeListContainer: { 
     paddingHorizontal: 20, 
-    paddingBottom: 20, 
+    paddingBottom: 12, 
     justifyContent: 'flex-end', 
     flex: 1,
     alignItems: 'flex-start'
