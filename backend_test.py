@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
-Comprehensive Backend Regression Test for Allô Services CI FastAPI
-Tests all endpoints with realistic payloads and edge cases as per review request.
+Backend Sanity Test Suite - Post Code Removal
+Testing specific endpoints as requested in review:
+1) GET /api/ → 200
+2) GET /api/alerts → 200 + list array
+3) GET /api/alerts/unread_count → 200 + count
+4) GET /api/subscriptions/check?user_id=dummy → 200
+5) POST /api/ai/export/docx with small content → 200 + docx content-type
 """
 
 import requests
