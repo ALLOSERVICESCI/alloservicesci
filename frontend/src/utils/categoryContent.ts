@@ -121,7 +121,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'CHU de Cocody -- Urgences',
       summary: 'Prise en charge des urgences et specialites. Acces via Boulevard Francois Mitterrand.',
-      tag: 'Hopital,
+      tag: 'Hopital',
       location: 'Cocody (Abidjan)',
       date: 'Horaires: 24h/24'
     },
