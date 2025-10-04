@@ -1769,6 +1769,49 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       tag: "Porcs fermiers",
       location: "Lagunes"
     }
+      ],
+      source: 'https://www.anader.ci/'
+    },
+    {
+      title: 'Coopecaci - Cooperative cacao modele',
+      summary: 'Adhesion ouverte. Formation gratuite. Acces credit collectif. Prix premium qualite. Equipements mutualises.',
+      tag: 'Cooperative',
+      location: 'Daloa',
+      phones: [
+        { label: 'Contact', tel: '2733220145' }
+      ]
+    },
+    {
+      title: 'Fonds garantie credit agricole',
+      summary: 'Garantie 75% prets agricoles. Taux preferentiel 5-7%. Montant max: 50 millions FCFA. Delai remboursement: 5 ans.',
+      tag: 'Financement',
+      phones: [
+        { label: 'Info credit', tel: '2720333444' }
+      ]
+    },
+    {
+      title: 'Plateforme fourniture intrants',
+      summary: 'Engrais subventionnes -30%. Semences certifiees. Phytosanitaires homologues. Commande en ligne. Livraison cooperative.',
+      tag: 'Intrants',
+      source: 'https://intrants.agriculture.gouv.ci/'
+    },
+    {
+      title: 'Formation certifiante agriculture biologique',
+      summary: 'Programme 6 mois. Pratiques agroecologiques. Certification organique. Acces marches export. Cout: 150 000 FCFA (aide possible).',
+      tag: 'Formation',
+      location: 'Yamoussoukro, Korhogo, San-Pedro',
+      phones: [
+        { label: 'Inscriptions', tel: '2730445566' }
+      ]
+    },
+    {
+      title: 'Meteo agricole - Alertes SMS',
+      summary: 'Previsions 7 jours par zone. Alertes pluies, secheresse. Conseils semis/recolte selon meteo. Service gratuit par SMS.',
+      tag: 'Service digital',
+      phones: [
+        { label: 'Inscription', tel: '*144*2#' }
+      ]
+    },
   ],
   loisirs_tourisme: [
     {
