@@ -616,6 +616,17 @@ agent_communication:
   - task: "FRONTEND E2E: Services utiles (dynamique) – Capsules Autour de moi/Communes + Localité + Recherche + Scroll + Retour"
   - task: "FRONTEND E2E: Services utiles (dynamique) – Capsules, Localité, Recherche, Scroll, Retour"
   - task: "FRONTEND E2E: Services utiles (dynamique) – Capsules, Localité, Recherche, Scroll, Retour"
+  - task: "FRONTEND E2E: Suppression complète Services Utiles – Accueil/Subscribe/Route introuvable + régressions clés"
+    implemented: true
+    working: false
+    file: "frontend/app/(tabs)/home.tsx, frontend/app/(tabs)/subscribe.tsx, frontend/app/category/[slug].tsx, frontend/src/utils/categoryContent.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Plan (web iPhone 12/13/14): 1) Aller à / (home) → vérifier que la tuile 'Services Utiles' n'est plus présente; 2) Aller à /subscribe → vérifier que la tuile/feature 'Services Utiles' n'est plus listée; 3) Naviguer vers /category/services_utiles → vérifier que la route est introuvable (404 ou aucune page); 4) Vérifier qu'aucun visuel 'services_utiles' ne s'affiche; 5) Sanity navigation autres pages: Emplois, Services Publics, Allô IA → s'ouvrent sans erreur. Captures aux étapes 1,2,3."
     implemented: true
     working: false
     file: "frontend/app/category/[slug].tsx"
