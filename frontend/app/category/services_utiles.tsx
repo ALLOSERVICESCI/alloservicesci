@@ -139,6 +139,7 @@ export default function ServicesUtilesIsolated() {
     const title: string = item?.title || item?.name || '';
     const summary: string | undefined = item?.summary || item?.description;
     const location: string | undefined = item?.location;
+    const commune: string | undefined = item?.commune;
     const date: string | undefined = item?.date;
     const source: string | undefined = item?.source || item?.website;
     const phones: { label?: string; tel?: string }[] = Array.isArray(item?.phones) ? item.phones : [];
@@ -157,6 +158,12 @@ export default function ServicesUtilesIsolated() {
           ) : null}
         </View>
         {summary ? <Text style={styles.cardSummary}>{summary}</Text> : null}
+        {commune ? (
+          <View style={styles.communeBadgeRow}>
+            <Ionicons name="location" size={14} color="#FF8A00" />
+            <Text style={styles.communeBadgeText}>{commune}</Text>
+          </View>
+        ) : null}
         {(location || date) ? (
           <Text style={styles.cardSummary}>
             {location ? `${location}` : ''}
