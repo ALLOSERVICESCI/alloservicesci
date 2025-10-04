@@ -137,7 +137,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     {
       title: 'Calendrier scolaire 2024-2025',
       summary: 'Rentree, conges et periodes d\'examens (BEPC, BAC).',
-      tag: 'Officiel,
+      tag: 'Officiel',
       date: 'Publication: selon MEN',
       source: 'https://www.education.gouv.ci/'
     },
