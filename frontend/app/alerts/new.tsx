@@ -50,6 +50,12 @@ export default function NewAlert() {
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
+            <Ionicons name="chevron-back" size={24} color="#0A7C3A" />
+            <Text style={styles.backText}>Retour</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.title}>Nouvelle alerte</Text>
         <TextInput placeholder="Titre" value={title} onChangeText={setTitle} style={styles.input} />
         <TextInput placeholder="Description" value={description} onChangeText={setDescription} style={[styles.input, { height: 100 }]} multiline />
