@@ -197,9 +197,69 @@ export default function ServicesUtilesIsolated() {
         data={data}
         renderItem={renderItem}
         keyExtractor={(it, idx) => `${it?.id || it?.title || 'item'}-${idx}`}
+        ListHeaderComponent={
+          <View style={styles.headerControls}>
+            {/* Pastilles mode – style capsules */}
+            <View style={styles.modeRow}>
+              <ModeCapsule label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
+              <ModeCapsule label="Communes" icon="home" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
+            </View>
+
+            <View style={styles.localityRow}>
+              <Ionicons name="location" size={26} color="#FF8A00" />
+              <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
+            </View>
+
+            {/* Barre de recherche par commune (visible en mode Communes) */}
+            {mode === 'communes' ? (
+              <>
+                <View style={styles.searchRow}>
+                  <Ionicons name="search" size={18} color="#888" />
+                  <TextInput
+                    style={styles.searchInput}
+                    value={communeQuery}
+                    onChangeText={setCommuneQuery}
+                    placeholder="Rechercher une commune"
+                    placeholderTextColor="#999"
+                    returnKeyType="search"
+                    onSubmitEditing={() => {
+                      if (suggestions.length > 0) { setSelectedCommune(suggestions[0]); setCommuneQuery(''); }
+                    }}
+                  />
+                  {selectedCommune ? (
+                    <TouchableOpacity onPress={() => setSelectedCommune(null)} accessibilityRole="button" accessibilityLabel="Effacer la sélection">
+                      <Ionicons name="close-circle" size={18} color="#999" />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+                {communeQuery && suggestions.length > 0 ? (
+                  <View style={styles.suggestBox}>
+                    {suggestions.map((s) => (
+                      <TouchableOpacity key={s} onPress={() => { setSelectedCommune(s); setCommuneQuery(''); }} style={styles.suggestItem}>
+                        <Text style={styles.suggestText}>{s}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                ) : null}
+              </>
+            ) : null}
+            {mode === 'nearby' && locError ? (
+              <Text style={styles.locErrorText}>{locError}</Text>
+            ) : null}
+          </View>
+        }
         ListEmptyComponent={<View style={styles.emptyBox}><Text style={styles.emptyText}>Aucun contenu disponible.</Text></View>}
       />
     </View>
+  );
+}
+
+function ModeCapsule({ label, active, onPress, color, icon }: { label: string; active?: boolean; onPress: () => void; color: string; icon: any }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.modeCapsule, active ? { backgroundColor: color } : { backgroundColor: '#FFFFFF', borderColor: '#E1E6ED', borderWidth: 1 }, Platform.select({ web: { boxShadow: active ? '0 6px 16px rgba(0,0,0,0.12)' : 'none' } as any, ios: { shadowColor: '#000', shadowOpacity: active ? 0.12 : 0, shadowRadius: 8, shadowOffset: { width: 0, height: 6 } }, android: { elevation: active ? 4 : 0 } })]} accessibilityRole="button" accessibilityLabel={label}>
+      <Ionicons name={icon} size={16} color={active ? '#fff' : color} />
+      <Text style={[styles.modeCapsuleText, { color: active ? '#fff' : '#222' }]}>{label}</Text>
+    </TouchableOpacity>
   );
 }
 
