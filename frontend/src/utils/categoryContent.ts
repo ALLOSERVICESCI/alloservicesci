@@ -158,8 +158,8 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
   ],
   examens_concours: [
     {
-      title: 'Inscriptions en ligne -- Examens (DECO)',
-      summary: 'BEPC, BAC: verifiez les dates d'inscription et modalites chaque session.',
+      title: 'Inscriptions en ligne - Examens (DECO)',
+      summary: 'BEPC, BAC: verifiez les dates inscription et modalites chaque session.',
       tag: 'Examens',
       date: 'Periode: selon calendrier DECO',
       source: 'https://www.men-deco.org/'
