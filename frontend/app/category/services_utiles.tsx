@@ -1,11 +1,14 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ImageBackground, FlatList, TouchableOpacity, Platform, Linking } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { View, Text, StyleSheet, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../../src/context/AuthContext';
+import * as Location from 'expo-location';
 
-// Tuile fournie par l'utilisateur
-const TILE_IMG = { uri: 'https://customer-assets.emergentagent.com/job_allo-ia-portal/artifacts/wvadbhsd_services_utiles.png' };
+// Image header fournie par l'utilisateur
+const HEADER_IMG = { uri: 'https://customer-assets.emergentagent.com/job_allo-ia-portal/artifacts/ffjtsq3p_services_utiles_bg.png' };
 
 const HEADER_HEIGHT = 240;
 
@@ -19,7 +22,7 @@ type Item = {
   ussd?: { label?: string; code?: string }[];
 };
 
-// Contenu initial (reprend vos numéros clients utiles)
+// Contenu initial (services clients)
 const DATA: Item[] = [
   {
     title: 'SODECI — Eau',
@@ -60,7 +63,75 @@ const DATA: Item[] = [
   },
 ];
 
+const ABJ_COMMUNES = ['Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon'];
+
+type Mode = 'nearby' | 'communes';
+
 export default function ServicesUtilesPage() {
+  const { user } = useAuth();
+
+  // Localité utilisateur
+  const [effectiveCity, setEffectiveCity] = useState<string>(user?.city || (user as any)?.commune || 'Abidjan');
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        if (user?.city || (user as any)?.commune) {
+          if (mounted) setEffectiveCity(user.city || (user as any)?.commune);
+        } else {
+          const raw = await AsyncStorage.getItem('auth_user');
+          if (raw) {
+            const u = JSON.parse(raw);
+            const loc = u?.city || u?.commune || 'Abidjan';
+            if (mounted) setEffectiveCity(loc);
+          }
+        }
+      } catch {}
+    })();
+    return () => { mounted = false; };
+  }, [user?.city]);
+
+  // Contrôles UI empruntés à Services Publics
+  const [mode, setMode] = useState<Mode>('communes');
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [locError, setLocError] = useState<string | null>(null);
+  const [communeQuery, setCommuneQuery] = useState('');
+  const [selectedCommune, setSelectedCommune] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      if (mode !== 'nearby' || coords) return;
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') { setLocError('Autorisation localisation refusée'); return; }
+        const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+        setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      } catch (e) { setLocError('Localisation indisponible'); }
+    })();
+  }, [mode, coords]);
+
+  const suggestions = useMemo(() => {
+    const q = communeQuery.trim().toLowerCase();
+    if (!q) return [] as string[];
+    return ABJ_COMMUNES.filter(c => c.toLowerCase().includes(q)).slice(0, 8);
+  }, [communeQuery]);
+
+  // Recherche texte sur la liste
+  const [textQuery, setTextQuery] = useState('');
+  const norm = (s?: string) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+  const listData = useMemo(() => {
+    const q = norm(textQuery);
+    if (!q) return DATA;
+    return DATA.filter(it => {
+      const title = norm(it.title);
+      const summary = norm(it.summary);
+      const site = norm(it.source);
+      const phones = (it.phones || []).map(p => norm(p.tel)).join(' ');
+      const ussd = (it.ussd || []).map(u => norm(u.code)).join(' ');
+      return title.includes(q) || summary.includes(q) || site.includes(q) || phones.includes(q) || ussd.includes(q);
+    });
+  }, [textQuery]);
+
   const renderItem = ({ item }: { item: Item }) => {
     return (
       <View style={styles.card}>
@@ -90,11 +161,81 @@ export default function ServicesUtilesPage() {
     );
   };
 
+  const ListHeader = () => (
+    <View style={styles.headerControls}>
+      {/* Pastilles mode */}
+      <View style={styles.modeRow}>
+        <ModeCapsule label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
+        <ModeCapsule label="Communes" icon="home" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
+      </View>
+
+      {/* Localité */}
+      <View style={styles.localityRow}>
+        <Ionicons name="location" size={26} color="#FF8A00" />
+        <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
+      </View>
+
+      {/* Barre de recherche par commune (visible en mode Communes) */}
+      {mode === 'communes' ? (
+        <>
+          <View style={styles.searchRow}>
+            <Ionicons name="search" size={18} color="#888" />
+            <TextInput
+              style={styles.searchInput}
+              value={communeQuery}
+              onChangeText={setCommuneQuery}
+              placeholder="Rechercher une commune"
+              placeholderTextColor="#999"
+              returnKeyType="search"
+              onSubmitEditing={() => { if (suggestions.length > 0) { setSelectedCommune(suggestions[0]); setCommuneQuery(''); } }}
+            />
+            {selectedCommune ? (
+              <TouchableOpacity onPress={() => setSelectedCommune(null)} accessibilityRole="button" accessibilityLabel="Effacer la sélection">
+                <Ionicons name="close-circle" size={18} color="#999" />
+              </TouchableOpacity>
+            ) : null}
+          </View>
+          {communeQuery && suggestions.length > 0 ? (
+            <View style={styles.suggestBox}>
+              {suggestions.map((s) => (
+                <TouchableOpacity key={s} onPress={() => { setSelectedCommune(s); setCommuneQuery(''); }} style={styles.suggestItem}>
+                  <Text style={styles.suggestText}>{s}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : null}
+        </>
+      ) : null}
+
+      {mode === 'nearby' && locError ? (
+        <Text style={styles.locErrorText}>{locError}</Text>
+      ) : null}
+
+      {/* Recherche texte libre sur la liste */}
+      <View style={[styles.searchRow, { marginTop: 8 }]}> 
+        <Ionicons name="search" size={18} color="#888" />
+        <TextInput
+          style={styles.searchInput}
+          value={textQuery}
+          onChangeText={setTextQuery}
+          placeholder="Rechercher un service (ex: CIE, SODECI, Orange...)"
+          placeholderTextColor="#999"
+          returnKeyType="search"
+        />
+        {textQuery ? (
+          <TouchableOpacity onPress={() => setTextQuery('')} accessibilityRole="button" accessibilityLabel="Effacer">
+            <Ionicons name="close-circle" size={18} color="#999" />
+          </TouchableOpacity>
+        ) : null}
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       {/* Header fixe */}
       <View style={styles.headerWrapper}>
-        <ImageBackground source={TILE_IMG} style={styles.header} resizeMode="cover">
+        <ImageBackground source={HEADER_IMG} style={styles.header} resizeMode="cover">
           <LinearGradient colors={["rgba(0,0,0,0.45)", "rgba(0,0,0,0.2)", "rgba(0,0,0,0)"]} style={StyleSheet.absoluteFillObject as any} />
           <View style={styles.headerTopRow}>
             <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
@@ -117,12 +258,13 @@ export default function ServicesUtilesPage() {
         android: { elevation: 10 },
       })]} pointerEvents="none" />
 
-      {/* Liste qui défile sous le header (paddingTop = HEADER_HEIGHT) */}
+      {/* Liste qui défile sous le header */}
       <FlatList
         contentContainerStyle={styles.listContent}
-        data={DATA}
+        data={listData}
         keyExtractor={(it, idx) => `${it.title}-${idx}`}
         renderItem={renderItem}
+        ListHeaderComponent={ListHeader}
         ListEmptyComponent={<View style={styles.emptyBox}><Text style={styles.emptyText}>Aucun service disponible pour le moment.</Text></View>}
       />
     </View>
@@ -142,6 +284,15 @@ function openUSSD(code: string) {
   Linking.openURL(`tel:${encoded}`);
 }
 
+function ModeCapsule({ label, active, onPress, color, icon }: { label: string; active?: boolean; onPress: () => void; color: string; icon: any }) {
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.modeCapsule, active ? { backgroundColor: color } : { backgroundColor: '#FFFFFF', borderColor: '#E1E6ED', borderWidth: 1 }, Platform.select({ web: { boxShadow: active ? '0 6px 16px rgba(0,0,0,0.12)' : 'none' } as any, ios: { shadowColor: '#000', shadowOpacity: active ? 0.12 : 0, shadowRadius: 8, shadowOffset: { width: 0, height: 6 } }, android: { elevation: active ? 4 : 0 } })]} accessibilityRole="button" accessibilityLabel={label}>
+      <Ionicons name={icon} size={16} color={active ? '#fff' : color} />
+      <Text style={[styles.modeCapsuleText, { color: active ? '#fff' : '#222' }]}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F7F7F7' },
   headerWrapper: { position: 'absolute', top: 0, left: 0, right: 0, height: HEADER_HEIGHT, zIndex: 1 },
@@ -155,6 +306,21 @@ const styles = StyleSheet.create({
   headerShadow: { height: 10, width: '100%', backgroundColor: 'transparent' },
 
   listContent: { paddingTop: HEADER_HEIGHT + 10, paddingHorizontal: 16, paddingBottom: 30 },
+
+  // Contrôles copiés de Services Publics
+  headerControls: { marginBottom: 10 },
+  modeRow: { flexDirection: 'row', gap: 12, marginBottom: 10, flexWrap: 'wrap' },
+  modeCapsule: { borderRadius: 999, paddingVertical: 10, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  modeCapsuleText: { fontWeight: '800' },
+  localityRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  localityValue: { color: '#222', fontSize: 18 },
+
+  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
+  searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
+  suggestBox: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, marginTop: 4, overflow: 'hidden' },
+  suggestItem: { paddingVertical: 10, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
+  suggestText: { color: '#222' },
+  locErrorText: { color: '#D32F2F', marginBottom: 8 },
 
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#222' },
