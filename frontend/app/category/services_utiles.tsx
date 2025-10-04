@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
-const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_74996fed-469a-4770-ac1c-e84e14d54bce/artifacts/b46yu9eu_services_utiles.png' };
+const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_74996fed-469a-4770-ac1c-e84e14d54bce/artifacts/lkuoom9e_services_utiles_bg.png' };
 
 export default function ServicesUtilesIsolated() {
   const router = useRouter();
