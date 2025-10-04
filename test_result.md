@@ -614,6 +614,17 @@ agent_communication:
   - agent: "testing"
     message: "🎉 COMPREHENSIVE BACKEND TESTING COMPLETED - ALL REVIEW REQUEST REQUIREMENTS MET! Complete general backend test performed with 100% success rate (19/19 tests PASSED): 1) ✅ Sanity GET /api → 200 (18 routes available), 2) ✅ AI non-streaming: POST /api/ai/chat {stream:false} → 200 {content: 482 chars}, 3) ✅ AI streaming: POST /api/ai/chat {stream:true} → 200 event-stream with 3 chunks + [DONE], 4) ✅ Export DOCX: POST /api/ai/export/docx → 200 + Content-Type docx + Content-Disposition attachment + 36710 bytes, 5) ✅ GET /api/alerts → 200 (2 alerts), 6) ✅ GET /api/pharmacies?city=Abidjan → 200 (0 pharmacies - valid), 7) ✅ GET /api/health/facilities?city=Abidjan → 200 (17 facilities ≥10 ✅). ADDITIONAL VALIDATIONS: Auth register, user update, subscription check, CinetPay payment initiation, alerts creation/verification, pharmacies filtering, health facilities commune/location filtering - ALL WORKING PERFECTLY. Backend is fully functional and ready for production according to all review specifications."
   - task: "FRONTEND E2E: Services utiles (dynamique) – Capsules Autour de moi/Communes + Localité + Recherche + Scroll + Retour"
+  - task: "FRONTEND E2E: Services utiles (dynamique) – Capsules, Localité, Recherche, Scroll, Retour"
+    implemented: true
+    working: false
+    file: "frontend/app/category/[slug].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Plan (web iPhone 12/13/14): 1) Aller à /category/services_utiles; 2) Vérifier les capsules 'Autour de moi' (testID=servicesUtiles-nearby) et 'Communes' (testID=servicesUtiles-communes) visibles; 3) Vérifier la ligne localité (testID=servicesUtiles-locality) avec icône orange et ville; 4) Vérifier la barre de recherche (testID=servicesUtiles-search) style Santé; 5) Scroller: la FlatList défile sous le header; 6) Cliquer chevron retour pour revenir. Captures aux étapes 2, 3, 4."
     implemented: true
     working: false
     file: "frontend/app/category/[slug].tsx"
