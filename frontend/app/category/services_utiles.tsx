@@ -111,7 +111,7 @@ export default function ServicesUtilesIsolated() {
           <View style={styles.headerTitleBox}>
             <Text style={styles.headerTitle}>Services Utiles</Text>
             <View style={styles.subtitleWrap}>
-              <Text style={styles.headerSubtitle}>Accès Services client Côte d'Ivoire</Text>
+              <Text style={styles.headerSubtitle}>Accéder à votre service client en une touche</Text>
             </View>
           </View>
         </ImageBackground>
