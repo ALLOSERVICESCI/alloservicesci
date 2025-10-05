@@ -1,6 +1,9 @@
 # frontend_new_test_request
 # frontend_new_test_request_2
 # frontend_new_test_request_3
+# frontend_new_test_request_4
+# Loisirs & Tourisme UI re-test: 8 pastilles visibles (wrap), header 'Publier' aligné sur même ligne que titre+sous-titre, bloc Recherche supprimé (label + champ absents). Navigation /category/loisirs_tourisme. Viewport iPhone 12/13/14.
+
 # Loisirs & Tourisme: vérifier pastilles visibles (Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir, Lieux insolites, Airbnb), header avec bouton Publier aligné horizontalement avec titre + sous-titre, suppression complète du bloc Recherche (label + champ). Viewport iPhone 12/13/14.
 
 # E2E Loisirs & Tourisme + Annonceur: publier (Lieu insolite), vérifier carte/boutons, modifier (catégorie Plage), filtres catégorie, supprimer l’annonce, revalider header/localité et bouton Publier.
