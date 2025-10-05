@@ -1,12 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, ScrollView, Alert, Image, KeyboardAvoidingView } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Communes et villes connues (mêmes que sur la page Loisirs)
 const ABJ_COMMUNES = [
   'Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon',
   'Grand-Bassam','Assinie','Yamoussoukro','Bouaké','San-Pedro','Korhogo','Daloa','Man','Gagnoa','Jacqueville','Grand-Lahou','Sassandra'
@@ -14,7 +13,7 @@ const ABJ_COMMUNES = [
 
 const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieu insolite'] as const;
 
-type NewAnnonce = {
+type Annonce = {
   id: string;
   __local?: boolean;
   title: string;
@@ -27,8 +26,12 @@ type NewAnnonce = {
   rating?: number; // 1..5
 };
 
-export default function Annonceur() {
+export default function AnnonceurEdit() {
+  const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
+  const [item, setItem] = useState<Annonce | null>(null);
 
   const [category, setCategory] = useState<typeof CATEGORIES[number] | null>(null);
   const [title, setTitle] = useState('');
@@ -39,6 +42,30 @@ export default function Annonceur() {
   const [description, setDescription] = useState('');
   const [rating, setRating] = useState<number>(0);
   const [photos, setPhotos] = useState<string[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem('loisirs_user_items');
+        const arr: Annonce[] = raw ? JSON.parse(raw) : [];
+        const found = arr.find((x) => x.id === id);
+        if (found && mounted) {
+          setItem(found);
+          setCategory(found.tag || null);
+          setTitle(found.title || '');
+          setCommune(found.commune);
+          setPhone(found.phone || '');
+          setWebsite(found.website || '');
+          setDescription(found.description || '');
+          setRating(found.rating || 0);
+          setPhotos(found.photos || []);
+        }
+      } catch {}
+      if (mounted) setLoading(false);
+    })();
+    return () => { mounted = false; };
+  }, [id]);
 
   const suggestions = useMemo(() => {
     const q = communeQuery.trim().toLowerCase();
@@ -53,20 +80,10 @@ export default function Annonceur() {
         Alert.alert('Autorisation requise', 'Veuillez autoriser l’accès à vos photos.');
         return;
       }
-
       const remaining = 5 - photos.length;
       if (remaining <= 0) return;
-
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: false,
-        base64: true,
-        quality: 0.6,
-        selectionLimit: remaining as any,
-        allowsMultipleSelection: true as any,
-      });
-
+      const result = await ImagePicker.launchImageLibraryAsync({ allowsEditing: false, base64: true, quality: 0.6, selectionLimit: remaining as any, allowsMultipleSelection: true as any });
       if (result.canceled) return;
-
       const picked: string[] = [];
       if ('assets' in result && Array.isArray(result.assets)) {
         for (const a of result.assets) {
@@ -75,7 +92,7 @@ export default function Annonceur() {
       }
       const merged = [...photos, ...picked].slice(0, 5);
       setPhotos(merged);
-    } catch (e) {
+    } catch {
       Alert.alert('Erreur', "Impossible d'ajouter la photo");
     }
   };
@@ -86,17 +103,15 @@ export default function Annonceur() {
     setPhotos(copy);
   };
 
-  const onPublish = async () => {
+  const onSave = async () => {
+    if (!item) return;
     if (!category) { Alert.alert('Catégorie requise', 'Veuillez sélectionner une catégorie.'); return; }
     if (!title.trim()) { Alert.alert('Titre requis', 'Veuillez saisir un titre.'); return; }
     if (!commune) { Alert.alert('Localité requise', 'Veuillez choisir une localité.'); return; }
     if (!phone.trim()) { Alert.alert('Contact requis', 'Veuillez indiquer un contact.'); return; }
 
-    const id = `usr-${Date.now()}-${Math.floor(Math.random()*100000)}`;
-
-    const item: NewAnnonce = {
-      id,
-      __local: true,
+    const updated: Annonce = {
+      ...item,
       title: title.trim(),
       description: description.trim() || undefined,
       commune,
@@ -105,18 +120,39 @@ export default function Annonceur() {
       website: website.trim() || undefined,
       photos: photos.length ? photos : undefined,
       rating: rating && rating > 0 ? rating : undefined,
+      __local: true,
     };
 
     try {
       const raw = await AsyncStorage.getItem('loisirs_user_items');
-      const arr = raw ? JSON.parse(raw) : [];
-      arr.unshift(item);
+      const arr: Annonce[] = raw ? JSON.parse(raw) : [];
+      const idx = arr.findIndex((x) => x.id === item.id);
+      if (idx >= 0) arr[idx] = updated; else arr.unshift(updated);
       await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(arr));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       router.replace('/category/loisirs_tourisme');
-    } catch (e) {
-      Alert.alert('Erreur', "Impossible d'enregistrer l'annonce. Réessayez.");
+    } catch {
+      Alert.alert('Erreur', "Impossible d'enregistrer les modifications. Réessayez.");
     }
+  };
+
+  const onDelete = async () => {
+    if (!item) return;
+    Alert.alert('Supprimer', 'Voulez-vous supprimer cette annonce ?', [
+      { text: 'Annuler', style: 'cancel' },
+      { text: 'Supprimer', style: 'destructive', onPress: async () => {
+        try {
+          const raw = await AsyncStorage.getItem('loisirs_user_items');
+          const arr: Annonce[] = raw ? JSON.parse(raw) : [];
+          const next = arr.filter((x) => x.id !== item.id);
+          await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(next));
+          await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          router.replace('/category/loisirs_tourisme');
+        } catch {
+          Alert.alert('Erreur', "Suppression impossible.");
+        }
+      }}
+    ]);
   };
 
   const renderStars = (value: number, onSelect?: (v: number) => void) => (
@@ -129,6 +165,14 @@ export default function Annonceur() {
     </View>
   );
 
+  if (loading) {
+    return (
+      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
+        <Text>Chargement…</Text>
+      </View>
+    );
+  }
+
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
@@ -137,8 +181,10 @@ export default function Annonceur() {
           <TouchableOpacity onPress={() => router.back()} style={styles.iconBtn} accessibilityRole="button" accessibilityLabel="Retour">
             <Ionicons name="chevron-back" size={22} color="#111" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Publier une annonce</Text>
-          <View style={{ width: 40 }} />
+          <Text style={styles.headerTitle}>Modifier l’annonce</Text>
+          <TouchableOpacity onPress={onDelete} accessibilityRole="button" accessibilityLabel="Supprimer l'annonce">
+            <Ionicons name="trash" size={20} color="#D32F2F" />
+          </TouchableOpacity>
         </View>
 
         {/* Categories (pastilles) */}
@@ -226,9 +272,9 @@ export default function Annonceur() {
           ) : null}
         </View>
 
-        {/* Publier */}
-        <TouchableOpacity onPress={onPublish} style={styles.publishBtn} accessibilityRole="button" accessibilityLabel="Publier l'annonce">
-          <Text style={styles.publishText}>Publier</Text>
+        {/* Sauvegarder */}
+        <TouchableOpacity onPress={onSave} style={styles.publishBtn} accessibilityRole="button" accessibilityLabel="Enregistrer les modifications">
+          <Text style={styles.publishText}>Enregistrer</Text>
         </TouchableOpacity>
 
         <View style={{ height: 24 }} />

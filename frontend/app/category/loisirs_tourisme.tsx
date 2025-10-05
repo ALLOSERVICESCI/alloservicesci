@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput, Alert, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,7 +7,7 @@ import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
-type LoisirItem = { title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; source?: string; lat?: number; lng?: number; photos?: string[]; qualities?: string; rating?: number };
+type LoisirItem = { id?: string; __local?: boolean; title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; website?: string; source?: string; lat?: number; lng?: number; photos?: string[]; rating?: number };
 
 const FALLBACK_LOISIRS: LoisirItem[] = [
   // Abidjan & environs
@@ -46,6 +46,7 @@ const FALLBACK_LOISIRS: LoisirItem[] = [
 ];
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_smartcommunity-2/artifacts/x28hv0dw_loisirst_bg.png' };
+const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieu insolite'] as const;
 
 // Communes d'Abidjan + villes clés CI
 const ABJ_COMMUNES = [
@@ -61,6 +62,9 @@ export default function LoisirsTourisme() {
   const [mode, setMode] = useState<Mode>('communes');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [locError, setLocError] = useState<string | null>(null);
+
+  // Filtres
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
 
   // Localité effective
   const [effectiveCity, setEffectiveCity] = useState<string>('Abidjan');
@@ -116,7 +120,14 @@ export default function LoisirsTourisme() {
       try {
         const raw = await AsyncStorage.getItem('loisirs_user_items');
         const arr = raw ? JSON.parse(raw) : [];
-        if (mounted) setUserItems(arr);
+        let changed = false;
+        const normalized = (Array.isArray(arr) ? arr : []).map((it: any) => {
+          if (!it.id) { it.id = `usr-${Date.now()}-${Math.floor(Math.random()*100000)}`; changed = true; }
+          it.__local = true; // marquer local
+          return it;
+        });
+        if (changed) await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(normalized));
+        if (mounted) setUserItems(normalized);
       } catch {}
     })();
     return () => { mounted = false; };
@@ -128,6 +139,27 @@ export default function LoisirsTourisme() {
       await AsyncStorage.setItem('loisirs_view_photos', JSON.stringify(photos));
       router.push('/photo_viewer');
     } catch {}
+  };
+
+  const deleteUserItem = async (id?: string) => {
+    if (!id) return;
+    Alert.alert('Supprimer', 'Voulez-vous supprimer cette annonce ?', [
+      { text: 'Annuler', style: 'cancel' },
+      { text: 'Supprimer', style: 'destructive', onPress: async () => {
+        try {
+          const raw = await AsyncStorage.getItem('loisirs_user_items');
+          const arr = raw ? JSON.parse(raw) : [];
+          const next = arr.filter((x: any) => x.id !== id);
+          await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(next));
+          setUserItems(next.map((x: any) => ({ ...x, __local: true })));
+        } catch {}
+      }}
+    ]);
+  };
+
+  const editUserItem = (id?: string) => {
+    if (!id) return;
+    router.push(`/annonceur_edit/${encodeURIComponent(id)}`);
   };
 
   // Utils distance
@@ -148,12 +180,14 @@ export default function LoisirsTourisme() {
   const data = useMemo(() => {
     let list: any[] = [...userItems, ...rawData];
 
-    // Filtrage commune
+    if (categoryFilter) {
+      list = list.filter((it: any) => (it?.tag || '') === categoryFilter);
+    }
+
     if (selectedCommune) {
       list = list.filter((it: any) => (it?.commune || '').toLowerCase() === selectedCommune.toLowerCase());
     }
 
-    // Filtrage texte
     if (serviceQuery.trim()) {
       const q = serviceQuery.trim().toLowerCase();
       list = list.filter((it: any) => {
@@ -165,7 +199,6 @@ export default function LoisirsTourisme() {
       });
     }
 
-    // Mode Autour de moi
     if (mode === 'nearby' && coords) {
       const withDist = list.map((it: any) => {
         const lat = Number(it?.lat);
@@ -178,7 +211,7 @@ export default function LoisirsTourisme() {
     }
 
     return list;
-  }, [rawData, userItems, selectedCommune, serviceQuery, mode, coords]);
+  }, [rawData, userItems, selectedCommune, serviceQuery, mode, coords, categoryFilter]);
 
   const openPhone = (phone?: string) => {
     const clean = (phone || '').replace(/\s+/g, '');
@@ -186,8 +219,9 @@ export default function LoisirsTourisme() {
     Linking.openURL(`tel:${clean}`);
   };
 
-  const openWebsite = (website?: string) => {
-    if (!website) return; const url = website.startsWith('http') ? website : `https://${website}`; Linking.openURL(url);
+  const openWebsite = (website?: string, source?: string) => {
+    const w = website || source;
+    if (!w) return; const url = w.startsWith('http') ? w : `https://${w}`; Linking.openURL(url);
   };
 
   const openMaps = (lat?: number, lng?: number, label?: string) => {
@@ -216,15 +250,28 @@ export default function LoisirsTourisme() {
     const title: string = item?.title || item?.name || '';
     const summary: string | undefined = item?.summary || item?.description;
     const commune: string | undefined = item?.commune;
-    const source: string | undefined = item?.source || item?.website;
+    const website: string | undefined = item?.website;
+    const source: string | undefined = item?.source || item?.site;
     const phone: string | undefined = item?.phone;
     const lat: number | undefined = item?.lat;
     const lng: number | undefined = item?.lng;
     const photos: string[] | undefined = item?.photos;
     const rating: number | undefined = item?.rating;
+    const isLocal: boolean = !!item?.__local;
 
     return (
       <View style={styles.card}>
+        {isLocal ? (
+          <View style={styles.localActionsRow}>
+            <TouchableOpacity onPress={() => editUserItem(item?.id)}>
+              <Text style={styles.localActionText}>Modifier</Text>
+            </TouchableOpacity>
+            <Text style={{ color: '#999' }}>•</Text>
+            <TouchableOpacity onPress={() => deleteUserItem(item?.id)}>
+              <Text style={[styles.localActionText, { color: '#D32F2F' }]}>Supprimer</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
         {photos && photos.length > 0 ? (
           <TouchableOpacity onPress={() => openPhotos(photos)} activeOpacity={0.8}>
             <Image source={{ uri: photos[0] }} style={styles.cardThumb} resizeMode="cover" />
@@ -259,8 +306,8 @@ export default function LoisirsTourisme() {
               <Text style={styles.badgeTextBlue}>Itinéraire</Text>
             </TouchableOpacity>
           ) : null}
-          {source ? (
-            <TouchableOpacity onPress={() => openWebsite(source)} style={[styles.badgeBtn, styles.badgeAlt]}>
+          {(website || source) ? (
+            <TouchableOpacity onPress={() => openWebsite(website, source)} style={[styles.badgeBtn, styles.badgeAlt]}>
               <Ionicons name="globe" size={16} color="#0A7C3A" />
               <Text style={styles.badgeTextAlt}>Site</Text>
             </TouchableOpacity>
@@ -324,6 +371,15 @@ export default function LoisirsTourisme() {
               <Text style={styles.localityLabelSmall}>Localité </Text>
               <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
             </View>
+
+            {/* Filtres par catégorie */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.catChipsRow}>
+              {(['Tous', ...CATEGORIES] as const).map((c) => (
+                <TouchableOpacity key={c} onPress={() => setCategoryFilter(c === 'Tous' ? null : c as any)} style={[styles.catChip, (categoryFilter === null && c === 'Tous') || categoryFilter === c ? styles.catChipActive : null]}>
+                  <Text style={[(categoryFilter === null && c === 'Tous') || categoryFilter === c ? styles.catChipTextActive : styles.catChipText]}>{c}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
 
             {/* Sélection commune */}
             {mode === 'communes' ? (
@@ -423,6 +479,12 @@ const styles = StyleSheet.create({
   modeCapsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', gap: 8 },
   modeCapsuleText: { fontWeight: '800' },
 
+  catChipsRow: { paddingVertical: 4, gap: 8, paddingRight: 8 },
+  catChip: { marginRight: 8, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0' },
+  catChipActive: { backgroundColor: '#0D6EFD', borderColor: '#0D6EFD' },
+  catChipText: { color: '#111', fontWeight: '700' },
+  catChipTextActive: { color: '#fff', fontWeight: '800' },
+
   searchLabel: { color: '#222', fontSize: 14, fontWeight: '700', marginBottom: 6, marginTop: 8 },
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
   searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
@@ -430,6 +492,9 @@ const styles = StyleSheet.create({
   suggestItem: { paddingVertical: 10, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
   suggestText: { color: '#222' },
   locErrorText: { color: '#D32F2F', fontSize: 12, marginBottom: 8 },
+
+  localActionsRow: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', gap: 10, marginBottom: 6 },
+  localActionText: { color: '#0D6EFD', fontWeight: '700' },
 
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cardThumb: { width: '100%', height: 160, borderRadius: 8, marginBottom: 10 },
