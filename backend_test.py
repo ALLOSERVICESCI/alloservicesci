@@ -717,7 +717,7 @@ def run_review_request_test():
                     cors_methods = response.headers.get('access-control-allow-methods') or response.headers.get('Access-Control-Allow-Methods', 'Not found')
                     
                     tester.log_result('/alerts', 'GET', 'PASS', 
-                                    f'200 JSON array with {len(data)} items. Response time: {response_time:.3f}s. CORS - Origin: {cors_origin}, Methods: {cors_methods}, Headers: {cors_headers}')
+                                    f'200 JSON array with {len(data)} items. Response time: {response_time:.3f}s. CORS - Origin: {cors_origin}, Credentials: {cors_credentials}, Methods: {cors_methods}')
                 else:
                     tester.log_result('/alerts', 'GET', 'FAIL', f'Expected JSON array, got {type(data)}')
             except json.JSONDecodeError:
