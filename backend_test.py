@@ -628,7 +628,66 @@ class BackendTester:
         # Return exit code based on results
         return 0 if len(failed) == 0 else 1
 
-if __name__ == "__main__":
+def run_quick_smoke_test():
+    """Run quick smoke test for the 3 specific endpoints requested"""
+    print("🚀 Quick Backend Smoke Test - No Regressions Check")
+    print(f"📍 Base URL: {BASE_URL}")
+    print("=" * 60)
+    
     tester = BackendTester()
-    exit_code = tester.run_all_tests()
+    
+    # Test the 3 specific endpoints
+    print("🔍 1) GET /api/alerts → 200 + JSON list")
+    tester.test_alerts_list()
+    
+    print("\n🔍 2) GET /api/alerts/unread_count → 200 + int")
+    # Test without user_id for quick smoke test
+    try:
+        response = tester.session.get(f"{BASE_URL}/alerts/unread_count", timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            if 'count' in data and isinstance(data['count'], int):
+                tester.log_result('/alerts/unread_count', 'GET', 'PASS', 
+                              f'Unread count retrieved: {data["count"]}', data)
+            else:
+                tester.log_result('/alerts/unread_count', 'GET', 'FAIL', 
+                              f'Missing or invalid count field: {data}')
+        else:
+            tester.log_result('/alerts/unread_count', 'GET', 'FAIL', 
+                          f'Status {response.status_code}: {response.text}')
+    except Exception as e:
+        tester.log_result('/alerts/unread_count', 'GET', 'FAIL', f'Exception: {str(e)}')
+    
+    print("\n🔍 3) GET /api/health/facilities?city=Abidjan → 200")
+    tester.test_health_facilities_city()
+    
+    # Quick summary
+    print("\n" + "=" * 60)
+    print("📊 QUICK SMOKE TEST SUMMARY")
+    print("=" * 60)
+    
+    passed = [r for r in tester.test_results if r['status'] == 'PASS']
+    failed = [r for r in tester.test_results if r['status'] == 'FAIL']
+    
+    total = len(tester.test_results)
+    
+    print(f"✅ PASSED: {len(passed)}/{total}")
+    print(f"❌ FAILED: {len(failed)}/{total}")
+    
+    if failed:
+        print(f"\n❌ FAILED TESTS:")
+        for result in failed:
+            print(f"   • {result['method']} {result['endpoint']}: {result['reason']}")
+    else:
+        print("\n🎉 ALL SMOKE TESTS PASSED - No regressions detected!")
+    
+    return 0 if len(failed) == 0 else 1
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--smoke":
+        exit_code = run_quick_smoke_test()
+    else:
+        tester = BackendTester()
+        exit_code = tester.run_all_tests()
     sys.exit(exit_code)
