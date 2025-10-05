@@ -12,7 +12,7 @@ const ABJ_COMMUNES = [
   'Grand-Bassam','Assinie','Yamoussoukro','Bouaké','San-Pedro','Korhogo','Daloa','Man','Gagnoa','Jacqueville','Grand-Lahou','Sassandra'
 ];
 
-const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieu insolite'] as const;
+const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieux insolites', 'Airbnb'] as const;
 
 type NewAnnonce = {
   id: string;

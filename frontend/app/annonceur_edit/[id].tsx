@@ -11,7 +11,7 @@ const ABJ_COMMUNES = [
   'Grand-Bassam','Assinie','Yamoussoukro','Bouaké','San-Pedro','Korhogo','Daloa','Man','Gagnoa','Jacqueville','Grand-Lahou','Sassandra'
 ];
 
-const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieu insolite'] as const;
+const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieux insolites', 'Airbnb'] as const;
 
 type Annonce = {
   id: string;
@@ -52,7 +52,7 @@ export default function AnnonceurEdit() {
         const found = arr.find((x) => x.id === id);
         if (found && mounted) {
           setItem(found);
-          setCategory(found.tag || null);
+          setCategory((found.tag as any) || null);
           setTitle(found.title || '');
           setCommune(found.commune);
           setPhone(found.phone || '');

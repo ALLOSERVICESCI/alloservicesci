@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -46,7 +46,7 @@ const FALLBACK_LOISIRS: LoisirItem[] = [
 ];
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_smartcommunity-2/artifacts/x28hv0dw_loisirst_bg.png' };
-const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieu insolite'] as const;
+const CAT_FILTERS = ['Tous', 'Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieux insolites', 'Airbnb'] as const;
 
 // Communes d'Abidjan + villes clés CI
 const ABJ_COMMUNES = [
@@ -103,8 +103,6 @@ export default function LoisirsTourisme() {
     return ABJ_COMMUNES.filter(c => c.toLowerCase().includes(q)).slice(0, 8);
   }, [communeQuery]);
 
-  const [serviceQuery, setServiceQuery] = useState('');
-
   // Données Loisirs & Tourisme (lecture seule)
   const rawData = useMemo(() => {
     const raw = CONTENT_BY_CATEGORY?.loisirs_tourisme as any[] | undefined;
@@ -123,7 +121,9 @@ export default function LoisirsTourisme() {
         let changed = false;
         const normalized = (Array.isArray(arr) ? arr : []).map((it: any) => {
           if (!it.id) { it.id = `usr-${Date.now()}-${Math.floor(Math.random()*100000)}`; changed = true; }
-          it.__local = true; // marquer local
+          it.__local = true;
+          // Harmoniser ancienne étiquette singulière -> pluriel
+          if (it.tag === 'Lieu insolite') { it.tag = 'Lieux insolites'; changed = true; }
           return it;
         });
         if (changed) await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(normalized));
@@ -139,27 +139,6 @@ export default function LoisirsTourisme() {
       await AsyncStorage.setItem('loisirs_view_photos', JSON.stringify(photos));
       router.push('/photo_viewer');
     } catch {}
-  };
-
-  const deleteUserItem = async (id?: string) => {
-    if (!id) return;
-    Alert.alert('Supprimer', 'Voulez-vous supprimer cette annonce ?', [
-      { text: 'Annuler', style: 'cancel' },
-      { text: 'Supprimer', style: 'destructive', onPress: async () => {
-        try {
-          const raw = await AsyncStorage.getItem('loisirs_user_items');
-          const arr = raw ? JSON.parse(raw) : [];
-          const next = arr.filter((x: any) => x.id !== id);
-          await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(next));
-          setUserItems(next.map((x: any) => ({ ...x, __local: true })));
-        } catch {}
-      }}
-    ]);
-  };
-
-  const editUserItem = (id?: string) => {
-    if (!id) return;
-    router.push(`/annonceur_edit/${encodeURIComponent(id)}`);
   };
 
   // Utils distance
@@ -181,22 +160,17 @@ export default function LoisirsTourisme() {
     let list: any[] = [...userItems, ...rawData];
 
     if (categoryFilter) {
-      list = list.filter((it: any) => (it?.tag || '') === categoryFilter);
+      list = list.filter((it: any) => {
+        const t = it?.tag || '';
+        if (categoryFilter === 'Lieux insolites') {
+          return t === 'Lieux insolites' || t === 'Lieu insolite';
+        }
+        return t === categoryFilter;
+      });
     }
 
     if (selectedCommune) {
       list = list.filter((it: any) => (it?.commune || '').toLowerCase() === selectedCommune.toLowerCase());
-    }
-
-    if (serviceQuery.trim()) {
-      const q = serviceQuery.trim().toLowerCase();
-      list = list.filter((it: any) => {
-        const title = (it?.title || it?.name || '').toLowerCase();
-        const summary = (it?.summary || it?.description || '').toLowerCase();
-        const commune = (it?.commune || '').toLowerCase();
-        const tag = (it?.tag || '').toLowerCase();
-        return title.includes(q) || summary.includes(q) || commune.includes(q) || tag.includes(q);
-      });
     }
 
     if (mode === 'nearby' && coords) {
@@ -211,7 +185,7 @@ export default function LoisirsTourisme() {
     }
 
     return list;
-  }, [rawData, userItems, selectedCommune, serviceQuery, mode, coords, categoryFilter]);
+  }, [rawData, userItems, selectedCommune, mode, coords, categoryFilter]);
 
   const openPhone = (phone?: string) => {
     const clean = (phone || '').replace(/\s+/g, '');
@@ -263,11 +237,19 @@ export default function LoisirsTourisme() {
       <View style={styles.card}>
         {isLocal ? (
           <View style={styles.localActionsRow}>
-            <TouchableOpacity onPress={() => editUserItem(item?.id)}>
+            <TouchableOpacity onPress={() => router.push(`/annonceur_edit/${encodeURIComponent(item?.id || '')}`)}>
               <Text style={styles.localActionText}>Modifier</Text>
             </TouchableOpacity>
             <Text style={{ color: '#999' }}>•</Text>
-            <TouchableOpacity onPress={() => deleteUserItem(item?.id)}>
+            <TouchableOpacity onPress={async () => {
+              try {
+                const raw = await AsyncStorage.getItem('loisirs_user_items');
+                const arr = raw ? JSON.parse(raw) : [];
+                const next = arr.filter((x: any) => x.id !== item?.id);
+                await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(next));
+                setUserItems(next.map((x: any) => ({ ...x, __local: true })));
+              } catch {}
+            }}>
               <Text style={[styles.localActionText, { color: '#D32F2F' }]}>Supprimer</Text>
             </TouchableOpacity>
           </View>
@@ -327,15 +309,19 @@ export default function LoisirsTourisme() {
             <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
               <Ionicons name="chevron-back" size={22} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push('/annonceur')} style={styles.publishHeaderBtn} accessibilityRole="button" accessibilityLabel="Publier une annonce">
-              <Ionicons name="add-circle" size={18} color="#0A7C3A" />
-              <Text style={styles.publishHeaderText}>Publier</Text>
-            </TouchableOpacity>
           </View>
           <View style={styles.headerTitleBox}>
-            <Text style={styles.headerTitle}>Loisirs & Tourisme</Text>
-            <View style={styles.subtitleWrap}>
-              <Text style={styles.headerSubtitle}>Hôtels, plages, sites, restaurants…</Text>
+            <View style={styles.headerTitleRow}>
+              <View style={{ flexShrink: 1 }}>
+                <Text style={styles.headerTitle}>Loisirs & Tourisme</Text>
+                <View style={styles.subtitleWrap}>
+                  <Text style={styles.headerSubtitle}>Hôtels, plages, sites, restaurants…</Text>
+                </View>
+              </View>
+              <TouchableOpacity onPress={() => router.push('/annonceur')} style={styles.publishHeaderBtn} accessibilityRole="button" accessibilityLabel="Publier une annonce">
+                <Ionicons name="add-circle" size={18} color="#0A7C3A" />
+                <Text style={styles.publishHeaderText}>Publier</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ImageBackground>
@@ -366,20 +352,21 @@ export default function LoisirsTourisme() {
               <ModeCapsule label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
               <ModeCapsule label="Communes" icon="home" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
             </View>
-            {/* Ligne Localité: Localité AVANT la ville, ville non grasse */}
+
+            {/* Ligne Localité */}
             <View style={styles.localityLine}>
               <Text style={styles.localityLabelSmall}>Localité </Text>
               <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
             </View>
 
-            {/* Filtres par catégorie */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.catChipsRow}>
-              {(['Tous', ...CATEGORIES] as const).map((c) => (
-                <TouchableOpacity key={c} onPress={() => setCategoryFilter(c === 'Tous' ? null : c as any)} style={[styles.catChip, (categoryFilter === null && c === 'Tous') || categoryFilter === c ? styles.catChipActive : null]}>
+            {/* Filtres par catégorie (toutes visibles, wrap) */}
+            <View style={styles.catWrapRow}>
+              {CAT_FILTERS.map((c) => (
+                <TouchableOpacity key={c} onPress={() => setCategoryFilter(c === 'Tous' ? null : (c as any))} style={[styles.catChip, (categoryFilter === null && c === 'Tous') || categoryFilter === c ? styles.catChipActive : null]}>
                   <Text style={[(categoryFilter === null && c === 'Tous') || categoryFilter === c ? styles.catChipTextActive : styles.catChipText]}>{c}</Text>
                 </TouchableOpacity>
               ))}
-            </ScrollView>
+            </View>
 
             {/* Sélection commune */}
             {mode === 'communes' ? (
@@ -417,24 +404,7 @@ export default function LoisirsTourisme() {
               <Text style={styles.locErrorText}>{locError}</Text>
             ) : null}
 
-            {/* Recherche services */}
-            <Text style={styles.searchLabel}>Recherche (hôtel, plage, site touristique, restaurant, Airbnb, aire de jeux…)</Text>
-            <View style={styles.searchRow}>
-              <Ionicons name="search" size={18} color="#888" />
-              <TextInput
-                style={styles.searchInput}
-                value={serviceQuery}
-                onChangeText={setServiceQuery}
-                placeholder="Rechercher un lieu ou une activité"
-                placeholderTextColor="#999"
-                returnKeyType="search"
-              />
-              {serviceQuery ? (
-                <TouchableOpacity onPress={() => setServiceQuery('')} accessibilityRole="button" accessibilityLabel="Effacer la recherche">
-                  <Ionicons name="close-circle" size={18} color="#999" />
-                </TouchableOpacity>
-              ) : null}
-            </View>
+            {/* Recherche services SUPPRIMÉE selon demande */}
           </View>
         }
         ListEmptyComponent={<View style={styles.emptyBox}><Text style={styles.emptyText}>Aucun résultat. Essayez une autre commune ou activez « Autour de moi ».</Text></View>}
@@ -458,14 +428,15 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F7F7F7' },
   headerWrapper: { height: HEADER_HEIGHT, width: '100%' },
   header: { flex: 1, width: '100%', height: '100%' },
-  headerTopRow: { paddingTop: Platform.select({ ios: 52, android: 24, default: 16 }), paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  headerTopRow: { paddingTop: Platform.select({ ios: 52, android: 24, default: 16 }), paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' },
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
-  publishHeaderBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.92)' },
-  publishHeaderText: { color: '#0A7C3A', fontWeight: '800' },
   headerTitleBox: { position: 'absolute', bottom: 16, left: 16, right: 16 },
+  headerTitleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '800' },
   headerSubtitle: { color: '#fff' },
   subtitleWrap: { alignSelf: 'flex-start', backgroundColor: 'rgba(0,0,0,0.25)', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, marginTop: 4 },
+  publishHeaderBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.92)' },
+  publishHeaderText: { color: '#0A7C3A', fontWeight: '800' },
 
   headerShadow: { height: 10, width: '100%', backgroundColor: 'transparent' },
 
@@ -479,8 +450,8 @@ const styles = StyleSheet.create({
   modeCapsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', gap: 8 },
   modeCapsuleText: { fontWeight: '800' },
 
-  catChipsRow: { paddingVertical: 4, gap: 8, paddingRight: 8 },
-  catChip: { marginRight: 8, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0' },
+  catWrapRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 8 },
+  catChip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0' },
   catChipActive: { backgroundColor: '#0D6EFD', borderColor: '#0D6EFD' },
   catChipText: { color: '#111', fontWeight: '700' },
   catChipTextActive: { color: '#fff', fontWeight: '800' },
