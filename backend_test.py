@@ -11,7 +11,7 @@ import sys
 from typing import Dict, Any, Optional
 
 # Base URL - using production backend URL from frontend config
-BASE_URL = "https://jobexamportal.preview.emergentagent.com/api"
+BASE_URL = "https://smartcommunity-2.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):
