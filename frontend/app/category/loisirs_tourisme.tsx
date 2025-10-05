@@ -7,7 +7,7 @@ import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
-const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/s7mbb0g4_loisirs_bg.png' };
+const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_smartcommunity-2/artifacts/x28hv0dw_loisirst_bg.png' };
 
 // Communes d'Abidjan + villes clés CI
 const ABJ_COMMUNES = [
