@@ -711,10 +711,10 @@ def run_review_request_test():
             try:
                 data = response.json()
                 if isinstance(data, list):
-                    # Check CORS headers
-                    cors_origin = response.headers.get('Access-Control-Allow-Origin', 'Not found')
-                    cors_methods = response.headers.get('Access-Control-Allow-Methods', 'Not found')
-                    cors_headers = response.headers.get('Access-Control-Allow-Headers', 'Not found')
+                    # Check CORS headers (case-insensitive)
+                    cors_origin = response.headers.get('access-control-allow-origin') or response.headers.get('Access-Control-Allow-Origin', 'Not found')
+                    cors_credentials = response.headers.get('access-control-allow-credentials') or response.headers.get('Access-Control-Allow-Credentials', 'Not found')
+                    cors_methods = response.headers.get('access-control-allow-methods') or response.headers.get('Access-Control-Allow-Methods', 'Not found')
                     
                     tester.log_result('/alerts', 'GET', 'PASS', 
                                     f'200 JSON array with {len(data)} items. Response time: {response_time:.3f}s. CORS - Origin: {cors_origin}, Methods: {cors_methods}, Headers: {cors_headers}')
