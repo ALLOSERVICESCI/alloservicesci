@@ -1,3 +1,6 @@
+# frontend_new_test_request
+# Loisirs & Tourisme UI: Vérifier vignettes photo, viewer, bouton Publier (header) -> /annonceur, publication locale (AsyncStorage), pastille Lieu insolite, filtres par catégorie, édition/suppression annonce locale, champ site web (optionnel) et bouton Site.
+
 backend:
   - task: "POST /api/auth/register avec payload: first_name,last_name,email,phone,preferred_lang,pseudo,show_pseudo"
     implemented: true
