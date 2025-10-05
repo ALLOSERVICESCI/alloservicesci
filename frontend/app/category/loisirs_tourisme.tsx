@@ -325,11 +325,12 @@ const styles = StyleSheet.create({
   listContent: { paddingTop: 16, paddingHorizontal: 16, paddingBottom: 24 },
 
   headerControls: { marginBottom: 10 },
-  localityCapsRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10, flexWrap: 'wrap' },
-  localityLabel: { color: '#222', fontSize: 14, fontWeight: '700' },
+  capsRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' },
+  localityLine: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  localityLabelSmall: { color: '#444', fontSize: 13 },
+  localityValueStrong: { color: '#222', fontSize: 16, fontWeight: '800' },
   modeCapsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', gap: 8 },
   modeCapsuleText: { fontWeight: '800' },
-  localityValue: { color: '#222', fontSize: 16, fontWeight: '600' },
 
   searchLabel: { color: '#222', fontSize: 14, fontWeight: '700', marginBottom: 6, marginTop: 8 },
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
