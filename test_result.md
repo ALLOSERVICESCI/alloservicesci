@@ -4,6 +4,24 @@
 # frontend_new_test_request_4
 # frontend_new_test_request_5
 # frontend_new_test_request_6
+# frontend_new_test_request_7
+# Loisirs & Tourisme – Tests filtres catégorie
+# Parcours:
+# 1) Aller /annonceur et publier une annonce:
+#    - Catégorie: Lieux insolites
+#    - Titre: "Test Lieux Insolites"
+#    - Localité: taper "Coco" et choisir "Cocody"
+#    - Téléphone: "+225 0102030405"
+#    - Site web: "www.test-ci.ci"
+#    - Description: "Ann. test filtres"
+#    - Note: 4 étoiles
+#    - Publier (redirige vers /category/loisirs_tourisme)
+# 2) Sur /category/loisirs_tourisme: vérifier que la carte "Test Lieux Insolites" est visible
+# 3) Cliquer pastille "Lieux insolites": vérifier que la carte "Test Lieux Insolites" est visible
+# 4) Cliquer pastille "Airbnb": vérifier que la carte "Test Lieux Insolites" n'est PAS visible
+# 5) Cliquer pastille "Tous": vérifier que la carte "Test Lieux Insolites" réapparaît
+# Viewport iPhone 12/13/14: 390x844
+
 # Re-run with cache purge: Loisirs & Tourisme UI — vérifier 8 pastilles visibles en wrap (Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir, Lieux insolites, Airbnb), header Publier aligné en rangée avec titre+sous-titre, bloc Recherche services absent. Viewport iPhone 12/13/14. Navigate /category/loisirs_tourisme.
 
 # Loisirs & Tourisme UI final check: (1) 8 pastilles visibles en wrap: Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir, Lieux insolites, Airbnb. (2) Header: bouton Publier aligné horizontalement avec titre + sous-titre (même rangée). (3) Bloc Recherche services supprimé (aucun label/aucun input). Viewport iPhone 12/13/14: 390x844. Navigation /category/loisirs_tourisme.
