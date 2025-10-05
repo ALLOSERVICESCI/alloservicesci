@@ -7,6 +7,44 @@ import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
+type LoisirItem = { title: string; summary: string; commune?: string; tag?: string; phone?: string; source?: string; lat?: number; lng?: number };
+
+const FALLBACK_LOISIRS: LoisirItem[] = [
+  // Abidjan & environs
+  { title: 'Sofitel Abidjan Hôtel Ivoire', summary: 'Hôtel 5★ avec piscine, restaurants et vue sur la lagune.', commune: 'Cocody', phone: '+225 27 22 44 10 10', source: 'https://all.accor.com', tag: 'Hôtel' },
+  { title: "Zoo d'Abidjan", summary: 'Parc zoologique historique, idéal en famille.', commune: 'Cocody', tag: 'Aire de jeux' },
+  { title: 'Parc National du Banco', summary: 'Forêt primaire à 30 min du Plateau pour randonnées.', commune: 'Yopougon', tag: 'Site touristique' },
+  { title: "Musée des Civilisations de Côte d'Ivoire", summary: 'Collections ethnographiques et arts africains.', commune: 'Plateau', tag: 'Musée' },
+  { title: 'Jardin Botanique de Bingerville', summary: 'Grand jardin historique, balade et pique-nique.', commune: 'Bingerville', tag: 'Site touristique' },
+  { title: 'Cap Sud Restaurants (Zone 4)', summary: 'Ensemble de restaurants et lounges à Marcory.', commune: 'Marcory', tag: 'Restaurant' },
+  { title: 'Parc d’attractions – Abidjan', summary: 'Manèges, jeux et activités pour enfants et familles.', commune: 'Marcory', tag: "Parc d'attractions" },
+  { title: 'Circuit guidé – Plateau historique', summary: 'Parcours des monuments: Cathédrale, Musée, Lagune.', commune: 'Plateau', tag: 'Circuit guidé' },
+
+  // Grand-Bassam & Assinie
+  { title: 'Plage de Grand-Bassam', summary: 'Plage historique, maisons coloniales à proximité.', commune: 'Grand-Bassam', tag: 'Plage' },
+  { title: 'Musée National du Costume', summary: 'Costumes traditionnels, patrimoine UNESCO.', commune: 'Grand-Bassam', tag: 'Musée' },
+  { title: 'Assinie – Étoile du Sud', summary: 'Hôtel plage, sports nautiques, escapade détente.', commune: 'Assinie', tag: 'Hôtel' },
+  { title: 'Assinie Mafia – Plage', summary: 'Lagune, plage, restaurants sur pilotis.', commune: 'Assinie', tag: 'Plage' },
+  { title: 'Circuit UNESCO – Grand-Bassam', summary: 'Visite guidée du quartier colonial classé UNESCO.', commune: 'Grand-Bassam', tag: 'Circuit guidé' },
+
+  // Nouvelles localités demandées
+  { title: 'Plages de Jacqueville', summary: 'Sable fin, cocotiers et ambiance détente.', commune: 'Jacqueville', tag: 'Plage' },
+  { title: 'Pont de Jacqueville', summary: 'Point de vue et accès aux plages.', commune: 'Jacqueville', tag: 'Site touristique' },
+  { title: 'Embouchure de Grand-Lahou', summary: 'Rencontre lagune-océan, balades en pirogue.', commune: 'Grand-Lahou', tag: 'Site touristique' },
+  { title: 'Musée de Grand-Lahou', summary: 'Mémoire des peuples lagunaires.', commune: 'Grand-Lahou', tag: 'Musée' },
+  { title: 'Plages de Sassandra', summary: 'Superbes plages et falaises.', commune: 'Sassandra', tag: 'Plage' },
+  { title: 'Phare de Sassandra', summary: 'Point de vue panoramique sur l’océan.', commune: 'Sassandra', tag: 'Site touristique' },
+
+  // Intérieur du pays
+  { title: 'Cascades de Man', summary: "Chutes d'eau pittoresques au pied des montagnes.", commune: 'Man', tag: 'Site touristique' },
+  { title: 'Dent de Man', summary: 'Sommet emblématique pour randonnée.', commune: 'Man', tag: 'Site touristique' },
+  { title: 'Quartier des Artisans – Sculptures Sénoufo', summary: 'Ateliers de sculpture et tissage Poro.', commune: 'Korhogo', tag: 'Artisanat' },
+  { title: 'Circuit guidé – Artisanat Sénoufo', summary: 'Visite d’ateliers, démonstrations et achats.', commune: 'Korhogo', tag: 'Circuit guidé' },
+  { title: 'La Paillote – Restaurant', summary: 'Cuisine locale populaire.', commune: 'Bouaké', tag: 'Restaurant' },
+  { title: 'Basilique Notre‑Dame de la Paix', summary: 'Basilique monumentale ouverte aux visites.', commune: 'Yamoussoukro', tag: 'Site touristique' },
+  { title: 'Fondation F. Houphouët‑Boigny', summary: 'Centre de culture et de paix.', commune: 'Yamoussoukro', tag: 'Site touristique' },
+];
+
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_smartcommunity-2/artifacts/x28hv0dw_loisirst_bg.png' };
 
 // Communes d'Abidjan + villes clés CI
