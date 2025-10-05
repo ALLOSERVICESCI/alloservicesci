@@ -943,6 +943,43 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     },
     {
       title: "📈 Cultures & systèmes agricoles rentables à privilégier",
+  // Loisirs & Tourisme
+  loisirs_tourisme: [
+    // Abidjan
+    { title: 'Sofitel Abidjan Hôtel Ivoire', summary: 'Hôtel 5★ avec piscine, restaurants et vue sur la lagune.', commune: 'Cocody', phone: '+225 27 22 44 10 10', source: 'https://all.accor.com', tag: 'Hôtel', },
+    { title: 'Zoo d\'Abidjan', summary: 'Parc zoologique historique, idéal en famille.', commune: 'Cocody', phone: '+225 27 22 44 36 88', tag: 'Aire de jeux' },
+    { title: 'Parc National du Banco', summary: 'Forêt primaire à 30 min du Plateau pour randonnées.', commune: 'Yopougon', phone: '+225 27 20 33 10 61', tag: 'Site touristique' },
+    { title: 'Musée des Civilisations de Côte d\'Ivoire', summary: 'Collections ethnographiques et arts africains.', commune: 'Plateau', phone: '+225 27 20 21 80 51', tag: 'Musée' },
+    { title: 'Jardin Botanique de Bingerville', summary: 'Grand jardin historique, balade et pique-nique.', commune: 'Bingerville', phone: '+225 27 22 40 00 00', tag: 'Site touristique' },
+    { title: 'Cap Sud Restaurants (Zone 4)', summary: 'Ensemble de restaurants et lounges à Marcory.', commune: 'Marcory', tag: 'Restaurant' },
+    { title: 'Galerie Cécile Fakhoury', summary: 'Galerie d\'art contemporain.', commune: 'Marcory', phone: '+225 27 21 35 03 05', tag: 'Art' },
+
+    // Grand-Bassam
+    { title: 'Plage de Grand-Bassam', summary: 'Plage historique, maisons coloniales à proximité.', commune: 'Grand-Bassam', tag: 'Plage' },
+    { title: 'Musée National du Costume', summary: 'Costumes traditionnels, patrimoine UNESCO.', commune: 'Grand-Bassam', phone: '+225 27 21 30 18 44', tag: 'Musée' },
+
+    // Assinie
+    { title: 'Assinie – Étoile du Sud', summary: 'Hôtel plage, sports nautiques, escapade détente.', commune: 'Assinie', phone: '+225 27 21 30 70 71', tag: 'Hôtel' },
+    { title: 'Assinie Mafia – Plage', summary: 'Lagune, plage, restaurants sur pilotis.', commune: 'Assinie', tag: 'Plage' },
+
+    // San-Pedro
+    { title: 'Plage de Monogaga', summary: 'Superbe plage au nord de San-Pedro.', commune: 'San-Pedro', tag: 'Plage' },
+
+    // Man
+    { title: 'Cascades de Man', summary: 'Chutes d\'eau pittoresques au pied des montagnes.', commune: 'Man', tag: 'Site touristique' },
+    { title: 'Dent de Man', summary: 'Sommet emblématique pour randonnée.', commune: 'Man', tag: 'Site touristique' },
+
+    // Korhogo
+    { title: 'Sculptures Sénoufo – Quartier des Artisans', summary: 'Ateliers de sculpture et tissage Poro.', commune: 'Korhogo', tag: 'Artisanat' },
+
+    // Bouaké
+    { title: 'La Paillote – Restaurant', summary: 'Cuisine locale populaire.', commune: 'Bouaké', tag: 'Restaurant' },
+
+    // Yamoussoukro
+    { title: 'Basilique Notre‑Dame de la Paix', summary: 'Basilique monumentale ouverte aux visites.', commune: 'Yamoussoukro', phone: '+225 27 30 64 11 11', tag: 'Site touristique' },
+    { title: 'Fondation F. Houphouët‑Boigny', summary: 'Centre de culture et de paix.', commune: 'Yamoussoukro', phone: '+225 27 30 64 50 20', tag: 'Site touristique' },
+  ],
+
       summary: "Options porteuses avec bon retour d'investissement :\n\n🍫 Cacao de qualité/durable : Valorisé à l'export, demande croissante pour cacao certifié et traçable.\n\n🥜 Noix de cajou : Forte demande internationale, transformation locale possible, bonne rentabilité.\n\n🌴 Palmier à huile/cultures oléagineuses : Selon sols et conditions climatiques, production stable.\n\n🥬 Cultures maraîchères : Demande locale forte, cycles courts, rotation rapide du capital.\n\n🌳 Systèmes agroforestiers/cultures intercalaires : Combiner arbres + cultures pour diversifier revenus et améliorer résilience climatique.\n\n🌾 Variétés améliorées/hybrides (maïs, riz, sorgho) : Rendement plus élevé si intrants (semences, fertilisants) bien gérés. Accès aux semences certifiées essentiel.",
       tag: "Conseils économiques"
     }
