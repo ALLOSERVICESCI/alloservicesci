@@ -10,6 +10,10 @@ export interface CatItem {
   source?: string; // url si disponible
   phones?: { label: string; tel: string }[]; // numeros cliquables (tel:)
   ussd?: { label: string; code: string }[]; // codes USSD
+  // Loisirs & Tourisme (facultatifs)
+  phone?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
