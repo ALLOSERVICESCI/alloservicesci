@@ -885,6 +885,62 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
         { label: "Siège", tel: "2720216700" }
       ],
       source: "https://www.anader.ci"
+    },
+    {
+      title: "📚 Écoles, centres de formation agricole & rurale",
+      summary: "Structures de formation reconnues pour préparer les jeunes aux métiers agricoles et ruraux. Formations qualifiantes, diplômantes, techniques agricoles et élevage.",
+      tag: "Formation agricole"
+    },
+    {
+      title: "CFAR - Centre de Formation Agricole et Rurale des Savanes",
+      summary: "Formations qualifiantes de 2 ans pour jeunes de 16-25 ans. Techniques agricoles selon variétés et saisons adaptées aux zones de savanes.",
+      tag: "École agricole",
+      location: "Niofoin",
+      source: "https://fert.fr"
+    },
+    {
+      title: "INFPA - Institut National de Formation Professionnelle Agricole",
+      summary: "Réseau d'écoles de formation agricole (EFA) et de spécialisation (ESEMV). Formations diplômantes en production agricole, élevage, gestion d'exploitation.",
+      tag: "École agricole",
+      location: "Réseau national (Touba, Bingerville)",
+      source: "https://infpa.org"
+    },
+    {
+      title: "EFA Ferentella - École de Formation Agricole",
+      summary: "Formation agricole pratique et théorique. Dépend de l'INFPA. Cycles de formation en production végétale et animale.",
+      tag: "École agricole",
+      location: "Touba",
+      source: "https://infpa.org"
+    },
+    {
+      title: "ESEMV - École de Spécialisation en Élevage et Métiers de la Viande",
+      summary: "Formation spécialisée en élevage, abattage, transformation et commercialisation de la viande. Dépend de l'INFPA.",
+      tag: "École agricole",
+      location: "Bingerville",
+      source: "https://infpa.org"
+    },
+    {
+      title: "INTA - Institut des Nouvelles Techniques Agricoles",
+      summary: "Formations diplômantes et qualifiantes en production agricole, élevage, agriculture biologique, agroécologie, transformation alimentaire.",
+      tag: "École agricole",
+      source: "https://legrandfrere.org"
+    },
+    {
+      title: "Centres de formation rurale ANADER",
+      summary: "Réseau de centres de formation pratique dans plusieurs régions : Bingerville-La Mé, Gagnoa-Lakota, Grand-Lahou, Kotobi. Formations courtes et longues pour agriculteurs.",
+      tag: "Formation ANADER",
+      location: "Bingerville, Gagnoa, Grand-Lahou, Kotobi",
+      source: "https://www.anader.ci"
+    },
+    {
+      title: "🌱 Techniques agricoles selon variétés et saisons",
+      summary: "Bonnes pratiques techniques adaptées aux cultures, saisons et zones agroécologiques.\n\n🍫 Cacao : Sélection porte-greffe résistant, taille régulière, fertilisation NPK, lutte intégrée parasites, ombrage contrôlé, drainage. Plantation saison pluvieuse. Traçabilité cruciale pour export.\n\n🌾 Riz (inondé/pluvial) : Labour, nivellement, semis direct ou transplantation, fertilisation, gestion eau, désherbage, rotations. Saison pluies (mars-octobre). Variétés cycle court.\n\n🌽 Maïs/Mil/Sorgho : Semis bonne densité, apport phosphore, irrigation si possible, contrôle adventices, rotations avec légumineuses. Début saison pluies. Cultures intermédiaires pour couvrir sol.\n\n🥜 Noix de cajou : Taille formation, fertilisation minérale, paillage, lutte nuisibles (cochenilles, chenilles), nettoyage. Plantation début saison pluies. Bonne tolérance sécheresse.\n\n🌴 Palmier à huile : Sols profonds, apport organique + minéral, fertilisation équilibrée, traitement sanitaire, gestion irrigation/drainage. Suivre phases végétatives. Zones climat favorable.\n\n🥬 Cultures maraîchères : Semis pépinière, transplantation, fertilisation organique, irrigation régulière, lutte maladies fongiques, paillage, rotation. Toute l'année si irrigué. Rentable si marché local.",
+      tag: "Techniques culturales"
+    },
+    {
+      title: "📈 Cultures & systèmes agricoles rentables à privilégier",
+      summary: "Options porteuses avec bon retour d'investissement :\n\n🍫 Cacao de qualité/durable : Valorisé à l'export, demande croissante pour cacao certifié et traçable.\n\n🥜 Noix de cajou : Forte demande internationale, transformation locale possible, bonne rentabilité.\n\n🌴 Palmier à huile/cultures oléagineuses : Selon sols et conditions climatiques, production stable.\n\n🥬 Cultures maraîchères : Demande locale forte, cycles courts, rotation rapide du capital.\n\n🌳 Systèmes agroforestiers/cultures intercalaires : Combiner arbres + cultures pour diversifier revenus et améliorer résilience climatique.\n\n🌾 Variétés améliorées/hybrides (maïs, riz, sorgho) : Rendement plus élevé si intrants (semences, fertilisants) bien gérés. Accès aux semences certifiées essentiel.",
+      tag: "Conseils économiques"
     }
   ],
   transport: [
