@@ -232,8 +232,8 @@ export default function LoisirsTourisme() {
             </View>
             {/* Ligne Localité sous les capsules: ville sélectionnée AVANT le mot Localité */}
             <View style={styles.localityLine}>
-              <Text style={styles.localityValueStrong}>{selectedCommune || effectiveCity}</Text>
-              <Text style={styles.localityLabelSmall}> — Localité</Text>
+              <Text style={styles.localityValueStrong}>{selectedCommune || effectiveCity} </Text>
+              <Text style={styles.localityLabelSmall}>Localité</Text>
             </View>
 
             {/* Sélection commune */}
