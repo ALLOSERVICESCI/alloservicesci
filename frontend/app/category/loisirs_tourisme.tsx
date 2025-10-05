@@ -59,7 +59,7 @@ type Mode = 'nearby' | 'communes';
 
 export default function LoisirsTourisme() {
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>('nearby');
+  const [mode, setMode] = useState<Mode>('communes');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [locError, setLocError] = useState<string | null>(null);
 
