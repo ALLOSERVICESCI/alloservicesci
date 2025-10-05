@@ -6,6 +6,23 @@
 
 # Loisirs & Tourisme: vérifier pastilles visibles (Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir, Lieux insolites, Airbnb), header avec bouton Publier aligné horizontalement avec titre + sous-titre, suppression complète du bloc Recherche (label + champ). Viewport iPhone 12/13/14.
 
+frontend:
+  - task: "FRONTEND E2E: Page Loisirs & Tourisme - Header alignment, 8 pastilles, no search block (iPhone 12/13/14: 390x844)"
+    implemented: true
+    working: false
+    file: "frontend/app/category/loisirs_tourisme.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ LOISIRS & TOURISME UI RE-TEST FAILED (iPhone 12/13/14: 390x844) - CRITICAL ISSUES FOUND: 1) ❌ HEADER ALIGNMENT: Title and Publier button NOT horizontally aligned (vertical diff: 146px) - button appears in top-right corner while title is in bottom-left of header image, 2) ❌ MISSING PASTILLES: Only 6/8 pastilles found - missing 'Lieux insolites' and 'Airbnb' (found: Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir), 3) ❌ SEARCH BLOCK PRESENT: Search functionality still exists with input field placeholder 'Rechercher un lieu ou une activité' and label 'Recherche (hôtel, plage, site touristique, restaurant, Airbnb, aire de jeux…)' - complete removal required. WORKING ELEMENTS: ✅ Header title 'Loisirs & Tourisme' and subtitle 'Hôtels, plages, sites, restaurants…' visible, ✅ 6 pastilles visible in wrap layout, ✅ Page loads correctly. URGENT: Fix header layout alignment, add missing pastilles, completely remove search block."
+
+agent_communication:
+  - agent: "testing"
+    message: "LOISIRS & TOURISME UI RE-TEST COMPLETED - MULTIPLE CRITICAL FAILURES FOUND. The page loads correctly but has 3 major issues: 1) Header layout broken - Publier button not aligned with title/subtitle (146px vertical difference), 2) Missing 2 pastilles (Lieux insolites, Airbnb) out of required 8, 3) Search block still present despite requirement for complete removal. Main agent needs to fix header alignment in CSS, add missing filter pastilles to CAT_FILTERS array, and completely remove search functionality including input field and labels."
+
 # E2E Loisirs & Tourisme + Annonceur: publier (Lieu insolite), vérifier carte/boutons, modifier (catégorie Plage), filtres catégorie, supprimer l’annonce, revalider header/localité et bouton Publier.
 
 # Loisirs & Tourisme UI: Vérifier vignettes photo, viewer, bouton Publier (header) -> /annonceur, publication locale (AsyncStorage), pastille Lieu insolite, filtres par catégorie, édition/suppression annonce locale, champ site web (optionnel) et bouton Site.
