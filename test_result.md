@@ -5,6 +5,17 @@
 # frontend_new_test_request_5
 # frontend_new_test_request_6
 # frontend_new_test_request_7
+# backend_new_test_request_general
+# Objectif: Test général du backend FastAPI
+# Vérifier:
+# - Santé et disponibilité: éventuel /api/health ou endpoints existants
+# - Endpoints connus (d'après logs):
+#   • GET /api/alerts
+#   • GET /api/alerts/unread_count?user_id=test-user
+# - Endpoint document: POST /api/ai/export/docx (tester avec payload minimal et un payload plus complet)
+# - CORS/routage /api/* OK, réponses JSON, status codes corrects
+# - Temps de réponse raisonnable
+
 # Loisirs & Tourisme – Tests filtres catégorie
 # Parcours:
 # 1) Aller /annonceur et publier une annonce:
