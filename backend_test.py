@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
-Comprehensive Backend Regression Test for Allô Services CI FastAPI
-Tests all endpoints with realistic payloads and edge cases as per review request.
+Test général du backend FastAPI exposé sous le préfixe /api
+Couverture demandée selon review request:
+1) Disponibilité & CORS
+2) Endpoints connus  
+3) Génération DOCX
+4) Robustesse
+5) Performance
 """
 
 import requests
