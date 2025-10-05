@@ -3,6 +3,9 @@
 # frontend_new_test_request_3
 # frontend_new_test_request_4
 # frontend_new_test_request_5
+# frontend_new_test_request_6
+# Re-run with cache purge: Loisirs & Tourisme UI — vérifier 8 pastilles visibles en wrap (Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir, Lieux insolites, Airbnb), header Publier aligné en rangée avec titre+sous-titre, bloc Recherche services absent. Viewport iPhone 12/13/14. Navigate /category/loisirs_tourisme.
+
 # Loisirs & Tourisme UI final check: (1) 8 pastilles visibles en wrap: Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir, Lieux insolites, Airbnb. (2) Header: bouton Publier aligné horizontalement avec titre + sous-titre (même rangée). (3) Bloc Recherche services supprimé (aucun label/aucun input). Viewport iPhone 12/13/14: 390x844. Navigation /category/loisirs_tourisme.
 
 # Loisirs & Tourisme UI re-test: 8 pastilles visibles (wrap), header 'Publier' aligné sur même ligne que titre+sous-titre, bloc Recherche supprimé (label + champ absents). Navigation /category/loisirs_tourisme. Viewport iPhone 12/13/14.
