@@ -6,6 +6,17 @@
 # frontend_new_test_request_6
 # frontend_new_test_request_7
 # backend_new_test_request_general
+# frontend_new_test_request_8
+# E2E complet Loisirs & Tourisme
+# 1) Aller /category/loisirs_tourisme: vérifier header (Publier aligné), pastilles 8 en wrap, recherche services absente
+# 2) Aller /annonceur: publier 'E2E Lieux Insolites' (catégorie Lieux insolites, Cocody, tel, site, desc, 4 étoiles, sans photos)
+# 3) Retour auto Loisirs & Tourisme: bannière succès visible, carte 'E2E Lieux Insolites' en tête, bouton Site visible, actions Modifier/Supprimer visibles
+# 4) Filtres: Lieux insolites visible, puis Airbnb (carte non visible), puis Tous (carte visible)
+# 5) Modifier: passer catégorie à 'Airbnb', titre 'E2E Modifié', enregistrer, vérifier filtres
+# 6) Pull-to-refresh: tirer pour rafraîchir et vérifier présence carte
+# 7) Supprimer: confirmer suppression, vérifier disparition
+# Viewport iPhone 12/13/14: 390x844
+
 # Objectif: Test général du backend FastAPI
 # Vérifier:
 # - Santé et disponibilité: éventuel /api/health ou endpoints existants
