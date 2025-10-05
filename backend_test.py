@@ -704,7 +704,9 @@ def run_review_request_test():
     # Test /api/alerts
     try:
         start_time = time.time()
-        response = tester.session.get(f"{BASE_URL}/alerts", timeout=10)
+        # Add Origin header to trigger CORS headers
+        headers = {'Origin': 'https://example.com'}
+        response = tester.session.get(f"{BASE_URL}/alerts", headers=headers, timeout=10)
         response_time = time.time() - start_time
         
         if response.status_code == 200:
