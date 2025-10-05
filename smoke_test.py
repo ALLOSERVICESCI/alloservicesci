@@ -12,7 +12,7 @@ import sys
 from datetime import datetime
 
 # Base URL from frontend environment
-BASE_URL = "https://smartcommunity-2.preview.emergentagent.com/api"
+BASE_URL = "https://ivoiremobility.preview.emergentagent.com/api"
 
 class SmokeTestRunner:
     def __init__(self):
