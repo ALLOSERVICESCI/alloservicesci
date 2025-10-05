@@ -11,13 +11,16 @@ frontend:
     implemented: true
     working: false
     file: "frontend/app/category/loisirs_tourisme.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ LOISIRS & TOURISME UI RE-TEST FAILED (iPhone 12/13/14: 390x844) - CRITICAL ISSUES FOUND: 1) ❌ HEADER ALIGNMENT: Title and Publier button NOT horizontally aligned (vertical diff: 146px) - button appears in top-right corner while title is in bottom-left of header image, 2) ❌ MISSING PASTILLES: Only 6/8 pastilles found - missing 'Lieux insolites' and 'Airbnb' (found: Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir), 3) ❌ SEARCH BLOCK PRESENT: Search functionality still exists with input field placeholder 'Rechercher un lieu ou une activité' and label 'Recherche (hôtel, plage, site touristique, restaurant, Airbnb, aire de jeux…)' - complete removal required. WORKING ELEMENTS: ✅ Header title 'Loisirs & Tourisme' and subtitle 'Hôtels, plages, sites, restaurants…' visible, ✅ 6 pastilles visible in wrap layout, ✅ Page loads correctly. URGENT: Fix header layout alignment, add missing pastilles, completely remove search block."
+      - working: false
+        agent: "testing"
+        comment: "❌ LOISIRS & TOURISME UI RE-TEST STILL FAILING (iPhone 12/13/14: 390x844) - COMPREHENSIVE TEST CONFIRMS PERSISTENT CRITICAL ISSUES: 1) ❌ HEADER ALIGNMENT: Publier button still NOT horizontally aligned with title/subtitle (vertical diff: 152px) - button positioned at y:28 while title at y:174, indicating button in top-right corner vs title in bottom area of header, 2) ❌ MISSING PASTILLES: Still only 6/8 pastilles visible - 'Lieux insolites' and 'Airbnb' remain missing from CAT_FILTERS array (found: Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir), 3) ❌ SEARCH BLOCK STILL PRESENT: Complete search functionality still exists with input placeholders 'Rechercher un lieu ou une activité', specific search label text 'Recherche (hôtel, plage, site touristique, restaurant, Airbnb, aire de jeux…)', and generic search inputs detected. WORKING ELEMENTS: ✅ Page loads correctly, ✅ Header title 'Loisirs & Tourisme' and subtitle visible, ✅ 6 pastilles display properly. CRITICAL: All 3 requirements from review request remain unmet - header CSS layout needs fixing, CAT_FILTERS array needs 2 missing pastilles, search block requires complete removal from code."
 
 agent_communication:
   - agent: "testing"
