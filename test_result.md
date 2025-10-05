@@ -78,6 +78,18 @@ agent_communication:
 # Loisirs & Tourisme UI: Vérifier vignettes photo, viewer, bouton Publier (header) -> /annonceur, publication locale (AsyncStorage), pastille Lieu insolite, filtres par catégorie, édition/suppression annonce locale, champ site web (optionnel) et bouton Site.
 
 backend:
+  - task: "Test général du backend FastAPI exposé sous le préfixe /api - Disponibilité & CORS, Endpoints connus, Génération DOCX, Robustesse, Performance"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TEST GÉNÉRAL BACKEND FASTAPI COMPLÈTEMENT RÉUSSI - Tous les tests selon review request passés avec succès (6/6 - 100% de réussite): 1) ✅ DISPONIBILITÉ & CORS: GET /api/alerts → 200 JSON array (4 items, 0.084s), GET /api/alerts/unread_count?user_id=test-user → 200 JSON count=4 (0.007s), CORS headers détectés (Origin: *, Credentials: true), 2) ✅ ENDPOINTS CONNUS: Tous les endpoints testés fonctionnent correctement avec réponses JSON appropriées, 3) ✅ GÉNÉRATION DOCX: POST /api/ai/export/docx fonctionne parfaitement - payload minimal (36625 bytes, 0.020s) et complet (36752 bytes, 0.019s), Content-Type correct (application/vnd.openxmlformats-officedocument.wordprocessingml.document), Content-Disposition attachment, 4) ✅ ROBUSTESSE: Payload invalide correctement rejeté avec 422 (0.046s), 5) ✅ PERFORMANCE: Génération DOCX très rapide (0.019s < 3s target). Tous les codes de statut, temps de réponse et CORS sont conformes aux attentes."
+
   - task: "POST /api/auth/register avec payload: first_name,last_name,email,phone,preferred_lang,pseudo,show_pseudo"
     implemented: true
     working: true
