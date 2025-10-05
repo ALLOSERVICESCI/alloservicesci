@@ -24,6 +24,7 @@ export default function CategoryLayout() {
       <Stack.Screen name="examens_concours" options={{}} />
       <Stack.Screen name="services_publics" options={{}} />
       <Stack.Screen name="services_utiles" options={{}} />
+      <Stack.Screen name="loisirs_tourisme" options={{}} />
     </Stack>
   );
 }
