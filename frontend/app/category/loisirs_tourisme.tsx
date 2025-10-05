@@ -13,7 +13,7 @@ const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_smartcom
 const ABJ_COMMUNES = [
   'Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon',
   // Étendues CI
-  'Grand-Bassam','Assinie','Yamoussoukro','Bouaké','San-Pedro','Korhogo','Daloa','Man','Gagnoa'
+  'Grand-Bassam','Assinie','Yamoussoukro','Bouaké','San-Pedro','Korhogo','Daloa','Man','Gagnoa','Jacqueville','Grand-Lahou','Sassandra'
 ];
 
 type Mode = 'nearby' | 'communes';
