@@ -1,4 +1,7 @@
 # frontend_new_test_request
+# frontend_new_test_request_2
+# E2E Loisirs & Tourisme + Annonceur: publier (Lieu insolite), vérifier carte/boutons, modifier (catégorie Plage), filtres catégorie, supprimer l’annonce, revalider header/localité et bouton Publier.
+
 # Loisirs & Tourisme UI: Vérifier vignettes photo, viewer, bouton Publier (header) -> /annonceur, publication locale (AsyncStorage), pastille Lieu insolite, filtres par catégorie, édition/suppression annonce locale, champ site web (optionnel) et bouton Site.
 
 backend:
