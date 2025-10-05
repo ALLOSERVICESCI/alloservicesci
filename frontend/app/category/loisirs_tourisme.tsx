@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,7 +7,7 @@ import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
-type LoisirItem = { title: string; summary: string; commune?: string; tag?: string; phone?: string; source?: string; lat?: number; lng?: number; photos?: string[]; qualities?: string };
+type LoisirItem = { title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; source?: string; lat?: number; lng?: number; photos?: string[]; qualities?: string };
 
 const FALLBACK_LOISIRS: LoisirItem[] = [
   // Abidjan & environs
@@ -122,6 +122,14 @@ export default function LoisirsTourisme() {
     return () => { mounted = false; };
   }, []);
 
+  const openPhotos = async (photos: string[] | undefined) => {
+    if (!photos || photos.length === 0) return;
+    try {
+      await AsyncStorage.setItem('loisirs_view_photos', JSON.stringify(photos));
+      router.push('/photo_viewer');
+    } catch {}
+  };
+
   // Utils distance
   const toRad = (x: number) => (x * Math.PI) / 180;
   const distKm = (a: {lat: number, lng: number}, b: {lat: number, lng: number}) => {
@@ -201,9 +209,15 @@ export default function LoisirsTourisme() {
     const phone: string | undefined = item?.phone;
     const lat: number | undefined = item?.lat;
     const lng: number | undefined = item?.lng;
+    const photos: string[] | undefined = item?.photos;
 
     return (
       <View style={styles.card}>
+        {photos && photos.length > 0 ? (
+          <TouchableOpacity onPress={() => openPhotos(photos)} activeOpacity={0.8}>
+            <Image source={{ uri: photos[0] }} style={styles.cardThumb} resizeMode="cover" />
+          </TouchableOpacity>
+        ) : null}
         <View style={styles.cardHeaderRow}>
           <Text style={styles.cardTitle}>{title}</Text>
         </View>
@@ -213,6 +227,11 @@ export default function LoisirsTourisme() {
             <Ionicons name="location" size={14} color="#FF8A00" />
             <Text style={styles.communeBadgeText}>{commune}</Text>
           </View>
+        ) : null}
+        {photos && photos.length > 1 ? (
+          <TouchableOpacity onPress={() => openPhotos(photos)}>
+            <Text style={styles.photosLink}>Voir toutes les photos ({photos.length})</Text>
+          </TouchableOpacity>
         ) : null}
         <View style={styles.actionsRow}>
           {phone ? (
@@ -400,11 +419,13 @@ const styles = StyleSheet.create({
   locErrorText: { color: '#D32F2F', fontSize: 12, marginBottom: 8 },
 
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  cardThumb: { width: '100%', height: 160, borderRadius: 8, marginBottom: 10 },
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#222', flex: 1, paddingRight: 8 },
   cardSummary: { marginTop: 6, color: '#444', lineHeight: 20 },
   communeBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4, marginBottom: 6 },
   communeBadgeText: { fontSize: 13, color: '#FF8A00', fontWeight: '600' },
+  photosLink: { color: '#0D6EFD', fontWeight: '700', marginTop: 2 },
 
   actionsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 10, alignItems: 'center' },
   badgeBtn: { flexDirection: 'row', alignItems: 'center', borderRadius: 999, paddingVertical: 8, paddingHorizontal: 10 },
