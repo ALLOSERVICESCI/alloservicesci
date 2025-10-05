@@ -133,6 +133,23 @@ export default function LoisirsTourisme() {
       } catch {}
     })();
     return () => { mounted = false; };
+
+  // Rafraîchir la liste à chaque focus (retour depuis /annonceur)
+  useFocusEffect(
+    useCallback(() => {
+      let cancelled = false;
+      (async () => {
+        try {
+          const raw = await AsyncStorage.getItem('loisirs_user_items');
+          const arr = raw ? JSON.parse(raw) : [];
+          const normalized = (Array.isArray(arr) ? arr : []).map((it: any) => ({ ...it, __local: true }));
+          if (!cancelled) setUserItems(normalized);
+        } catch {}
+      })();
+      return () => { cancelled = true; };
+    }, [])
+  );
+
   }, []);
 
   const openPhotos = async (photos: string[] | undefined) => {
