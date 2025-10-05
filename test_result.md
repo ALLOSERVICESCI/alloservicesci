@@ -613,6 +613,8 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Reprendre tests dans l'ordre: backend paiement CinetPay, puis E2E frontend (Premium & Profil), vérification 'Devenir Premium' FR et UI des pages. Notifications protégées sur Expo Go Android."
+  - agent: "main"
+    message: "Nouvelle demande de test E2E UI ciblé pour Loisirs & Tourisme et flux Annonceur (viewport iPhone 12/13/14: 390x844). Test complet du parcours publication, modification, suppression d'annonces locales avec vérification des filtres par catégorie."
   - agent: "testing"
     message: "✅ BACKEND SANITY CHECK COMPLETED - Menu contextuel '…' frontend changes confirmed NO BACKEND REGRESSION. Quick sanity check performed as requested: 1) ✅ GET /api/ → 200 OK (Message: 'Allô Services CI API', 18 routes disponibles), 2) ✅ GET /api/health → 200 OK (Status: 'ok'), 3) ✅ Backend service running successfully on localhost:8001, 4) ✅ MongoDB connection working, 5) ✅ Health facilities seeded (17 for Abidjan), 6) ✅ No errors in backend logs after frontend modifications. CONCLUSION: Backend tourne sans régression après ajout menu contextuel frontend. Toutes les routes /api répondent correctement. Aucun test E2E UI requis selon review request."
   - agent: "testing"
