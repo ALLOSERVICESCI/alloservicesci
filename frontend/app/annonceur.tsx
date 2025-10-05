@@ -13,7 +13,7 @@ const ABJ_COMMUNES = [
   'Grand-Bassam','Assinie','Yamoussoukro','Bouaké','San-Pedro','Korhogo','Daloa','Man','Gagnoa','Jacqueville','Grand-Lahou','Sassandra'
 ];
 
-const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir'] as const;
+const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieu insolite'] as const;
 
 type NewAnnonce = {
   title: string;
@@ -22,7 +22,7 @@ type NewAnnonce = {
   tag?: typeof CATEGORIES[number];
   phone?: string;
   photos?: string[]; // base64
-  qualities?: string; // texte libre (annotation des qualités)
+  rating?: number; // 1..5
 };
 
 export default function Annonceur() {
@@ -34,7 +34,7 @@ export default function Annonceur() {
   const [commune, setCommune] = useState<string | undefined>(undefined);
   const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
-  const [qualities, setQualities] = useState('');
+  const [rating, setRating] = useState<number>(0);
   const [photos, setPhotos] = useState<string[]>([]);
 
   const suggestions = useMemo(() => {
@@ -98,7 +98,7 @@ export default function Annonceur() {
       tag: category,
       phone: phone.trim(),
       photos: photos.length ? photos : undefined,
-      qualities: qualities.trim() || undefined,
+      rating: rating && rating > 0 ? rating : undefined,
     };
 
     try {
@@ -107,13 +107,22 @@ export default function Annonceur() {
       arr.unshift(item);
       await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(arr));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      Alert.alert('Publié', 'Votre annonce a été ajoutée. Elle apparaît dans Loisirs & Tourisme.', [
-        { text: 'OK', onPress: () => router.replace('/category/loisirs_tourisme') }
-      ]);
+      // Redirection immédiate vers Loisirs & Tourisme
+      router.replace('/category/loisirs_tourisme');
     } catch (e) {
       Alert.alert('Erreur', "Impossible d'enregistrer l'annonce. Réessayez.");
     }
   };
+
+  const renderStars = (value: number, onSelect?: (v: number) => void) => (
+    <View style={styles.starsRow}>
+      {[1,2,3,4,5].map((n) => (
+        <TouchableOpacity key={n} onPress={() => onSelect?.(n)} style={styles.starBtn} accessibilityRole="button" accessibilityLabel={`Note ${n} étoile${n>1?'s':''}`}>
+          <Ionicons name={n <= value ? 'star' : 'star-outline'} size={22} color="#F59E0B" />
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
@@ -185,15 +194,9 @@ export default function Annonceur() {
           placeholderTextColor="#9AA3AF"
         />
 
-        {/* Qualités */}
-        <Text style={styles.label}>Qualités de prestation (mots-clés)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ex: Propreté, Service, Vue, Sécurité"
-          value={qualities}
-          onChangeText={setQualities}
-          placeholderTextColor="#9AA3AF"
-        />
+        {/* Qualités (note par étoiles) */}
+        <Text style={styles.label}>Qualité de prestation</Text>
+        {renderStars(rating, setRating)}
 
         {/* Photos */}
         <Text style={styles.label}>Photos (max 5)</Text>
@@ -249,6 +252,9 @@ const styles = StyleSheet.create({
   suggestItem: { paddingVertical: 10, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
   suggestText: { color: '#111' },
   selectedCommune: { color: '#0A7C3A', fontWeight: '700' },
+
+  starsRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  starBtn: { padding: 8 },
 
   photosRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 6 },
   photoBox: { width: 80, height: 80, borderRadius: 8, overflow: 'hidden', position: 'relative' },

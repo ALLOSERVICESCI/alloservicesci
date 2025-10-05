@@ -7,7 +7,7 @@ import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
-type LoisirItem = { title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; source?: string; lat?: number; lng?: number; photos?: string[]; qualities?: string };
+type LoisirItem = { title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; source?: string; lat?: number; lng?: number; photos?: string[]; qualities?: string; rating?: number };
 
 const FALLBACK_LOISIRS: LoisirItem[] = [
   // Abidjan & environs
@@ -201,6 +201,17 @@ export default function LoisirsTourisme() {
     Linking.openURL(url);
   };
 
+  const RatingRow = ({ value }: { value?: number }) => {
+    if (!value || value <= 0) return null;
+    return (
+      <View style={styles.ratingRow}>
+        {[1,2,3,4,5].map((n) => (
+          <Ionicons key={n} name={n <= value ? 'star' : 'star-outline'} size={14} color="#F59E0B" />
+        ))}
+      </View>
+    );
+  };
+
   const renderItem = ({ item }: { item: any }) => {
     const title: string = item?.title || item?.name || '';
     const summary: string | undefined = item?.summary || item?.description;
@@ -210,6 +221,7 @@ export default function LoisirsTourisme() {
     const lat: number | undefined = item?.lat;
     const lng: number | undefined = item?.lng;
     const photos: string[] | undefined = item?.photos;
+    const rating: number | undefined = item?.rating;
 
     return (
       <View style={styles.card}>
@@ -222,6 +234,7 @@ export default function LoisirsTourisme() {
           <Text style={styles.cardTitle}>{title}</Text>
         </View>
         {summary ? <Text style={styles.cardSummary}>{summary}</Text> : null}
+        <RatingRow value={rating} />
         {commune ? (
           <View style={styles.communeBadgeRow}>
             <Ionicons name="location" size={14} color="#FF8A00" />
@@ -423,6 +436,7 @@ const styles = StyleSheet.create({
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#222', flex: 1, paddingRight: 8 },
   cardSummary: { marginTop: 6, color: '#444', lineHeight: 20 },
+  ratingRow: { flexDirection: 'row', gap: 2, marginTop: 4 },
   communeBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4, marginBottom: 6 },
   communeBadgeText: { fontSize: 13, color: '#FF8A00', fontWeight: '600' },
   photosLink: { color: '#0D6EFD', fontWeight: '700', marginTop: 2 },
