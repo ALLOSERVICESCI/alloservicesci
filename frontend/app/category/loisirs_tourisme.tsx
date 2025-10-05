@@ -7,7 +7,7 @@ import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
-type LoisirItem = { title: string; summary: string; commune?: string; tag?: string; phone?: string; source?: string; lat?: number; lng?: number };
+type LoisirItem = { title: string; summary: string; commune?: string; tag?: string; phone?: string; source?: string; lat?: number; lng?: number; photos?: string[]; qualities?: string };
 
 const FALLBACK_LOISIRS: LoisirItem[] = [
   // Abidjan & environs
@@ -108,6 +108,20 @@ export default function LoisirsTourisme() {
     return FALLBACK_LOISIRS as any;
   }, []);
 
+  // Annonces utilisateur (stockées localement)
+  const [userItems, setUserItems] = useState<LoisirItem[]>([]);
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem('loisirs_user_items');
+        const arr = raw ? JSON.parse(raw) : [];
+        if (mounted) setUserItems(arr);
+      } catch {}
+    })();
+    return () => { mounted = false; };
+  }, []);
+
   // Utils distance
   const toRad = (x: number) => (x * Math.PI) / 180;
   const distKm = (a: {lat: number, lng: number}, b: {lat: number, lng: number}) => {
@@ -124,7 +138,7 @@ export default function LoisirsTourisme() {
 
   // Filtrage
   const data = useMemo(() => {
-    let list = rawData;
+    let list: any[] = [...userItems, ...rawData];
 
     // Filtrage commune
     if (selectedCommune) {
@@ -156,7 +170,7 @@ export default function LoisirsTourisme() {
     }
 
     return list;
-  }, [rawData, selectedCommune, serviceQuery, mode, coords]);
+  }, [rawData, userItems, selectedCommune, serviceQuery, mode, coords]);
 
   const openPhone = (phone?: string) => {
     const clean = (phone || '').replace(/\s+/g, '');
@@ -234,6 +248,10 @@ export default function LoisirsTourisme() {
             <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
               <Ionicons name="chevron-back" size={22} color="#fff" />
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/annonceur')} style={styles.publishHeaderBtn} accessibilityRole="button" accessibilityLabel="Publier une annonce">
+              <Ionicons name="add-circle" size={18} color="#0A7C3A" />
+              <Text style={styles.publishHeaderText}>Publier</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.headerTitleBox}>
             <Text style={styles.headerTitle}>Loisirs & Tourisme</Text>
@@ -269,10 +287,10 @@ export default function LoisirsTourisme() {
               <ModeCapsule label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
               <ModeCapsule label="Communes" icon="home" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
             </View>
-            {/* Ligne Localité sous les capsules: ville sélectionnée AVANT le mot Localité */}
+            {/* Ligne Localité: Localité AVANT la ville, ville non grasse */}
             <View style={styles.localityLine}>
-              <Text style={styles.localityValueStrong}>{selectedCommune || effectiveCity} </Text>
-              <Text style={styles.localityLabelSmall}>Localité</Text>
+              <Text style={styles.localityLabelSmall}>Localité </Text>
+              <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
             </View>
 
             {/* Sélection commune */}
@@ -352,8 +370,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F7F7F7' },
   headerWrapper: { height: HEADER_HEIGHT, width: '100%' },
   header: { flex: 1, width: '100%', height: '100%' },
-  headerTopRow: { paddingTop: Platform.select({ ios: 52, android: 24, default: 16 }), paddingHorizontal: 16 },
+  headerTopRow: { paddingTop: Platform.select({ ios: 52, android: 24, default: 16 }), paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
+  publishHeaderBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.92)' },
+  publishHeaderText: { color: '#0A7C3A', fontWeight: '800' },
   headerTitleBox: { position: 'absolute', bottom: 16, left: 16, right: 16 },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: '800' },
   headerSubtitle: { color: '#fff' },
@@ -367,7 +387,7 @@ const styles = StyleSheet.create({
   capsRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' },
   localityLine: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
   localityLabelSmall: { color: '#444', fontSize: 13 },
-  localityValueStrong: { color: '#222', fontSize: 16, fontWeight: '800' },
+  localityValue: { color: '#222', fontSize: 16, fontWeight: '400' },
   modeCapsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', gap: 8 },
   modeCapsuleText: { fontWeight: '800' },
 

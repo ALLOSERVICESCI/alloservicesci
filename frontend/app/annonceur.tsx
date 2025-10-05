@@ -1,0 +1,262 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, ScrollView, Alert, Image } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import * as Haptics from 'expo-haptics';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KeyboardAvoidingView } from 'react-native';
+
+// Communes et villes connues (mêmes que sur la page Loisirs)
+const ABJ_COMMUNES = [
+  'Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Treichville','Songon','Yopougon',
+  'Grand-Bassam','Assinie','Yamoussoukro','Bouaké','San-Pedro','Korhogo','Daloa','Man','Gagnoa','Jacqueville','Grand-Lahou','Sassandra'
+];
+
+const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir'] as const;
+
+type NewAnnonce = {
+  title: string;
+  description?: string;
+  commune?: string; // ville/localité
+  tag?: typeof CATEGORIES[number];
+  phone?: string;
+  photos?: string[]; // base64
+  qualities?: string; // texte libre (annotation des qualités)
+};
+
+export default function Annonceur() {
+  const router = useRouter();
+
+  const [category, setCategory] = useState<typeof CATEGORIES[number] | null>(null);
+  const [title, setTitle] = useState('');
+  const [communeQuery, setCommuneQuery] = useState('');
+  const [commune, setCommune] = useState<string | undefined>(undefined);
+  const [phone, setPhone] = useState('');
+  const [description, setDescription] = useState('');
+  const [qualities, setQualities] = useState('');
+  const [photos, setPhotos] = useState<string[]>([]);
+
+  const suggestions = useMemo(() => {
+    const q = communeQuery.trim().toLowerCase();
+    if (!q) return [] as string[];
+    return ABJ_COMMUNES.filter(c => c.toLowerCase().includes(q)).slice(0, 8);
+  }, [communeQuery]);
+
+  const pickImages = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Autorisation requise', 'Veuillez autoriser l’accès à vos photos.');
+        return;
+      }
+
+      // Certaines plateformes supportent la sélection multiple
+      const remaining = 5 - photos.length;
+      if (remaining <= 0) return;
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: false,
+        base64: true,
+        quality: 0.6,
+        selectionLimit: remaining as any, // iOS 14+ / web, ignoré ailleurs
+        allowsMultipleSelection: true as any
+      });
+
+      if (result.canceled) return;
+
+      const picked: string[] = [];
+      if ('assets' in result && Array.isArray(result.assets)) {
+        for (const a of result.assets) {
+          if (a.base64) picked.push(`data:${a.mimeType || 'image/jpeg'};base64,${a.base64}`);
+        }
+      }
+      const merged = [...photos, ...picked].slice(0, 5);
+      setPhotos(merged);
+    } catch (e) {
+      Alert.alert('Erreur', "Impossible d'ajouter la photo");
+    }
+  };
+
+  const removePhoto = (idx: number) => {
+    const copy = photos.slice();
+    copy.splice(idx, 1);
+    setPhotos(copy);
+  };
+
+  const onPublish = async () => {
+    // Validation minimale
+    if (!category) { Alert.alert('Catégorie requise', 'Veuillez sélectionner une catégorie.'); return; }
+    if (!title.trim()) { Alert.alert('Titre requis', 'Veuillez saisir un titre.'); return; }
+    if (!commune) { Alert.alert('Localité requise', 'Veuillez choisir une localité.'); return; }
+    if (!phone.trim()) { Alert.alert('Contact requis', 'Veuillez indiquer un contact.'); return; }
+
+    const item: NewAnnonce = {
+      title: title.trim(),
+      description: description.trim() || undefined,
+      commune,
+      tag: category,
+      phone: phone.trim(),
+      photos: photos.length ? photos : undefined,
+      qualities: qualities.trim() || undefined,
+    };
+
+    try {
+      const raw = await AsyncStorage.getItem('loisirs_user_items');
+      const arr = raw ? JSON.parse(raw) : [];
+      arr.unshift(item);
+      await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(arr));
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      Alert.alert('Publié', 'Votre annonce a été ajoutée. Elle apparaît dans Loisirs & Tourisme.', [
+        { text: 'OK', onPress: () => router.replace('/category/loisirs_tourisme') }
+      ]);
+    } catch (e) {
+      Alert.alert('Erreur', "Impossible d'enregistrer l'annonce. Réessayez.");
+    }
+  };
+
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+        {/* Header */}
+        <View style={styles.headerRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.iconBtn} accessibilityRole="button" accessibilityLabel="Retour">
+            <Ionicons name="chevron-back" size={22} color="#111" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Publier une annonce</Text>
+          <View style={{ width: 40 }} />
+        </View>
+
+        {/* Categories (pastilles) */}
+        <Text style={styles.label}>Catégorie</Text>
+        <View style={styles.chipsRow}>
+          {CATEGORIES.map((c) => (
+            <TouchableOpacity key={c} onPress={() => setCategory(c)} style={[styles.chip, category === c ? styles.chipActive : null]}>
+              <Text style={[styles.chipText, category === c ? styles.chipTextActive : null]}>{c}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Titre */}
+        <Text style={styles.label}>Titre</Text>
+        <TextInput style={styles.input} placeholder="Nom de l’établissement / lieu" value={title} onChangeText={setTitle} placeholderTextColor="#9AA3AF" />
+
+        {/* Lieux (sélecteur) */}
+        <Text style={styles.label}>Localité (ville/commune)</Text>
+        <View style={styles.inputRow}>
+          <Ionicons name="location" size={18} color="#888" />
+          <TextInput
+            style={styles.inputBare}
+            value={communeQuery}
+            onChangeText={setCommuneQuery}
+            placeholder="Rechercher une localité"
+            placeholderTextColor="#9AA3AF"
+            returnKeyType="search"
+          />
+          {commune ? (
+            <TouchableOpacity onPress={() => { setCommune(undefined); setCommuneQuery(''); }}>
+              <Ionicons name="close-circle" size={18} color="#999" />
+            </TouchableOpacity>
+          ) : null}
+        </View>
+        {communeQuery && suggestions.length > 0 ? (
+          <View style={styles.suggestBox}>
+            {suggestions.map((s) => (
+              <TouchableOpacity key={s} onPress={() => { setCommune(s); setCommuneQuery(''); }} style={styles.suggestItem}>
+                <Text style={styles.suggestText}>{s}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ) : null}
+        {commune ? <Text style={styles.selectedCommune}>Sélectionné: {commune}</Text> : null}
+
+        {/* Contact */}
+        <Text style={styles.label}>Contact (téléphone)</Text>
+        <TextInput style={styles.input} keyboardType="phone-pad" placeholder="Ex: +225 0102030405" value={phone} onChangeText={setPhone} placeholderTextColor="#9AA3AF" />
+
+        {/* Description */}
+        <Text style={styles.label}>Description</Text>
+        <TextInput
+          style={[styles.input, { minHeight: 100, textAlignVertical: 'top' }]}
+          multiline
+          placeholder="Décrivez le lieu, les services, les horaires, etc."
+          value={description}
+          onChangeText={setDescription}
+          placeholderTextColor="#9AA3AF"
+        />
+
+        {/* Qualités */}
+        <Text style={styles.label}>Qualités de prestation (mots-clés)</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Ex: Propreté, Service, Vue, Sécurité"
+          value={qualities}
+          onChangeText={setQualities}
+          placeholderTextColor="#9AA3AF"
+        />
+
+        {/* Photos */}
+        <Text style={styles.label}>Photos (max 5)</Text>
+        <View style={styles.photosRow}>
+          {photos.map((p, idx) => (
+            <View key={idx} style={styles.photoBox}>
+              <Image source={{ uri: p }} style={styles.photo} />
+              <TouchableOpacity onPress={() => removePhoto(idx)} style={styles.removePhotoBtn}>
+                <Ionicons name="close" size={14} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          ))}
+          {photos.length < 5 ? (
+            <TouchableOpacity onPress={pickImages} style={styles.addPhotoBox} accessibilityRole="button" accessibilityLabel="Ajouter des photos">
+              <Ionicons name="add" size={22} color="#0D6EFD" />
+              <Text style={styles.addPhotoText}>Ajouter</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+
+        {/* Publier */}
+        <TouchableOpacity onPress={onPublish} style={styles.publishBtn} accessibilityRole="button" accessibilityLabel="Publier l'annonce">
+          <Text style={styles.publishText}>Publier</Text>
+        </TouchableOpacity>
+
+        <View style={{ height: 24 }} />
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F7F7F7' },
+  content: { padding: 16 },
+
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 },
+  iconBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#EFEFF2', alignItems: 'center', justifyContent: 'center' },
+  headerTitle: { fontSize: 18, fontWeight: '800', color: '#111' },
+
+  label: { color: '#111', fontWeight: '700', marginTop: 12, marginBottom: 6 },
+
+  chipsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  chip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0' },
+  chipActive: { backgroundColor: '#0D6EFD', borderColor: '#0D6EFD' },
+  chipText: { color: '#111', fontWeight: '700' },
+  chipTextActive: { color: '#fff' },
+
+  input: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, color: '#111' },
+  inputRow: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10 },
+  inputBare: { flex: 1, color: '#111', paddingVertical: 2 },
+
+  suggestBox: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, marginTop: 4, marginBottom: 8, overflow: 'hidden' },
+  suggestItem: { paddingVertical: 10, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
+  suggestText: { color: '#111' },
+  selectedCommune: { color: '#0A7C3A', fontWeight: '700' },
+
+  photosRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 6 },
+  photoBox: { width: 80, height: 80, borderRadius: 8, overflow: 'hidden', position: 'relative' },
+  photo: { width: '100%', height: '100%' },
+  removePhotoBtn: { position: 'absolute', top: 4, right: 4, backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: 12, width: 24, height: 24, alignItems: 'center', justifyContent: 'center' },
+  addPhotoBox: { width: 80, height: 80, borderRadius: 8, borderWidth: 1, borderColor: '#BBD6FD', backgroundColor: '#F1F6FF', alignItems: 'center', justifyContent: 'center' },
+  addPhotoText: { color: '#0D6EFD', fontWeight: '700', marginTop: 2 },
+
+  publishBtn: { marginTop: 18, backgroundColor: '#0A7C3A', paddingVertical: 14, borderRadius: 12, alignItems: 'center' },
+  publishText: { color: '#fff', fontWeight: '800', fontSize: 16 },
+});
