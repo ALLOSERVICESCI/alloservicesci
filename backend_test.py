@@ -688,10 +688,241 @@ def run_quick_smoke_test():
     
     return 0 if len(failed) == 0 else 1
 
+def run_review_request_test():
+    """Run specific test according to review request requirements"""
+    print("🚀 Test général du backend FastAPI exposé sous le préfixe /api")
+    print(f"📍 Base URL: {BASE_URL}")
+    print("=" * 80)
+    
+    tester = BackendTester()
+    
+    # 1) Disponibilité & CORS
+    print("\n1) DISPONIBILITÉ & CORS")
+    print("- Vérifier qu'un appel simple à /api/alerts et /api/alerts/unread_count?user_id=test-user renvoie 200 JSON")
+    print("- Vérifier que les entêtes CORS standards sont présents")
+    
+    # Test /api/alerts
+    try:
+        start_time = time.time()
+        response = tester.session.get(f"{BASE_URL}/alerts", timeout=10)
+        response_time = time.time() - start_time
+        
+        if response.status_code == 200:
+            try:
+                data = response.json()
+                if isinstance(data, list):
+                    # Check CORS headers
+                    cors_origin = response.headers.get('Access-Control-Allow-Origin', 'Not found')
+                    cors_methods = response.headers.get('Access-Control-Allow-Methods', 'Not found')
+                    cors_headers = response.headers.get('Access-Control-Allow-Headers', 'Not found')
+                    
+                    tester.log_result('/alerts', 'GET', 'PASS', 
+                                    f'200 JSON array with {len(data)} items. Response time: {response_time:.3f}s. CORS - Origin: {cors_origin}, Methods: {cors_methods}, Headers: {cors_headers}')
+                else:
+                    tester.log_result('/alerts', 'GET', 'FAIL', f'Expected JSON array, got {type(data)}')
+            except json.JSONDecodeError:
+                tester.log_result('/alerts', 'GET', 'FAIL', '200 but invalid JSON response')
+        else:
+            tester.log_result('/alerts', 'GET', 'FAIL', f'Status {response.status_code}: {response.text[:200]}')
+    except Exception as e:
+        tester.log_result('/alerts', 'GET', 'FAIL', f'Request failed: {str(e)}')
+    
+    # Test /api/alerts/unread_count?user_id=test-user
+    try:
+        start_time = time.time()
+        response = tester.session.get(f"{BASE_URL}/alerts/unread_count?user_id=test-user", timeout=10)
+        response_time = time.time() - start_time
+        
+        if response.status_code == 200:
+            try:
+                data = response.json()
+                if isinstance(data, dict) and 'count' in data and isinstance(data['count'], int):
+                    cors_origin = response.headers.get('Access-Control-Allow-Origin', 'Not found')
+                    tester.log_result('/alerts/unread_count?user_id=test-user', 'GET', 'PASS', 
+                                    f'200 JSON with count={data["count"]} (int). Response time: {response_time:.3f}s. CORS Origin: {cors_origin}')
+                else:
+                    tester.log_result('/alerts/unread_count?user_id=test-user', 'GET', 'FAIL', 
+                                    f'Expected JSON with count (int), got {data}')
+            except json.JSONDecodeError:
+                tester.log_result('/alerts/unread_count?user_id=test-user', 'GET', 'FAIL', '200 but invalid JSON response')
+        else:
+            tester.log_result('/alerts/unread_count?user_id=test-user', 'GET', 'FAIL', 
+                            f'Status {response.status_code}: {response.text[:200]}')
+    except Exception as e:
+        tester.log_result('/alerts/unread_count?user_id=test-user', 'GET', 'FAIL', f'Request failed: {str(e)}')
+    
+    # 2) Endpoints connus
+    print("\n2) ENDPOINTS CONNUS")
+    print("- GET /api/alerts → 200, JSON array")
+    print("- GET /api/alerts/unread_count?user_id=test-user → 200, JSON avec un entier")
+    print("(Already tested above)")
+    
+    # 3) Génération DOCX
+    print("\n3) GÉNÉRATION DOCX")
+    print("- POST /api/ai/export/docx (payload minimal)")
+    print("- POST /api/ai/export/docx (payload complet)")
+    
+    # Test minimal payload
+    minimal_payload = {
+        "title": "Test DOCX",
+        "content": "Ceci est un test minimal."
+    }
+    
+    try:
+        start_time = time.time()
+        response = tester.session.post(f"{BASE_URL}/ai/export/docx", json=minimal_payload, timeout=15)
+        response_time = time.time() - start_time
+        
+        if response.status_code == 200:
+            content_type = response.headers.get('Content-Type', '')
+            content_disposition = response.headers.get('Content-Disposition', '')
+            content_length = len(response.content)
+            
+            expected_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            is_docx = content_type == expected_type
+            has_attachment = 'attachment' in content_disposition
+            is_non_empty = content_length > 0
+            
+            if is_docx and has_attachment and is_non_empty:
+                tester.log_result('/ai/export/docx (minimal)', 'POST', 'PASS', 
+                                f'200, Content-Type: {expected_type}, Content-Disposition: {content_disposition}, Size: {content_length} bytes, Response time: {response_time:.3f}s')
+            else:
+                tester.log_result('/ai/export/docx (minimal)', 'POST', 'FAIL', 
+                                f'Missing requirements - DOCX: {is_docx}, Attachment: {has_attachment}, Non-empty: {is_non_empty}')
+        else:
+            tester.log_result('/ai/export/docx (minimal)', 'POST', 'FAIL', 
+                            f'Status {response.status_code}: {response.text[:200]}')
+    except Exception as e:
+        tester.log_result('/ai/export/docx (minimal)', 'POST', 'FAIL', f'Request failed: {str(e)}')
+    
+    # Test complete payload
+    complete_payload = {
+        "title": "CV Candidat",
+        "content": """Profil
+Développeur Mobile React Native avec 5 ans d'expérience.
+
+Compétences
+React Native, Expo, FastAPI, MongoDB
+
+Expériences
+Société X (2021-2024): Dév. d'applications Expo Router."""
+    }
+    
+    try:
+        start_time = time.time()
+        response = tester.session.post(f"{BASE_URL}/ai/export/docx", json=complete_payload, timeout=15)
+        response_time = time.time() - start_time
+        
+        if response.status_code == 200:
+            content_type = response.headers.get('Content-Type', '')
+            content_disposition = response.headers.get('Content-Disposition', '')
+            content_length = len(response.content)
+            
+            expected_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            is_docx = content_type == expected_type
+            has_attachment = 'attachment' in content_disposition
+            is_non_empty = content_length > 0
+            
+            if is_docx and has_attachment and is_non_empty:
+                tester.log_result('/ai/export/docx (complet)', 'POST', 'PASS', 
+                                f'200, Content-Type: {expected_type}, Content-Disposition: {content_disposition}, Size: {content_length} bytes, Response time: {response_time:.3f}s')
+            else:
+                tester.log_result('/ai/export/docx (complet)', 'POST', 'FAIL', 
+                                f'Missing requirements - DOCX: {is_docx}, Attachment: {has_attachment}, Non-empty: {is_non_empty}')
+        else:
+            tester.log_result('/ai/export/docx (complet)', 'POST', 'FAIL', 
+                            f'Status {response.status_code}: {response.text[:200]}')
+    except Exception as e:
+        tester.log_result('/ai/export/docx (complet)', 'POST', 'FAIL', f'Request failed: {str(e)}')
+    
+    # 4) Robustesse
+    print("\n4) ROBUSTESSE")
+    print("- Tenter POST /api/ai/export/docx avec payload invalide → Attendu: 4xx")
+    
+    # Test invalid payload (content non string)
+    invalid_payload = {
+        "title": "Test Invalid",
+        "content": 123  # Should be string
+    }
+    
+    try:
+        start_time = time.time()
+        response = tester.session.post(f"{BASE_URL}/ai/export/docx", json=invalid_payload, timeout=10)
+        response_time = time.time() - start_time
+        
+        if 400 <= response.status_code < 500:
+            tester.log_result('/ai/export/docx (invalid payload)', 'POST', 'PASS', 
+                            f'Correctly returned {response.status_code} for invalid payload. Response time: {response_time:.3f}s')
+        else:
+            tester.log_result('/ai/export/docx (invalid payload)', 'POST', 'FAIL', 
+                            f'Expected 4xx, got {response.status_code}: {response.text[:200]}')
+    except Exception as e:
+        tester.log_result('/ai/export/docx (invalid payload)', 'POST', 'FAIL', f'Request failed: {str(e)}')
+    
+    # 5) Performance
+    print("\n5) PERFORMANCE")
+    print("- Mesurer le temps de réponse approximatif (< 3s pour la génération si possible)")
+    
+    # Test performance with longer content
+    performance_payload = {
+        "title": "Test Performance DOCX",
+        "content": "Test de performance pour la génération DOCX. " * 100  # Longer content
+    }
+    
+    try:
+        start_time = time.time()
+        response = tester.session.post(f"{BASE_URL}/ai/export/docx", json=performance_payload, timeout=15)
+        response_time = time.time() - start_time
+        
+        if response.status_code == 200:
+            if response_time < 3.0:
+                tester.log_result('DOCX Generation Performance', 'POST', 'PASS', 
+                                f'Response time {response_time:.3f}s < 3s target ✅')
+            else:
+                tester.log_result('DOCX Generation Performance', 'POST', 'FAIL', 
+                                f'Response time {response_time:.3f}s >= 3s target ❌')
+        else:
+            tester.log_result('DOCX Generation Performance', 'POST', 'FAIL', 
+                            f'Failed with status {response.status_code}')
+    except Exception as e:
+        tester.log_result('DOCX Generation Performance', 'POST', 'FAIL', f'Request failed: {str(e)}')
+    
+    # Summary
+    print("\n" + "=" * 80)
+    print("📊 RÉSULTATS DU TEST GÉNÉRAL BACKEND")
+    print("=" * 80)
+    
+    passed = [r for r in tester.test_results if r['status'] == 'PASS']
+    failed = [r for r in tester.test_results if r['status'] == 'FAIL']
+    
+    total = len(tester.test_results)
+    pass_rate = (len(passed) / total * 100) if total > 0 else 0
+    
+    print(f"✅ RÉUSSIS: {len(passed)}")
+    print(f"❌ ÉCHECS: {len(failed)}")
+    print(f"📈 TAUX DE RÉUSSITE: {pass_rate:.1f}% ({len(passed)}/{total})")
+    
+    if failed:
+        print(f"\n❌ TESTS ÉCHOUÉS ({len(failed)}):")
+        for result in failed:
+            print(f"   • {result['method']} {result['endpoint']}: {result['reason']}")
+    else:
+        print("\n🎉 TOUS LES TESTS SONT RÉUSSIS!")
+    
+    print("\n📋 RAPPORT DÉTAILLÉ:")
+    print("Codes de statut, temps de réponse et extraits d'erreur éventuels:")
+    for result in tester.test_results:
+        status_icon = "✅" if result['status'] == 'PASS' else "❌"
+        print(f"{status_icon} {result['method']} {result['endpoint']}: {result['reason']}")
+    
+    return 0 if len(failed) == 0 else 1
+
 if __name__ == "__main__":
     import sys
     if len(sys.argv) > 1 and sys.argv[1] == "--smoke":
         exit_code = run_quick_smoke_test()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--review":
+        exit_code = run_review_request_test()
     else:
         tester = BackendTester()
         exit_code = tester.run_all_tests()
