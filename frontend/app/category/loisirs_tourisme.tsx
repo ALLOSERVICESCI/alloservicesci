@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
-
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Location from 'expo-location';
@@ -68,6 +67,10 @@ export default function LoisirsTourisme() {
   // Filtres
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
 
+  // UI state
+  const [refreshing, setRefreshing] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   // Localité effective
   const [effectiveCity, setEffectiveCity] = useState<string>('Abidjan');
   useEffect(() => {
@@ -114,51 +117,46 @@ export default function LoisirsTourisme() {
 
   // Annonces utilisateur (stockées localement)
   const [userItems, setUserItems] = useState<LoisirItem[]>([]);
+
+  const loadUserItems = useCallback(async () => {
+    try {
+      const raw = await AsyncStorage.getItem('loisirs_user_items');
+      const arr = raw ? JSON.parse(raw) : [];
+      const normalized = (Array.isArray(arr) ? arr : []).map((it: any) => ({ ...it, __local: true }));
+      setUserItems(normalized);
+    } catch {}
+  }, []);
+
   useEffect(() => {
     let mounted = true;
     (async () => {
-      try {
-        const raw = await AsyncStorage.getItem('loisirs_user_items');
-        const arr = raw ? JSON.parse(raw) : [];
-        let changed = false;
-        const normalized = (Array.isArray(arr) ? arr : []).map((it: any) => {
-          if (!it.id) { it.id = `usr-${Date.now()}-${Math.floor(Math.random()*100000)}`; changed = true; }
-          it.__local = true;
-          // Harmoniser ancienne étiquette singulière -> pluriel
-          if (it.tag === 'Lieu insolite') { it.tag = 'Lieux insolites'; changed = true; }
-          return it;
-        });
-        if (changed) await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(normalized));
-        if (mounted) setUserItems(normalized);
-      } catch {}
+      await loadUserItems();
     })();
     return () => { mounted = false; };
+  }, [loadUserItems]);
 
-  // Rafraîchir la liste à chaque focus (retour depuis /annonceur)
-  useFocusEffect(
-    useCallback(() => {
-      let cancelled = false;
-      (async () => {
-        try {
-          const raw = await AsyncStorage.getItem('loisirs_user_items');
-          const arr = raw ? JSON.parse(raw) : [];
-          const normalized = (Array.isArray(arr) ? arr : []).map((it: any) => ({ ...it, __local: true }));
-          if (!cancelled) setUserItems(normalized);
-        } catch {}
-      })();
-      return () => { cancelled = true; };
-    }, [])
-  );
+  // Rafraîchir à chaque focus et capter le flag de succès de publication
+  useFocusEffect(useCallback(() => {
+    let cancelled = false;
+    (async () => {
+      await loadUserItems();
+      try {
+        const flag = await AsyncStorage.getItem('loisirs_publish_success');
+        if (!cancelled && flag === '1') {
+          setSuccess(true);
+          await AsyncStorage.removeItem('loisirs_publish_success');
+          setTimeout(() => setSuccess(false), 2500);
+        }
+      } catch {}
+    })();
+    return () => { cancelled = true; };
+  }, [loadUserItems]));
 
-  }, []);
-
-  const openPhotos = async (photos: string[] | undefined) => {
-    if (!photos || photos.length === 0) return;
-    try {
-      await AsyncStorage.setItem('loisirs_view_photos', JSON.stringify(photos));
-      router.push('/photo_viewer');
-    } catch {}
-  };
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadUserItems();
+    setRefreshing(false);
+  }, [loadUserItems]);
 
   // Utils distance
   const toRad = (x: number) => (x * Math.PI) / 180;
@@ -364,8 +362,15 @@ export default function LoisirsTourisme() {
         data={data}
         renderItem={renderItem}
         keyExtractor={(it, idx) => `${it?.id || it?.title || 'loisir'}-${idx}`}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListHeaderComponent={
           <View style={styles.headerControls}>
+            {success ? (
+              <View style={styles.successBanner}>
+                <Ionicons name="checkmark-circle" size={16} color="#0A7C3A" />
+                <Text style={styles.successText}>Annonce publiée avec succès</Text>
+              </View>
+            ) : null}
             {/* Capsules de mode */}
             <View style={styles.capsRow}>
               <ModeCapsule label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
@@ -468,6 +473,9 @@ const styles = StyleSheet.create({
   localityValue: { color: '#222', fontSize: 16, fontWeight: '400' },
   modeCapsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', gap: 8 },
   modeCapsuleText: { fontWeight: '800' },
+
+  successBanner: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 10, backgroundColor: '#E8F5E9', borderWidth: 1, borderColor: '#C8E6C9', marginBottom: 8 },
+  successText: { color: '#0A7C3A', fontWeight: '700' },
 
   catWrapRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 8 },
   catChip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0' },

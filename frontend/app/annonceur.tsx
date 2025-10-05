@@ -50,7 +50,7 @@ export default function Annonceur() {
     try {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('Autorisation requise', 'Veuillez autoriser l’accès à vos photos.');
+        Alert.alert('Autorisation requise', "Veuillez autoriser l’accès à vos photos.");
         return;
       }
 
@@ -112,6 +112,7 @@ export default function Annonceur() {
       const arr = raw ? JSON.parse(raw) : [];
       arr.unshift(item);
       await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(arr));
+      await AsyncStorage.setItem('loisirs_publish_success', '1');
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       router.replace('/category/loisirs_tourisme');
     } catch (e) {
