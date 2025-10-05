@@ -25,6 +25,8 @@ frontend:
 agent_communication:
   - agent: "testing"
     message: "LOISIRS & TOURISME UI RE-TEST COMPLETED - MULTIPLE CRITICAL FAILURES FOUND. The page loads correctly but has 3 major issues: 1) Header layout broken - Publier button not aligned with title/subtitle (146px vertical difference), 2) Missing 2 pastilles (Lieux insolites, Airbnb) out of required 8, 3) Search block still present despite requirement for complete removal. Main agent needs to fix header alignment in CSS, add missing filter pastilles to CAT_FILTERS array, and completely remove search functionality including input field and labels."
+  - agent: "testing"
+    message: "LOISIRS & TOURISME UI RE-TEST CONFIRMS PERSISTENT FAILURES (iPhone 12/13/14: 390x844) - ALL 3 CRITICAL ISSUES REMAIN UNRESOLVED: 1) HEADER ALIGNMENT: Publier button still positioned at y:28 while title at y:174 (152px vertical diff) - CSS headerTitleRow layout not working correctly, button appears in top-right corner instead of same horizontal line as title/subtitle, 2) MISSING PASTILLES: CAT_FILTERS array still missing 'Lieux insolites' and 'Airbnb' - only 6/8 pastilles visible (Tous, Hôtel, Restaurant, Plage, Site touristique, Base de loisir), 3) SEARCH BLOCK: Complete search functionality still present with input placeholders, search labels, and search inputs - requires complete code removal. URGENT: Fix CSS flexDirection/alignItems in headerTitleRow, add missing pastilles to CAT_FILTERS constant, remove all search-related code from component."
 
 # E2E Loisirs & Tourisme + Annonceur: publier (Lieu insolite), vérifier carte/boutons, modifier (catégorie Plage), filtres catégorie, supprimer l’annonce, revalider header/localité et bouton Publier.
 
