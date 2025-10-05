@@ -225,13 +225,15 @@ export default function LoisirsTourisme() {
         keyExtractor={(it, idx) => `${it?.id || it?.title || 'loisir'}-${idx}`}
         ListHeaderComponent={
           <View style={styles.headerControls}>
-            {/* Ligne Localité + capsules + valeur en face */}
-            <View style={styles.localityCapsRow}>
-              <Text style={styles.localityLabel}>Localité</Text>
+            {/* Capsules de mode */}
+            <View style={styles.capsRow}>
               <ModeCapsule label="Autour de moi" icon="navigate" color="#0D6EFD" active={mode === 'nearby'} onPress={() => setMode('nearby')} />
               <ModeCapsule label="Communes" icon="home" color="#0A7C3A" active={mode === 'communes'} onPress={() => setMode('communes')} />
-              <View style={{ flex: 1 }} />
-              <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
+            </View>
+            {/* Ligne Localité sous les capsules: ville sélectionnée AVANT le mot Localité */}
+            <View style={styles.localityLine}>
+              <Text style={styles.localityValueStrong}>{selectedCommune || effectiveCity}</Text>
+              <Text style={styles.localityLabelSmall}> — Localité</Text>
             </View>
 
             {/* Sélection commune */}
