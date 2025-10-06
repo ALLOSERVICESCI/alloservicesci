@@ -412,6 +412,41 @@ export default function AjouterEtablissement() {
           </View>
         </View>
 
+        {/* Notation qualité */}
+        <View style={styles.ratingSection}>
+          <Text style={styles.ratingSectionTitle}>Évaluation</Text>
+          
+          <View style={styles.ratingRow}>
+            <Text style={styles.ratingLabel}>Qualité d'accueil</Text>
+            <View style={styles.starsRow}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <TouchableOpacity key={star} onPress={() => setQualiteAccueil(star)} style={styles.starBtn}>
+                  <Ionicons
+                    name={star <= qualiteAccueil ? 'star' : 'star-outline'}
+                    size={28}
+                    color={star <= qualiteAccueil ? '#FFD700' : '#D1D5DB'}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.ratingRow}>
+            <Text style={styles.ratingLabel}>Qualité de prestation</Text>
+            <View style={styles.starsRow}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <TouchableOpacity key={star} onPress={() => setQualitePrestation(star)} style={styles.starBtn}>
+                  <Ionicons
+                    name={star <= qualitePrestation ? 'star' : 'star-outline'}
+                    size={28}
+                    color={star <= qualitePrestation ? '#FFD700' : '#D1D5DB'}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </View>
+
         {/* Bouton Publier */}
         <TouchableOpacity onPress={onPublier} style={styles.publishBtn}>
           <Text style={styles.publishText}>Publier l'établissement</Text>
