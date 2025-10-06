@@ -65,7 +65,8 @@ export default function AjouterEtablissement() {
   const [commune, setCommune] = useState<string>();
   const [communeQuery, setCommuneQuery] = useState('');
   const [adresse, setAdresse] = useState('');
-  const [telephone, setTelephone] = useState('');
+  const [telephoneStandard, setTelephoneStandard] = useState('');
+  const [telephoneServices, setTelephoneServices] = useState('');
   const [emailEtablissement, setEmailEtablissement] = useState('');
   const [siteWeb, setSiteWeb] = useState('');
   const [specialitesSelectionnees, setSpecialitesSelectionnees] = useState<string[]>([]);
