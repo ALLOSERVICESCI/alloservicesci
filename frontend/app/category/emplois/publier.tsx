@@ -126,6 +126,18 @@ export default function PublierEmplois() {
     }
 
     if (tab === 'offre') {
+      // Validation des champs Pro
+      if (isPro) {
+        if (!contactName.trim()) {
+          Alert.alert('Nom requis', 'Veuillez saisir le nom de la personne à contacter.');
+          return;
+        }
+        if (!contactFonction.trim()) {
+          Alert.alert('Fonction requise', 'Veuillez préciser la fonction de la personne à contacter.');
+          return;
+        }
+      }
+      
       if (!title || !companyOrName || !location) {
         Alert.alert('Champs requis', 'Titre, Entreprise et Localisation sont requis.');
         return;
