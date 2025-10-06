@@ -279,7 +279,7 @@ export default function Annonceur() {
         {commune ? <Text style={styles.selectedCommune}>✓ Sélectionné: {commune}</Text> : null}
 
         {/* Contact */}
-        <Text style={styles.label}>Contact (téléphone)</Text>
+        <Text style={styles.label}>Contact (téléphone{isPro ? '' : ' - optionnel'})</Text>
         <TextInput style={styles.input} keyboardType="phone-pad" placeholder="Ex: +225 0102030405" value={phone} onChangeText={setPhone} placeholderTextColor="#9AA3AF" />
 
         {/* Site web (optionnel) */}
