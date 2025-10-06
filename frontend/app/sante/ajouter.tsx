@@ -74,7 +74,7 @@ export default function AjouterEtablissement() {
   }, [communeQuery]);
 
   const onPublier = async () => {
-    // Validations
+    // Validations Professionnel
     if (isPro) {
       if (!nomAnnonceur.trim()) {
         Alert.alert('Nom requis', 'Veuillez saisir votre nom.');
@@ -90,6 +90,7 @@ export default function AjouterEtablissement() {
       }
     }
     
+    // Validations Établissement (communes)
     if (!nomEtablissement.trim()) {
       Alert.alert('Nom requis', 'Veuillez saisir le nom de l\'établissement.');
       return;
@@ -98,18 +99,27 @@ export default function AjouterEtablissement() {
       Alert.alert('Type requis', 'Veuillez sélectionner le type d\'établissement.');
       return;
     }
-    if (!numeroAgrement.trim()) {
-      Alert.alert('N° d\'agrément requis', 'Veuillez saisir le numéro d\'agrément.');
-      return;
-    }
     if (!commune) {
       Alert.alert('Localité requise', 'Veuillez choisir une localité.');
       return;
     }
-    if (!telephone.trim()) {
-      Alert.alert('Téléphone requis', 'Veuillez saisir un numéro de téléphone.');
-      return;
+    
+    // Validations spécifiques Pro
+    if (isPro) {
+      if (!numeroAgrement.trim()) {
+        Alert.alert('N° d\'agrément requis', 'Veuillez saisir le numéro d\'agrément.');
+        return;
+      }
+      if (!telephone.trim()) {
+        Alert.alert('Téléphone requis', 'Veuillez saisir un numéro de téléphone.');
+        return;
+      }
+      if (!emailEtablissement.trim()) {
+        Alert.alert('Email requis', 'Veuillez saisir l\'email de l\'établissement.');
+        return;
+      }
     }
+    // Pour utilisateur basique, téléphone est optionnel
 
     const id = `sante-${Date.now()}-${Math.floor(Math.random()*100000)}`;
     
