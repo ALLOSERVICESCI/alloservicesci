@@ -120,11 +120,17 @@ export default function LoisirsTourisme() {
 
   const loadUserItems = useCallback(async () => {
     try {
+      console.log('[Loisirs] Début chargement des annonces locales');
       const raw = await AsyncStorage.getItem('loisirs_user_items');
+      console.log('[Loisirs] Raw data:', raw);
       const arr = raw ? JSON.parse(raw) : [];
+      console.log('[Loisirs] Array parsed:', arr.length, 'items');
       const normalized = (Array.isArray(arr) ? arr : []).map((it: any) => ({ ...it, __local: true }));
+      console.log('[Loisirs] Items normalisés:', normalized.length);
       setUserItems(normalized);
-    } catch {}
+    } catch (e) {
+      console.error('[Loisirs] Erreur chargement:', e);
+    }
   }, []);
 
   useEffect(() => {
