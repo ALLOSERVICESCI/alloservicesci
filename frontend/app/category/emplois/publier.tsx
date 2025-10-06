@@ -88,12 +88,7 @@ export default function PublierEmplois() {
         Alert.alert('Fichier invalide', 'Veuillez sélectionner un fichier PDF.');
         return;
       }
-      const info = await FileSystem.getInfoAsync(file.uri, { size: true });
-      const size = (info as any)?.size ?? file.size ?? 0;
-      if (size < MIN_PDF_BYTES) {
-        Alert.alert('Fichier trop léger', 'Le PDF sélectionné est trop petit. Taille minimale ≈ 20KB.');
-        return;
-      }
+      // Suppression de la limite de taille - accepte n'importe quelle taille de PDF
       const b64 = await FileSystem.readAsStringAsync(file.uri, { encoding: FileSystem.EncodingType.Base64 });
       if (forOffer) {
         setOfferPdfName(file.name || 'offre.pdf');
