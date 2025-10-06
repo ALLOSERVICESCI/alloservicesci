@@ -574,7 +574,7 @@ const styles = StyleSheet.create({
   capsuleText: { fontWeight: '800' },
   
   locCapsule: { flexDirection: 'row', alignItems: 'center', gap: 6, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, borderWidth: 1 },
-  locCapsuleText: { fontWeight: '700', fontSize: 14 },
+  locCapsuleText: { fontWeight: '400', fontSize: 14 },
 
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
   searchInput: { flex: 1, color: '#222', paddingVertical: 2 },
