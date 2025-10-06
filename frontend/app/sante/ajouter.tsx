@@ -157,7 +157,7 @@ export default function AjouterEtablissement() {
       await AsyncStorage.setItem('sante_user_items', JSON.stringify(arr));
       await AsyncStorage.setItem('sante_publish_success', '1');
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      router.back();
+      router.push('/category/sante');
     } catch (e) {
       Alert.alert('Erreur', "Impossible d'enregistrer l'établissement. Réessayez.");
     }
