@@ -56,6 +56,7 @@ export default function AjouterEtablissement() {
   const [nomAnnonceur, setNomAnnonceur] = useState('');
   const [fonctionAnnonceur, setFonctionAnnonceur] = useState('');
   const [emailAnnonceur, setEmailAnnonceur] = useState('');
+  const [photoPraticien, setPhotoPraticien] = useState<string | null>(null);
   
   // Informations de l'établissement
   const [nomEtablissement, setNomEtablissement] = useState('');
