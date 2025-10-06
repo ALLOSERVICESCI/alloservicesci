@@ -2307,6 +2307,85 @@ export default function CategoryPage() {
               </View>
             ) : (
               <View style={{ flex: 1, marginTop: 20 }}>
+                {/* Afficher les établissements utilisateurs EN PREMIER */}
+                {userSanteItems.length > 0 && (
+                  <>
+                    <Text style={[styles.facilitiesCount, { color: '#0A7C3A', fontWeight: '600', marginBottom: 12 }]}>
+                      📍 Établissements publiés récemment ({userSanteItems.length})
+                    </Text>
+                    {userSanteItems.map((item) => (
+                      <View key={item.id} style={[styles.facilityCard, { borderLeftWidth: 4, borderLeftColor: '#0A7C3A' }]}>
+                        {/* Badge Annonce locale */}
+                        <View style={{ position: 'absolute', top: 8, right: 8, backgroundColor: '#D1FAE5', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 }}>
+                          <Text style={{ color: '#0A7C3A', fontSize: 11, fontWeight: '600' }}>🏥 Publication locale</Text>
+                        </View>
+                        
+                        {/* En-tête */}
+                        <View style={styles.facilityHeader}>
+                          <Text style={styles.facilityName}>{item.name}</Text>
+                          <View style={[styles.typeBadge, { backgroundColor: '#0A7C3A' }]}>
+                            <Text style={styles.typeBadgeText}>{item.type}</Text>
+                          </View>
+                        </View>
+
+                        {/* Commune */}
+                        <Text style={styles.facilityAddress}>
+                          <Ionicons name="location-outline" size={14} color="#666" />
+                          {' '}{item.commune}
+                        </Text>
+
+                        {/* Spécialités */}
+                        {item.specialites && item.specialites.length > 0 && (
+                          <View style={{ marginTop: 8 }}>
+                            <Text style={{ fontWeight: '600', color: '#0A7C3A', marginBottom: 4 }}>Services: </Text>
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+                              {item.specialites.map((spec: string, idx: number) => (
+                                <View key={idx} style={{ backgroundColor: '#F0F9FF', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 999, borderWidth: 1, borderColor: '#BAE6FD' }}>
+                                  <Text style={{ fontSize: 11, color: '#0369A1' }}>{spec}</Text>
+                                </View>
+                              ))}
+                            </View>
+                          </View>
+                        )}
+
+                        {/* Étoiles */}
+                        {(item.qualiteAccueil || item.qualitePrestation) && (
+                          <View style={{ marginTop: 8, flexDirection: 'row', gap: 12 }}>
+                            {item.qualiteAccueil && (
+                              <View>
+                                <Text style={{ fontSize: 11, color: '#666', marginBottom: 2 }}>Accueil</Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                  {[1,2,3,4,5].map(n => (
+                                    <Ionicons key={n} name={n <= item.qualiteAccueil ? 'star' : 'star-outline'} size={12} color="#FFD700" />
+                                  ))}
+                                </View>
+                              </View>
+                            )}
+                            {item.qualitePrestation && (
+                              <View>
+                                <Text style={{ fontSize: 11, color: '#666', marginBottom: 2 }}>Prestation</Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                  {[1,2,3,4,5].map(n => (
+                                    <Ionicons key={n} name={n <= item.qualitePrestation ? 'star' : 'star-outline'} size={12} color="#FFD700" />
+                                  ))}
+                                </View>
+                              </View>
+                            )}
+                          </View>
+                        )}
+
+                        {/* Contact */}
+                        {item.phone && (
+                          <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.phone}`)} style={{ marginTop: 8, backgroundColor: '#0A7C3A', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 8, alignSelf: 'flex-start' }}>
+                            <Text style={{ color: '#fff', fontWeight: '600' }}>📞 Appeler</Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    ))}
+                  </>
+                )}
+                
+                {/* Établissements hardcodés */}
                 {selectedFacilities.length > 0 ? (
                   <>
                     <Text style={styles.facilitiesCount}>
