@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
   chipsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   chip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0' },
   chipActive: { backgroundColor: '#0D6EFD', borderColor: '#0D6EFD' },
-  chipText: { color: '#111', fontWeight: '700' },
+  chipText: { color: '#111', fontWeight: '400' },
   chipTextActive: { color: '#fff' },
 
   input: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, color: '#111' },
