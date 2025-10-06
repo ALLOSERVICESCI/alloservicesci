@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -6,6 +6,7 @@ import { AuthProvider } from '../src/context/AuthContext';
 import { NotificationsProvider } from '../src/context/NotificationsContext';
 import { I18nProvider } from '../src/i18n/i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomSplashScreen from '../src/components/SplashScreen';
 
 const TEST_USER = {
   id: 'test-user',
