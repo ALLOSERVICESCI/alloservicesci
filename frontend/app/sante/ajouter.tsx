@@ -62,7 +62,9 @@ export default function AjouterEtablissement() {
   const [communeQuery, setCommuneQuery] = useState('');
   const [adresse, setAdresse] = useState('');
   const [telephone, setTelephone] = useState('');
-  const [services, setServices] = useState('');
+  const [emailEtablissement, setEmailEtablissement] = useState('');
+  const [siteWeb, setSiteWeb] = useState('');
+  const [specialitesSelectionnees, setSpecialitesSelectionnees] = useState<string[]>([]);
   
   // Suggestions de communes
   const suggestions = useMemo(() => {
