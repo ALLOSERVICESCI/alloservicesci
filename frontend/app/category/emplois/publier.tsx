@@ -292,7 +292,7 @@ export default function PublierEmplois() {
               {phoneTouched && !phoneValid ? <Text style={styles.errorText}>Numéro invalide</Text> : null}
 
               {/* CV PDF optionnel mais recommandé */}
-              <Text style={styles.label}>Joindre CV (PDF) — min 20KB</Text>
+              <Text style={styles.label}>Joindre CV (PDF)</Text>
               <View style={styles.attachmentRow}>
                 <TouchableOpacity onPress={() => pickPdf(false)} style={styles.attachBtn} accessibilityRole="button" accessibilityLabel="Joindre un CV PDF">
                   <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
@@ -301,7 +301,7 @@ export default function PublierEmplois() {
                 {cvPdfName ? <Text style={styles.fileName}>{cvPdfName}</Text> : null}
               </View>
 
-              <LabeledInput label="Résumé" value={summary} onChangeText={setSummary} placeholder="Courte présentation" multiline />
+              <LabeledInput label="Résumé" value={summary} onChangeText={setSummary} placeholder="Courte présentation" multiline maxLength={5000} />
             </>
           )}
 
