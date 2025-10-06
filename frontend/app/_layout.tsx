@@ -70,6 +70,11 @@ export default function RootLayout() {
 
   if (!fontsLoaded) return null;
 
+  // Afficher le SplashScreen personnalisé au démarrage
+  if (showSplash) {
+    return <CustomSplashScreen onFinish={() => setShowSplash(false)} />;
+  }
+
   return (
     <I18nProvider>
       <AuthProvider>
