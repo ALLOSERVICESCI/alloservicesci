@@ -2772,9 +2772,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   backBtnText: { color: '#fff', marginLeft: 4, fontWeight: '600' },
-  addBtnSante: {
+  addBtnSanteBottom: {
     position: 'absolute',
-    top: Platform.select({ ios: 52, android: 22, default: 16 }) as number,
+    bottom: 16,
     right: 16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -2783,6 +2783,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     height: 40,
     borderRadius: 20,
+    shadowColor: '#0A7C3A',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
   addBtnText: { color: '#fff', fontWeight: '400', fontSize: 14 },
   santeListContainer: { 
