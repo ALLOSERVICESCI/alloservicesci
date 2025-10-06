@@ -470,7 +470,7 @@ export default function LoisirsTourisme() {
 
             {/* Ligne Localité */}
             <View style={styles.localityLine}>
-              <Text style={styles.localityLabelSmall}>Localité </Text>
+              <Ionicons name="location" size={26} color="#FF8A00" />
               <Text style={styles.localityValue}>{selectedCommune || effectiveCity}</Text>
             </View>
 
