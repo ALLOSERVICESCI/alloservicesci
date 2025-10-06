@@ -2630,7 +2630,7 @@ export default function CategoryPage() {
                   </View>
                 </View>
               )}
-              <View style={{ marginBottom: 4, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <View style={{ marginBottom: 16, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                 <Ionicons name="location" size={20} color="#FF8A00" />
                 <Text style={styles.locationText}>
                   <Text style={{ color: '#555' }}>{userCity}</Text>
