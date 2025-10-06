@@ -122,14 +122,21 @@ export default function Annonceur() {
     };
 
     try {
+      console.log('[Annonceur] Début de l\'enregistrement', item);
       const raw = await AsyncStorage.getItem('loisirs_user_items');
+      console.log('[Annonceur] Raw data:', raw);
       const arr = raw ? JSON.parse(raw) : [];
+      console.log('[Annonceur] Array avant:', arr.length);
       arr.unshift(item);
+      console.log('[Annonceur] Array après:', arr.length);
       await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(arr));
+      console.log('[Annonceur] Données sauvegardées');
       await AsyncStorage.setItem('loisirs_publish_success', '1');
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      console.log('[Annonceur] Redirection vers loisirs_tourisme');
       router.replace('/category/loisirs_tourisme');
     } catch (e) {
+      console.error('[Annonceur] Erreur:', e);
       Alert.alert('Erreur', "Impossible d'enregistrer l'annonce. Réessayez.");
     }
   };
