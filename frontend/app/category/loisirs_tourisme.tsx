@@ -328,10 +328,6 @@ export default function LoisirsTourisme() {
       <View style={styles.card}>
         {isLocal ? (
           <View style={styles.localActionsRow}>
-            <TouchableOpacity onPress={() => router.push(`/annonceur_edit/${encodeURIComponent(item?.id || '')}`)}>
-              <Text style={styles.localActionText}>Modifier</Text>
-            </TouchableOpacity>
-            <Text style={{ color: '#999' }}>•</Text>
             <TouchableOpacity onPress={async () => {
               try {
                 const raw = await AsyncStorage.getItem('loisirs_user_items');
