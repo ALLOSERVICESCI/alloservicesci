@@ -2079,6 +2079,10 @@ export default function CategoryPage() {
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/sante/ajouter')} accessibilityRole="button" accessibilityLabel="Ajouter un établissement" style={styles.addBtnSante}>
+            <Ionicons name="business-outline" size={20} color="#fff" />
+            <Text style={styles.addBtnText}>Ajouter</Text>
+          </TouchableOpacity>
         </View>
       ) : sKey === 'education' ? (
         <View style={styles.headerWrapperEducation}>
