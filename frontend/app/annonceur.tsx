@@ -30,6 +30,10 @@ type NewAnnonce = {
 export default function Annonceur() {
   const router = useRouter();
 
+  const [isPro, setIsPro] = useState(false);
+  const [name, setName] = useState('');
+  const [fonction, setFonction] = useState('');
+  const [email, setEmail] = useState('');
   const [category, setCategory] = useState<typeof CATEGORIES[number] | null>(null);
   const [title, setTitle] = useState('');
   const [communeQuery, setCommuneQuery] = useState('');
