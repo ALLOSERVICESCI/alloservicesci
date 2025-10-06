@@ -172,12 +172,16 @@ export default function Annonceur() {
 
         {/* Lieux (sélecteur) */}
         <Text style={styles.label}>Localité (ville/commune)</Text>
-        <View style={styles.inputRow}>
-          <Ionicons name="location" size={18} color="#888" />
+        <View style={[styles.inputRow, commune ? styles.inputRowSelected : null]}>
+          <Ionicons name="location" size={18} color={commune ? "#0A7C3A" : "#888"} />
           <TextInput
             style={styles.inputBare}
             value={communeQuery}
-            onChangeText={setCommuneQuery}
+            onChangeText={(text) => {
+              setCommuneQuery(text);
+              // Réinitialiser la sélection si l'utilisateur modifie le texte
+              if (commune) setCommune(undefined);
+            }}
             placeholder="Rechercher une localité"
             placeholderTextColor="#9AA3AF"
             returnKeyType="search"
@@ -196,13 +200,16 @@ export default function Annonceur() {
           ) : null}
         </View>
         {communeQuery && suggestions.length > 0 && !commune ? (
-          <View style={styles.suggestBox}>
-            {suggestions.map((s) => (
-              <TouchableOpacity key={s} onPress={() => { setCommune(s); setCommuneQuery(''); }} style={styles.suggestItem}>
-                <Text style={styles.suggestText}>{s}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+          <>
+            <Text style={styles.hintText}>👆 Appuyez sur une suggestion ou Entrée</Text>
+            <View style={styles.suggestBox}>
+              {suggestions.map((s) => (
+                <TouchableOpacity key={s} onPress={() => { setCommune(s); setCommuneQuery(''); }} style={styles.suggestItem}>
+                  <Text style={styles.suggestText}>{s}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
         ) : null}
         {commune ? <Text style={styles.selectedCommune}>✓ Sélectionné: {commune}</Text> : null}
 
