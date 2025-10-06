@@ -29,6 +29,7 @@ type NewAnnonce = {
   website?: string;
   photos?: string[]; // base64
   rating?: number; // 1..5
+  createdAt?: number; // timestamp
 };
 
 export default function Annonceur() {
