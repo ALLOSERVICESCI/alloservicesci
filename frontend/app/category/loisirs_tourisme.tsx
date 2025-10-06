@@ -245,6 +245,72 @@ export default function LoisirsTourisme() {
     );
   };
 
+  // Composant Carrousel pour les photos
+  const PhotoCarousel = ({ photos, onPhotoPress }: { photos: string[]; onPhotoPress: (index: number) => void }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const scrollViewRef = useRef<ScrollView>(null);
+    const CARD_WIDTH = SCREEN_WIDTH - 32; // Padding de la carte
+    const IMAGE_WIDTH = CARD_WIDTH - 32; // Padding interne
+
+    const handleScroll = (event: any) => {
+      const contentOffsetX = event.nativeEvent.contentOffset.x;
+      const index = Math.round(contentOffsetX / IMAGE_WIDTH);
+      setCurrentIndex(index);
+    };
+
+    if (!photos || photos.length === 0) return null;
+
+    return (
+      <View style={styles.carouselContainer}>
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          decelerationRate="fast"
+          snapToInterval={IMAGE_WIDTH}
+          contentContainerStyle={styles.carouselContent}
+        >
+          {photos.map((photo, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => onPhotoPress(index)}
+              activeOpacity={0.9}
+              style={styles.carouselImageWrapper}
+            >
+              <Image
+                source={{ uri: photo }}
+                style={[styles.carouselImage, { width: IMAGE_WIDTH }]}
+                resizeMode="cover"
+              />
+              {photos.length > 1 && (
+                <View style={styles.photoCounter}>
+                  <Ionicons name="images" size={14} color="#fff" />
+                  <Text style={styles.photoCounterText}>{index + 1}/{photos.length}</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        {photos.length > 1 && (
+          <View style={styles.paginationDots}>
+            {photos.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.dot,
+                  currentIndex === index ? styles.dotActive : styles.dotInactive
+                ]}
+              />
+            ))}
+          </View>
+        )}
+      </View>
+    );
+  };
+
   const renderItem = ({ item }: { item: any }) => {
     const title: string = item?.title || item?.name || '';
     const summary: string | undefined = item?.summary || item?.description;
