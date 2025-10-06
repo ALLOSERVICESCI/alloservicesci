@@ -3174,7 +3174,7 @@ const styles = StyleSheet.create({
   eduBadgeFormation: { backgroundColor: '#FFF3E0', borderColor: '#FF8A00' },
   typeBadgeText: { fontSize: 12, fontWeight: '600', color: '#0A7C3A' },
   facilityServices: { fontSize: 14, color: '#555', marginBottom: 8, lineHeight: 20 },
-  facilityAddress: { fontSize: 14, color: '#666', marginBottom: 8, flexDirection: 'row', alignItems: 'center' },
+  facilityAddress: { fontSize: 14, color: '#666' },
   facilityNote: { fontSize: 13, color: '#FF8A00', marginBottom: 12, flexDirection: 'row', alignItems: 'center', fontStyle: 'italic' },
   facilityActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   actionButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#0A7C3A', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, marginRight: 8, marginBottom: 8 },
