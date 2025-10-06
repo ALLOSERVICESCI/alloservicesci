@@ -18,6 +18,7 @@ const TEST_USER = {
 };
 
 export default function RootLayout() {
+  const [showSplash, setShowSplash] = useState(true);
   const [fontsLoaded] = useFonts({
     PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
     InterBlack: require('../assets/fonts/Inter-Black.ttf'),
