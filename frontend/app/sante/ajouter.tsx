@@ -589,6 +589,41 @@ const styles = StyleSheet.create({
     fontWeight: '500' 
   },
   
+  ratingSection: {
+    backgroundColor: '#FFF9E6',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#FFD700'
+  },
+  ratingSectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#0A7C3A',
+    marginBottom: 14,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FFE082'
+  },
+  ratingRow: {
+    marginBottom: 16
+  },
+  ratingLabel: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 8,
+    fontWeight: '500'
+  },
+  starsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
+  },
+  starBtn: {
+    padding: 2
+  },
+  
   publishBtn: { 
     marginTop: 8, 
     backgroundColor: '#0A7C3A', 
