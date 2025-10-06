@@ -81,6 +81,32 @@ export default function AjouterEtablissement() {
     return CI_COMMUNES.filter(c => c.toLowerCase().includes(q));
   }, [communeQuery]);
 
+  // Fonction pour sélectionner une photo
+  const pickPhoto = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission refusée', 'Nous avons besoin de la permission pour accéder à vos photos.');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.5,
+        base64: true,
+      });
+
+      if (!result.canceled && result.assets[0].base64) {
+        setPhotoPraticien(`data:image/jpeg;base64,${result.assets[0].base64}`);
+      }
+    } catch (e) {
+      console.error('Erreur sélection photo:', e);
+      Alert.alert('Erreur', 'Impossible de sélectionner la photo.');
+    }
+  };
+
   const onPublier = async () => {
     // Validations Professionnel
     if (isPro) {
