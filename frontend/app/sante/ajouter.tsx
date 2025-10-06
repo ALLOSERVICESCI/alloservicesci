@@ -328,7 +328,7 @@ export default function AjouterEtablissement() {
             />
           </View>
 
-          <Text style={styles.label}>Téléphone</Text>
+          <Text style={styles.label}>Téléphone{!isPro && ' (optionnel)'}</Text>
           <View style={styles.inputRow}>
             <Ionicons name="call-outline" size={18} color="#888" />
             <TextInput
@@ -341,17 +341,67 @@ export default function AjouterEtablissement() {
             />
           </View>
 
-          <Text style={styles.label}>Services proposés (optionnel)</Text>
-          <TextInput
-            style={styles.textArea}
-            value={services}
-            onChangeText={setServices}
-            placeholder="Ex: Consultations générales, Urgences 24h/24, Laboratoire, Radiologie..."
-            placeholderTextColor="#9AA3AF"
-            multiline
-            numberOfLines={4}
-            textAlignVertical="top"
-          />
+          {/* Champs supplémentaires pour Pro */}
+          {isPro && (
+            <>
+              <Text style={styles.label}>Email de l'établissement</Text>
+              <View style={styles.inputRow}>
+                <Ionicons name="mail-outline" size={18} color="#888" />
+                <TextInput
+                  style={styles.inputBare}
+                  value={emailEtablissement}
+                  onChangeText={setEmailEtablissement}
+                  placeholder="contact@etablissement.ci"
+                  placeholderTextColor="#9AA3AF"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+
+              <Text style={styles.label}>Site web (optionnel)</Text>
+              <View style={styles.inputRow}>
+                <Ionicons name="globe-outline" size={18} color="#888" />
+                <TextInput
+                  style={styles.inputBare}
+                  value={siteWeb}
+                  onChangeText={setSiteWeb}
+                  placeholder="https://www.etablissement.ci"
+                  placeholderTextColor="#9AA3AF"
+                  keyboardType="url"
+                  autoCapitalize="none"
+                />
+              </View>
+            </>
+          )}
+
+          <Text style={styles.label}>Services proposés</Text>
+          <View style={styles.checkboxGrid}>
+            {SPECIALITES.map((spec) => (
+              <TouchableOpacity
+                key={spec}
+                onPress={() => {
+                  if (specialitesSelectionnees.includes(spec)) {
+                    setSpecialitesSelectionnees(specialitesSelectionnees.filter(s => s !== spec));
+                  } else {
+                    setSpecialitesSelectionnees([...specialitesSelectionnees, spec]);
+                  }
+                }}
+                style={styles.checkboxItem}
+              >
+                <Ionicons
+                  name={specialitesSelectionnees.includes(spec) ? 'checkbox' : 'square-outline'}
+                  size={22}
+                  color={specialitesSelectionnees.includes(spec) ? '#0A7C3A' : '#9AA3AF'}
+                />
+                <Text style={[
+                  styles.checkboxLabel,
+                  specialitesSelectionnees.includes(spec) && styles.checkboxLabelActive
+                ]}>
+                  {spec}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
 
         {/* Bouton Publier */}
