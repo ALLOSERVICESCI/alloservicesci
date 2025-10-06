@@ -518,6 +518,34 @@ const styles = StyleSheet.create({
   suggestText: { color: '#111' },
   selectedCommune: { color: '#0A7C3A', fontWeight: '400', marginTop: 4 },
   
+  checkboxGrid: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    gap: 10, 
+    marginTop: 8 
+  },
+  checkboxItem: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: 8, 
+    paddingVertical: 8, 
+    paddingHorizontal: 12, 
+    backgroundColor: '#F9FAFB', 
+    borderRadius: 8, 
+    borderWidth: 1, 
+    borderColor: '#E2E8F0',
+    minWidth: '45%'
+  },
+  checkboxLabel: { 
+    color: '#555', 
+    fontWeight: '400', 
+    fontSize: 13 
+  },
+  checkboxLabelActive: { 
+    color: '#0A7C3A', 
+    fontWeight: '500' 
+  },
+  
   publishBtn: { 
     marginTop: 8, 
     backgroundColor: '#0A7C3A', 
