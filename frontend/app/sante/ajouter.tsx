@@ -164,7 +164,7 @@ export default function AjouterEtablissement() {
         <TouchableOpacity onPress={() => router.back()} style={styles.iconBtn}>
           <Ionicons name="chevron-back" size={24} color="#111" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Ajouter un établissement</Text>
+        <Text style={styles.headerTitle}>Etablissement de santé</Text>
         <View style={{ width: 40 }} />
       </View>
 
