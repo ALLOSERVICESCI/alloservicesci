@@ -2307,13 +2307,24 @@ export default function CategoryPage() {
               </View>
             ) : (
               <View style={{ flex: 1, marginTop: 20 }}>
-                {/* Afficher les établissements utilisateurs EN PREMIER */}
-                {userSanteItems.length > 0 && (
-                  <>
-                    <Text style={[styles.facilitiesCount, { color: '#0A7C3A', fontWeight: '600', marginBottom: 12 }]}>
-                      📍 Établissements publiés récemment ({userSanteItems.length})
-                    </Text>
-                    {userSanteItems.map((item) => (
+                {/* Afficher les établissements utilisateurs EN PREMIER - Filtrés selon mode */}
+                {(() => {
+                  // Filtrer les établissements selon le mode
+                  const filteredUserItems = userSanteItems.filter(item => {
+                    // Si mode commune ET recherche active, filtrer par commune
+                    if (mode === 'commune' && communeQuery) {
+                      return item.commune?.toLowerCase().includes(communeQuery.toLowerCase());
+                    }
+                    // Si mode "Autour de moi" ou pas de recherche, afficher tous les items de la ville
+                    return true;
+                  });
+
+                  return filteredUserItems.length > 0 ? (
+                    <>
+                      <Text style={[styles.facilitiesCount, { color: '#0A7C3A', fontWeight: '600', marginBottom: 12 }]}>
+                        📍 Établissements publiés récemment ({filteredUserItems.length})
+                      </Text>
+                      {filteredUserItems.map((item) => (
                       <View key={item.id} style={[styles.facilityCard, { borderLeftWidth: 4, borderLeftColor: '#0A7C3A' }]}>
                         {/* Badge Annonce locale */}
                         <View style={{ position: 'absolute', top: 8, right: 8, backgroundColor: '#D1FAE5', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 }}>
