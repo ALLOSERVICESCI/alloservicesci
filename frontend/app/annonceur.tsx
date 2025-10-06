@@ -17,6 +17,10 @@ const CATEGORIES = ['Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base d
 type NewAnnonce = {
   id: string;
   __local?: boolean;
+  isPro?: boolean;
+  name?: string;
+  fonction?: string;
+  email?: string;
   title: string;
   description?: string;
   commune?: string; // ville/localité
