@@ -2383,8 +2383,7 @@ export default function CategoryPage() {
                       </View>
                     ))}
                   </>
-                  ) : null;
-                })()}
+                )}
                 
                 {/* Établissements hardcodés */}
                 {selectedFacilities.length > 0 ? (
