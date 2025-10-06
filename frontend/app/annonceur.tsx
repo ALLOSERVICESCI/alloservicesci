@@ -168,6 +168,52 @@ export default function Annonceur() {
           <View style={{ width: 40 }} />
         </View>
 
+        {/* Pro Switch */}
+        <View style={styles.proSwitchRow}>
+          <Text style={styles.proLabel}>Professionnel</Text>
+          <TouchableOpacity 
+            onPress={() => setIsPro(!isPro)} 
+            style={[styles.switchContainer, isPro ? styles.switchActive : null]}
+            accessibilityRole="switch"
+            accessibilityState={{ checked: isPro }}
+          >
+            <View style={[styles.switchThumb, isPro ? styles.switchThumbActive : null]} />
+          </TouchableOpacity>
+        </View>
+
+        {/* Pro Fields (conditional) */}
+        {isPro && (
+          <>
+            <Text style={styles.label}>Nom</Text>
+            <TextInput 
+              style={styles.input} 
+              placeholder="Nom de l'entreprise ou du professionnel" 
+              value={name} 
+              onChangeText={setName} 
+              placeholderTextColor="#9AA3AF" 
+            />
+
+            <Text style={styles.label}>Fonction</Text>
+            <TextInput 
+              style={styles.input} 
+              placeholder="Ex: Gérant, Chef cuisinier, Guide touristique..." 
+              value={fonction} 
+              onChangeText={setFonction} 
+              placeholderTextColor="#9AA3AF" 
+            />
+
+            <Text style={styles.label}>Email</Text>
+            <TextInput 
+              style={styles.input} 
+              keyboardType="email-address" 
+              placeholder="contact@monentreprise.ci" 
+              value={email} 
+              onChangeText={setEmail} 
+              placeholderTextColor="#9AA3AF" 
+            />
+          </>
+        )}
+
         {/* Categories (pastilles) */}
         <Text style={styles.label}>Catégorie</Text>
         <View style={styles.chipsRow}>
