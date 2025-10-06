@@ -1,28 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, Dimensions, TouchableOpacity, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
 export default function PhotoViewer() {
   const router = useRouter();
+  const params = useLocalSearchParams();
   const [photos, setPhotos] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
   const ref = useRef<FlatList<string>>(null);
 
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const raw = await AsyncStorage.getItem('loisirs_view_photos');
-        const arr = raw ? JSON.parse(raw) : [];
-        if (mounted) setPhotos(Array.isArray(arr) ? arr : []);
-      } catch {}
-    })();
-    return () => { mounted = false; };
-  }, []);
+    try {
+      // Récupérer les photos depuis les paramètres de route
+      const photosParam = params.photos;
+      const initialIndexParam = params.initialIndex;
+      
+      if (typeof photosParam === 'string') {
+        const parsed = JSON.parse(photosParam);
+        if (Array.isArray(parsed)) {
+          setPhotos(parsed);
+        }
+      }
+      
+      if (typeof initialIndexParam === 'string') {
+        const idx = parseInt(initialIndexParam, 10);
+        if (!isNaN(idx)) {
+          setIndex(idx);
+          // Scroller vers l'index initial après un petit délai
+          setTimeout(() => {
+            ref.current?.scrollToIndex({ index: idx, animated: false });
+          }, 100);
+        }
+      }
+    } catch (e) {
+      console.error('[PhotoViewer] Erreur parsing params:', e);
+    }
+  }, [params]);
 
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems && viewableItems.length > 0) {
