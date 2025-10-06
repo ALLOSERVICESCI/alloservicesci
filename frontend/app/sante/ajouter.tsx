@@ -175,6 +175,7 @@ export default function AjouterEtablissement() {
       nomAnnonceur: isPro ? nomAnnonceur.trim() : undefined,
       fonctionAnnonceur: isPro ? fonctionAnnonceur.trim() : undefined,
       emailAnnonceur: isPro ? emailAnnonceur.trim() : undefined,
+      photoPraticien: isPro && photoPraticien ? photoPraticien : undefined,
       createdAt: Date.now(),
     };
 
