@@ -673,6 +673,25 @@ const styles = StyleSheet.create({
     padding: 2
   },
   
+  photoPickerBtn: {
+    backgroundColor: '#F9FAFB',
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    borderColor: '#0A7C3A',
+    borderRadius: 12,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    marginTop: 4
+  },
+  photoPreview: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 3,
+    borderColor: '#0A7C3A'
+  },
+  
   publishBtn: { 
     marginTop: 8, 
     backgroundColor: '#0A7C3A', 
