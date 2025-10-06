@@ -2190,9 +2190,9 @@ export default function CategoryPage() {
           )}
 
           {/* Localités (en dessous des capsules) */}
-          <View style={{ marginBottom: 4 }}>
+          <View style={{ marginBottom: 4, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Ionicons name="location" size={20} color="#FF8A00" />
             <Text style={styles.locationText}>
-              <Text style={{ fontWeight: '700', color: '#0A7C3A' }}>Localités: </Text>
               <Text style={{ color: '#555' }}>{userCity}</Text>
               {displayMode === 'direct' && userSelectedCity !== userCity && (
                 <Text style={{ color: '#FF8A00', fontSize: 13, fontStyle: 'italic' }}>
