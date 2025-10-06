@@ -37,10 +37,12 @@ const SPECIALITES = [
   'Scanner',
   'IRM',
   'Ophtalmologie',
-  'Dentisterie',
-  'Kinésithérapie',
-  'Maternité',
-  'Pharmacie'
+  'Endocrinologue',
+  'Neurologue',
+  'Psychologue',
+  'Kinésithérapeute',
+  'Ostéopathe',
+  'Maternité'
 ];
 
 export default function AjouterEtablissement() {
