@@ -268,7 +268,7 @@ export default function PublierEmplois() {
               {phoneTouched && !phoneValid ? <Text style={styles.errorText}>Numéro invalide</Text> : null}
 
               {/* Pièce jointe PDF (optionnelle) */}
-              <Text style={styles.label}>Joindre un PDF (fiche de poste) — min 20KB</Text>
+              <Text style={styles.label}>Joindre un PDF (fiche de poste)</Text>
               <View style={styles.attachmentRow}>
                 <TouchableOpacity onPress={() => pickPdf(true)} style={styles.attachBtn} accessibilityRole="button" accessibilityLabel="Joindre un PDF">
                   <Ionicons name="document-text-outline" size={16} color="#6C63FF" />
@@ -277,7 +277,7 @@ export default function PublierEmplois() {
                 {offerPdfName ? <Text style={styles.fileName}>{offerPdfName}</Text> : null}
               </View>
 
-              <LabeledInput label="Résumé" value={summary} onChangeText={setSummary} placeholder="Courte description" multiline />
+              <LabeledInput label="Description du poste" value={summary} onChangeText={setSummary} placeholder="Décrivez le poste en détail" multiline maxLength={5000} />
             </>
           ) : (
             <>
