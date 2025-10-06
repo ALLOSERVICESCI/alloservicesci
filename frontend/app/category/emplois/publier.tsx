@@ -360,6 +360,14 @@ const styles = StyleSheet.create({
   label: { fontWeight: '800', color: '#222', marginBottom: 6 },
   input: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, color: '#222' },
 
+  // Styles pour le switch Professionnel
+  proSwitchRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, paddingVertical: 12, paddingHorizontal: 16, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0' },
+  proLabel: { fontSize: 16, fontWeight: '700', color: '#222' },
+  switchContainer: { width: 50, height: 28, borderRadius: 14, backgroundColor: '#E2E8F0', padding: 2, justifyContent: 'center' },
+  switchActive: { backgroundColor: '#0D6EFD' },
+  switchThumb: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#fff', alignSelf: 'flex-start' },
+  switchThumbActive: { alignSelf: 'flex-end' },
+
   checkboxRow: { flexDirection: 'row', gap: 10, marginBottom: 8, flexWrap: 'wrap' },
   checkCapsule: { flexDirection: 'row', alignItems: 'center', gap: 8, borderWidth: 1, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 8 },
   checkText: { fontWeight: '700' },
