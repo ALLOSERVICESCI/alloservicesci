@@ -45,6 +45,7 @@ export default function CategoryPage() {
   const [communeQuery, setCommuneQuery] = useState('');
   const [showCommuneSuggestions, setShowCommuneSuggestions] = useState(false);
   const [communeChosen, setCommuneChosen] = useState(false);
+  const [userSanteItems, setUserSanteItems] = useState<any[]>([]);
 
   // Education dropdown state
   const [eduMenuOpen, setEduMenuOpen] = useState(false);
