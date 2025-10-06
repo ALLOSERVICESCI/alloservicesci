@@ -2319,23 +2319,34 @@ export default function CategoryPage() {
                     </Text>
                     {userSanteItems.map((item) => (
                       <View key={item.id} style={[styles.facilityCard, { borderLeftWidth: 4, borderLeftColor: '#0A7C3A' }]}>
-                        {/* Badge Publication locale - style simple */}
+                        {/* Badge Type d'établissement */}
                         <View style={{ position: 'absolute', top: 8, right: 8, borderWidth: 1, borderColor: '#0A7C3A', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: 'transparent' }}>
-                          <Text style={{ color: '#0A7C3A', fontSize: 11, fontWeight: '500' }}>Publication locale</Text>
+                          <Text style={{ color: '#0A7C3A', fontSize: 11, fontWeight: '500' }}>{item.type}</Text>
                         </View>
                         
-                        {/* En-tête avec nom établissement */}
-                        <View style={styles.facilityHeader}>
-                          <Text style={styles.facilityName}>{item.name}</Text>
+                        {/* En-tête avec nom établissement et photo praticien */}
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12 }}>
+                          {/* Photo du praticien (si disponible) */}
+                          {item.photoPraticien && (
+                            <Image 
+                              source={{ uri: item.photoPraticien }} 
+                              style={{ width: 60, height: 60, borderRadius: 30, borderWidth: 2, borderColor: '#0A7C3A' }}
+                            />
+                          )}
+                          
+                          <View style={{ flex: 1 }}>
+                            {/* Nom établissement */}
+                            <Text style={styles.facilityName}>{item.name}</Text>
+                            
+                            {/* Nom du praticien et fonction/spécialité */}
+                            {item.nomAnnonceur && (
+                              <Text style={{ fontSize: 14, color: '#111', marginTop: 4 }}>
+                                <Text style={{ fontWeight: '600' }}>{item.nomAnnonceur}</Text>
+                                {item.fonctionAnnonceur && <Text style={{ color: '#666' }}> • {item.fonctionAnnonceur}</Text>}
+                              </Text>
+                            )}
+                          </View>
                         </View>
-
-                        {/* Nom du praticien et fonction/spécialité */}
-                        {item.nomAnnonceur && (
-                          <Text style={{ fontSize: 14, color: '#111', marginTop: 4 }}>
-                            <Text style={{ fontWeight: '600' }}>{item.nomAnnonceur}</Text>
-                            {item.fonctionAnnonceur && <Text style={{ color: '#666' }}> • {item.fonctionAnnonceur}</Text>}
-                          </Text>
-                        )}
 
                         {/* Services (format texte comme les établissements enregistrés) */}
                         {item.specialites && item.specialites.length > 0 && (
