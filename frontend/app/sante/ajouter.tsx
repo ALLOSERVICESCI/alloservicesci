@@ -261,6 +261,22 @@ export default function AjouterEtablissement() {
                 autoCapitalize="none"
               />
             </View>
+
+            <Text style={styles.label}>Photo de profil (optionnel)</Text>
+            <TouchableOpacity onPress={pickPhoto} style={styles.photoPickerBtn}>
+              {photoPraticien ? (
+                <View style={{ alignItems: 'center', gap: 12 }}>
+                  <Image source={{ uri: photoPraticien }} style={styles.photoPreview} />
+                  <Text style={{ color: '#0A7C3A', fontSize: 13 }}>✓ Photo ajoutée • Appuyez pour changer</Text>
+                </View>
+              ) : (
+                <View style={{ alignItems: 'center', gap: 8 }}>
+                  <Ionicons name="camera-outline" size={32} color="#0A7C3A" />
+                  <Text style={{ color: '#666', fontSize: 14 }}>Ajouter une photo de profil</Text>
+                  <Text style={{ color: '#999', fontSize: 12 }}>Recommandé pour les professionnels</Text>
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
         )}
 
