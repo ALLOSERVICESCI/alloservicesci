@@ -228,7 +228,7 @@ export default function Pharmacies() {
 
         {/* Action: Réinitialiser les infobulles */}
         {showResetLink && (
-          <View style={{ paddingHorizontal: 16 }}>
+          <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
             <TouchableOpacity
               onPress={async () => {
                 try {
