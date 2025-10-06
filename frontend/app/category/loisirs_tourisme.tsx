@@ -10,7 +10,7 @@ import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-type LoisirItem = { id?: string; __local?: boolean; title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; website?: string; source?: string; lat?: number; lng?: number; photos?: string[]; rating?: number };
+type LoisirItem = { id?: string; __local?: boolean; title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; website?: string; source?: string; lat?: number; lng?: number; photos?: string[]; rating?: number; createdAt?: number };
 
 const FALLBACK_LOISIRS: LoisirItem[] = [
   // Abidjan & environs
