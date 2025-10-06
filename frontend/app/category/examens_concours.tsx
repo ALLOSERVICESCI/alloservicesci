@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
 
   capsulesRow: { flexDirection: 'row', gap: 10, marginBottom: 8, flexWrap: 'wrap' },
   capsule: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999 },
-  capsuleText: { fontWeight: '700' },
+  capsuleText: { fontWeight: '400' },
 
   subRow: { flexDirection: 'row', gap: 8, marginBottom: 8, flexWrap: 'wrap' },
 
