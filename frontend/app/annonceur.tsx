@@ -341,6 +341,13 @@ const styles = StyleSheet.create({
 
   label: { color: '#111', fontWeight: '700', marginTop: 12, marginBottom: 6 },
 
+  proSwitchRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 16, marginBottom: 8, paddingVertical: 12, paddingHorizontal: 16, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0' },
+  proLabel: { fontSize: 16, fontWeight: '700', color: '#111' },
+  switchContainer: { width: 50, height: 28, borderRadius: 14, backgroundColor: '#E2E8F0', padding: 2, justifyContent: 'center' },
+  switchActive: { backgroundColor: '#0D6EFD' },
+  switchThumb: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#fff', alignSelf: 'flex-start' },
+  switchThumbActive: { alignSelf: 'flex-end' },
+
   chipsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   chip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0' },
   chipActive: { backgroundColor: '#0D6EFD', borderColor: '#0D6EFD' },
