@@ -2319,11 +2319,6 @@ export default function CategoryPage() {
                     </Text>
                     {userSanteItems.map((item) => (
                       <View key={item.id} style={[styles.facilityCard, { borderLeftWidth: 4, borderLeftColor: '#0A7C3A' }]}>
-                        {/* Badge Annonce locale */}
-                        <View style={{ position: 'absolute', top: 8, right: 8, backgroundColor: '#D1FAE5', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 }}>
-                          <Text style={{ color: '#0A7C3A', fontSize: 11, fontWeight: '600' }}>🏥 Publication locale</Text>
-                        </View>
-                        
                         {/* En-tête avec nom et type */}
                         <View style={styles.facilityHeader}>
                           <Text style={styles.facilityName}>{item.name}</Text>
