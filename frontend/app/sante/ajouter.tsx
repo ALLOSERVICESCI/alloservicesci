@@ -388,13 +388,26 @@ export default function AjouterEtablissement() {
             />
           </View>
 
-          <Text style={styles.label}>Téléphone{!isPro && ' (optionnel)'}</Text>
+          <Text style={styles.label}>Téléphone Standard{!isPro && ' (optionnel)'}</Text>
           <View style={styles.inputRow}>
             <Ionicons name="call-outline" size={18} color="#888" />
             <TextInput
               style={styles.inputBare}
-              value={telephone}
-              onChangeText={setTelephone}
+              value={telephoneStandard}
+              onChangeText={setTelephoneStandard}
+              placeholder="+225 XX XX XX XX XX"
+              placeholderTextColor="#9AA3AF"
+              keyboardType="phone-pad"
+            />
+          </View>
+
+          <Text style={styles.label}>Téléphone Services (optionnel)</Text>
+          <View style={styles.inputRow}>
+            <Ionicons name="call-outline" size={18} color="#888" />
+            <TextInput
+              style={styles.inputBare}
+              value={telephoneServices}
+              onChangeText={setTelephoneServices}
               placeholder="+225 XX XX XX XX XX"
               placeholderTextColor="#9AA3AF"
               keyboardType="phone-pad"
