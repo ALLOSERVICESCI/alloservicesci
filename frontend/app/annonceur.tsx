@@ -91,6 +91,14 @@ export default function Annonceur() {
   };
 
   const onPublish = async () => {
+    // Validation Pro fields
+    if (isPro) {
+      if (!name.trim()) { Alert.alert('Nom requis', 'Veuillez saisir le nom de votre entreprise.'); return; }
+      if (!fonction.trim()) { Alert.alert('Fonction requise', 'Veuillez préciser votre fonction.'); return; }
+      if (!email.trim()) { Alert.alert('Email requis', 'Veuillez saisir votre email professionnel.'); return; }
+      if (!phone.trim()) { Alert.alert('Téléphone requis', 'Le téléphone est obligatoire pour les professionnels.'); return; }
+    }
+
     if (!category) { Alert.alert('Catégorie requise', 'Veuillez sélectionner une catégorie.'); return; }
     if (!title.trim()) { Alert.alert('Titre requis', 'Veuillez saisir un titre.'); return; }
     
@@ -108,7 +116,6 @@ export default function Annonceur() {
     }
     
     if (!commune) { Alert.alert('Localité requise', 'Veuillez choisir une localité.'); return; }
-    if (!phone.trim()) { Alert.alert('Contact requis', 'Veuillez indiquer un contact.'); return; }
 
     const id = `usr-${Date.now()}-${Math.floor(Math.random()*100000)}`;
 
