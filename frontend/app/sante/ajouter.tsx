@@ -141,6 +141,8 @@ export default function AjouterEtablissement() {
       email: isPro ? emailEtablissement.trim() : undefined,
       website: isPro && siteWeb.trim() ? siteWeb.trim() : undefined,
       specialites: specialitesSelectionnees.length > 0 ? specialitesSelectionnees : undefined,
+      qualiteAccueil: qualiteAccueil > 0 ? qualiteAccueil : undefined,
+      qualitePrestation: qualitePrestation > 0 ? qualitePrestation : undefined,
       isPro,
       nomAnnonceur: isPro ? nomAnnonceur.trim() : undefined,
       fonctionAnnonceur: isPro ? fonctionAnnonceur.trim() : undefined,
