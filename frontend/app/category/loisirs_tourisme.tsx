@@ -346,9 +346,15 @@ export default function LoisirsTourisme() {
           </View>
         ) : null}
         {photos && photos.length > 0 ? (
-          <TouchableOpacity onPress={() => openPhotos(photos)} activeOpacity={0.8}>
-            <Image source={{ uri: photos[0] }} style={styles.cardThumb} resizeMode="cover" />
-          </TouchableOpacity>
+          <PhotoCarousel
+            photos={photos}
+            onPhotoPress={(index) => {
+              router.push({
+                pathname: '/photo_viewer',
+                params: { photos: JSON.stringify(photos), initialIndex: index }
+              });
+            }}
+          />
         ) : null}
         <View style={styles.cardHeaderRow}>
           <Text style={styles.cardTitle}>{title}</Text>
@@ -360,11 +366,6 @@ export default function LoisirsTourisme() {
             <Ionicons name="location" size={14} color="#FF8A00" />
             <Text style={styles.communeBadgeText}>{commune}</Text>
           </View>
-        ) : null}
-        {photos && photos.length > 1 ? (
-          <TouchableOpacity onPress={() => openPhotos(photos)}>
-            <Text style={styles.photosLink}>Voir toutes les photos ({photos.length})</Text>
-          </TouchableOpacity>
         ) : null}
         <View style={styles.actionsRow}>
           {phone ? (
