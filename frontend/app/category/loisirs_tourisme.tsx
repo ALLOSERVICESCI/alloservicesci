@@ -127,7 +127,27 @@ export default function LoisirsTourisme() {
       console.log('[Loisirs] Raw data:', raw);
       const arr = raw ? JSON.parse(raw) : [];
       console.log('[Loisirs] Array parsed:', arr.length, 'items');
-      const normalized = (Array.isArray(arr) ? arr : []).map((it: any) => ({ ...it, __local: true }));
+      
+      // Filtrer les annonces expirées (>7 jours = 7 * 24 * 60 * 60 * 1000 ms)
+      const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+      const now = Date.now();
+      const validItems = (Array.isArray(arr) ? arr : []).filter((it: any) => {
+        // Si pas de createdAt, on garde l'annonce (rétrocompatibilité)
+        if (!it.createdAt) return true;
+        // Sinon, on vérifie si elle a moins de 7 jours
+        const age = now - it.createdAt;
+        return age < SEVEN_DAYS_MS;
+      });
+      
+      console.log('[Loisirs] Items valides (non expirés):', validItems.length, 'sur', arr.length);
+      
+      // Sauvegarder uniquement les items valides (nettoyage automatique)
+      if (validItems.length !== arr.length) {
+        await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(validItems));
+        console.log('[Loisirs] Nettoyage effectué:', arr.length - validItems.length, 'annonces expirées supprimées');
+      }
+      
+      const normalized = validItems.map((it: any) => ({ ...it, __local: true }));
       console.log('[Loisirs] Items normalisés:', normalized.length);
       setUserItems(normalized);
     } catch (e) {
