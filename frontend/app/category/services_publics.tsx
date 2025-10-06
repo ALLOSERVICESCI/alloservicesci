@@ -392,11 +392,11 @@ const styles = StyleSheet.create({
 
   capsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8, marginBottom: 8 },
   capsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, borderWidth: 1 },
-  capsuleText: { fontWeight: '700' },
+  capsuleText: { fontWeight: '400' },
 
   // Mode capsules (style Éducation-like)
   modeCapsule: { borderRadius: 999, paddingVertical: 10, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
-  modeCapsuleText: { fontWeight: '800' },
+  modeCapsuleText: { fontWeight: '400' },
 
   sectionTitle: { fontSize: 16, fontWeight: '800', color: '#222', marginTop: 4, marginBottom: 6 },
 
