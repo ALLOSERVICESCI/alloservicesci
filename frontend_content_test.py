@@ -11,7 +11,7 @@ import json
 from typing import Dict, Any, List
 
 # Frontend URL
-FRONTEND_URL = "https://tourisme-dev.preview.emergentagent.com"
+FRONTEND_URL = "https://sante-lokale.preview.emergentagent.com"
 
 class FrontendContentTester:
     def __init__(self):
