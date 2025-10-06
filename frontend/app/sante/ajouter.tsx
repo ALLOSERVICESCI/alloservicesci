@@ -260,17 +260,22 @@ export default function AjouterEtablissement() {
             ))}
           </View>
 
-          <Text style={styles.label}>N° d'agrément de l'établissement</Text>
-          <View style={styles.inputRow}>
-            <Ionicons name="document-text-outline" size={18} color="#888" />
-            <TextInput
-              style={styles.inputBare}
-              value={numeroAgrement}
-              onChangeText={setNumeroAgrement}
-              placeholder="Ex: AG-2024-00123"
-              placeholderTextColor="#9AA3AF"
-            />
-          </View>
+          {/* N° d'agrément uniquement pour Pro */}
+          {isPro && (
+            <>
+              <Text style={styles.label}>N° d'agrément de l'établissement</Text>
+              <View style={styles.inputRow}>
+                <Ionicons name="document-text-outline" size={18} color="#888" />
+                <TextInput
+                  style={styles.inputBare}
+                  value={numeroAgrement}
+                  onChangeText={setNumeroAgrement}
+                  placeholder="Ex: AG-2024-00123"
+                  placeholderTextColor="#9AA3AF"
+                />
+              </View>
+            </>
+          )}
 
           <Text style={styles.label}>Localité (ville/commune)</Text>
           <View style={[styles.inputRow, commune && styles.inputRowSelected]}>
