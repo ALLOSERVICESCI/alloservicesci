@@ -58,31 +58,35 @@ export default function CategoryPage() {
   }, []);
 
   // Charger les établissements santé publiés par les utilisateurs
-  useEffect(() => {
-    if (s !== 'sante') return;
-    let mounted = true;
-    const loadSanteItems = async () => {
-      try {
-        const raw = await AsyncStorage.getItem('sante_user_items');
-        if (!raw || !mounted) return;
-        const arr = JSON.parse(raw);
-        const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
-        const now = Date.now();
-        const validItems = (Array.isArray(arr) ? arr : []).filter((it: any) => {
-          if (!it.createdAt) return true;
-          return (now - it.createdAt) < SEVEN_DAYS_MS;
-        });
-        if (validItems.length !== arr.length) {
-          await AsyncStorage.setItem('sante_user_items', JSON.stringify(validItems));
+  useFocusEffect(
+    useCallback(() => {
+      if (s !== 'sante') return;
+      const loadSanteItems = async () => {
+        try {
+          const raw = await AsyncStorage.getItem('sante_user_items');
+          if (!raw) {
+            setUserSanteItems([]);
+            return;
+          }
+          const arr = JSON.parse(raw);
+          const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+          const now = Date.now();
+          const validItems = (Array.isArray(arr) ? arr : []).filter((it: any) => {
+            if (!it.createdAt) return true;
+            return (now - it.createdAt) < SEVEN_DAYS_MS;
+          });
+          if (validItems.length !== arr.length) {
+            await AsyncStorage.setItem('sante_user_items', JSON.stringify(validItems));
+          }
+          setUserSanteItems(validItems);
+          console.log('✓ Établissements santé chargés:', validItems.length);
+        } catch (e) {
+          console.error('[Santé] Erreur chargement:', e);
         }
-        if (mounted) setUserSanteItems(validItems);
-      } catch (e) {
-        console.error('[Santé] Erreur chargement:', e);
-      }
-    };
-    loadSanteItems();
-    return () => { mounted = false; };
-  }, [s]);
+      };
+      loadSanteItems();
+    }, [s])
+  );
 
   // Fonction pour réinitialiser les filtres
   const [eduUIHidden, setEduUIHidden] = useState(false);
