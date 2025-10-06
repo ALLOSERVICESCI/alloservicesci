@@ -2324,13 +2324,18 @@ export default function CategoryPage() {
                           <Text style={{ color: '#0A7C3A', fontSize: 11, fontWeight: '500' }}>Publication locale</Text>
                         </View>
                         
-                        {/* En-tête avec nom et type */}
+                        {/* En-tête avec nom établissement */}
                         <View style={styles.facilityHeader}>
                           <Text style={styles.facilityName}>{item.name}</Text>
-                          <View style={[styles.typeBadge, { backgroundColor: '#0A7C3A' }]}>
-                            <Text style={styles.typeBadgeText}>{item.type}</Text>
-                          </View>
                         </View>
+
+                        {/* Nom du praticien et fonction/spécialité */}
+                        {item.nomAnnonceur && (
+                          <Text style={{ fontSize: 14, color: '#111', marginTop: 4 }}>
+                            <Text style={{ fontWeight: '600' }}>{item.nomAnnonceur}</Text>
+                            {item.fonctionAnnonceur && <Text style={{ color: '#666' }}> • {item.fonctionAnnonceur}</Text>}
+                          </Text>
+                        )}
 
                         {/* Services (format texte comme les établissements enregistrés) */}
                         {item.specialites && item.specialites.length > 0 && (
