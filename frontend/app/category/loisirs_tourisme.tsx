@@ -590,4 +590,42 @@ const styles = StyleSheet.create({
 
   emptyBox: { paddingVertical: 24, alignItems: 'center' },
   emptyText: { color: '#666' },
+
+  // Styles du carrousel
+  carouselContainer: { marginBottom: 10, position: 'relative' },
+  carouselContent: { paddingRight: 0 },
+  carouselImageWrapper: { marginRight: 0, position: 'relative' },
+  carouselImage: { height: 200, borderRadius: 8, backgroundColor: '#F0F0F0' },
+  photoCounter: { 
+    position: 'absolute', 
+    top: 8, 
+    right: 8, 
+    backgroundColor: 'rgba(0,0,0,0.7)', 
+    paddingHorizontal: 10, 
+    paddingVertical: 4, 
+    borderRadius: 999, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: 4 
+  },
+  photoCounterText: { color: '#fff', fontSize: 12, fontWeight: '700' },
+  paginationDots: { 
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    gap: 6, 
+    marginTop: 8 
+  },
+  dot: { 
+    width: 8, 
+    height: 8, 
+    borderRadius: 4 
+  },
+  dotActive: { 
+    backgroundColor: '#0D6EFD', 
+    width: 24 
+  },
+  dotInactive: { 
+    backgroundColor: '#D1D5DB' 
+  },
 });
