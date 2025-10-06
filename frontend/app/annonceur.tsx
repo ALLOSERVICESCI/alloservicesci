@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
   suggestBox: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, marginTop: 4, marginBottom: 8, overflow: 'hidden' },
   suggestItem: { paddingVertical: 10, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
   suggestText: { color: '#111' },
-  selectedCommune: { color: '#0A7C3A', fontWeight: '700' },
+  selectedCommune: { color: '#0A7C3A', fontWeight: '400' },
 
   starsRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   starBtn: { padding: 8 },
@@ -382,8 +382,8 @@ const styles = StyleSheet.create({
   photo: { width: '100%', height: '100%' },
   removePhotoBtn: { position: 'absolute', top: 4, right: 4, backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: 12, width: 24, height: 24, alignItems: 'center', justifyContent: 'center' },
   addPhotoBox: { width: 80, height: 80, borderRadius: 8, borderWidth: 1, borderColor: '#BBD6FD', backgroundColor: '#F1F6FF', alignItems: 'center', justifyContent: 'center' },
-  addPhotoText: { color: '#0D6EFD', fontWeight: '700', marginTop: 2 },
+  addPhotoText: { color: '#0D6EFD', fontWeight: '400', marginTop: 2 },
 
   publishBtn: { marginTop: 18, backgroundColor: '#0A7C3A', paddingVertical: 14, borderRadius: 12, alignItems: 'center' },
-  publishText: { color: '#fff', fontWeight: '800', fontSize: 16 },
+  publishText: { color: '#fff', fontWeight: '400', fontSize: 16 },
 });
