@@ -157,8 +157,13 @@ export default function AjouterEtablissement() {
       await AsyncStorage.setItem('sante_user_items', JSON.stringify(arr));
       await AsyncStorage.setItem('sante_publish_success', '1');
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      router.push('/category/sante');
+      
+      console.log('✓ Données AsyncStorage après publication:', arr.length, 'items');
+      
+      // Navigate using replace to avoid router.back() issues
+      router.replace('/category/sante');
     } catch (e) {
+      console.error('[Santé] Erreur sauvegarde:', e);
       Alert.alert('Erreur', "Impossible d'enregistrer l'établissement. Réessayez.");
     }
   };
