@@ -167,6 +167,13 @@ export default function Annonceur() {
             placeholder="Rechercher une localité"
             placeholderTextColor="#9AA3AF"
             returnKeyType="search"
+            onSubmitEditing={() => {
+              // Sélectionner automatiquement la première suggestion si elle existe
+              if (suggestions.length > 0) {
+                setCommune(suggestions[0]);
+                setCommuneQuery('');
+              }
+            }}
           />
           {commune ? (
             <TouchableOpacity onPress={() => { setCommune(undefined); setCommuneQuery(''); }}>
@@ -174,7 +181,7 @@ export default function Annonceur() {
             </TouchableOpacity>
           ) : null}
         </View>
-        {communeQuery && suggestions.length > 0 ? (
+        {communeQuery && suggestions.length > 0 && !commune ? (
           <View style={styles.suggestBox}>
             {suggestions.map((s) => (
               <TouchableOpacity key={s} onPress={() => { setCommune(s); setCommuneQuery(''); }} style={styles.suggestItem}>
@@ -183,7 +190,7 @@ export default function Annonceur() {
             ))}
           </View>
         ) : null}
-        {commune ? <Text style={styles.selectedCommune}>Sélectionné: {commune}</Text> : null}
+        {commune ? <Text style={styles.selectedCommune}>✓ Sélectionné: {commune}</Text> : null}
 
         {/* Contact */}
         <Text style={styles.label}>Contact (téléphone)</Text>
