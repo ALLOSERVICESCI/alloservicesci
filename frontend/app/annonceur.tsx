@@ -89,6 +89,20 @@ export default function Annonceur() {
   const onPublish = async () => {
     if (!category) { Alert.alert('Catégorie requise', 'Veuillez sélectionner une catégorie.'); return; }
     if (!title.trim()) { Alert.alert('Titre requis', 'Veuillez saisir un titre.'); return; }
+    
+    // Si l'utilisateur a tapé mais n'a pas sélectionné, essayer de correspondre automatiquement
+    if (!commune && communeQuery.trim()) {
+      const exactMatch = ABJ_COMMUNES.find(c => c.toLowerCase() === communeQuery.trim().toLowerCase());
+      if (exactMatch) {
+        setCommune(exactMatch);
+        setCommuneQuery('');
+        Alert.alert('Localité sélectionnée', `"${exactMatch}" a été automatiquement sélectionné.`);
+        return; // L'utilisateur peut re-cliquer sur Publier
+      }
+      Alert.alert('Localité requise', 'Veuillez choisir une localité dans la liste de suggestions.');
+      return;
+    }
+    
     if (!commune) { Alert.alert('Localité requise', 'Veuillez choisir une localité.'); return; }
     if (!phone.trim()) { Alert.alert('Contact requis', 'Veuillez indiquer un contact.'); return; }
 
