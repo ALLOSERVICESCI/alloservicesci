@@ -2382,7 +2382,7 @@ export default function CategoryPage() {
                             >
                               <Ionicons name="call" size={16} color="#fff" />
                               <Text style={styles.actionButtonText}>
-                                Standard • {item.phoneStandard}
+                                Standard
                               </Text>
                             </TouchableOpacity>
                           )}
@@ -2395,7 +2395,7 @@ export default function CategoryPage() {
                             >
                               <Ionicons name="call" size={16} color="#fff" />
                               <Text style={styles.actionButtonText}>
-                                Services • {item.phoneServices}
+                                Services
                               </Text>
                             </TouchableOpacity>
                           )}
