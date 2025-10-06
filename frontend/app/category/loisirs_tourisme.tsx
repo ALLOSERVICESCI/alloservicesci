@@ -14,8 +14,8 @@ type LoisirItem = { id?: string; __local?: boolean; title: string; summary?: str
 
 const FALLBACK_LOISIRS: LoisirItem[] = [
   // Abidjan & environs
-  { title: 'Sofitel Abidjan Hôtel Ivoire', summary: 'Hôtel 5★ avec piscine, restaurants et vue sur la lagune.', commune: 'Cocody', phone: '+225 27 22 44 10 10', source: 'https://all.accor.com', tag: 'Hôtel' },
-  { title: "Zoo d'Abidjan", summary: 'Parc zoologique historique, idéal en famille.', commune: 'Cocody', tag: 'Aire de jeux' },
+  { title: 'Sofitel Abidjan Hôtel Ivoire', summary: 'Hôtel 5★ avec piscine, restaurants et vue sur la lagune.', commune: 'Cocody', phone: '+225 27 22 44 10 10', source: 'https://all.accor.com', tag: 'Hôtel', photos: ['https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800', 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800', 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800'], rating: 5 },
+  { title: "Zoo d'Abidjan", summary: 'Parc zoologique historique, idéal en famille.', commune: 'Cocody', tag: 'Aire de jeux', photos: ['https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?w=800', 'https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=800'] },
   { title: 'Parc National du Banco', summary: 'Forêt primaire à 30 min du Plateau pour randonnées.', commune: 'Yopougon', tag: 'Site touristique' },
   { title: "Musée des Civilisations de Côte d'Ivoire", summary: 'Collections ethnographiques et arts africains.', commune: 'Plateau', tag: 'Musée' },
   { title: 'Jardin Botanique de Bingerville', summary: 'Grand jardin historique, balade et pique-nique.', commune: 'Bingerville', tag: 'Site touristique' },
