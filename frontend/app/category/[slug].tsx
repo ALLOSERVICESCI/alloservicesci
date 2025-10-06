@@ -2966,9 +2966,9 @@ const styles = StyleSheet.create({
   santeListItem: { 
     color: '#fff', 
     fontSize: 15, 
-    fontWeight: '400', 
-    marginBottom: 3,
-    lineHeight: 22
+    fontWeight: '300', 
+    marginBottom: 2,
+    lineHeight: 20
   },
   headerWrapperSante: {
     position: 'absolute',
