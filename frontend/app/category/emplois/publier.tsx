@@ -164,6 +164,9 @@ export default function PublierEmplois() {
         summary,
         attachmentName: offerPdfName || undefined,
         attachmentBase64: offerPdfBase64 || undefined,
+        isPro,
+        contactName: isPro ? contactName.trim() : undefined,
+        contactFonction: isPro ? contactFonction.trim() : undefined,
       }));
 
       try {
