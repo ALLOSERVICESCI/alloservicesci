@@ -20,9 +20,27 @@ const TYPES_ETABLISSEMENT = [
   'Centre de santé',
   'Cabinet médical',
   'Centre de vaccination',
-  'Laboratoire d\'analyse',
-  'Pharmacie hospitalière',
-  'Centre de santé communautaire'
+  'Laboratoire d\'analyse'
+];
+
+// Spécialités/Services médicaux
+const SPECIALITES = [
+  'Consultations générales',
+  'Urgences 24h/24',
+  'Pédiatrie',
+  'Gynécologie-Obstétrique',
+  'Cardiologie',
+  'Chirurgie',
+  'Laboratoire d\'analyses',
+  'Radiologie',
+  'Échographie',
+  'Scanner',
+  'IRM',
+  'Ophtalmologie',
+  'Dentisterie',
+  'Kinésithérapie',
+  'Maternité',
+  'Pharmacie'
 ];
 
 export default function AjouterEtablissement() {
