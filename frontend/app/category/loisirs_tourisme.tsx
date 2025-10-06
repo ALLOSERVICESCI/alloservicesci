@@ -558,12 +558,12 @@ const styles = StyleSheet.create({
   listContent: { paddingTop: 16, paddingHorizontal: 16, paddingBottom: 24 },
 
   headerControls: { marginBottom: 10 },
-  capsRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' },
-  localityLine: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  capsRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' },
+  localityLine: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
   localityLabelSmall: { color: '#444', fontSize: 13 },
   localityValue: { color: '#222', fontSize: 16, fontWeight: '400' },
   modeCapsule: { borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', gap: 8 },
-  modeCapsuleText: { fontWeight: '800' },
+  modeCapsuleText: { fontWeight: '400' },
 
   successBanner: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 10, backgroundColor: '#E8F5E9', borderWidth: 1, borderColor: '#C8E6C9', marginBottom: 8 },
   successText: { color: '#0A7C3A', fontWeight: '700' },
