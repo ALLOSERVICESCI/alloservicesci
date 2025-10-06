@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
   headerControls: { marginBottom: 10 },
   modeRow: { flexDirection: 'row', gap: 12, marginBottom: 10, flexWrap: 'wrap' },
   modeCapsule: { borderRadius: 999, paddingVertical: 10, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
-  modeCapsuleText: { fontWeight: '800' },
+  modeCapsuleText: { fontWeight: '400' },
   
   localityRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   localityValue: { color: '#222', fontSize: 18, fontWeight: '600' },
