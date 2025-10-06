@@ -2374,15 +2374,28 @@ export default function CategoryPage() {
 
                         {/* Actions */}
                         <View style={styles.facilityActions}>
-                          {/* Téléphone */}
-                          {item.phone && (
+                          {/* Téléphone Standard */}
+                          {item.phoneStandard && (
                             <TouchableOpacity
-                              onPress={() => openPhone(item.phone)}
+                              onPress={() => openPhone(item.phoneStandard)}
                               style={styles.actionButton}
                             >
                               <Ionicons name="call" size={16} color="#fff" />
                               <Text style={styles.actionButtonText}>
-                                {item.phone}
+                                Standard • {item.phoneStandard}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+
+                          {/* Téléphone Services */}
+                          {item.phoneServices && (
+                            <TouchableOpacity
+                              onPress={() => openPhone(item.phoneServices)}
+                              style={styles.actionButton}
+                            >
+                              <Ionicons name="call" size={16} color="#fff" />
+                              <Text style={styles.actionButtonText}>
+                                Services • {item.phoneServices}
                               </Text>
                             </TouchableOpacity>
                           )}
