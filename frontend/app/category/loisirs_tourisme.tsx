@@ -571,8 +571,8 @@ const styles = StyleSheet.create({
   catWrapRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 8 },
   catChip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0' },
   catChipActive: { backgroundColor: '#0D6EFD', borderColor: '#0D6EFD' },
-  catChipText: { color: '#111', fontWeight: '700' },
-  catChipTextActive: { color: '#fff', fontWeight: '800' },
+  catChipText: { color: '#111', fontWeight: '400' },
+  catChipTextActive: { color: '#fff', fontWeight: '400' },
 
   searchLabel: { color: '#222', fontSize: 14, fontWeight: '700', marginBottom: 6, marginTop: 8 },
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 6 },
