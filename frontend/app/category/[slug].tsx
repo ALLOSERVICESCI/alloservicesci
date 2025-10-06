@@ -2324,7 +2324,7 @@ export default function CategoryPage() {
                           <Text style={{ color: '#0A7C3A', fontSize: 11, fontWeight: '600' }}>🏥 Publication locale</Text>
                         </View>
                         
-                        {/* En-tête */}
+                        {/* En-tête avec nom et type */}
                         <View style={styles.facilityHeader}>
                           <Text style={styles.facilityName}>{item.name}</Text>
                           <View style={[styles.typeBadge, { backgroundColor: '#0A7C3A' }]}>
@@ -2332,29 +2332,75 @@ export default function CategoryPage() {
                           </View>
                         </View>
 
-                        {/* Commune */}
-                        <Text style={styles.facilityAddress}>
-                          <Ionicons name="location-outline" size={14} color="#666" />
-                          {' '}{item.commune}
-                        </Text>
-
-                        {/* Spécialités */}
+                        {/* Services (format texte comme les établissements enregistrés) */}
                         {item.specialites && item.specialites.length > 0 && (
-                          <View style={{ marginTop: 8 }}>
-                            <Text style={{ fontWeight: '600', color: '#0A7C3A', marginBottom: 4 }}>Services: </Text>
-                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
-                              {item.specialites.map((spec: string, idx: number) => (
-                                <View key={idx} style={{ backgroundColor: '#F0F9FF', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 999, borderWidth: 1, borderColor: '#BAE6FD' }}>
-                                  <Text style={{ fontSize: 11, color: '#0369A1' }}>{spec}</Text>
-                                </View>
-                              ))}
-                            </View>
-                          </View>
+                          <Text style={styles.facilityServices}>
+                            <Text style={{ fontWeight: '600', color: '#0A7C3A' }}>Services: </Text>
+                            {item.specialites.join(', ')}
+                          </Text>
                         )}
 
-                        {/* Étoiles */}
+                        {/* Adresse complète */}
+                        {(item.address || item.commune) && (
+                          <Text style={styles.facilityAddress}>
+                            <Ionicons name="location-outline" size={14} color="#666" />
+                            {' '}{item.address ? `${item.address}, ${item.commune}` : item.commune}
+                          </Text>
+                        )}
+
+                        {/* N° d'agrément (pour les pros) */}
+                        {item.numeroAgrement && (
+                          <Text style={styles.facilityNote}>
+                            <Ionicons name="shield-checkmark-outline" size={14} color="#0A7C3A" />
+                            {' '}N° d'agrément: {item.numeroAgrement}
+                          </Text>
+                        )}
+
+                        {/* Actions */}
+                        <View style={styles.facilityActions}>
+                          {/* Téléphone */}
+                          {item.phone && (
+                            <TouchableOpacity
+                              onPress={() => openPhone(item.phone)}
+                              style={styles.actionButton}
+                            >
+                              <Ionicons name="call" size={16} color="#fff" />
+                              <Text style={styles.actionButtonText}>
+                                {item.phone}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+
+                          {/* Email */}
+                          {item.email && (
+                            <TouchableOpacity
+                              onPress={() => Linking.openURL(`mailto:${item.email}`)}
+                              style={styles.actionButtonAlt}
+                            >
+                              <Ionicons name="mail" size={16} color="#0A7C3A" />
+                              <Text style={styles.actionButtonAltText}>
+                                {item.email}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+
+                          {/* Site web */}
+                          {item.website && (
+                            <TouchableOpacity
+                              onPress={() => openWebsite(item.website)}
+                              style={styles.actionButtonAlt}
+                            >
+                              <Ionicons name="globe" size={16} color="#0A7C3A" />
+                              <Text style={styles.actionButtonAltText}>
+                                {item.website}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                        </View>
+
+                        {/* Évaluations (en bas comme information complémentaire) */}
                         {(item.qualiteAccueil || item.qualitePrestation) && (
-                          <View style={{ marginTop: 8, flexDirection: 'row', gap: 12 }}>
+                          <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#E2E8F0', flexDirection: 'row', gap: 16 }}>
                             {item.qualiteAccueil && (
                               <View>
                                 <Text style={{ fontSize: 11, color: '#666', marginBottom: 2 }}>Accueil</Text>
@@ -2376,13 +2422,6 @@ export default function CategoryPage() {
                               </View>
                             )}
                           </View>
-                        )}
-
-                        {/* Contact */}
-                        {item.phone && (
-                          <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.phone}`)} style={{ marginTop: 8, backgroundColor: '#0A7C3A', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 8, alignSelf: 'flex-start' }}>
-                            <Text style={{ color: '#fff', fontWeight: '600' }}>📞 Appeler</Text>
-                          </TouchableOpacity>
                         )}
                       </View>
                     ))}
