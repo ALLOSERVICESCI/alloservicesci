@@ -119,6 +119,7 @@ export default function Annonceur() {
       website: website.trim() || undefined,
       photos: photos.length ? photos : undefined,
       rating: rating && rating > 0 ? rating : undefined,
+      createdAt: Date.now(), // Timestamp de création pour expiration après 7 jours
     };
 
     try {
