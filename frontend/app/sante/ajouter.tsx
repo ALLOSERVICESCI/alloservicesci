@@ -145,8 +145,8 @@ export default function AjouterEtablissement() {
         Alert.alert('N° d\'agrément requis', 'Veuillez saisir le numéro d\'agrément.');
         return;
       }
-      if (!telephone.trim()) {
-        Alert.alert('Téléphone requis', 'Veuillez saisir un numéro de téléphone.');
+      if (!telephoneStandard.trim()) {
+        Alert.alert('Téléphone Standard requis', 'Veuillez saisir le numéro du standard.');
         return;
       }
       if (!emailEtablissement.trim()) {
@@ -154,7 +154,7 @@ export default function AjouterEtablissement() {
         return;
       }
     }
-    // Pour utilisateur basique, téléphone est optionnel
+    // Pour utilisateur basique, téléphone standard est optionnel
 
     const id = `sante-${Date.now()}-${Math.floor(Math.random()*100000)}`;
     
