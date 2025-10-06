@@ -284,7 +284,9 @@ const styles = StyleSheet.create({
 
   input: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, color: '#111' },
   inputRow: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10 },
+  inputRowSelected: { borderColor: '#0A7C3A', borderWidth: 2 },
   inputBare: { flex: 1, color: '#111', paddingVertical: 2 },
+  hintText: { fontSize: 12, color: '#0D6EFD', marginTop: 4, fontWeight: '600' },
 
   suggestBox: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 10, marginTop: 4, marginBottom: 8, overflow: 'hidden' },
   suggestItem: { paddingVertical: 10, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
