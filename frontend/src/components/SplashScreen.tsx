@@ -12,22 +12,22 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
 
   useEffect(() => {
-    // Animation d'entrée
+    // Animation d'entrée plus rapide
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 800,
+        duration: 400,
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
-        tension: 20,
-        friction: 7,
+        tension: 30,
+        friction: 6,
         useNativeDriver: true,
       }),
     ]).start();
 
-    // Attendre 2.5 secondes puis démarrer l'animation de sortie
+    // Attendre 4.5 secondes (2.5 + 2 secondes supplémentaires) puis démarrer l'animation de sortie
     const timer = setTimeout(() => {
       Animated.parallel([
         Animated.timing(fadeAnim, {
@@ -43,7 +43,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
       ]).start(() => {
         onFinish();
       });
-    }, 2500);
+    }, 4500);
 
     return () => clearTimeout(timer);
   }, []);
