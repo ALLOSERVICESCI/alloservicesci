@@ -229,6 +229,27 @@ export default function PublierEmplois() {
         <ScrollView contentContainerStyle={styles.formContent} keyboardShouldPersistTaps="handled">
           {tab === 'offre' ? (
             <>
+              {/* Switch Professionnel */}
+              <View style={styles.proSwitchRow}>
+                <Text style={styles.proLabel}>Professionnel</Text>
+                <TouchableOpacity 
+                  onPress={() => setIsPro(!isPro)} 
+                  style={[styles.switchContainer, isPro ? styles.switchActive : null]}
+                  accessibilityRole="switch"
+                  accessibilityState={{ checked: isPro }}
+                >
+                  <View style={[styles.switchThumb, isPro ? styles.switchThumbActive : null]} />
+                </TouchableOpacity>
+              </View>
+
+              {/* Champs Pro conditionnels */}
+              {isPro && (
+                <>
+                  <LabeledInput label="Nom de la personne à contacter" value={contactName} onChangeText={setContactName} placeholder="Ex: Jean Dupont" />
+                  <LabeledInput label="Fonction" value={contactFonction} onChangeText={setContactFonction} placeholder="Ex: Responsable RH, Directeur" />
+                </>
+              )}
+
               {/* Types d'offres */}
               <View style={styles.checkboxRow}>
                 <CheckboxCapsule label="Emplois" checked={types.emploi} color="#0D6EFD" onPress={() => toggleType('emploi')} />
