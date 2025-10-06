@@ -10,7 +10,6 @@ import * as FileSystem from 'expo-file-system';
 // Aucune dépendance aux autres pages
 
 type PublishTab = 'offre' | 'candidature';
-const MIN_PDF_BYTES = 2 * 1024 * 1024; // ~2 Mo min (corriger texte affiché)
 
 // Règles e-mail: restreindre au domaine .ci et/ou liste blanche
 const EMAIL_ALLOWED_SUFFIXES = ['.ci', 'entreprise.ci']; // 'entreprise.ci' autorise aussi sous-domaines *.entreprise.ci
@@ -18,6 +17,11 @@ const EMAIL_ALLOWED_SUFFIXES = ['.ci', 'entreprise.ci']; // 'entreprise.ci' auto
 export default function PublierEmplois() {
   const router = useRouter();
   const [tab, setTab] = useState<PublishTab>('offre');
+
+  // Switch Professionnel pour les offres d'emploi
+  const [isPro, setIsPro] = useState(false);
+  const [contactName, setContactName] = useState('');
+  const [contactFonction, setContactFonction] = useState('');
 
   // Champs communs
   const [title, setTitle] = useState('');
