@@ -24,11 +24,11 @@ const FALLBACK_LOISIRS: LoisirItem[] = [
   { title: 'Circuit guidé – Plateau historique', summary: 'Parcours des monuments: Cathédrale, Musée, Lagune.', commune: 'Plateau', tag: 'Circuit guidé' },
 
   // Grand-Bassam & Assinie
-  { title: 'Plage de Grand-Bassam', summary: 'Plage historique, maisons coloniales à proximité.', commune: 'Grand-Bassam', tag: 'Plage' },
-  { title: 'Musée National du Costume', summary: 'Costumes traditionnels, patrimoine UNESCO.', commune: 'Grand-Bassam', tag: 'Musée' },
-  { title: 'Assinie – Étoile du Sud', summary: 'Hôtel plage, sports nautiques, escapade détente.', commune: 'Assinie', tag: 'Hôtel' },
-  { title: 'Assinie Mafia – Plage', summary: 'Lagune, plage, restaurants sur pilotis.', commune: 'Assinie', tag: 'Plage' },
-  { title: 'Circuit UNESCO – Grand-Bassam', summary: 'Visite guidée du quartier colonial classé UNESCO.', commune: 'Grand-Bassam', tag: 'Circuit guidé' },
+  { title: 'Plage de Grand-Bassam', summary: 'Plage historique, maisons coloniales à proximité.', commune: 'Grand-Bassam', tag: 'Plage', photos: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800', 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800', 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800'] },
+  { title: 'Musée National du Costume', summary: 'Costumes traditionnels, patrimoine UNESCO.', commune: 'Grand-Bassam', tag: 'Musée', photos: ['https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=800', 'https://images.unsplash.com/photo-1577720643271-f5d90e6974d9?w=800'] },
+  { title: 'Assinie – Étoile du Sud', summary: 'Hôtel plage, sports nautiques, escapade détente.', commune: 'Assinie', tag: 'Hôtel', photos: ['https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800', 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800'] },
+  { title: 'Assinie Mafia – Plage', summary: 'Lagune, plage, restaurants sur pilotis.', commune: 'Assinie', tag: 'Plage', photos: ['https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800', 'https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=800'] },
+  { title: 'Circuit UNESCO – Grand-Bassam', summary: 'Visite guidée du quartier colonial classé UNESCO.', commune: 'Grand-Bassam', tag: 'Circuit guidé', photos: ['https://images.unsplash.com/photo-1523059623039-a9ed027e7fad?w=800', 'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=800', 'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?w=800'] },
 
   // Nouvelles localités demandées
   { title: 'Plages de Jacqueville', summary: 'Sable fin, cocotiers et ambiance détente.', commune: 'Jacqueville', tag: 'Plage' },
