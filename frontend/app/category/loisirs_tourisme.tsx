@@ -387,7 +387,7 @@ export default function LoisirsTourisme() {
           {phone ? (
             <TouchableOpacity onPress={() => openPhone(phone)} style={[styles.badgeBtn, styles.badgeGreen]}>
               <Ionicons name="call" size={16} color="#fff" />
-              <Text style={styles.badgeText}>Appeler</Text>
+              <Text style={styles.badgeText}>Pour Réserver</Text>
             </TouchableOpacity>
           ) : null}
           {(lat != null && lng != null) ? (
