@@ -68,6 +68,10 @@ export default function AjouterEtablissement() {
   const [siteWeb, setSiteWeb] = useState('');
   const [specialitesSelectionnees, setSpecialitesSelectionnees] = useState<string[]>([]);
   
+  // Notation qualité
+  const [qualiteAccueil, setQualiteAccueil] = useState(0);
+  const [qualitePrestation, setQualitePrestation] = useState(0);
+  
   // Suggestions de communes
   const suggestions = useMemo(() => {
     if (!communeQuery) return [];
