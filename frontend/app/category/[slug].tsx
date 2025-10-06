@@ -2358,10 +2358,12 @@ export default function CategoryPage() {
 
                         {/* Adresse complète */}
                         {(item.address || item.commune) && (
-                          <Text style={styles.facilityAddress}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
                             <Ionicons name="location-outline" size={14} color="#666" />
-                            {' '}{item.address ? `${item.address}, ${item.commune}` : item.commune}
-                          </Text>
+                            <Text style={[styles.facilityAddress, { marginLeft: 4 }]}>
+                              {item.address ? `${item.address}, ${item.commune}` : item.commune}
+                            </Text>
+                          </View>
                         )}
 
                         {/* N° d'agrément (pour les pros) */}
