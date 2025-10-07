@@ -1079,7 +1079,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Principale gare routière d\'Abidjan pour départs vers l\'intérieur du pays. Compagnies: UTB, STB, SHT, TSR, JET Express, SBTA. Vérifiez horaires et tarifs sur place.',
       tag: '🚏 Gare Routière',
       location: 'Adjamé',
-      image: require('../../../assets/gare_routiere.jpg'),
+      image: require('../../assets/gare_routiere.jpg'),
       commune: 'Adjamé',
       date: 'Départs quotidiens dès 05:00'
     },
@@ -1090,7 +1090,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Aéroport Félix Houphouët-Boigny. 22 compagnies étrangères + Air Côte d\'Ivoire. Vols domestiques et internationaux. Renseignements vols, bagages et accès.',
       tag: '✈️ Aérien',
       location: 'Port-Bouët',
-      image: require('../../../assets/aeroport_fhb.jpg'),
+      image: require('../../assets/aeroport_fhb.jpg'),
       date: 'Ouvert 24h/24',
       source: 'https://www.abidjan-airport.com/',
       phones: [{ label: 'Informations', tel: '+225 27 21 27 52 00' }]
@@ -1100,7 +1100,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Compagnie aérienne nationale. Vols domestiques (Abidjan-Yamoussoukro, Abidjan-Bouaké, Abidjan-Korhogo) et internationaux (Paris, Dakar, Accra, Lagos, etc.).',
       tag: '✈️ Aérien',
       location: 'Aéroport FHB',
-      image: require('../../../assets/air_cote_ivoire.jpg'),
+      image: require('../../assets/air_cote_ivoire.jpg'),
       source: 'https://www.aircotedivoire.com/',
       phones: [{ label: 'Réservations', tel: '+225 27 20 25 88 00' }]
     },
