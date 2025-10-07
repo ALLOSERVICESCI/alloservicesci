@@ -474,12 +474,20 @@ export default function AjouterEtablissement() {
                     styles.serviceTileCircle,
                     isSelected && styles.serviceTileCircleSelected
                   ]}>
-                    <Text style={[
-                      styles.serviceTileIcon,
-                      isSelected && styles.serviceTileIconSelected
-                    ]}>
-                      {spec.icon}
-                    </Text>
+                    {spec.type === 'emoji' ? (
+                      <Text style={[
+                        styles.serviceTileIcon,
+                        isSelected && styles.serviceTileIconSelected
+                      ]}>
+                        {spec.icon}
+                      </Text>
+                    ) : (
+                      <Image
+                        source={spec.icon}
+                        style={styles.serviceTileImage}
+                        resizeMode="contain"
+                      />
+                    )}
                   </View>
                   <Text style={[
                     styles.serviceTileText,
