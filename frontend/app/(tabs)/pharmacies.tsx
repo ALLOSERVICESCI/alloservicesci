@@ -168,12 +168,23 @@ export default function Pharmacies() {
     setCity(name);
     setQuery(name);
     setShowSuggestions(false);
+    
+    // Annuler le timeout de recherche si il existe
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    
     await load();
   };
 
-  const CityButton = ({ name }: { name: string }) => (
-    <TouchableOpacity onPress={() => onSelectSuggestion(name)} style={[styles.cityItem, city === name && styles.cityItemActive]}>
-      <Text style={[styles.cityText, city === name && styles.cityTextActive]}>{name}</Text>
+  const CityButton = ({ result }: { result: { name: string; type: 'city' | 'commune' } }) => (
+    <TouchableOpacity onPress={() => onSelectSuggestion(result.name)} style={[styles.cityItem, city === result.name && styles.cityItemActive]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={[styles.cityText, city === result.name && styles.cityTextActive]}>{result.name}</Text>
+        <Text style={[styles.cityTypeText, city === result.name && styles.cityTypeTextActive]}>
+          {result.type === 'city' ? 'Ville' : 'Commune'}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 
