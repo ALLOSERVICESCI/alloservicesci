@@ -234,7 +234,7 @@ export default function AjouterEtablissement() {
                 style={styles.inputBare}
                 value={nomAnnonceur}
                 onChangeText={setNomAnnonceur}
-                placeholder="Dr. Jean Dupont"
+                placeholder="Dr. Allou Kouassi"
                 placeholderTextColor="#9AA3AF"
               />
             </View>
