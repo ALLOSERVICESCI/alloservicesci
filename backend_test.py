@@ -553,6 +553,198 @@ class BackendTester:
         except Exception as e:
             self.log_result('/ai/export/docx', 'POST', 'FAIL', f'Exception: {str(e)}')
 
+    def test_cities_endpoint(self):
+        """Test GET /api/cities - Should return all available cities"""
+        try:
+            response = self.session.get(f"{BASE_URL}/cities", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, dict) and 'cities' in data:
+                    cities = data['cities']
+                    if isinstance(cities, list):
+                        # Check if cities are sorted alphabetically
+                        if len(cities) > 1:
+                            sorted_cities = sorted(cities, key=lambda x: x.lower())
+                            is_sorted = cities == sorted_cities
+                            sort_status = "✅ sorted alphabetically" if is_sorted else "❌ NOT sorted alphabetically"
+                        else:
+                            sort_status = "✅ sorting N/A (≤1 city)"
+                        
+                        self.log_result('/cities', 'GET', 'PASS', 
+                                      f'Cities retrieved successfully: {len(cities)} cities, {sort_status}', 
+                                      {'count': len(cities), 'sample': cities[:5] if cities else []})
+                    else:
+                        self.log_result('/cities', 'GET', 'FAIL', f'cities field is not a list: {type(cities)}')
+                else:
+                    self.log_result('/cities', 'GET', 'FAIL', f'Missing cities field in response: {data}')
+            else:
+                self.log_result('/cities', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/cities', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_communes_all(self):
+        """Test GET /api/communes - Should return all available communes"""
+        try:
+            response = self.session.get(f"{BASE_URL}/communes", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, dict) and 'communes' in data:
+                    communes = data['communes']
+                    if isinstance(communes, list):
+                        # Check if communes are sorted alphabetically
+                        if len(communes) > 1:
+                            sorted_communes = sorted(communes, key=lambda x: x.lower())
+                            is_sorted = communes == sorted_communes
+                            sort_status = "✅ sorted alphabetically" if is_sorted else "❌ NOT sorted alphabetically"
+                        else:
+                            sort_status = "✅ sorting N/A (≤1 commune)"
+                        
+                        self.log_result('/communes', 'GET', 'PASS', 
+                                      f'All communes retrieved successfully: {len(communes)} communes, {sort_status}', 
+                                      {'count': len(communes), 'sample': communes[:5] if communes else []})
+                    else:
+                        self.log_result('/communes', 'GET', 'FAIL', f'communes field is not a list: {type(communes)}')
+                else:
+                    self.log_result('/communes', 'GET', 'FAIL', f'Missing communes field in response: {data}')
+            else:
+                self.log_result('/communes', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/communes', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_communes_abidjan(self):
+        """Test GET /api/communes?city=Abidjan - Should return communes for Abidjan"""
+        try:
+            response = self.session.get(f"{BASE_URL}/communes?city=Abidjan", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, dict) and 'communes' in data and 'city' in data:
+                    communes = data['communes']
+                    city = data['city']
+                    
+                    if isinstance(communes, list) and city == 'Abidjan':
+                        # Check if communes are sorted alphabetically
+                        if len(communes) > 1:
+                            sorted_communes = sorted(communes, key=lambda x: x.lower())
+                            is_sorted = communes == sorted_communes
+                            sort_status = "✅ sorted alphabetically" if is_sorted else "❌ NOT sorted alphabetically"
+                        else:
+                            sort_status = "✅ sorting N/A (≤1 commune)"
+                        
+                        self.log_result('/communes?city=Abidjan', 'GET', 'PASS', 
+                                      f'Abidjan communes retrieved successfully: {len(communes)} communes, {sort_status}', 
+                                      {'count': len(communes), 'city': city, 'communes': communes})
+                    else:
+                        self.log_result('/communes?city=Abidjan', 'GET', 'FAIL', 
+                                      f'Invalid response structure - communes: {type(communes)}, city: {city}')
+                else:
+                    self.log_result('/communes?city=Abidjan', 'GET', 'FAIL', 
+                                  f'Missing communes or city field in response: {data}')
+            else:
+                self.log_result('/communes?city=Abidjan', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/communes?city=Abidjan', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_search_abid(self):
+        """Test GET /api/cities-communes/search?q=Abid - Should return search results containing 'Abid'"""
+        try:
+            response = self.session.get(f"{BASE_URL}/cities-communes/search?q=Abid", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, dict) and 'results' in data and 'query' in data:
+                    results = data['results']
+                    query = data['query']
+                    
+                    if isinstance(results, list) and query == 'Abid':
+                        # Check maximum results limit (20)
+                        if len(results) <= 20:
+                            limit_status = "✅ within 20 results limit"
+                        else:
+                            limit_status = f"❌ exceeds 20 results limit ({len(results)})"
+                        
+                        # Check result structure and content
+                        valid_results = True
+                        contains_abid = False
+                        
+                        for result in results:
+                            if not isinstance(result, dict) or 'name' not in result or 'type' not in result:
+                                valid_results = False
+                                break
+                            if result['type'] not in ['city', 'commune']:
+                                valid_results = False
+                                break
+                            if 'abid' in result['name'].lower():
+                                contains_abid = True
+                        
+                        structure_status = "✅ valid structure" if valid_results else "❌ invalid structure"
+                        content_status = "✅ contains 'Abid'" if contains_abid else "⚠️ no 'Abid' matches"
+                        
+                        self.log_result('/cities-communes/search?q=Abid', 'GET', 'PASS', 
+                                      f'Search results retrieved: {len(results)} results, {limit_status}, {structure_status}, {content_status}', 
+                                      {'count': len(results), 'query': query, 'sample': results[:3] if results else []})
+                    else:
+                        self.log_result('/cities-communes/search?q=Abid', 'GET', 'FAIL', 
+                                      f'Invalid response structure - results: {type(results)}, query: {query}')
+                else:
+                    self.log_result('/cities-communes/search?q=Abid', 'GET', 'FAIL', 
+                                  f'Missing results or query field in response: {data}')
+            else:
+                self.log_result('/cities-communes/search?q=Abid', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/cities-communes/search?q=Abid', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_search_cocody(self):
+        """Test GET /api/cities-communes/search?q=Cocody - Should return search results containing 'Cocody'"""
+        try:
+            response = self.session.get(f"{BASE_URL}/cities-communes/search?q=Cocody", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, dict) and 'results' in data and 'query' in data:
+                    results = data['results']
+                    query = data['query']
+                    
+                    if isinstance(results, list) and query == 'Cocody':
+                        # Check maximum results limit (20)
+                        if len(results) <= 20:
+                            limit_status = "✅ within 20 results limit"
+                        else:
+                            limit_status = f"❌ exceeds 20 results limit ({len(results)})"
+                        
+                        # Check result structure and content
+                        valid_results = True
+                        contains_cocody = False
+                        
+                        for result in results:
+                            if not isinstance(result, dict) or 'name' not in result or 'type' not in result:
+                                valid_results = False
+                                break
+                            if result['type'] not in ['city', 'commune']:
+                                valid_results = False
+                                break
+                            if 'cocody' in result['name'].lower():
+                                contains_cocody = True
+                        
+                        structure_status = "✅ valid structure" if valid_results else "❌ invalid structure"
+                        content_status = "✅ contains 'Cocody'" if contains_cocody else "⚠️ no 'Cocody' matches"
+                        
+                        self.log_result('/cities-communes/search?q=Cocody', 'GET', 'PASS', 
+                                      f'Search results retrieved: {len(results)} results, {limit_status}, {structure_status}, {content_status}', 
+                                      {'count': len(results), 'query': query, 'sample': results[:3] if results else []})
+                    else:
+                        self.log_result('/cities-communes/search?q=Cocody', 'GET', 'FAIL', 
+                                      f'Invalid response structure - results: {type(results)}, query: {query}')
+                else:
+                    self.log_result('/cities-communes/search?q=Cocody', 'GET', 'FAIL', 
+                                  f'Missing results or query field in response: {data}')
+            else:
+                self.log_result('/cities-communes/search?q=Cocody', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/cities-communes/search?q=Cocody', 'GET', 'FAIL', f'Exception: {str(e)}')
+
     def run_all_tests(self):
         """Run comprehensive backend regression test suite"""
         print("🚀 Starting Comprehensive Backend Regression Test for Allô Services CI")
