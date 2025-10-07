@@ -244,6 +244,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAF9',
   },
+  backButton: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 },
+  backButtonContent: { flexDirection: 'row', alignItems: 'center' },
+  backButtonIcon: { fontSize: 24, color: '#0A7C3A', marginRight: 4 },
+  backButtonText: { fontSize: 16, color: '#0A7C3A', fontWeight: '600' },
   scrollContent: {
     paddingBottom: 40,
   },
