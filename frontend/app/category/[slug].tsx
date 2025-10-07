@@ -2153,7 +2153,11 @@ export default function CategoryPage() {
         </View>
       ) : sKey === 'transport' ? (
         <View style={styles.headerWrapperTransport}>
-          <ImageBackground source={bg} style={styles.header} resizeMode="cover" />
+          <ImageBackground source={bg} style={styles.header} resizeMode="cover">
+            <View style={styles.headerContentTransport}>
+              <Text style={styles.headerTitleTransport}>Transport</Text>
+            </View>
+          </ImageBackground>
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
             <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
