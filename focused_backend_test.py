@@ -10,7 +10,7 @@ import time
 import sys
 
 # Backend URL from frontend configuration
-BACKEND_URL = "https://sante-lokale.preview.emergentagent.com/api"
+BACKEND_URL = "https://civ-services-enhance.preview.emergentagent.com/api"
 
 def test_sanity_check():
     """1) Sanity: GET /api → 200"""
