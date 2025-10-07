@@ -2922,7 +2922,7 @@ const styles = StyleSheet.create({
   headerNoteTitle: { color: '#FF8A00', fontSize: 20, fontWeight: '900' },
   headerNoteSub: { color: '#fff', fontSize: 13, lineHeight: 18, marginTop: 4, maxWidth: '92%' },
 
-  // Urgence: header fixe sans effet + petite ombre basse
+  // Urgence: header fixe sans effet
   headerWrapperUrgence: {
     position: 'absolute',
     top: 0,
@@ -2931,11 +2931,6 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
-    }),
   },
   headerUrgence: { width: '100%', height: '100%', justifyContent: 'flex-end' },
   headerContentUrgence: { paddingHorizontal: 16, paddingBottom: 20 },
