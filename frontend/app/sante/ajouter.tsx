@@ -680,6 +680,10 @@ const styles = StyleSheet.create({
   serviceTileIconSelected: {
     color: '#FFFFFF'
   },
+  serviceTileImage: {
+    width: 40,
+    height: 40
+  },
   serviceTileText: {
     color: '#333',
     fontWeight: '500',
