@@ -985,29 +985,140 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
     }
   ],
   transport: [
+    // === CAMPAGNES DE SENSIBILISATION OSER ===
     {
-      title: 'SOTRA -- Reseau dAbidjan',
-      summary: 'Lignes de bus et bateaux-bus (horaires et plans).',
-      tag: 'Urbain',
+      title: 'OSER - Office de Sécurité Routière',
+      summary: 'Réduction de 31% des accidents (juin-sept 2024). L\'OSER sensibilise sur la sécurité routière et lutte contre l\'alcool au volant. Partenariat avec Brassivoire pour fournir alcootests et matériel de prévention.',
+      tag: '🚦 Sécurité Routière',
+      location: 'National',
+      source: 'https://oser.ci/',
+      phones: [{ label: 'Contact OSER', tel: '+225 27 20 22 35 00' }]
+    },
+    {
+      title: 'Campagne Yopougon - Sécurité pour tous',
+      summary: 'Sensibilisation massive lancée en janvier 2024 avec l\'AIPR. Démonstrations, ateliers de prévention, simulateurs et matériel pédagogique. Centre pilote de sensibilisation pour tous les usagers.',
+      tag: '🚦 Sensibilisation',
+      location: 'Yopougon',
+      date: 'Campagne permanente 2024',
+      source: 'https://aiprci.com/'
+    },
+    {
+      title: 'Stop Alcool au Volant',
+      summary: 'Contrôles renforcés avec alcootests. L\'alcool est l\'une des principales causes d\'accidents mortels. Respectez la limite légale et ne prenez jamais le volant après avoir bu.',
+      tag: '🚦 Prévention',
+      location: 'National'
+    },
+    
+    // === TRANSPORT URBAIN ABIDJAN ===
+    {
+      title: 'SOTRA - Bus et Bateaux-bus',
+      summary: 'Réseau principal de transport public à Abidjan. Lignes de bus desservant toutes les communes et bateaux-bus pour traverser les lagunes. Tarifs abordables.',
+      tag: '🚌 Transport Public',
       location: 'Abidjan',
-      date: 'Horaires: 05:30-22:00 (indicatif)',
-      source: 'https://www.sotra.ci/'
+      date: 'Horaires: 05:30-22:00',
+      source: 'https://www.sotra.ci/',
+      phones: [{ label: 'Informations', tel: '+225 27 21 35 78 00' }]
     },
     {
-      title: 'Aeroport FHB -- Vols & informations',
-      summary: 'Renseignements vols, bagages et acces.',
-      tag: 'Aerien',
-      location: 'Port-Bouet (Abidjan)',
-      date: 'Horaires: 24h/24',
-      source: 'https://www.abidjan-airport.com/'
-    },
-    {
-      title: 'STL -- Bateaux-bus lagunaires',
-      summary: 'Liaisons lagunaires Abidjan (selon lignes).',
-      tag: 'Lagunaires',
+      title: 'Wôrô-wôrô (Taxi Communal)',
+      summary: 'Taxis communaux oranges desservant des lignes spécifiques à travers Abidjan (sauf Plateau). Tarif de base: 200 FCFA pour trajets courts. Alternative populaire et économique.',
+      tag: '🚕 Taxi Communal',
       location: 'Abidjan',
-      date: 'Horaires: 06:00-20:00 (indicatif)'
+      commune: 'Toutes communes',
+      date: 'Tarif: à partir de 200 FCFA'
     },
+    {
+      title: 'Gbaka (Minibus)',
+      summary: 'Minibus privés assurant le transport commun sur des lignes fixes. Bien organisés et fiables. Prix forfaitaires selon la distance parcourue.',
+      tag: '🚐 Minibus',
+      location: 'Abidjan',
+      commune: 'Toutes communes',
+      date: 'Tarif: 200-500 FCFA'
+    },
+    {
+      title: 'Taxi Compteur',
+      summary: 'Taxis conventionnels avec compteur. Courses intercommunales: 2.000-4.000 FCFA. Disponibles dans toute la ville. Négociez le prix ou exigez le compteur.',
+      tag: '🚕 Taxi',
+      location: 'Abidjan',
+      date: 'Tarif: 2.000-4.000 FCFA (intercommunal)'
+    },
+    {
+      title: 'VTC - Yango & Autres',
+      summary: 'Services de VTC avec réservation par application mobile. Tarifs basés sur la distance et le temps. Paiement sécurisé et traçabilité des courses.',
+      tag: '🚗 VTC',
+      location: 'Abidjan',
+      commune: 'Service disponible partout'
+    },
+    
+    // === TRANSPORT INTERURBAIN ===
+    {
+      title: 'UTB - Union des Transports de Bouaké',
+      summary: 'Compagnie de transport interurbain desservant Bouaké et plusieurs villes de Côte d\'Ivoire depuis Abidjan. Bus confortables et climatisés.',
+      tag: '🚍 Interurbain',
+      location: 'Gare Routière d\'Adjamé',
+      phones: [{ label: 'Réservations', tel: '+225 27 22 37 74 00' }]
+    },
+    {
+      title: 'Ocean CI Transport',
+      summary: 'Transport de personnes et marchandises vers l\'est de la Côte d\'Ivoire. Bus VIP climatisés. Desserte régulière des principales villes.',
+      tag: '🚍 Interurbain',
+      location: 'Gare Routière d\'Adjamé',
+      source: 'https://oceancotedivoire.com/',
+      phones: [{ label: 'Contact', tel: '+225 07 08 82 00 00' }]
+    },
+    {
+      title: 'Gare Routière d\'Adjamé',
+      summary: 'Principale gare routière d\'Abidjan pour départs vers l\'intérieur du pays. Compagnies: UTB, STB, SHT, TSR, JET Express, SBTA. Vérifiez horaires et tarifs sur place.',
+      tag: '🚏 Gare Routière',
+      location: 'Adjamé',
+      commune: 'Adjamé',
+      date: 'Départs quotidiens dès 05:00'
+    },
+    
+    // === TRANSPORT AÉRIEN ===
+    {
+      title: 'Aéroport International FHB',
+      summary: 'Aéroport Félix Houphouët-Boigny. 22 compagnies étrangères + Air Côte d\'Ivoire. Vols domestiques et internationaux. Renseignements vols, bagages et accès.',
+      tag: '✈️ Aérien',
+      location: 'Port-Bouët',
+      date: 'Ouvert 24h/24',
+      source: 'https://www.abidjan-airport.com/',
+      phones: [{ label: 'Informations', tel: '+225 27 21 27 52 00' }]
+    },
+    {
+      title: 'Air Côte d\'Ivoire',
+      summary: 'Compagnie aérienne nationale. Vols domestiques (Abidjan-Yamoussoukro, Abidjan-Bouaké, Abidjan-Korhogo) et internationaux (Paris, Dakar, Accra, Lagos, etc.).',
+      tag: '✈️ Aérien',
+      location: 'Aéroport FHB',
+      source: 'https://www.aircotedivoire.com/',
+      phones: [{ label: 'Réservations', tel: '+225 27 20 25 88 00' }]
+    },
+    
+    // === INFORMATIONS PRATIQUES ===
+    {
+      title: 'Sécurité Routière - Règles Essentielles',
+      summary: 'Respectez le code de la route. Port de la ceinture obligatoire. Vitesse limitée: 50 km/h en ville, 90 km/h hors agglomération, 110 km/h sur autoroute. Interdiction téléphone au volant.',
+      tag: '🚦 Prévention',
+      location: 'National'
+    },
+    {
+      title: 'Contrôles Techniques Obligatoires',
+      summary: 'Tous les véhicules doivent passer le contrôle technique annuel. Centres agréés disponibles dans toutes les grandes villes. Amende en cas de non-conformité.',
+      tag: '🔧 Contrôle Technique',
+      location: 'National'
+    },
+    {
+      title: 'Numéros d\'Urgence Transport',
+      summary: 'En cas d\'accident: Police Secours (111/170), Pompiers (180), SAMU (185). Signalez tout accident même mineur. Gardez vos documents à jour (permis, carte grise, assurance).',
+      tag: '🚨 Urgences',
+      location: 'National',
+      phones: [
+        { label: 'Police Secours', tel: '111' },
+        { label: 'Police Secours', tel: '170' },
+        { label: 'Pompiers', tel: '180' },
+        { label: 'SAMU', tel: '185' }
+      ]
+    }
   ],
   alertes: [
     {
