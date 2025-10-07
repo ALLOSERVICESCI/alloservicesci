@@ -835,13 +835,13 @@ async def search_cities_communes(q: str = Query(..., min_length=1)):
         
         # Rechercher dans les villes
         city_criteria = {'city': regex_pattern}
-        pharmacy_cities = db.pharmacies.distinct('city', city_criteria)
-        health_cities = db.health_facilities.distinct('city', city_criteria)
+        pharmacy_cities = await db.pharmacies.distinct('city', city_criteria)
+        health_cities = await db.health_facilities.distinct('city', city_criteria)
         
         # Rechercher dans les communes
         commune_criteria = {'commune': regex_pattern}
-        pharmacy_communes = db.pharmacies.distinct('commune', commune_criteria)
-        health_communes = db.health_facilities.distinct('commune', commune_criteria)
+        pharmacy_communes = await db.pharmacies.distinct('commune', commune_criteria)
+        health_communes = await db.health_facilities.distinct('commune', commune_criteria)
         
         # Combiner les résultats
         results = []
@@ -849,21 +849,21 @@ async def search_cities_communes(q: str = Query(..., min_length=1)):
         communes_set = set()
         
         # Ajouter les villes
-        async for city in pharmacy_cities:
+        for city in pharmacy_cities:
             if city and city not in cities_set:
                 cities_set.add(city)
                 results.append({"name": city, "type": "city"})
-        async for city in health_cities:
+        for city in health_cities:
             if city and city not in cities_set:
                 cities_set.add(city)
                 results.append({"name": city, "type": "city"})
         
         # Ajouter les communes
-        async for commune in pharmacy_communes:
+        for commune in pharmacy_communes:
             if commune and commune not in communes_set:
                 communes_set.add(commune)
                 results.append({"name": commune, "type": "commune"})
-        async for commune in health_communes:
+        for commune in health_communes:
             if commune and commune not in communes_set:
                 communes_set.add(commune)
                 results.append({"name": commune, "type": "commune"})
