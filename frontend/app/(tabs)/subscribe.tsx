@@ -89,6 +89,18 @@ export default function Subscribe() {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
       <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+        {/* Bouton Retour */}
+        <TouchableOpacity 
+          onPress={() => router.back()} 
+          style={styles.backButton}
+          accessibilityRole="button"
+        >
+          <View style={styles.backButtonContent}>
+            <Text style={styles.backButtonIcon}>←</Text>
+            <Text style={styles.backButtonText}>Retour</Text>
+          </View>
+        </TouchableOpacity>
+
         <View style={styles.header}>
           <Text style={styles.brand}>{t('brand')}</Text>
           <Text style={styles.slogan}>{t('slogan')}</Text>
