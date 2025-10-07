@@ -2290,12 +2290,13 @@ export default function CategoryPage() {
               <View style={styles.searchContainer}>
                 <TextInput
                   value={communeQuery}
-                  onChangeText={(text) => {
-                    setCommuneQuery(text);
-                    setShowCommuneSuggestions(true);
+                  onChangeText={handleCommuneSearchChange}
+                  onFocus={() => {
+                    if (communeQuery.trim()) {
+                      setShowCommuneSuggestions(true);
+                    }
                   }}
-                  onFocus={() => setShowCommuneSuggestions(true)}
-                  placeholder={`Rechercher dans ${userCity}...`}
+                  placeholder="Rechercher une ville ou commune..."
                   style={styles.searchInput}
                   autoCapitalize="none"
                   autoCorrect={false}
