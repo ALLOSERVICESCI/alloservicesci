@@ -395,6 +395,31 @@ export default function Pharmacies() {
         <View style={styles.content}>
           {error && <Text style={styles.error}>{error}</Text>}
           {loading && <ActivityIndicator />}
+          
+          {/* Pharmacies utilisateur (toujours affichées en premier) */}
+          {userPharmacies.map((p) => (
+            <View key={`user-${p.id}`} style={styles.card}>
+              <Text style={styles.title}>{p.name}</Text>
+              <Text style={styles.meta}>
+                {p.address} • {p.city}
+                {p.commune && ` • ${p.commune}`}
+              </Text>
+              {p.phone && <Text style={styles.meta}>{p.phone}</Text>}
+              {p.opening_hours && <Text style={styles.meta}>{p.opening_hours}</Text>}
+              {p.agrement && <Text style={styles.meta}>Agrément: {p.agrement}</Text>}
+              <View style={styles.badgeRow}>
+                {p.duty_days && p.duty_days.length > 0 && (
+                  <Text style={[styles.badge, styles.badgeOnDuty]}>De garde</Text>
+                )}
+                {p.is_professional && (
+                  <Text style={[styles.badge, styles.badgePro]}>Professionnel</Text>
+                )}
+                <Text style={[styles.badge, styles.badgeLocal]}>Annonce locale</Text>
+              </View>
+            </View>
+          ))}
+
+          {/* Pharmacies API */}
           {items.map((p) => (
             <View key={p.id} style={styles.card}>
               <Text style={styles.title}>{p.name}</Text>
