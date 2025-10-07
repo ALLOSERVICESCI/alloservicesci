@@ -48,6 +48,12 @@ export default function CategoryPage() {
   const [communeChosen, setCommuneChosen] = useState(false);
   const [userSanteItems, setUserSanteItems] = useState<any[]>([]);
 
+  // Hook pour les villes et communes (API)
+  const { searchResults: communeResults, searchCitiesCommunes: searchCommunes, loading: communeSearchLoading } = useCitiesCommunes();
+
+  // Gérer la recherche de communes avec debouncing
+  const [communeSearchTimeout, setCommuneSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+
   // Education dropdown state
   const [eduMenuOpen, setEduMenuOpen] = useState(false);
   const [selectedEduType, setSelectedEduType] = useState<null | 'scolaire' | 'college_lycee' | 'formation'>(null);
