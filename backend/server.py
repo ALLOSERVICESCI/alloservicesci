@@ -802,15 +802,15 @@ async def list_communes(city: Optional[str] = Query(None)):
             criteria['city'] = {'$regex': f'^{city}$', '$options': 'i'}
         
         # Récupérer les communes uniques depuis les pharmacies et les établissements de santé
-        pharmacy_communes = db.pharmacies.distinct('commune', criteria)
-        health_communes = db.health_facilities.distinct('commune', criteria)
+        pharmacy_communes = await db.pharmacies.distinct('commune', criteria)
+        health_communes = await db.health_facilities.distinct('commune', criteria)
         
         # Combiner et dédupliquer
         all_communes = set()
-        async for commune in pharmacy_communes:
+        for commune in pharmacy_communes:
             if commune:
                 all_communes.add(commune)
-        async for commune in health_communes:
+        for commune in health_communes:
             if commune:
                 all_communes.add(commune)
         
