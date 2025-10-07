@@ -26,24 +26,24 @@ const TYPES_ETABLISSEMENT = [
 
 // Spécialités/Services médicaux avec icônes
 const SPECIALITES = [
-  { nom: 'Consultations générales', icon: '🩺' },
-  { nom: 'Urgences 24h/24', icon: '🚑' },
-  { nom: 'Pédiatrie', icon: '👶' },
-  { nom: 'Gynécologie-Obstétrique', icon: '🤰' },
-  { nom: 'Cardiologie', icon: '❤️' },
-  { nom: 'Chirurgie', icon: '⚕️' },
-  { nom: 'Laboratoire d\'analyses', icon: '🔬' },
-  { nom: 'Radiologie', icon: '🩻' },
-  { nom: 'Échographie', icon: '🔊' },
-  { nom: 'Scanner', icon: '💿' },
-  { nom: 'IRM', icon: '🎯' },
-  { nom: 'Ophtalmologie', icon: '👁️' },
-  { nom: 'Endocrinologue', icon: '🧬' },
-  { nom: 'Neurologue', icon: '🧠' },
-  { nom: 'Psychologue', icon: '🧘' },
-  { nom: 'Kinésithérapeute', icon: '💪' },
-  { nom: 'Ostéopathe', icon: '🦴' },
-  { nom: 'Maternité', icon: '🍼' }
+  { nom: 'Consultations générales', icon: '🩺', type: 'emoji' },
+  { nom: 'Urgences 24h/24', icon: '🚑', type: 'emoji' },
+  { nom: 'Pédiatrie', icon: '👶', type: 'emoji' },
+  { nom: 'Gynécologie-Obstétrique', icon: '🤰', type: 'emoji' },
+  { nom: 'Cardiologie', icon: '❤️', type: 'emoji' },
+  { nom: 'Chirurgie', icon: '⚕️', type: 'emoji' },
+  { nom: 'Laboratoire d\'analyses', icon: '🔬', type: 'emoji' },
+  { nom: 'Radiologie', icon: require('../../assets/icone_radio_irm_scanner.png'), type: 'image' },
+  { nom: 'Échographie', icon: require('../../assets/icone_echographie.png'), type: 'image' },
+  { nom: 'Scanner', icon: require('../../assets/icone_radio_irm_scanner.png'), type: 'image' },
+  { nom: 'IRM', icon: require('../../assets/icone_radio_irm_scanner.png'), type: 'image' },
+  { nom: 'Ophtalmologie', icon: '👁️', type: 'emoji' },
+  { nom: 'Endocrinologue', icon: '🧬', type: 'emoji' },
+  { nom: 'Neurologue', icon: '🧠', type: 'emoji' },
+  { nom: 'Psychologue', icon: '🧘', type: 'emoji' },
+  { nom: 'Kinésithérapeute', icon: '💪', type: 'emoji' },
+  { nom: 'Ostéopathe', icon: '🦴', type: 'emoji' },
+  { nom: 'Maternité', icon: '🍼', type: 'emoji' }
 ];
 
 export default function AjouterEtablissement() {
