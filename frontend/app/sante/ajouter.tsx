@@ -631,32 +631,35 @@ const styles = StyleSheet.create({
   suggestText: { color: '#111' },
   selectedCommune: { color: '#0A7C3A', fontWeight: '400', marginTop: 4 },
   
-  checkboxGrid: { 
-    flexDirection: 'row', 
-    flexWrap: 'wrap', 
-    gap: 10, 
-    marginTop: 8 
+  tilesContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    paddingVertical: 8,
+    paddingRight: 16
   },
-  checkboxItem: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    gap: 8, 
-    paddingVertical: 8, 
-    paddingHorizontal: 12, 
-    backgroundColor: '#F9FAFB', 
-    borderRadius: 8, 
-    borderWidth: 1, 
+  serviceTile: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    backgroundColor: '#F9FAFB',
+    borderRadius: 20,
+    borderWidth: 1.5,
     borderColor: '#E2E8F0',
-    minWidth: '45%'
+    minWidth: 100,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  checkboxLabel: { 
-    color: '#555', 
-    fontWeight: '400', 
-    fontSize: 13 
+  serviceTileSelected: {
+    backgroundColor: '#0A7C3A',
+    borderColor: '#0A7C3A'
   },
-  checkboxLabelActive: { 
-    color: '#0A7C3A', 
-    fontWeight: '500' 
+  serviceTileText: {
+    color: '#555',
+    fontWeight: '500',
+    fontSize: 13
+  },
+  serviceTileTextSelected: {
+    color: '#FFFFFF',
+    fontWeight: '600'
   },
   
   ratingSection: {
