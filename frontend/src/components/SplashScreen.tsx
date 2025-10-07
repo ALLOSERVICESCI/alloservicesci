@@ -96,6 +96,11 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
     return () => clearTimeout(timer);
   }, []);
 
+  const rotate = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
   return (
     <View style={styles.container}>
       <Animated.View
@@ -103,10 +108,24 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
           styles.logoContainer,
           {
             opacity: fadeAnim,
-            transform: [{ scale: scaleAnim }],
+            transform: [
+              { translateY: slideAnim },
+              { scale: Animated.multiply(scaleAnim, pulseAnim) },
+              { rotate: rotate },
+            ],
           },
         ]}
       >
+        {/* Effet de brillance */}
+        <Animated.View
+          style={[
+            styles.shineOverlay,
+            {
+              transform: [{ translateX: shineAnim }],
+            },
+          ]}
+        />
+        
         <Image
           source={require('../../assets/logo_digital_ci.png')}
           style={styles.logo}
