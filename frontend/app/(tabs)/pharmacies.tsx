@@ -308,7 +308,15 @@ export default function Pharmacies() {
                 }}
               />
               {(!!query || !!city) && (
-                <TouchableOpacity onPress={() => { setQuery(''); setCity(''); }} style={styles.clearBtn}>
+                <TouchableOpacity onPress={() => { 
+                  setQuery(''); 
+                  setCity(''); 
+                  setShowSuggestions(false);
+                  // Annuler le timeout de recherche
+                  if (searchTimeout) {
+                    clearTimeout(searchTimeout);
+                  }
+                }} style={styles.clearBtn}>
                   <Text style={styles.clearBtnText}>{t('clear') || 'Effacer'}</Text>
                 </TouchableOpacity>
               )}
