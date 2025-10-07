@@ -469,8 +469,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.3)',
     position: 'absolute',
     right: 0,
-    top: '50%',
-    transform: [{ translateY: -12 }], // Centrer verticalement (la moitié de la hauteur du bouton)
+    top: 2,
   },
   addBtnHeaderText: { 
     color: '#fff', 
