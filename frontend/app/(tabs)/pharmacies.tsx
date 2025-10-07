@@ -36,6 +36,9 @@ export default function Pharmacies() {
   // Gérer la recherche avec debouncing
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
 
+  // Pharmacies ajoutées par les utilisateurs
+  const [userPharmacies, setUserPharmacies] = useState<any[]>([]);
+
   const handleSearchQueryChange = (text: string) => {
     setQuery(text);
     
