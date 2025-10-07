@@ -773,15 +773,15 @@ async def list_cities():
     """Récupère toutes les villes disponibles dans la base de données"""
     try:
         # Récupérer les villes uniques depuis les pharmacies et les établissements de santé
-        pharmacy_cities = db.pharmacies.distinct('city')
-        health_cities = db.health_facilities.distinct('city')
+        pharmacy_cities = await db.pharmacies.distinct('city')
+        health_cities = await db.health_facilities.distinct('city')
         
         # Combiner et dédupliquer
         all_cities = set()
-        async for city in pharmacy_cities:
+        for city in pharmacy_cities:
             if city:
                 all_cities.add(city)
-        async for city in health_cities:
+        for city in health_cities:
             if city:
                 all_cities.add(city)
         
