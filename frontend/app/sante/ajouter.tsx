@@ -38,7 +38,7 @@ const SPECIALITES = [
   { nom: 'Scanner', icon: require('../../assets/icone_irm_scanner.png'), type: 'image' },
   { nom: 'IRM', icon: require('../../assets/icone_irm_scanner.png'), type: 'image' },
   { nom: 'Ophtalmologie', icon: '👁️', type: 'emoji' },
-  { nom: 'Endocrinologue', icon: '🧬', type: 'emoji' },
+  { nom: 'Endocrinologue', icon: require('../../assets/icone_endocrinologie.png'), type: 'image' },
   { nom: 'Neurologue', icon: '🧠', type: 'emoji' },
   { nom: 'Psychologue', icon: '🧘', type: 'emoji' },
   { nom: 'Kinésithérapeute', icon: '💪', type: 'emoji' },
