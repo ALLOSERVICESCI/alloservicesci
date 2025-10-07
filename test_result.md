@@ -413,6 +413,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ SEARCH COCODY TEST SUCCESSFUL - GET /api/cities-communes/search?q=Cocody endpoint working perfectly: Returns 200 with JSON structure containing 'results' array with 1 result (Cocody as commune type) and 'query' field set to 'Cocody'. Search functionality working correctly with case-insensitive regex matching across both cities and communes. Results properly structured with 'name' and 'type' fields, sorted by relevance then alphabetically. Within 20 results limit. All requirements met: 200 status, JSON format, search functionality, result limit, proper structure."
+      - working: true
+        agent: "testing"
+        comment: "✅ QUICK VERIFICATION TEST COMPLETED - Test rapide pour vérifier que les endpoints de recherche de villes et communes fonctionnent encore: 1) GET /api/cities → 200 + JSON avec 1 ville (Abidjan), triée alphabétiquement ✅, 2) GET /api/cities-communes/search?q=Abid → 200 + JSON avec 1 résultat (Abidjan), recherche fonctionnelle ✅, 3) GET /api/cities-communes/search?q=Cocody → 200 + JSON avec 1 résultat (Cocody), recherche fonctionnelle ✅. Tous les 3 endpoints donnent un statut 200 avec des données JSON comme demandé. Test de vérification rapide réussi avec 100% de succès (5/5 tests passés incluant /api/communes et /api/communes?city=Abidjan)."
 
   - task: "POST /api/ai/export/docx → 200 + Content-Type DOCX + Content-Disposition attachment + fichier non vide"
     implemented: true
