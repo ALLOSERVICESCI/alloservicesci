@@ -767,6 +767,121 @@ async def export_docx(payload: DocxRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ---------- CITIES & COMMUNES ----------
+@api.get('/cities')
+async def list_cities():
+    """Récupère toutes les villes disponibles dans la base de données"""
+    try:
+        # Récupérer les villes uniques depuis les pharmacies et les établissements de santé
+        pharmacy_cities = db.pharmacies.distinct('city')
+        health_cities = db.health_facilities.distinct('city')
+        
+        # Combiner et dédupliquer
+        all_cities = set()
+        async for city in pharmacy_cities:
+            if city:
+                all_cities.add(city)
+        async for city in health_cities:
+            if city:
+                all_cities.add(city)
+        
+        # Trier par ordre alphabétique
+        cities = sorted(list(all_cities), key=lambda x: x.lower())
+        
+        return {"cities": cities}
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération des villes: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la récupération des villes")
+
+@api.get('/communes')
+async def list_communes(city: Optional[str] = Query(None)):
+    """Récupère toutes les communes d'une ville ou toutes les communes disponibles"""
+    try:
+        criteria = {}
+        if city:
+            criteria['city'] = {'$regex': f'^{city}$', '$options': 'i'}
+        
+        # Récupérer les communes uniques depuis les pharmacies et les établissements de santé
+        pharmacy_communes = db.pharmacies.distinct('commune', criteria)
+        health_communes = db.health_facilities.distinct('commune', criteria)
+        
+        # Combiner et dédupliquer
+        all_communes = set()
+        async for commune in pharmacy_communes:
+            if commune:
+                all_communes.add(commune)
+        async for commune in health_communes:
+            if commune:
+                all_communes.add(commune)
+        
+        # Trier par ordre alphabétique
+        communes = sorted(list(all_communes), key=lambda x: x.lower())
+        
+        return {"communes": communes, "city": city}
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération des communes: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la récupération des communes")
+
+@api.get('/cities-communes/search')
+async def search_cities_communes(q: str = Query(..., min_length=1)):
+    """Recherche de villes et communes basée sur une requête"""
+    try:
+        query = q.strip()
+        if not query:
+            return {"results": []}
+        
+        # Utiliser une recherche regex pour trouver les correspondances
+        regex_pattern = {'$regex': f'.*{query}.*', '$options': 'i'}
+        
+        # Rechercher dans les villes
+        city_criteria = {'city': regex_pattern}
+        pharmacy_cities = db.pharmacies.distinct('city', city_criteria)
+        health_cities = db.health_facilities.distinct('city', city_criteria)
+        
+        # Rechercher dans les communes
+        commune_criteria = {'commune': regex_pattern}
+        pharmacy_communes = db.pharmacies.distinct('commune', commune_criteria)
+        health_communes = db.health_facilities.distinct('commune', commune_criteria)
+        
+        # Combiner les résultats
+        results = []
+        cities_set = set()
+        communes_set = set()
+        
+        # Ajouter les villes
+        async for city in pharmacy_cities:
+            if city and city not in cities_set:
+                cities_set.add(city)
+                results.append({"name": city, "type": "city"})
+        async for city in health_cities:
+            if city and city not in cities_set:
+                cities_set.add(city)
+                results.append({"name": city, "type": "city"})
+        
+        # Ajouter les communes
+        async for commune in pharmacy_communes:
+            if commune and commune not in communes_set:
+                communes_set.add(commune)
+                results.append({"name": commune, "type": "commune"})
+        async for commune in health_communes:
+            if commune and commune not in communes_set:
+                communes_set.add(commune)
+                results.append({"name": commune, "type": "commune"})
+        
+        # Trier par pertinence (commençant par la requête en premier) puis par ordre alphabétique
+        def sort_key(item):
+            name = item["name"].lower()
+            query_lower = query.lower()
+            starts_with = name.startswith(query_lower)
+            return (not starts_with, name)
+        
+        results.sort(key=sort_key)
+        
+        return {"results": results[:20], "query": query}  # Limiter à 20 résultats
+    except Exception as e:
+        logger.error(f"Erreur lors de la recherche: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la recherche")
+
 
 # Mount API
 app.include_router(api)
