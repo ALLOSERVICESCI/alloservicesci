@@ -1089,6 +1089,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Aéroport Félix Houphouët-Boigny. 22 compagnies étrangères + Air Côte d\'Ivoire. Vols domestiques et internationaux. Renseignements vols, bagages et accès.',
       tag: '✈️ Aérien',
       location: 'Port-Bouët',
+      image: 'https://images.pexels.com/photos/34197095/pexels-photo-34197095.jpeg?auto=compress&cs=tinysrgb&w=800',
       date: 'Ouvert 24h/24',
       source: 'https://www.abidjan-airport.com/',
       phones: [{ label: 'Informations', tel: '+225 27 21 27 52 00' }]
@@ -1098,6 +1099,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Compagnie aérienne nationale. Vols domestiques (Abidjan-Yamoussoukro, Abidjan-Bouaké, Abidjan-Korhogo) et internationaux (Paris, Dakar, Accra, Lagos, etc.).',
       tag: '✈️ Aérien',
       location: 'Aéroport FHB',
+      image: 'https://images.unsplash.com/photo-1728715213522-1919ad32060a?w=800&q=85',
       source: 'https://www.aircotedivoire.com/',
       phones: [{ label: 'Réservations', tel: '+225 27 20 25 88 00' }]
     },
