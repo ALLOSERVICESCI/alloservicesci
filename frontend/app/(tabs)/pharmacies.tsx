@@ -413,6 +413,8 @@ const styles = StyleSheet.create({
   cityItemActive: { backgroundColor: '#F3F7F5' },
   cityText: { color: '#0A7C3A' },
   cityTextActive: { color: '#0A7C3A', fontWeight: '800' },
+  cityTypeText: { color: '#666', fontSize: 12, fontStyle: 'italic' },
+  cityTypeTextActive: { color: '#0A7C3A', fontSize: 12, fontStyle: 'italic', fontWeight: '600' },
   noResult: { paddingVertical: 12, paddingHorizontal: 12 },
   noResultText: { color: '#666' },
 
