@@ -72,23 +72,12 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
 
     // Attendre 4.5 secondes puis démarrer l'animation de sortie
     const timer = setTimeout(() => {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleAnim, {
-          toValue: 1.2,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(rotateAnim, {
-          toValue: 2,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-      ]).start(() => {
+      // Animation de sortie: Fondu simple sans rotation
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }).start(() => {
         onFinish();
       });
     }, 4500);
