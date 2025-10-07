@@ -1964,11 +1964,21 @@ export default function CategoryPage() {
     const location: string | undefined = item?.location;
     const date: string | undefined = item?.date;
     const source: string | undefined = item?.source || item?.website;
+    const image: string | undefined = item?.image;
     const phones: { label?: string; tel?: string }[] = Array.isArray(item?.phones) ? item.phones : [];
     const ussd: { label?: string; code?: string }[] = Array.isArray(item?.ussd) ? item.ussd : [];
 
     return (
       <View style={styles.contentCard}>
+        {/* Image de la campagne si disponible */}
+        {image && (
+          <Image 
+            source={{ uri: image }} 
+            style={styles.campaignImage}
+            resizeMode="cover"
+          />
+        )}
+        
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{title}</Text>
           {getBrand(title) && (
