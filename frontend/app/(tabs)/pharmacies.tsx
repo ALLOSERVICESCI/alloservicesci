@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.3)',
     position: 'absolute',
-    right: 0,
+    right: 16,
     top: 2,
   },
   addBtnHeaderText: { 
