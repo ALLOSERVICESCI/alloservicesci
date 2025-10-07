@@ -2318,23 +2318,41 @@ export default function CategoryPage() {
               {showCommuneSuggestions && communeQuery.length > 0 && (
                 <View style={styles.suggestionsContainer}>
                   <ScrollView style={{ maxHeight: 200 }} nestedScrollEnabled>
-                    {filteredCommunes.length > 0 ? (
-                      filteredCommunes.map((commune, index) => (
+                    {communeSearchLoading && (
+                      <View style={[styles.suggestionItem, { flexDirection: 'row', alignItems: 'center' }]}>
+                        <ActivityIndicator size="small" color="#0A7C3A" style={{ marginRight: 8 }} />
+                        <Text style={[styles.suggestionText, { color: '#666' }]}>Recherche en cours...</Text>
+                      </View>
+                    )}
+                    {!communeSearchLoading && communeResults.length > 0 ? (
+                      communeResults.map((result, index) => (
                         <TouchableOpacity
                           key={index}
                           onPress={() => {
-                            setCommuneQuery(commune);
+                            setCommuneQuery(result.name);
+                            setCommuneChosen(true);
                             setShowCommuneSuggestions(false);
+                            // Annuler le timeout de recherche
+                            if (communeSearchTimeout) {
+                              clearTimeout(communeSearchTimeout);
+                            }
                           }}
                           style={styles.suggestionItem}
                         >
-                          <Text style={styles.suggestionText}>{commune}</Text>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Text style={styles.suggestionText}>{result.name}</Text>
+                            <Text style={{ color: '#666', fontSize: 12, fontStyle: 'italic' }}>
+                              {result.type === 'city' ? 'Ville' : 'Commune'}
+                            </Text>
+                          </View>
                         </TouchableOpacity>
                       ))
                     ) : (
-                      <View style={styles.suggestionItem}>
-                        <Text style={[styles.suggestionText, { color: '#999' }]}>Aucune commune trouvée</Text>
-                      </View>
+                      !communeSearchLoading && communeQuery.length > 2 && (
+                        <View style={styles.suggestionItem}>
+                          <Text style={[styles.suggestionText, { color: '#666' }]}>Aucun résultat trouvé</Text>
+                        </View>
+                      )
                     )}
                   </ScrollView>
                 </View>
