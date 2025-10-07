@@ -24,26 +24,26 @@ const TYPES_ETABLISSEMENT = [
   'Laboratoire d\'analyse'
 ];
 
-// Spécialités/Services médicaux
+// Spécialités/Services médicaux avec icônes
 const SPECIALITES = [
-  'Consultations générales',
-  'Urgences 24h/24',
-  'Pédiatrie',
-  'Gynécologie-Obstétrique',
-  'Cardiologie',
-  'Chirurgie',
-  'Laboratoire d\'analyses',
-  'Radiologie',
-  'Échographie',
-  'Scanner',
-  'IRM',
-  'Ophtalmologie',
-  'Endocrinologue',
-  'Neurologue',
-  'Psychologue',
-  'Kinésithérapeute',
-  'Ostéopathe',
-  'Maternité'
+  { nom: 'Consultations générales', icon: '🩺' },
+  { nom: 'Urgences 24h/24', icon: '🚑' },
+  { nom: 'Pédiatrie', icon: '👶' },
+  { nom: 'Gynécologie-Obstétrique', icon: '🤰' },
+  { nom: 'Cardiologie', icon: '❤️' },
+  { nom: 'Chirurgie', icon: '⚕️' },
+  { nom: 'Laboratoire d\'analyses', icon: '🔬' },
+  { nom: 'Radiologie', icon: '📡' },
+  { nom: 'Échographie', icon: '📊' },
+  { nom: 'Scanner', icon: '🏥' },
+  { nom: 'IRM', icon: '🧲' },
+  { nom: 'Ophtalmologie', icon: '👁️' },
+  { nom: 'Endocrinologue', icon: '💊' },
+  { nom: 'Neurologue', icon: '🧠' },
+  { nom: 'Psychologue', icon: '🧘' },
+  { nom: 'Kinésithérapeute', icon: '💪' },
+  { nom: 'Ostéopathe', icon: '🦴' },
+  { nom: 'Maternité', icon: '🍼' }
 ];
 
 export default function AjouterEtablissement() {
