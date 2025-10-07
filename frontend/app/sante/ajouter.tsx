@@ -43,7 +43,7 @@ const SPECIALITES = [
   { nom: 'Psychologue', icon: '🧘', type: 'emoji' },
   { nom: 'Kinésithérapeute', icon: '💪', type: 'emoji' },
   { nom: 'Ostéopathe', icon: '🦴', type: 'emoji' },
-  { nom: 'Maternité', icon: '🍼', type: 'emoji' }
+  { nom: 'Maternité', icon: require('../../assets/icone_maternite.png'), type: 'image' }
 ];
 
 export default function AjouterEtablissement() {
