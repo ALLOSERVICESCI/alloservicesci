@@ -289,8 +289,12 @@ export default function Pharmacies() {
               <Ionicons name="search-outline" size={18} color={nearMe ? '#999' : '#666'} style={{ marginRight: 8 }} />
               <TextInput
                 value={query}
-                onChangeText={(txt) => { setQuery(txt); setShowSuggestions(true); }}
-                onFocus={() => setShowSuggestions(true)}
+                onChangeText={handleSearchQueryChange}
+                onFocus={() => {
+                  if (!nearMe && query.trim()) {
+                    setShowSuggestions(true);
+                  }
+                }}
                 placeholder="Rechercher une ville ou commune..."
                 placeholderTextColor={nearMe ? '#CCC' : '#999'}
                 style={styles.searchInputFlex}
@@ -299,7 +303,7 @@ export default function Pharmacies() {
                 editable={!nearMe}
                 returnKeyType="search"
                 onSubmitEditing={() => {
-                  if (!nearMe && filteredCities[0]) onSelectSuggestion(filteredCities[0]);
+                  if (!nearMe && searchResults[0]) onSelectSuggestion(searchResults[0].name);
                   setShowSuggestions(false);
                 }}
               />
