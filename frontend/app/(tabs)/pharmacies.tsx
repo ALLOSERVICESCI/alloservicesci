@@ -29,14 +29,33 @@ export default function Pharmacies() {
   const [showResetLink, setShowResetLink] = useState(false);
 
   const { t, lang } = useI18n();
+  
+  // Utiliser le hook pour les villes et communes
+  const { searchResults, searchCitiesCommunes, loading: searchLoading } = useCitiesCommunes();
 
-  const sortedCities = useMemo(() => CI_CITIES.slice().sort((a,b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })), []);
-  const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  const filteredCities = useMemo(() => {
-    const q = normalize(query);
-    if (!q) return sortedCities;
-    return sortedCities.filter((c) => normalize(c).includes(q));
-  }, [sortedCities, query]);
+  // Gérer la recherche avec debouncing
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  const handleSearchQueryChange = (text: string) => {
+    setQuery(text);
+    
+    // Annuler le timeout précédent
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    
+    // Définir un nouveau timeout pour éviter trop d'appels API
+    const newTimeout = setTimeout(() => {
+      if (text.trim()) {
+        searchCitiesCommunes(text.trim());
+        setShowSuggestions(true);
+      } else {
+        setShowSuggestions(false);
+      }
+    }, 300);
+    
+    setSearchTimeout(newTimeout);
+  };
 
   const getLocation = async () => {
     try {
