@@ -14,14 +14,14 @@ const CI_COMMUNES = [
   'Divo', 'Gagnoa', 'Abengourou', 'Grand-Bassam', 'Assinie'
 ];
 
-// Types d'établissements
+// Types d'établissements avec icônes
 const TYPES_ETABLISSEMENT = [
-  'Hôpital public',
-  'Clinique privée',
-  'Centre de santé',
-  'Cabinet médical',
-  'Centre de vaccination',
-  'Laboratoire d\'analyse'
+  { nom: 'Hôpital public', icon: '🏥' },
+  { nom: 'Clinique privée', icon: '🏨' },
+  { nom: 'Centre de santé', icon: '⚕️' },
+  { nom: 'Cabinet médical', icon: '🩺' },
+  { nom: 'Centre de vaccination', icon: '💉' },
+  { nom: 'Laboratoire d\'analyse', icon: '🔬' }
 ];
 
 // Spécialités/Services médicaux avec icônes
