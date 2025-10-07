@@ -54,6 +54,28 @@ export default function CategoryPage() {
   // Gérer la recherche de communes avec debouncing
   const [communeSearchTimeout, setCommuneSearchTimeout] = useState<NodeJS.Timeout | null>(null);
 
+  // Fonction pour gérer la recherche de communes avec debouncing
+  const handleCommuneSearchChange = (text: string) => {
+    setCommuneQuery(text);
+    
+    // Annuler le timeout précédent
+    if (communeSearchTimeout) {
+      clearTimeout(communeSearchTimeout);
+    }
+    
+    // Définir un nouveau timeout pour éviter trop d'appels API
+    const newTimeout = setTimeout(() => {
+      if (text.trim()) {
+        searchCommunes(text.trim());
+        setShowCommuneSuggestions(true);
+      } else {
+        setShowCommuneSuggestions(false);
+      }
+    }, 300);
+    
+    setCommuneSearchTimeout(newTimeout);
+  };
+
   // Education dropdown state
   const [eduMenuOpen, setEduMenuOpen] = useState(false);
   const [selectedEduType, setSelectedEduType] = useState<null | 'scolaire' | 'college_lycee' | 'formation'>(null);
