@@ -379,7 +379,7 @@ export default function Pharmacies() {
               <Text style={styles.meta}>{p.address} • {p.city}</Text>
               {p.phone && <Text style={styles.meta}>{p.phone}</Text>}
               {p.opening_hours && <Text style={styles.meta}>{p.opening_hours}</Text>}
-              {p.on_duty && <Text style={[styles.badge, styles.badgeOnDuty]}>De garde</Text>}
+              {(p.on_duty || p.duty_days) && <Text style={[styles.badge, styles.badgeOnDuty]}>De garde</Text>}
             </View>
           ))}
         </View>
