@@ -3037,6 +3037,25 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8 },
+      android: { elevation: 8 },
+      default: { boxShadow: '0px 4px 12px rgba(0,0,0,0.25)' as any },
+    }),
+  },
+  headerContentTransport: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+  },
+  headerTitleTransport: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   headerWrapperServices: {
     position: 'absolute',
