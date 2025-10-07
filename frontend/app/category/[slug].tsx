@@ -2988,11 +2988,6 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
-    }),
   },
   headerWrapperEducation: {
     position: 'absolute',
@@ -3002,11 +2997,6 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
-    }),
   },
   headerWrapperExamens: {
     position: 'absolute',
@@ -3016,11 +3006,6 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
-    }),
   },
   headerWrapperAgriculture: {
     position: 'absolute',
@@ -3030,11 +3015,6 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
-    }),
   },
   headerWrapperLoisirs: {
     position: 'absolute',
@@ -3044,11 +3024,6 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
-    }),
   },
   headerWrapperTransport: {
     position: 'absolute',
@@ -3058,11 +3033,6 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
-    }),
   },
   headerWrapperServices: {
     position: 'absolute',
@@ -3072,11 +3042,6 @@ const styles = StyleSheet.create({
     height: 250,
     zIndex: 10,
     backgroundColor: 'transparent',
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28, shadowRadius: 14 },
-      android: { elevation: 14 },
-      default: { boxShadow: '0px 18px 28px rgba(0,0,0,0.20)' as any },
-    }),
   },
   headerWrapperEmplois: {
     position: 'absolute',
