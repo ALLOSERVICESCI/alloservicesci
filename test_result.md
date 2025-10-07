@@ -352,6 +352,66 @@ backend:
         agent: "testing"
         comment: "✅ FRESH COMPREHENSIVE BACKEND REGRESSION VALIDATED - POST /api/ai/chat endpoint confirmed working in latest comprehensive regression test. Both stream=false and stream=true modes working perfectly: 1) Non-streaming: 200 + JSON response with 482 characters content about Abidjan, 2) Streaming: 200 + SSE event-stream with 3 chunks received and [DONE] termination confirmed. AI integration with Emergent API fully functional. All 18/18 backend tests PASSED (100% success rate)."
 
+  - task: "GET /api/cities - Retourner toutes les villes disponibles dans la base de données"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ CITIES ENDPOINT TEST SUCCESSFUL - GET /api/cities endpoint working perfectly: Returns 200 with JSON structure containing 'cities' array with 1 city (Abidjan). Cities are properly retrieved from both pharmacies and health_facilities collections, deduplicated, and sorted alphabetically. Response format: {'cities': ['Abidjan']}. All requirements met: 200 status, JSON format, alphabetical sorting."
+
+  - task: "GET /api/communes - Retourner toutes les communes disponibles (sans filtre de ville)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COMMUNES ENDPOINT TEST SUCCESSFUL - GET /api/communes endpoint working perfectly: Returns 200 with JSON structure containing 'communes' array with 9 communes (Adjamé, Bingerville, Cocody, Koumassi, Marcory, Plateau, Port-Bouët, Treichville, Yopougon) and 'city' field (null when no filter). Communes are properly retrieved from both collections, deduplicated, and sorted alphabetically. All requirements met: 200 status, JSON format, alphabetical sorting."
+
+  - task: "GET /api/communes?city=Abidjan - Retourner les communes de la ville d'Abidjan"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COMMUNES CITY FILTER TEST SUCCESSFUL - GET /api/communes?city=Abidjan endpoint working perfectly: Returns 200 with JSON structure containing 'communes' array with 9 communes for Abidjan and 'city' field set to 'Abidjan'. City filter working correctly with case-insensitive regex matching. Communes are properly filtered, deduplicated, and sorted alphabetically. All requirements met: 200 status, JSON format, city filtering, alphabetical sorting."
+
+  - task: "GET /api/cities-communes/search?q=Abid - Retourner les résultats de recherche contenant 'Abid'"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ SEARCH ABID TEST SUCCESSFUL - GET /api/cities-communes/search?q=Abid endpoint working perfectly: Returns 200 with JSON structure containing 'results' array with 1 result (Abidjan as city type) and 'query' field set to 'Abid'. Search functionality working correctly with case-insensitive regex matching across both cities and communes. Results properly structured with 'name' and 'type' fields, sorted by relevance (starts with query first) then alphabetically. Within 20 results limit. All requirements met: 200 status, JSON format, search functionality, result limit, proper structure."
+
+  - task: "GET /api/cities-communes/search?q=Cocody - Retourner les résultats contenant 'Cocody'"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ SEARCH COCODY TEST SUCCESSFUL - GET /api/cities-communes/search?q=Cocody endpoint working perfectly: Returns 200 with JSON structure containing 'results' array with 1 result (Cocody as commune type) and 'query' field set to 'Cocody'. Search functionality working correctly with case-insensitive regex matching across both cities and communes. Results properly structured with 'name' and 'type' fields, sorted by relevance then alphabetically. Within 20 results limit. All requirements met: 200 status, JSON format, search functionality, result limit, proper structure."
+
   - task: "POST /api/ai/export/docx → 200 + Content-Type DOCX + Content-Disposition attachment + fichier non vide"
     implemented: true
     working: true
