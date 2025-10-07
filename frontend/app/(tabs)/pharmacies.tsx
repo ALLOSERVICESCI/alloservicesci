@@ -212,17 +212,28 @@ export default function Pharmacies() {
           </TouchableOpacity>
           <View style={styles.titleWrap}>
             <View style={styles.headerRow} testID="pharmaciesHeaderRow" dataSet={{ testid: 'pharmaciesHeaderRow' }}>
-              <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle" dataSet={{ testid: 'pharmaciesHeaderTitle' }} accessibilityLabel="Pharmacies" nativeID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
-              {(nearMe || (city && !nearMe)) && (
-                <>
-                  <Text style={styles.headerDot} testID="headerDot" dataSet={{ testid: 'headerDot' }}> • </Text>
-                  {nearMe ? (
-                    <Text style={styles.nearHeader} testID="nearHeaderLabel" dataSet={{ testid: 'nearHeaderLabel' }} accessibilityLabel="Autour de moi" nativeID="nearHeaderLabel">{t('nearMe')}</Text>
-                  ) : (
-                    <Text style={styles.cityHeader} testID="cityHeaderLabel" dataSet={{ testid: 'cityHeaderLabel' }} accessibilityLabel={city} nativeID="cityHeaderLabel">{city}</Text>
-                  )}
-                </>
-              )}
+              <View style={styles.titleSection}>
+                <Text style={styles.headerTitle} testID="pharmaciesHeaderTitle" dataSet={{ testid: 'pharmaciesHeaderTitle' }} accessibilityLabel="Pharmacies" nativeID="pharmaciesHeaderTitle">{t('tabPharm')}</Text>
+                {(nearMe || (city && !nearMe)) && (
+                  <>
+                    <Text style={styles.headerDot} testID="headerDot" dataSet={{ testid: 'headerDot' }}> • </Text>
+                    {nearMe ? (
+                      <Text style={styles.nearHeader} testID="nearHeaderLabel" dataSet={{ testid: 'nearHeaderLabel' }} accessibilityLabel="Autour de moi" nativeID="nearHeaderLabel">{t('nearMe')}</Text>
+                    ) : (
+                      <Text style={styles.cityHeader} testID="cityHeaderLabel" dataSet={{ testid: 'cityHeaderLabel' }} accessibilityLabel={city} nativeID="cityHeaderLabel">{city}</Text>
+                    )}
+                  </>
+                )}
+              </View>
+              <TouchableOpacity 
+                onPress={() => router.push('/pharmacies/ajouter')} 
+                accessibilityRole="button" 
+                accessibilityLabel="Ajouter une pharmacie"
+                style={styles.addBtnHeader}
+              >
+                <Ionicons name="add-circle-outline" size={20} color="#fff" />
+                <Text style={styles.addBtnHeaderText}>Ajouter</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ImageBackground>
