@@ -633,32 +633,42 @@ const styles = StyleSheet.create({
   
   tilesContainer: {
     flexDirection: 'row',
-    gap: 10,
-    paddingVertical: 8,
-    paddingRight: 16
+    gap: 16,
+    paddingVertical: 12,
+    paddingRight: 20
   },
   serviceTile: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    backgroundColor: '#F9FAFB',
-    borderRadius: 20,
-    borderWidth: 1.5,
-    borderColor: '#E2E8F0',
-    minWidth: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 100,
+    gap: 8
+  },
+  serviceTileCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#E8F4FF',
     alignItems: 'center',
     justifyContent: 'center'
   },
-  serviceTileSelected: {
-    backgroundColor: '#0A7C3A',
-    borderColor: '#0A7C3A'
+  serviceTileCircleSelected: {
+    backgroundColor: '#0A7C3A'
+  },
+  serviceTileIcon: {
+    fontSize: 32,
+    color: '#2196F3'
+  },
+  serviceTileIconSelected: {
+    color: '#FFFFFF'
   },
   serviceTileText: {
-    color: '#555',
+    color: '#333',
     fontWeight: '500',
-    fontSize: 13
+    fontSize: 12,
+    textAlign: 'center'
   },
   serviceTileTextSelected: {
-    color: '#FFFFFF',
+    color: '#0A7C3A',
     fontWeight: '600'
   },
   
