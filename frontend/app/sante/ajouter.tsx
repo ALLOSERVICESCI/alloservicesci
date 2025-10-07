@@ -33,7 +33,7 @@ const SPECIALITES = [
   { nom: 'Cardiologie', icon: '❤️', type: 'emoji' },
   { nom: 'Chirurgie', icon: '⚕️', type: 'emoji' },
   { nom: 'Laboratoire d\'analyses', icon: '🔬', type: 'emoji' },
-  { nom: 'Radiologie', icon: '🩻', type: 'emoji' },
+  { nom: 'Radiologie', icon: require('../../assets/icone_radiologie.png'), type: 'image' },
   { nom: 'Échographie', icon: '📳', type: 'emoji' },
   { nom: 'Scanner', icon: '💽', type: 'emoji' },
   { nom: 'IRM', icon: '🧲', type: 'emoji' },
