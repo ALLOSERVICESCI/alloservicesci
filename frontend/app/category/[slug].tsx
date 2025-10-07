@@ -1973,7 +1973,7 @@ export default function CategoryPage() {
         {/* Image de la campagne si disponible */}
         {image && (
           <Image 
-            source={{ uri: image }} 
+            source={typeof image === 'string' ? { uri: image } : image} 
             style={styles.campaignImage}
             resizeMode="cover"
           />
