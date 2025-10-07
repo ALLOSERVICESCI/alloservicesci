@@ -404,8 +404,10 @@ const styles = StyleSheet.create({
   chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, marginRight: 8 },
   chipNear: { backgroundColor: '#E3F2FD', borderColor: '#0D6EFD' },
   chipOnDuty: { backgroundColor: '#E6F4EA', borderColor: '#0A7C3A' },
+  chipCommunes: { backgroundColor: '#FFF4E6', borderColor: '#FF8A00' },
   chipTextNear: { color: '#0D6EFD', fontSize: 12, fontWeight: '600' },
   chipTextOn: { color: '#0A7C3A', fontSize: 12, fontWeight: '600' },
+  chipTextCommunes: { color: '#FF8A00', fontSize: 12, fontWeight: '600' },
   chipInactive: { backgroundColor: '#F4F5F6', borderColor: '#DADADA' },
   chipTextInactive: { color: '#666', fontSize: 12, fontWeight: '600' },
 
