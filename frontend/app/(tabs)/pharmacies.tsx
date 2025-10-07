@@ -7,7 +7,7 @@ import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
-import { CI_CITIES } from '../../src/utils/cities';
+import { useCitiesCommunes } from '../../src/hooks/useCitiesCommunes';
 
 const HEADER_IMG = { uri: 'https://customer-assets.emergentagent.com/job_allo-assistance/artifacts/k9bf6flt_pharmaciebis_bg.png' };
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
