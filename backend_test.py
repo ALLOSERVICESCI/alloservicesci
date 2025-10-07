@@ -888,6 +888,69 @@ def run_quick_smoke_test():
     
     return 0 if len(failed) == 0 else 1
 
+def run_cities_communes_test():
+    """Run specific test for cities and communes endpoints as requested"""
+    print("🚀 Test des nouveaux endpoints pour les villes et communes")
+    print(f"📍 Base URL: {BASE_URL}")
+    print("=" * 80)
+    
+    tester = BackendTester()
+    
+    print("\n🏙️ TESTING CITIES AND COMMUNES ENDPOINTS")
+    print("=" * 50)
+    
+    # Test 1: GET /api/cities
+    print("\n1) GET /api/cities - Doit retourner toutes les villes disponibles dans la base de données")
+    tester.test_cities_endpoint()
+    
+    # Test 2: GET /api/communes
+    print("\n2) GET /api/communes - Doit retourner toutes les communes disponibles (sans filtre de ville)")
+    tester.test_communes_all()
+    
+    # Test 3: GET /api/communes?city=Abidjan
+    print("\n3) GET /api/communes?city=Abidjan - Doit retourner les communes de la ville d'Abidjan")
+    tester.test_communes_abidjan()
+    
+    # Test 4: GET /api/cities-communes/search?q=Abid
+    print("\n4) GET /api/cities-communes/search?q=Abid - Doit retourner les résultats de recherche contenant 'Abid'")
+    tester.test_search_abid()
+    
+    # Test 5: GET /api/cities-communes/search?q=Cocody
+    print("\n5) GET /api/cities-communes/search?q=Cocody - Doit retourner les résultats contenant 'Cocody'")
+    tester.test_search_cocody()
+    
+    # Summary
+    print("\n" + "=" * 80)
+    print("📊 RÉSULTATS DU TEST VILLES ET COMMUNES")
+    print("=" * 80)
+    
+    passed = [r for r in tester.test_results if r['status'] == 'PASS']
+    failed = [r for r in tester.test_results if r['status'] == 'FAIL']
+    
+    total = len(tester.test_results)
+    pass_rate = (len(passed) / total * 100) if total > 0 else 0
+    
+    print(f"✅ RÉUSSIS: {len(passed)}")
+    print(f"❌ ÉCHECS: {len(failed)}")
+    print(f"📈 TAUX DE RÉUSSITE: {pass_rate:.1f}% ({len(passed)}/{total})")
+    
+    if failed:
+        print(f"\n❌ TESTS ÉCHOUÉS ({len(failed)}):")
+        for result in failed:
+            print(f"   • {result['method']} {result['endpoint']}: {result['reason']}")
+    else:
+        print("\n🎉 TOUS LES TESTS SONT RÉUSSIS!")
+        print("✅ Tous les endpoints retournent un 200 avec les données appropriées au format JSON")
+        print("✅ Les résultats sont triés par ordre alphabétique")
+        print("✅ L'endpoint de recherche limite à 20 résultats maximum")
+    
+    print("\n📋 RAPPORT DÉTAILLÉ:")
+    for result in tester.test_results:
+        status_icon = "✅" if result['status'] == 'PASS' else "❌"
+        print(f"{status_icon} {result['method']} {result['endpoint']}: {result['reason']}")
+    
+    return 0 if len(failed) == 0 else 1
+
 def run_review_request_test():
     """Run specific test according to review request requirements"""
     print("🚀 Test général du backend FastAPI exposé sous le préfixe /api")
