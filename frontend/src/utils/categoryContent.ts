@@ -1021,7 +1021,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Réseau principal de transport public à Abidjan. Lignes de bus desservant toutes les communes et bateaux-bus pour traverser les lagunes. Tarifs abordables.',
       tag: '🚌 Transport Public',
       location: 'Abidjan',
-      image: 'https://images.pexels.com/photos/34185593/pexels-photo-34185593.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: require('../../../assets/sotra.jpg'),
       date: 'Horaires: 05:30-22:00',
       source: 'https://www.sotra.ci/',
       phones: [{ label: 'Informations', tel: '+225 27 21 35 78 00' }]
