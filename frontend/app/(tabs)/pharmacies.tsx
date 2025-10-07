@@ -316,9 +316,15 @@ export default function Pharmacies() {
             {!nearMe && showSuggestions && query.length > 0 && (
               <View style={styles.dropdown} testID="citySuggestions" dataSet={{ testid: 'citySuggestions' }}>
                 <View style={{ maxHeight: 220 }}>
-                  {filteredCities.map((c) => (<CityButton key={c} name={c} />))}
-                  {filteredCities.length === 0 && (
-                    <View style={styles.noResult}><Text style={styles.noResultText}>{t('notAvailable')}</Text></View>
+                  {searchLoading && (
+                    <View style={[styles.noResult, { flexDirection: 'row', alignItems: 'center' }]}>
+                      <ActivityIndicator size="small" color="#0A7C3A" style={{ marginRight: 8 }} />
+                      <Text style={styles.noResultText}>Recherche en cours...</Text>
+                    </View>
+                  )}
+                  {!searchLoading && searchResults.map((result) => (<CityButton key={`${result.type}-${result.name}`} result={result} />))}
+                  {!searchLoading && searchResults.length === 0 && query.length > 2 && (
+                    <View style={styles.noResult}><Text style={styles.noResultText}>{t('notAvailable') || 'Aucun résultat trouvé'}</Text></View>
                   )}
                 </View>
               </View>
