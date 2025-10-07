@@ -9,25 +9,68 @@ interface SplashScreenProps {
 
 export default function SplashScreen({ onFinish }: SplashScreenProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const scaleAnim = useRef(new Animated.Value(0.5)).current;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const slideAnim = useRef(new Animated.Value(100)).current;
+  const shineAnim = useRef(new Animated.Value(-width)).current;
 
   useEffect(() => {
-    // Animation d'entrée plus rapide
+    // Animation d'entrée combinée : Slide + Rotation + Fade
     Animated.parallel([
+      // Fade In
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 400,
+        duration: 600,
         useNativeDriver: true,
       }),
+      // Slide from bottom
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        tension: 40,
+        friction: 8,
+        useNativeDriver: true,
+      }),
+      // Scale + Rotation
       Animated.spring(scaleAnim, {
         toValue: 1,
-        tension: 30,
+        tension: 25,
         friction: 6,
         useNativeDriver: true,
       }),
-    ]).start();
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      // Animation de pulse continue
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1.05,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
 
-    // Attendre 4.5 secondes (2.5 + 2 secondes supplémentaires) puis démarrer l'animation de sortie
+      // Animation de brillance qui traverse le logo
+      Animated.loop(
+        Animated.timing(shineAnim, {
+          toValue: width * 2,
+          duration: 2000,
+          useNativeDriver: true,
+        })
+      ).start();
+    });
+
+    // Attendre 4.5 secondes puis démarrer l'animation de sortie
     const timer = setTimeout(() => {
       Animated.parallel([
         Animated.timing(fadeAnim, {
@@ -36,7 +79,12 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
-          toValue: 1.1,
+          toValue: 1.2,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(rotateAnim, {
+          toValue: 2,
           duration: 500,
           useNativeDriver: true,
         }),
