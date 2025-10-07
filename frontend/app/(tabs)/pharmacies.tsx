@@ -526,8 +526,11 @@ const styles = StyleSheet.create({
   card: { backgroundColor: '#F7FAF7', borderRadius: 12, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E8F0E8' },
   title: { fontSize: 16, fontWeight: '700', color: '#0A7C3A' },
   meta: { fontSize: 13, color: '#555', marginTop: 4 },
-  badge: { marginTop: 6, alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, borderWidth: 1, fontSize: 12, fontWeight: '700' },
+  badge: { marginTop: 6, alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, borderWidth: 1, fontSize: 12, fontWeight: '700', marginRight: 4, marginBottom: 4 },
   badgeOnDuty: { color: '#0A7C3A', borderColor: '#0A7C3A', backgroundColor: '#E6F4EA' },
+  badgePro: { backgroundColor: '#0A7C3A' },
+  badgeLocal: { backgroundColor: '#FF8A00' },
+  badgeRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 4 },
 
   activeFiltersRow: { flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 8 },
   chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, marginRight: 8 },
