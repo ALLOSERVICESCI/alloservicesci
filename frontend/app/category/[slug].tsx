@@ -2156,6 +2156,7 @@ export default function CategoryPage() {
           <ImageBackground source={bg} style={styles.header} resizeMode="cover">
             <View style={styles.headerContentTransport}>
               <Text style={styles.headerTitleTransport}>Transport</Text>
+              <Text style={styles.headerSubtitleTransport}>Au service de votre mobilité quotidienne</Text>
             </View>
           </ImageBackground>
           <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} accessibilityRole="button" accessibilityLabel="Retour" testID={`backBtn-${sKey}`} style={styles.backBtnUrgence}>
