@@ -454,15 +454,15 @@ export default function AjouterEtablissement() {
             contentContainerStyle={styles.tilesContainer}
           >
             {SPECIALITES.map((spec) => {
-              const isSelected = specialitesSelectionnees.includes(spec);
+              const isSelected = specialitesSelectionnees.includes(spec.nom);
               return (
                 <TouchableOpacity
-                  key={spec}
+                  key={spec.nom}
                   onPress={() => {
                     if (isSelected) {
-                      setSpecialitesSelectionnees(specialitesSelectionnees.filter(s => s !== spec));
+                      setSpecialitesSelectionnees(specialitesSelectionnees.filter(s => s !== spec.nom));
                     } else {
-                      setSpecialitesSelectionnees([...specialitesSelectionnees, spec]);
+                      setSpecialitesSelectionnees([...specialitesSelectionnees, spec.nom]);
                     }
                   }}
                   style={[
@@ -470,11 +470,22 @@ export default function AjouterEtablissement() {
                     isSelected && styles.serviceTileSelected
                   ]}
                 >
+                  <View style={[
+                    styles.serviceTileCircle,
+                    isSelected && styles.serviceTileCircleSelected
+                  ]}>
+                    <Text style={[
+                      styles.serviceTileIcon,
+                      isSelected && styles.serviceTileIconSelected
+                    ]}>
+                      {spec.icon}
+                    </Text>
+                  </View>
                   <Text style={[
                     styles.serviceTileText,
                     isSelected && styles.serviceTileTextSelected
                   ]}>
-                    {spec}
+                    {spec.nom}
                   </Text>
                 </TouchableOpacity>
               );
