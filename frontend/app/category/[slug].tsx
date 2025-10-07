@@ -3057,6 +3057,16 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
+    marginBottom: 4,
+  },
+  headerSubtitleTransport: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#FFFFFF',
+    opacity: 0.95,
+    textShadowColor: 'rgba(0, 0, 0, 0.4)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   headerWrapperServices: {
     position: 'absolute',
