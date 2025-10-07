@@ -3187,7 +3187,8 @@ const styles = StyleSheet.create({
   actionButtonAltText: { color: '#0A7C3A', fontSize: 12, fontWeight: '600', marginLeft: 6 },
 
   // Styles pour les cartes de contenu générique
-  contentCard: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#E8F0E8' },
+  contentCard: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#E8F0E8', overflow: 'hidden' },
+  campaignImage: { width: '100%', height: 180, borderRadius: 8, marginBottom: 12, marginLeft: -16, marginRight: -16, marginTop: -16, width: 'calc(100% + 32px)' as any },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   cardTitle: { fontSize: 18, fontWeight: '700', color: '#0A7C3A', flex: 1 },
   premiumBadge: { backgroundColor: '#FFD700', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 },
