@@ -789,6 +789,14 @@ class BackendTester:
         self.test_ai_chat_streaming()
         self.test_ai_docx_export()
         
+        # 7) Cities and Communes (NEW)
+        print("\n🏙️ 7) CITIES AND COMMUNES TESTS (NEW)")
+        self.test_cities_endpoint()
+        self.test_communes_all()
+        self.test_communes_abidjan()
+        self.test_search_abid()
+        self.test_search_cocody()
+        
         # Summary
         self.print_summary()
 
