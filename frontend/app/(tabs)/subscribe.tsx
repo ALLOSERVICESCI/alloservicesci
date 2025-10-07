@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   refreshButtonText: { color: '#0A7C3A', fontWeight: '600', fontSize: 14 },
   featuresSection: { paddingHorizontal: 0, marginBottom: 30 },
   sectionTitle: { fontSize: 22, fontWeight: '700', color: '#0F5132', textAlign: 'center', marginBottom: 20, paddingHorizontal: H_PADDING },
-  tilesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: H_PADDING },
+  tilesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' },
   tile: { width: TILE_WIDTH, height: TILE_WIDTH, borderRadius: 16, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', marginBottom: GAP, padding: 0, position: 'relative', overflow: 'hidden' },
   badgeNotifs: { position: 'absolute', top: -6, right: -6, backgroundColor: '#FF4444', borderRadius: 10, minWidth: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#fff' },
   badgeDot: { position: 'absolute', top: -6, right: -6, width: 14, height: 14, borderRadius: 7, backgroundColor: '#FF4444', borderWidth: 2, borderColor: '#fff' },
