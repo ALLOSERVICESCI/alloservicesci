@@ -266,16 +266,18 @@ export default function Pharmacies() {
         <View style={styles.filters}>
           <View />
 
-          {/* Barre de recherche ville */}
+          {/* Barre de recherche ville/commune */}
           <View style={styles.searchBlock}>
-            <Text style={styles.selectLabel}>{t('city')}</Text>
+            <Text style={styles.selectLabel}>Ville ou Commune</Text>
             <View style={[styles.searchRow, nearMe && styles.searchRowDisabled]}
               pointerEvents={nearMe ? 'none' : 'auto'}>
+              <Ionicons name="search-outline" size={18} color={nearMe ? '#999' : '#666'} style={{ marginRight: 8 }} />
               <TextInput
                 value={query}
                 onChangeText={(txt) => { setQuery(txt); setShowSuggestions(true); }}
                 onFocus={() => setShowSuggestions(true)}
-                placeholder={t('searchCity')}
+                placeholder="Rechercher une ville ou commune..."
+                placeholderTextColor={nearMe ? '#CCC' : '#999'}
                 style={styles.searchInputFlex}
                 autoCapitalize="none"
                 autoCorrect={false}
