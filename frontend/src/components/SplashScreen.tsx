@@ -146,9 +146,19 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
   logo: {
     width: width * 0.85,
     height: height * 0.45,
+  },
+  shineOverlay: {
+    position: 'absolute',
+    top: -height,
+    left: 0,
+    width: 100,
+    height: height * 3,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    transform: [{ skewX: '-25deg' }],
   },
 });
