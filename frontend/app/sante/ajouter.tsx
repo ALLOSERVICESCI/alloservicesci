@@ -300,25 +300,40 @@ export default function AjouterEtablissement() {
           </View>
 
           <Text style={styles.label}>Type d'établissement</Text>
-          <View style={styles.chipsRow}>
-            {TYPES_ETABLISSEMENT.map((type) => (
-              <TouchableOpacity
-                key={type}
-                onPress={() => setTypeEtablissement(type)}
-                style={[
-                  styles.chip,
-                  typeEtablissement === type && styles.chipActive
-                ]}
-              >
-                <Text style={[
-                  styles.chipText,
-                  typeEtablissement === type && styles.chipTextActive
-                ]}>
-                  {type}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.tilesContainer}
+          >
+            {TYPES_ETABLISSEMENT.map((type) => {
+              const isSelected = typeEtablissement === type.nom;
+              return (
+                <TouchableOpacity
+                  key={type.nom}
+                  onPress={() => setTypeEtablissement(type.nom)}
+                  style={styles.serviceTile}
+                >
+                  <View style={[
+                    styles.serviceTileCircle,
+                    isSelected && styles.serviceTileCircleSelected
+                  ]}>
+                    <Text style={[
+                      styles.serviceTileIcon,
+                      isSelected && styles.serviceTileIconSelected
+                    ]}>
+                      {type.icon}
+                    </Text>
+                  </View>
+                  <Text style={[
+                    styles.serviceTileText,
+                    isSelected && styles.serviceTileTextSelected
+                  ]}>
+                    {type.nom}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
 
           {/* N° d'agrément uniquement pour Pro */}
           {isPro && (
