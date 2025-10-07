@@ -992,6 +992,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Réduction de 31% des accidents (juin-sept 2024). L\'OSER sensibilise sur la sécurité routière et lutte contre l\'alcool au volant. Partenariat avec Brassivoire pour fournir alcootests et matériel de prévention.',
       tag: '🚦 Sécurité Routière',
       location: 'National',
+      image: 'https://images.unsplash.com/photo-1632413680886-706e133451f7?w=800&q=85',
       source: 'https://oser.ci/',
       phones: [{ label: 'Contact OSER', tel: '+225 27 20 22 35 00' }]
     },
@@ -1000,6 +1001,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Sensibilisation massive lancée en janvier 2024 avec l\'AIPR. Démonstrations, ateliers de prévention, simulateurs et matériel pédagogique. Centre pilote de sensibilisation pour tous les usagers.',
       tag: '🚦 Sensibilisation',
       location: 'Yopougon',
+      image: 'https://images.pexels.com/photos/7715190/pexels-photo-7715190.jpeg?auto=compress&cs=tinysrgb&w=800',
       date: 'Campagne permanente 2024',
       source: 'https://aiprci.com/'
     },
@@ -1007,7 +1009,8 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       title: 'Stop Alcool au Volant',
       summary: 'Contrôles renforcés avec alcootests. L\'alcool est l\'une des principales causes d\'accidents mortels. Respectez la limite légale et ne prenez jamais le volant après avoir bu.',
       tag: '🚦 Prévention',
-      location: 'National'
+      location: 'National',
+      image: 'https://images.unsplash.com/photo-1646061921416-79accaf52bc4?w=800&q=85'
     },
     
     // === TRANSPORT URBAIN ABIDJAN ===
