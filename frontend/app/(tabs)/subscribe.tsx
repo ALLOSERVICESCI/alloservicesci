@@ -13,9 +13,9 @@ const APP_ICON = require('../../assets/icons/icons/icon.png');
 const { width } = Dimensions.get('window');
 
 const H_PADDING = 20;
-const GAP = 16;
+const GAP = 0;
 const COLS = 2;
-const TILE_WIDTH = (width - (H_PADDING * 2) - (GAP * (COLS - 1))) / COLS;
+const TILE_WIDTH = width / COLS;
 
 export default function Subscribe() {
   const { user } = useAuth();
