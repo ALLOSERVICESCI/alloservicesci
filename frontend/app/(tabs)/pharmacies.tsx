@@ -138,7 +138,21 @@ export default function Pharmacies() {
   };
 
   const toggleOnDuty = () => { setOnDuty((v) => !v); };
-  const toggleNearMe = () => { setNearMe((v) => { const next = !v; if (next) { setCity(''); setQuery(''); setShowSuggestions(false);} return next; }); };
+  const toggleNearMe = () => { 
+    setNearMe((v) => { 
+      const next = !v; 
+      if (next) { 
+        setCity(''); 
+        setQuery(''); 
+        setShowSuggestions(false);
+        // Annuler le timeout de recherche
+        if (searchTimeout) {
+          clearTimeout(searchTimeout);
+        }
+      } 
+      return next; 
+    }); 
+  };
 
   const handleNearPress = async () => {
     await triggerHaptic();
