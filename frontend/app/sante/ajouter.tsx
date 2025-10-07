@@ -448,33 +448,38 @@ export default function AjouterEtablissement() {
           )}
 
           <Text style={styles.label}>Services proposés</Text>
-          <View style={styles.checkboxGrid}>
-            {SPECIALITES.map((spec) => (
-              <TouchableOpacity
-                key={spec}
-                onPress={() => {
-                  if (specialitesSelectionnees.includes(spec)) {
-                    setSpecialitesSelectionnees(specialitesSelectionnees.filter(s => s !== spec));
-                  } else {
-                    setSpecialitesSelectionnees([...specialitesSelectionnees, spec]);
-                  }
-                }}
-                style={styles.checkboxItem}
-              >
-                <Ionicons
-                  name={specialitesSelectionnees.includes(spec) ? 'checkbox' : 'square-outline'}
-                  size={22}
-                  color={specialitesSelectionnees.includes(spec) ? '#0A7C3A' : '#9AA3AF'}
-                />
-                <Text style={[
-                  styles.checkboxLabel,
-                  specialitesSelectionnees.includes(spec) && styles.checkboxLabelActive
-                ]}>
-                  {spec}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.tilesContainer}
+          >
+            {SPECIALITES.map((spec) => {
+              const isSelected = specialitesSelectionnees.includes(spec);
+              return (
+                <TouchableOpacity
+                  key={spec}
+                  onPress={() => {
+                    if (isSelected) {
+                      setSpecialitesSelectionnees(specialitesSelectionnees.filter(s => s !== spec));
+                    } else {
+                      setSpecialitesSelectionnees([...specialitesSelectionnees, spec]);
+                    }
+                  }}
+                  style={[
+                    styles.serviceTile,
+                    isSelected && styles.serviceTileSelected
+                  ]}
+                >
+                  <Text style={[
+                    styles.serviceTileText,
+                    isSelected && styles.serviceTileTextSelected
+                  ]}>
+                    {spec}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
         </View>
 
         {/* Notation qualité */}
