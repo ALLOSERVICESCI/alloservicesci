@@ -39,6 +39,25 @@ export default function Pharmacies() {
   // Pharmacies ajoutées par les utilisateurs
   const [userPharmacies, setUserPharmacies] = useState<any[]>([]);
 
+  // Charger les pharmacies utilisateur avec useFocusEffect (comme dans Education)
+  useFocusEffect(
+    useCallback(() => {
+      const loadUserPharmacies = async () => {
+        try {
+          const stored = await AsyncStorage.getItem('pharmacies_user_items');
+          if (stored) {
+            const pharmacies = JSON.parse(stored);
+            setUserPharmacies(pharmacies);
+          }
+        } catch (error) {
+          console.error('Erreur lors du chargement des pharmacies utilisateur:', error);
+        }
+      };
+
+      loadUserPharmacies();
+    }, [])
+  );
+
   const handleSearchQueryChange = (text: string) => {
     setQuery(text);
     
