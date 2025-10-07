@@ -196,21 +196,6 @@ export default function Pharmacies() {
             <Ionicons name="medkit-outline" size={18} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
             <Text style={onDuty ? styles.chipTextOn : styles.chipTextInactive}>{t('onDutyShort') || 'De Garde'}</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
-            onPress={() => {
-              setShowSuggestions(!showSuggestions);
-              if (!showSuggestions) {
-                setNearMe(false);
-              }
-            }} 
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} 
-            style={[styles.chip, (city || showSuggestions) ? styles.chipCommunes : styles.chipInactive]} 
-            accessible 
-            accessibilityLabel="chipCommunes"
-          >
-            <Ionicons name="business-outline" size={18} color={(city || showSuggestions) ? '#FF8A00' : '#666'} style={{ marginRight: 8 }} />
-            <Text style={(city || showSuggestions) ? styles.chipTextCommunes : styles.chipTextInactive}>Communes</Text>
-          </TouchableOpacity>
         </View>
 
         {/* Tips (premier usage) */}
