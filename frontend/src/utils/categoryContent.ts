@@ -1021,6 +1021,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Réseau principal de transport public à Abidjan. Lignes de bus desservant toutes les communes et bateaux-bus pour traverser les lagunes. Tarifs abordables.',
       tag: '🚌 Transport Public',
       location: 'Abidjan',
+      image: 'https://images.pexels.com/photos/34185593/pexels-photo-34185593.jpeg?auto=compress&cs=tinysrgb&w=800',
       date: 'Horaires: 05:30-22:00',
       source: 'https://www.sotra.ci/',
       phones: [{ label: 'Informations', tel: '+225 27 21 35 78 00' }]
@@ -1030,6 +1031,7 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Taxis communaux oranges desservant des lignes spécifiques à travers Abidjan (sauf Plateau). Tarif de base: 200 FCFA pour trajets courts. Alternative populaire et économique.',
       tag: '🚕 Taxi Communal',
       location: 'Abidjan',
+      image: 'https://images.unsplash.com/photo-1708347456876-0e94101fcf8b?w=800&q=85',
       commune: 'Toutes communes',
       date: 'Tarif: à partir de 200 FCFA'
     },
