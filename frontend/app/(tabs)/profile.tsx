@@ -96,6 +96,17 @@ export default function Profile() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      {/* Bouton Retour */}
+      <TouchableOpacity 
+        onPress={() => router.back()} 
+        style={styles.backButton}
+      >
+        <View style={styles.backButtonContent}>
+          <Text style={styles.backButtonIcon}>←</Text>
+          <Text style={styles.backButtonText}>Retour</Text>
+        </View>
+      </TouchableOpacity>
+
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.brand}>{t('brand')}</Text>
