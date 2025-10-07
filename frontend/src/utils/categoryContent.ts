@@ -992,25 +992,27 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       summary: 'Réduction de 31% des accidents (juin-sept 2024). L\'OSER sensibilise sur la sécurité routière et lutte contre l\'alcool au volant. Partenariat avec Brassivoire pour fournir alcootests et matériel de prévention.',
       tag: '🚦 Sécurité Routière',
       location: 'National',
-      image: 'https://images.unsplash.com/photo-1632413680886-706e133451f7?w=800&q=85',
+      image: 'https://oser.ci/sites/default/files/carousel/carousel3_0.jpg',
       source: 'https://oser.ci/',
       phones: [{ label: 'Contact OSER', tel: '+225 27 20 22 35 00' }]
     },
     {
-      title: 'Campagne Yopougon - Sécurité pour tous',
-      summary: 'Sensibilisation massive lancée en janvier 2024 avec l\'AIPR. Démonstrations, ateliers de prévention, simulateurs et matériel pédagogique. Centre pilote de sensibilisation pour tous les usagers.',
+      title: '24ème Semaine Nationale de Sécurité Routière',
+      summary: 'Campagne nationale de sensibilisation menée par l\'OSER dans toutes les régions de Côte d\'Ivoire. Actions de terrain, distributions de matériel de sensibilisation et contrôles routiers renforcés pour réduire les accidents.',
       tag: '🚦 Sensibilisation',
-      location: 'Yopougon',
-      image: 'https://images.pexels.com/photos/7715190/pexels-photo-7715190.jpeg?auto=compress&cs=tinysrgb&w=800',
-      date: 'Campagne permanente 2024',
-      source: 'https://aiprci.com/'
+      location: 'National - Bouaké',
+      image: 'https://oser.ci/sites/default/files/carousel/carousel8.jpg',
+      date: 'Campagne annuelle',
+      source: 'https://oser.ci/'
     },
     {
-      title: 'Stop Alcool au Volant',
-      summary: 'Contrôles renforcés avec alcootests. L\'alcool est l\'une des principales causes d\'accidents mortels. Respectez la limite légale et ne prenez jamais le volant après avoir bu.',
+      title: 'Semaine Nationale de Sécurité Routière - Ahoué',
+      summary: 'Lancement de la 26ème édition de la Semaine Nationale de Sécurité Routière à Ahoué. Sensibilisation des usagers de la route sur les comportements responsables et le respect du code de la route.',
       tag: '🚦 Prévention',
-      location: 'National',
-      image: 'https://images.unsplash.com/photo-1646061921416-79accaf52bc4?w=800&q=85'
+      location: 'Ahoué',
+      image: 'https://oser.ci/sites/default/files/carousel/carousel4.jpg',
+      date: '14-07-2023',
+      source: 'https://oser.ci/'
     },
     
     // === TRANSPORT URBAIN ABIDJAN ===
