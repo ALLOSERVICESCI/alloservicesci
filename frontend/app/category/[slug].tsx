@@ -2848,6 +2848,7 @@ export default function CategoryPage() {
           keyExtractor={(item: any, idx: number) => (item?.id ? String(item.id) : `edu-${idx}`)}
           contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
           renderItem={({ item: facility }: any) => (
             <View style={styles.facilityCard}>
               <View style={styles.facilityHeader}>
