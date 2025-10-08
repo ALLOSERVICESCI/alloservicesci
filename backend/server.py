@@ -199,14 +199,51 @@ async def api_root():
 @api.post("/auth/register")
 @api.post("/auth/register/")
 async def register_user(payload: UserCreate):
+    # Validation du mot de passe
+    if not validate_password_strength(payload.password):
+        raise HTTPException(status_code=400, detail="Le mot de passe doit contenir au moins 8 caractères")
+    
+    # Vérifier si l'email existe déjà
+    existing_user = await db.users.find_one({'email': payload.email})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Un compte avec cet email existe déjà")
+    
+    # Préparer les données
     doc = payload.model_dump()
+    doc['password_hash'] = hash_password(payload.password)
+    del doc['password']  # Supprimer le mot de passe en clair
     doc['created_at'] = datetime.utcnow()
     doc['is_premium'] = False
+    
+    # Insérer en base
     res = await db.users.insert_one(doc)
     saved = await db.users.find_one({'_id': res.inserted_id})
+    
+    # Préparer la réponse (sans le hash du mot de passe)
     saved['id'] = str(saved['_id'])
     del saved['_id']
+    if 'password_hash' in saved:
+        del saved['password_hash']
+    
     return saved
+
+@api.post("/auth/login")
+async def login_user(payload: UserLogin):
+    # Trouver l'utilisateur par email
+    user = await db.users.find_one({'email': payload.email})
+    if not user:
+        raise HTTPException(status_code=401, detail="Email ou mot de passe incorrect")
+    
+    # Vérifier le mot de passe
+    if not verify_password(payload.password, user['password_hash']):
+        raise HTTPException(status_code=401, detail="Email ou mot de passe incorrect")
+    
+    # Préparer la réponse (sans le hash du mot de passe)
+    user['id'] = str(user['_id'])
+    del user['_id']
+    del user['password_hash']
+    
+    return user
 
 @api.patch("/users/{user_id}")
 async def update_user(user_id: str, payload: UserUpdate):
