@@ -65,20 +65,13 @@ export default function EditProfile() {
     try {
       setSaving(true);
       
-      // Sauvegarder dans AsyncStorage (simulation de base de données)
-      const updatedUser = {
-        ...user,
-        name: name.trim(),
+      // Utiliser updateProfile du contexte
+      await updateProfile({
+        first_name: name.split(' ')[0]?.trim() || name.trim(),
+        last_name: name.split(' ').slice(1).join(' ')?.trim() || '',
         email: email.trim(),
         avatar: avatar,
-      };
-
-      await AsyncStorage.setItem('user_profile', JSON.stringify(updatedUser));
-      
-      // Mettre à jour le contexte utilisateur
-      if (updateUser) {
-        updateUser(updatedUser);
-      }
+      });
 
       Alert.alert(
         'Succès',
