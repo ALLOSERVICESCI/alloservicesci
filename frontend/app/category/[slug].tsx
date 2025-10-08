@@ -2999,6 +2999,7 @@ export default function CategoryPage() {
           keyExtractor={(_, idx) => `${s}-${idx}`}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ padding: 16, paddingBottom: 40, paddingTop: padTop + 20 }}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
         />
       )}
     </View>
