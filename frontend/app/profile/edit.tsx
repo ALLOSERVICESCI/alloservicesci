@@ -111,21 +111,12 @@ export default function EditProfile() {
               <TouchableOpacity onPress={pickImage} style={styles.cameraBtn}>
                 <Ionicons name="camera" size={20} color="#fff" />
               </TouchableOpacity>
+              {avatar && (
+                <TouchableOpacity onPress={removePhoto} style={styles.removeBtn}>
+                  <Ionicons name="close" size={20} color="#fff" />
+                </TouchableOpacity>
+              )}
             </View>
-          </View>
-          
-          <View style={styles.photoActions}>
-            <TouchableOpacity onPress={pickImage} style={styles.photoBtn}>
-              <Ionicons name="image-outline" size={20} color="#0A7C3A" />
-              <Text style={styles.photoBtnText}>Changer la photo</Text>
-            </TouchableOpacity>
-            
-            {avatar && (
-              <TouchableOpacity onPress={removePhoto} style={styles.removeBtn}>
-                <Ionicons name="trash-outline" size={20} color="#DC3545" />
-                <Text style={styles.removeBtnText}>Supprimer</Text>
-              </TouchableOpacity>
-            )}
           </View>
         </View>
         
