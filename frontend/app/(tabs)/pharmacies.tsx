@@ -247,7 +247,7 @@ export default function Pharmacies() {
                   </>
                 )}
               </View>
-              {/* Bouton Ajouter repositionné à droite */}
+              {/* Bouton Ajouter - Opposé au titre */}
               <TouchableOpacity 
                 onPress={() => router.push('/pharmacies/ajouter')} 
                 accessibilityRole="button" 
