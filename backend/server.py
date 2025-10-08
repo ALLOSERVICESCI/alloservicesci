@@ -76,13 +76,20 @@ LangKey = Literal['fr', 'en', 'es', 'it', 'ar']
 class UserCreate(BaseModel):
     first_name: str
     last_name: str
-    email: Optional[EmailStr] = None
-    phone: str
+    email: str  # Email obligatoire pour l'authentification
+    phone: Optional[str] = None
     city_id: Optional[str] = None
     city: Optional[str] = None
-    accept_terms: bool = True
-    preferred_lang: LangKey = 'fr'
-    photo_base64: Optional[str] = None
+    preferred_lang: Optional[LangKey] = None
+    password: str  # Mot de passe pour l'authentification
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
 
 class UserUpdate(BaseModel):
     first_name: Optional[str] = None
