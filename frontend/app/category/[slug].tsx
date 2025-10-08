@@ -2272,7 +2272,12 @@ export default function CategoryPage() {
           ))}
         </ScrollView>
       ) : sKey === 'sante' ? (
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16, paddingTop: padTop + 20, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+        <ScrollView 
+          style={{ flex: 1 }} 
+          contentContainerStyle={{ padding: 16, paddingTop: padTop + 20, paddingBottom: 40 }} 
+          showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
+        >
           {/* Filtres (capsules) */}
           {displayMode === 'communes' && (
             <View style={{ marginBottom: 12 }}>
