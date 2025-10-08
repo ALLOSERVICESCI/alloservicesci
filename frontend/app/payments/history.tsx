@@ -6,84 +6,57 @@ import { useAuth } from '../../src/context/AuthContext';
 import { apiFetch } from '../../src/utils/api';
 import { useI18n } from '../../src/i18n/i18n';
 
-const APP_ICON = require('../../assets/icons/icons/icon.png');
+const APP_ICON = require('../../assets/logo_digital_ci.png');
 
 export default function PaymentHistory() {
-  const { user } = useAuth();
-  const { t } = useI18n();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [onlyPaid, setOnlyPaid] = useState(false);
+  const { user } = useAuth();
+  const { t } = useI18n();
 
-  const load = async (acceptOnly: boolean) => {
-    if (!user?.id) { setItems([]); setLoading(false); return; }
+  const load = useCallback(async () => {
+    if (!user?.id) return;
     try {
       setLoading(true);
-      const qs = acceptOnly ? `&status=ACCEPTED` : '';
-      const res = await apiFetch(`/api/payments/history?user_id=${user.id}${qs}`);
+      const res = await apiFetch(`/api/payments/history?user_id=${user.id}${onlyPaid ? '&status=ACCEPTED' : ''}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      setItems(json);
-    } catch (e) {
-      setItems([]);
+      setItems(json || []);
+    } catch (e: any) {
+      Alert.alert(t('error') || 'Erreur', t('fetchError') || 'Erreur de chargement');
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => { load(onlyPaid); }, [user?.id]);
+  }, [user?.id, onlyPaid, t]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await load(onlyPaid);
+    await load();
     setRefreshing(false);
-  }, [user?.id, onlyPaid]);
+  }, [load]);
 
-  useEffect(() => { load(onlyPaid); }, [onlyPaid]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
-  const visibleItems = useMemo(() => items, [items]);
+  const visibleItems = useMemo(() => {
+    return items.filter(it => it && it.id);
+  }, [items]);
 
-  const StatusChip = ({ status }: { status: string }) => {
-    const label = t(`status_${status}`) || status;
-    const color = status === 'ACCEPTED' ? '#0A7C3A' : status === 'REFUSED' ? '#B00020' : '#9A6700';
-    const bg = status === 'ACCEPTED' ? '#E6F4EA' : status === 'REFUSED' ? '#FDE7E9' : '#FFF4CC';
-    return (
-      <View style={[styles.chip, { backgroundColor: bg, borderColor: color }]}> 
-        <Text style={[styles.chipText, { color }]}>{label}</Text>
-      </View>
-    );
-  };
-
-  const onShare = async (url?: string) => {
-    try {
-      if (!url) { Alert.alert(t('error'), t('notAvailable')); return; }
-      await Share.share({ message: url });
-    } catch (e: any) {
-      Alert.alert(t('error'), e?.message || 'Share failed');
-    }
-  };
-
-  const onOpen = async (url?: string) => {
-    if (!url) { Alert.alert(t('error'), t('notAvailable')); return; }
-    try { await Linking.openURL(url); } catch {}
+  const colorForStatus = (status: string) => {
+    if (status === 'ACCEPTED') return '#0A7C3A';
+    if (status === 'PENDING') return '#FF8A00';
+    return '#D32F2F';
   };
 
   const Row = ({ item }: { item: any }) => (
     <View style={styles.card}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={styles.amount}>{item.amount} {item.currency || 'XOF'}</Text>
-        <StatusChip status={item.status} />
-      </View>
-      <Text style={styles.meta}>{t('date')}: {item.created_at ? new Date(item.created_at).toLocaleString() : '-'}</Text>
-      <Text style={styles.meta}>{t('provider')}: {item.provider || 'cinetpay'}</Text>
-      <Text style={styles.meta}>ID: {item.transaction_id}</Text>
-      <View style={{ flexDirection: 'row', marginTop: 8 }}>
-        <TouchableOpacity style={[styles.btnMini]} onPress={() => onOpen(item.payment_url)}>
-          <Text style={styles.btnMiniText}>{t('open')}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.btnMiniAlt]} onPress={() => onShare(item.payment_url)}>
-          <Text style={styles.btnMiniText}>{t('share')}</Text>
-        </TouchableOpacity>
+      <Text style={styles.amount}>{item.amount} FCFA</Text>
+      <Text style={styles.meta}>{item.description}</Text>
+      <View style={[styles.chip, { backgroundColor: colorForStatus(item.status), borderColor: colorForStatus(item.status) }]}>
+        <Text style={[styles.chipText, { color: colorForStatus(item.status) }]}>{item.status}</Text>
       </View>
     </View>
   );
@@ -115,36 +88,40 @@ export default function PaymentHistory() {
       <View style={styles.content}>
         {/* Logo au-dessus du brand et du titre */}
         <View style={styles.logoWrap}>
-        <View style={styles.logoContainer}>
-          <Image source={APP_ICON} style={styles.logo} />
+          <View style={styles.logoContainer}>
+            <Image source={APP_ICON} style={styles.logo} />
+          </View>
         </View>
-      </View>
-      <Text style={styles.brand}>{t('brand')}</Text>
-      <Text style={styles.title}>{t('paymentHistory')}</Text>
+        <Text style={styles.brand}>{t('brand')}</Text>
+        <Text style={styles.title}>{t('paymentHistory')}</Text>
 
-      <View style={styles.filterRow}>
-        <Text style={styles.filterLabel}>{t('onlyPaid')}</Text>
-        <Switch value={onlyPaid} onValueChange={setOnlyPaid} thumbColor={onlyPaid ? '#0A7C3A' : undefined} trackColor={{ true: '#CFE9DC', false: '#DDD' }} />
-      </View>
+        <View style={styles.filterRow}>
+          <Text style={styles.filterLabel}>{t('onlyPaid')}</Text>
+          <Switch value={onlyPaid} onValueChange={setOnlyPaid} thumbColor={onlyPaid ? '#0A7C3A' : undefined} trackColor={{ true: '#CFE9DC', false: '#DDD' }} />
+        </View>
 
-      {visibleItems.length === 0 ? (
-        <Text style={styles.empty}>{emptyText}</Text>
-      ) : (
-        <FlatList
-          data={visibleItems}
-          keyExtractor={(it) => it.id}
-          renderItem={Row}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          contentContainerStyle={{ paddingVertical: 12 }}
-        />
-      )}
+        {visibleItems.length === 0 ? (
+          <Text style={styles.empty}>{emptyText}</Text>
+        ) : (
+          <FlatList
+            data={visibleItems}
+            keyExtractor={(it) => it.id}
+            renderItem={Row}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            contentContainerStyle={{ paddingVertical: 12 }}
+          />
+        )}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', paddingTop: Platform.select({ ios: 50, android: 20, default: 20 }) },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: Platform.select({ ios: 50, android: 20, default: 20 }),
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
