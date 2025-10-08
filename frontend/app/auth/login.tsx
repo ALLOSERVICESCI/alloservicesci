@@ -1,28 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apiFetch } from '../../src/utils/api';
+import { useAuth } from '../../src/context/AuthContext';
 
-export default function Register() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+export default function Login() {
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const validateForm = () => {
-    if (!firstName.trim()) {
-      Alert.alert('Erreur', 'Le prénom est obligatoire');
-      return false;
-    }
-    if (!lastName.trim()) {
-      Alert.alert('Erreur', 'Le nom est obligatoire');
-      return false;
-    }
     if (!email.trim()) {
       Alert.alert('Erreur', 'L\'email est obligatoire');
       return false;
@@ -35,58 +25,53 @@ export default function Register() {
       Alert.alert('Erreur', 'Le mot de passe est obligatoire');
       return false;
     }
-    if (password.length < 8) {
-      Alert.alert('Erreur', 'Le mot de passe doit contenir au moins 8 caractères');
-      return false;
-    }
-    if (password !== confirmPassword) {
-      Alert.alert('Erreur', 'Les mots de passe ne correspondent pas');
-      return false;
-    }
     return true;
   };
 
-  const handleRegister = async () => {
+  const handleLogin = async () => {
     if (!validateForm()) return;
 
     try {
       setLoading(true);
       
-      const response = await apiFetch('/api/auth/register', {
+      const response = await apiFetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          first_name: firstName.trim(),
-          last_name: lastName.trim(),
           email: email.trim().toLowerCase(),
-          phone: phone.trim() || null,
           password: password,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || 'Erreur lors de l\'inscription');
+        throw new Error(errorData.detail || 'Erreur lors de la connexion');
       }
 
       const userData = await response.json();
       
+      // Sauvegarder l'utilisateur dans AsyncStorage
+      await AsyncStorage.setItem('auth_user', JSON.stringify(userData));
+      
       Alert.alert(
-        'Inscription réussie !', 
-        'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.',
+        'Connexion réussie !', 
+        `Bienvenue ${userData.first_name} !`,
         [
           {
-            text: 'Se connecter',
-            onPress: () => router.replace('/auth/login')
+            text: 'Continuer',
+            onPress: () => {
+              // Rediriger vers la page d'accueil
+              router.replace('/(tabs)/home');
+            }
           }
         ]
       );
 
     } catch (error: any) {
-      console.error('Erreur inscription:', error);
-      Alert.alert('Erreur', error.message || 'Une erreur est survenue lors de l\'inscription');
+      console.error('Erreur connexion:', error);
+      Alert.alert('Erreur', error.message || 'Une erreur est survenue lors de la connexion');
     } finally {
       setLoading(false);
     }
@@ -99,38 +84,16 @@ export default function Register() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="chevron-back" size={24} color="#0A7C3A" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Créer un compte</Text>
+        <Text style={styles.headerTitle}>Connexion</Text>
         <View style={{ width: 24 }} />
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Inscription</Text>
-        <Text style={styles.subtitle}>Créez votre compte Allô Services CI</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>Se connecter</Text>
+        <Text style={styles.subtitle}>Connectez-vous à votre compte Allô Services CI</Text>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Prénom *</Text>
-          <TextInput
-            value={firstName}
-            onChangeText={setFirstName}
-            style={styles.input}
-            placeholder="Entrez votre prénom"
-            autoCapitalize="words"
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Nom *</Text>
-          <TextInput
-            value={lastName}
-            onChangeText={setLastName}
-            style={styles.input}
-            placeholder="Entrez votre nom de famille"
-            autoCapitalize="words"
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email *</Text>
+          <Text style={styles.label}>Email</Text>
           <TextInput
             value={email}
             onChangeText={setEmail}
@@ -142,24 +105,13 @@ export default function Register() {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Téléphone (optionnel)</Text>
-          <TextInput
-            value={phone}
-            onChangeText={setPhone}
-            style={styles.input}
-            placeholder="+225 01 02 03 04 05"
-            keyboardType="phone-pad"
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Mot de passe *</Text>
+          <Text style={styles.label}>Mot de passe</Text>
           <View style={styles.passwordContainer}>
             <TextInput
               value={password}
               onChangeText={setPassword}
               style={styles.passwordInput}
-              placeholder="Minimum 8 caractères"
+              placeholder="Entrez votre mot de passe"
               secureTextEntry={!showPassword}
               autoCapitalize="none"
             />
@@ -176,42 +128,28 @@ export default function Register() {
           </View>
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Confirmer le mot de passe *</Text>
-          <TextInput
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            style={styles.input}
-            placeholder="Répétez votre mot de passe"
-            secureTextEntry={true}
-            autoCapitalize="none"
-          />
-        </View>
-
         <TouchableOpacity 
-          onPress={handleRegister}
+          onPress={handleLogin}
           disabled={loading}
-          style={[styles.registerBtn, loading && styles.registerBtnDisabled]}
+          style={[styles.loginBtn, loading && styles.loginBtnDisabled]}
         >
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
             <>
-              <Ionicons name="person-add" size={20} color="#fff" />
-              <Text style={styles.registerBtnText}>Créer mon compte</Text>
+              <Ionicons name="log-in" size={20} color="#fff" />
+              <Text style={styles.loginBtnText}>Se connecter</Text>
             </>
           )}
         </TouchableOpacity>
 
-        <View style={styles.loginPrompt}>
-          <Text style={styles.loginPromptText}>Vous avez déjà un compte ? </Text>
-          <TouchableOpacity onPress={() => router.push('/auth/login')}>
-            <Text style={styles.loginLink}>Se connecter</Text>
+        <View style={styles.registerPrompt}>
+          <Text style={styles.registerPromptText}>Pas encore de compte ? </Text>
+          <TouchableOpacity onPress={() => router.push('/auth/register')}>
+            <Text style={styles.registerLink}>S'inscrire</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={{ height: 40 }} />
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -243,6 +181,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 16,
+    justifyContent: 'center',
   },
   title: {
     fontSize: 28,
@@ -255,10 +194,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: 48,
   },
   inputGroup: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   label: {
     fontSize: 14,
@@ -293,35 +232,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 12,
   },
-  registerBtn: {
+  loginBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#0A7C3A',
     paddingVertical: 16,
     borderRadius: 12,
-    marginTop: 24,
+    marginTop: 32,
   },
-  registerBtnDisabled: {
+  loginBtnDisabled: {
     backgroundColor: '#999',
   },
-  registerBtnText: {
+  loginBtnText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
     marginLeft: 8,
   },
-  loginPrompt: {
+  registerPrompt: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 24,
+    marginTop: 32,
   },
-  loginPromptText: {
+  registerPromptText: {
     color: '#666',
     fontSize: 14,
   },
-  loginLink: {
+  registerLink: {
     color: '#0A7C3A',
     fontSize: 14,
     fontWeight: '600',
