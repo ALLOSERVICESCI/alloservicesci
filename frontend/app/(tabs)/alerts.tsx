@@ -10,6 +10,7 @@ import { useNotificationsCenter } from '../../src/context/NotificationsContext';
 export default function Alerts() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const { t } = useI18n();
   const { user } = useAuth();
   const { refreshAlertsUnread } = useNotificationsCenter();
