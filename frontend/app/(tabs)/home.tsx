@@ -90,8 +90,6 @@ export default function Home() {
     return (combined.length ? combined : fallback).filter(Boolean);
   }, [items, alertsPreview]);
 
-  const marqueeText = useMemo(() => marqueeItems.join(' . '), [marqueeItems]);
-
   const colorForKind = (kind: string) => {
     const k = kind.toLowerCase();
     if (k.startsWith('danger') || k.startsWith('disparition') || k.startsWith('accident')) return '#D32F2F';
