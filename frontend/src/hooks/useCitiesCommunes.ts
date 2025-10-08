@@ -28,7 +28,7 @@ export function useCitiesCommunes(): UseCitiesCommunesReturn {
     try {
       setLoading(true);
       setError(null);
-      const response = await apiFetch('/cities');
+      const response = await apiFetch('/api/cities');
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
