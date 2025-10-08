@@ -1159,6 +1159,76 @@ def run_cities_communes_test():
     
     return 0 if len(failed) == 0 else 1
 
+def run_pharmacy_import_test():
+    """Run specific test for pharmacy import verification as requested in review"""
+    print("🚀 Test de vérification des pharmacies importées")
+    print(f"📍 Base URL: {BASE_URL}")
+    print("=" * 80)
+    
+    tester = BackendTester()
+    
+    print("\n💊 TESTING PHARMACY IMPORT VERIFICATION")
+    print("=" * 50)
+    
+    # Test 1: Pharmacy count >= 38
+    print("\n1) GET /api/pharmacies - Vérifier qu'il y a maintenant au moins 38 pharmacies dans la réponse")
+    tester.test_pharmacy_count_38_plus()
+    
+    # Test 2: Imported pharmacies have on_duty = true
+    print("\n2) Vérifier que les pharmacies importées ont le champ on_duty = true (car elles ont des duty_days)")
+    tester.test_imported_pharmacies_on_duty()
+    
+    # Test 3: Search ABOBO
+    print("\n3) Tester la recherche avec GET /api/cities-communes/search?q=ABOBO - Doit retourner ABOBO dans les résultats")
+    tester.test_search_abobo()
+    
+    # Test 4: New cities present
+    print("\n4) Tester GET /api/cities pour voir si les nouvelles villes comme ABOBO, ADJAME, ANYAMA sont présentes")
+    tester.test_new_cities_present()
+    
+    # Test 5: Specific pharmacy present
+    print("\n5) Vérifier qu'une pharmacie spécifique comme \"PHCIE LA VIERGE DU SIGNE\" est présente dans les résultats")
+    tester.test_specific_pharmacy_present()
+    
+    # Test 6: Data structure verification
+    print("\n6) Vérifier que les données sont correctement structurées avec les champs : name, address, city, commune, phone, duty_days, on_duty, is_imported")
+    tester.test_pharmacy_data_structure()
+    
+    # Summary
+    print("\n" + "=" * 80)
+    print("📊 RÉSULTATS DU TEST DE VÉRIFICATION DES PHARMACIES IMPORTÉES")
+    print("=" * 80)
+    
+    passed = [r for r in tester.test_results if r['status'] == 'PASS']
+    failed = [r for r in tester.test_results if r['status'] == 'FAIL']
+    
+    total = len(tester.test_results)
+    pass_rate = (len(passed) / total * 100) if total > 0 else 0
+    
+    print(f"✅ RÉUSSIS: {len(passed)}")
+    print(f"❌ ÉCHECS: {len(failed)}")
+    print(f"📈 TAUX DE RÉUSSITE: {pass_rate:.1f}% ({len(passed)}/{total})")
+    
+    if failed:
+        print(f"\n❌ TESTS ÉCHOUÉS ({len(failed)}):")
+        for result in failed:
+            print(f"   • {result['method']} {result['endpoint']}: {result['reason']}")
+    else:
+        print("\n🎉 TOUS LES TESTS SONT RÉUSSIS!")
+        print("✅ Au moins 38 pharmacies présentes dans la base de données")
+        print("✅ Les pharmacies importées ont on_duty = true")
+        print("✅ ABOBO trouvé dans les résultats de recherche")
+        print("✅ Nouvelles villes (ABOBO, ADJAME, ANYAMA) présentes")
+        print("✅ Pharmacie spécifique trouvée")
+        print("✅ Structure des données correcte avec tous les champs requis")
+    
+    print("\n📋 RAPPORT DÉTAILLÉ:")
+    for result in tester.test_results:
+        status_icon = "✅" if result['status'] == 'PASS' else "❌"
+        print(f"{status_icon} {result['method']} {result['endpoint']}: {result['reason']}")
+    
+    return 0 if len(failed) == 0 else 1
+
 def run_review_request_test():
     """Run specific test according to review request requirements"""
     print("🚀 Test général du backend FastAPI exposé sous le préfixe /api")
