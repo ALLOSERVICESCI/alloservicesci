@@ -2266,7 +2266,12 @@ export default function CategoryPage() {
 
       {/* Contenu spécifique par catégorie */}
       {sKey === 'urgence' ? (
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: padTop, paddingHorizontal: 16, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+        <ScrollView 
+          style={{ flex: 1 }} 
+          contentContainerStyle={{ paddingTop: padTop, paddingHorizontal: 16, paddingBottom: 40 }} 
+          showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
+        >
           {(CONTENT_BY_CATEGORY[s] || []).map((item, idx) => (
             <View key={`urg-card-${idx}`}>{renderContentItem({ item, index: idx } as any)}</View>
           ))}
