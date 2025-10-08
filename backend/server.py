@@ -245,6 +245,30 @@ async def login_user(payload: UserLogin):
     
     return user
 
+@api.post("/auth/change-password")
+async def change_password(payload: PasswordChange, user_id: str = Query(...)):
+    # Validation du nouveau mot de passe
+    if not validate_password_strength(payload.new_password):
+        raise HTTPException(status_code=400, detail="Le nouveau mot de passe doit contenir au moins 8 caractères")
+    
+    # Trouver l'utilisateur
+    user = await db.users.find_one({'_id': ObjectId(user_id)})
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+    
+    # Vérifier l'ancien mot de passe
+    if not verify_password(payload.current_password, user['password_hash']):
+        raise HTTPException(status_code=401, detail="Mot de passe actuel incorrect")
+    
+    # Mettre à jour le mot de passe
+    new_password_hash = hash_password(payload.new_password)
+    await db.users.update_one(
+        {'_id': ObjectId(user_id)}, 
+        {'$set': {'password_hash': new_password_hash}}
+    )
+    
+    return {"message": "Mot de passe mis à jour avec succès"}
+
 @api.patch("/users/{user_id}")
 async def update_user(user_id: str, payload: UserUpdate):
     try:
