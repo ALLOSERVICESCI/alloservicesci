@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend Test Suite for Pharmacy Import Verification
-Tests the imported pharmacies data according to review request requirements.
-
-Also includes comprehensive backend testing for FastAPI endpoints.
+Test des nouveaux endpoints d'authentification
+Teste les endpoints POST /api/auth/register, POST /api/auth/login, POST /api/auth/change-password
 """
 
 import requests
@@ -11,6 +9,7 @@ import json
 import time
 import sys
 from typing import Dict, Any, Optional
+from datetime import datetime
 
 # Base URL - using production backend URL from frontend config
 BASE_URL = "https://civ-services-enhance.preview.emergentagent.com/api"
