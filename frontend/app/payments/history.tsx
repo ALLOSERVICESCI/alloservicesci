@@ -163,6 +163,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#0A7C3A',
   },
+  content: {
+    flex: 1,
+    padding: 16,
+  },
   logoWrap: { alignItems: 'center', marginBottom: 8 },
   logoContainer: { width: 120, height: 120, borderRadius: 60, borderWidth: 4, borderColor: '#0A7C3A', backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center' },
   logo: { width: 100, height: 100, borderRadius: 50, borderWidth: 3, borderColor: '#ffffff' },
