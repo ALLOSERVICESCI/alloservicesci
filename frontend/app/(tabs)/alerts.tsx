@@ -57,6 +57,21 @@ export default function Alerts() {
     }
   };
 
+  // Fonction de rafraîchissement pour pull-to-refresh
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await fetchAlerts();
+      if (user?.id) {
+        await refreshAlertsUnread(user.id);
+      }
+    } catch (error) {
+      console.error('Erreur lors du rafraîchissement des alertes:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [user?.id, refreshAlertsUnread]);
+
   const markAsRead = async (alertId: string) => {
     try {
       if (!user?.id) { Alert.alert(t('error'), t('loginRequired')); return; }
