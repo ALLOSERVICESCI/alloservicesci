@@ -596,7 +596,8 @@ async def seed_health_facilities():
     docs = []
     for h in seed:
         doc = dict(h)
-        lat = h.get('lat'); lng = h.get('lng')
+        lat = h.get('lat')
+        lng = h.get('lng')
         if lat is not None and lng is not None:
             doc['location'] = { 'type': 'Point', 'coordinates': [float(lng), float(lat)] }
         elif 'location' in h:
