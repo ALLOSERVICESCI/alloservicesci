@@ -1470,6 +1470,8 @@ if __name__ == "__main__":
         exit_code = run_review_request_test()
     elif len(sys.argv) > 1 and sys.argv[1] == "--cities":
         exit_code = run_cities_communes_test()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--pharmacy-import":
+        exit_code = run_pharmacy_import_test()
     else:
         tester = BackendTester()
         exit_code = tester.run_all_tests()
