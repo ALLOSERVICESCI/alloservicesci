@@ -109,6 +109,11 @@ export default function Home() {
     return marqueeItems[currentIndex % marqueeItems.length];
   }, [marqueeItems, currentIndex]);
 
+  // Couleur du titre actuel selon la gravité
+  const currentTitleColor = useMemo(() => {
+    return colorForKind(currentTitle);
+  }, [currentTitle]);
+
   // FAB Publier déplaçable
   const publishFabX = useSharedValue(width - FAB_SIZE - FAB_MARGIN);
   const publishFabY = useSharedValue(height - FAB_SIZE - 140);
