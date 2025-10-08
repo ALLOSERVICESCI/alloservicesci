@@ -463,6 +463,66 @@ backend:
         agent: "testing"
         comment: "✅ PHARMACY IMPORT VERIFICATION COMPLETED - ALL REQUIREMENTS MET! Comprehensive testing confirms complete success: 1) ✅ PHARMACY COUNT: 38 pharmacies found (>= 38 required), 2) ✅ IMPORTED PHARMACIES ON_DUTY: 38/38 imported pharmacies have on_duty=true (computed from duty_days), 3) ✅ ABOBO SEARCH: ABOBO found in search results via GET /api/cities-communes/search?q=ABOBO (2 results returned), 4) ✅ NEW CITIES PRESENT: All 3 target cities found - ABOBO, ADJAME, ANYAMA via GET /api/cities, 5) ✅ SPECIFIC PHARMACY: 'PHCIE LA VIERGE DU SIGNE' found in ABOBO, NGUESSANKOI, 6) ✅ DATA STRUCTURE: All required fields present (name, address, city, commune, phone, duty_days, on_duty, is_imported) in sample verification. SUCCESS RATE: 6/6 tests PASSED (100%). The pharmacy import functionality is working correctly with proper data structure, search capabilities, and on_duty computation based on duty_days arrays."
 
+  - task: "POST /api/auth/register - Test d'inscription avec un nouveau utilisateur (first_name, last_name, email, password)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ NOUVEAUX ENDPOINTS D'AUTHENTIFICATION TESTÉS AVEC SUCCÈS - POST /api/auth/register endpoint working perfectly. Successfully created user John Doe (ID: 68e656e96ed030d4ca7342f2) with payload {first_name: 'John', last_name: 'Doe', email: 'john.doe@test.ci', password: 'motdepasse123'}. Returns 200 with user data (without password_hash) as expected. Password validation working correctly (minimum 8 characters). Email uniqueness validation working (400 error for duplicate emails)."
+
+  - task: "POST /api/auth/login - Test de connexion avec l'utilisateur créé (email, password)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ NOUVEAUX ENDPOINTS D'AUTHENTIFICATION TESTÉS AVEC SUCCÈS - POST /api/auth/login endpoint working perfectly. Successfully authenticated user with correct credentials (email: john.doe@test.ci, password: motdepasse123) returning 200 with user data (without password_hash). Bad password correctly rejected with 401 status as expected. Authentication logic working correctly with bcrypt password verification."
+
+  - task: "POST /api/auth/change-password - Test de changement de mot de passe (current_password, new_password)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ NOUVEAUX ENDPOINTS D'AUTHENTIFICATION TESTÉS AVEC SUCCÈS - POST /api/auth/change-password endpoint working perfectly. Successfully changed password from 'motdepasse123' to 'nouveaumotdepasse456' for user ID 68e656e96ed030d4ca7342f2. Returns 200 with success message 'Mot de passe mis à jour avec succès'. Current password validation working correctly (401 for wrong current password). New password strength validation working (minimum 8 characters)."
+
+  - task: "Validation des erreurs d'authentification - Tests des cas d'erreur (email existant, mot de passe court, mauvais credentials)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ NOUVEAUX ENDPOINTS D'AUTHENTIFICATION TESTÉS AVEC SUCCÈS - All error validation tests passed: 1) ✅ INSCRIPTION EMAIL EXISTANT: Returns 400 when trying to register with existing email, 2) ✅ MOT DE PASSE TROP COURT: Returns 400 when password < 8 characters, 3) ✅ LOGIN MAUVAIS CREDENTIALS: Returns 401 when login with non-existent email. All error handling working correctly with appropriate HTTP status codes."
+
+  - task: "Vérification bcrypt - Test que le hachage des mots de passe fonctionne correctement"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ NOUVEAUX ENDPOINTS D'AUTHENTIFICATION TESTÉS AVEC SUCCÈS - Bcrypt password hashing verification successful: 1) ✅ PASSWORD HASH NOT EXPOSED: password_hash and password fields not returned in API responses, 2) ✅ BCRYPT VERIFICATION: Created test user with password 'test_bcrypt_123', login successful confirming bcrypt hashing and verification working correctly. Password security properly implemented with bcrypt salt and hash."
+
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
     implemented: true
