@@ -101,8 +101,15 @@ export default function Home() {
 
   const [marqueeW, setMarqueeW] = useState(0);
   const [textW, setTextW] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const marqueeX = useSharedValue(0);
   const marqueeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: marqueeX.value }] }));
+
+  // Titre actuel à afficher
+  const currentTitle = useMemo(() => {
+    if (marqueeItems.length === 0) return '';
+    return marqueeItems[currentIndex % marqueeItems.length];
+  }, [marqueeItems, currentIndex]);
 
   // FAB Publier déplaçable
   const publishFabX = useSharedValue(width - FAB_SIZE - FAB_MARGIN);
