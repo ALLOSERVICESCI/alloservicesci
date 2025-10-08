@@ -230,7 +230,7 @@ export default function AjouterPharmacie() {
 
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>
-              Téléphone <Text style={styles.required}>*</Text>
+              Téléphone {isProfessionnel && <Text style={styles.required}>*</Text>}
             </Text>
             <TextInput
               value={telephone}
