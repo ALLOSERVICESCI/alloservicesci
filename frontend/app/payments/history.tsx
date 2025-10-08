@@ -102,6 +102,15 @@ export default function PaymentHistory() {
 
   return (
     <View style={styles.container}>
+      {/* Header avec bouton retour */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+          <Ionicons name="chevron-back" size={24} color="#0A7C3A" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Historique de paiement</Text>
+        <View style={{ width: 24 }} />
+      </View>
+
       {/* Logo au-dessus du brand et du titre */}
       <View style={styles.logoWrap}>
         <View style={styles.logoContainer}>
