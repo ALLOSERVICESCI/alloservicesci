@@ -2798,6 +2798,7 @@ export default function CategoryPage() {
           contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
           renderItem={renderContentItem}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
           ListHeaderComponent={
             <View>
               <View style={{ marginBottom: 12 }}>
