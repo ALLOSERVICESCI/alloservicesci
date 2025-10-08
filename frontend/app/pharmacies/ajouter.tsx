@@ -95,12 +95,11 @@ export default function AjouterPharmacie() {
       Alert.alert('Erreur', 'La ville est obligatoire');
       return false;
     }
-    if (!telephone.trim()) {
-      Alert.alert('Erreur', 'Le numéro de téléphone est obligatoire');
-      return false;
-    }
-    
     if (isProfessionnel) {
+      if (!telephone.trim()) {
+        Alert.alert('Erreur', 'Le numéro de téléphone est obligatoire en mode professionnel');
+        return false;
+      }
       if (!agrement.trim()) {
         Alert.alert('Erreur', 'Le numéro d\'agrément est obligatoire en mode professionnel');
         return false;
