@@ -71,6 +71,21 @@ class PyObjectId(ObjectId):
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+# Utility functions for password handling
+def hash_password(password: str) -> str:
+    """Hache un mot de passe avec bcrypt"""
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
+
+def verify_password(password: str, hashed: str) -> bool:
+    """Vérifie un mot de passe contre son hash"""
+    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
+
+def validate_password_strength(password: str) -> bool:
+    """Valide la force du mot de passe (minimum 8 caractères)"""
+    return len(password) >= 8
+
 LangKey = Literal['fr', 'en', 'es', 'it', 'ar']
 
 class UserCreate(BaseModel):
