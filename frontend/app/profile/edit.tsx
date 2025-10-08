@@ -109,6 +109,33 @@ export default function EditProfile() {
       <View style={styles.content}>
         <Text style={styles.title}>Modifier votre profil</Text>
         
+        {/* Photo de profil */}
+        <View style={styles.photoSection}>
+          <Text style={styles.label}>Photo de profil</Text>
+          <View style={styles.avatarContainer}>
+            <View style={styles.avatarWrapper}>
+              <Image source={avatarSource} style={styles.avatar} />
+              <TouchableOpacity onPress={pickImage} style={styles.cameraBtn}>
+                <Ionicons name="camera" size={20} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </View>
+          
+          <View style={styles.photoActions}>
+            <TouchableOpacity onPress={pickImage} style={styles.photoBtn}>
+              <Ionicons name="image-outline" size={20} color="#0A7C3A" />
+              <Text style={styles.photoBtnText}>Changer la photo</Text>
+            </TouchableOpacity>
+            
+            {avatar && (
+              <TouchableOpacity onPress={removePhoto} style={styles.removeBtn}>
+                <Ionicons name="trash-outline" size={20} color="#DC3545" />
+                <Text style={styles.removeBtnText}>Supprimer</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+        
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Nom complet</Text>
           <TextInput
@@ -130,8 +157,16 @@ export default function EditProfile() {
           />
         </View>
 
-        <TouchableOpacity style={styles.saveBtn}>
-          <Text style={styles.saveBtnText}>Enregistrer les modifications</Text>
+        <TouchableOpacity 
+          onPress={saveProfile} 
+          disabled={loading}
+          style={[styles.saveBtn, loading && styles.saveBtnDisabled]}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.saveBtnText}>Enregistrer les modifications</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
