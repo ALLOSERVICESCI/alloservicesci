@@ -7,8 +7,92 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../../src/context/AuthContext';
 
 export default function EditProfile() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const { user, updateUser } = useAuth();
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [avatar, setAvatar] = useState(user?.avatar || null);
+  const [loading, setSaving] = useState(false);
+
+  // Source de l'avatar (photo de profil ou icône par défaut)
+  const APP_ICON = require('../../assets/logo_digital_ci.png');
+  const avatarSource = avatar ? { uri: `data:image/jpeg;base64,${avatar}` } : APP_ICON;
+
+  // Fonction pour sélectionner une photo
+  const pickImage = async () => {
+    try {
+      // Demander les permissions
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission requise', 'Nous avons besoin de votre permission pour accéder à vos photos.');
+        return;
+      }
+
+      // Lancer le sélecteur d'image
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1], // Carré
+        quality: 0.7, // Compression pour réduire la taille
+        base64: true, // Obtenir en base64 pour stockage
+      });
+
+      if (!result.canceled && result.assets[0]) {
+        const imageBase64 = result.assets[0].base64;
+        if (imageBase64) {
+          setAvatar(imageBase64);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sélection de l\'image:', error);
+      Alert.alert('Erreur', 'Impossible de sélectionner l\'image');
+    }
+  };
+
+  // Fonction pour supprimer la photo
+  const removePhoto = () => {
+    Alert.alert(
+      'Supprimer la photo',
+      'Êtes-vous sûr de vouloir supprimer votre photo de profil ?',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        { text: 'Supprimer', style: 'destructive', onPress: () => setAvatar(null) }
+      ]
+    );
+  };
+
+  // Fonction pour sauvegarder
+  const saveProfile = async () => {
+    try {
+      setSaving(true);
+      
+      // Sauvegarder dans AsyncStorage (simulation de base de données)
+      const updatedUser = {
+        ...user,
+        name: name.trim(),
+        email: email.trim(),
+        avatar: avatar,
+      };
+
+      await AsyncStorage.setItem('user_profile', JSON.stringify(updatedUser));
+      
+      // Mettre à jour le contexte utilisateur
+      if (updateUser) {
+        updateUser(updatedUser);
+      }
+
+      Alert.alert(
+        'Succès',
+        'Votre profil a été mis à jour !',
+        [{ text: 'OK', onPress: () => router.back() }]
+      );
+
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error);
+      Alert.alert('Erreur', 'Impossible de sauvegarder le profil');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
