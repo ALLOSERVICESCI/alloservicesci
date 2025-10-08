@@ -8,7 +8,7 @@ import { useAuth } from '../../src/context/AuthContext';
 
 export default function EditProfile() {
   const { user, updateProfile } = useAuth();
-  const [name, setName] = useState(user?.name || '');
+  const [name, setName] = useState(`${user?.first_name || ''} ${user?.last_name || ''}`.trim());
   const [email, setEmail] = useState(user?.email || '');
   const [avatar, setAvatar] = useState(user?.avatar || null);
   const [loading, setSaving] = useState(false);
