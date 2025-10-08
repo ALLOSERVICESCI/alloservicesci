@@ -822,6 +822,17 @@ export const CONTENT_BY_CATEGORY: Record<string, CatItem[]> = {
       commune: 'Bouake',
       date: 'Horaires: Lun-Ven 08:00-16:00'
     },
+
+    // Centre d'appels gouvernemental
+    {
+      title: 'Allo 101 (numero vert gouvernemental)',
+      summary: 'Centre d\'appels citoyen : plaintes, infos administratives, alertes',
+      tag: 'Administration',
+      location: 'National (Primature / Min. Communication & Economie Numerique)',
+      phones: [
+        { label: 'Numero vert', tel: '101' },
+      ]
+    },
   ],
   agriculture: [
     {
