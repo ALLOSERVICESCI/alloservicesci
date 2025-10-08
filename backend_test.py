@@ -742,6 +742,217 @@ class BackendTester:
         except Exception as e:
             self.log_result('/cities-communes/search?q=Cocody', 'GET', 'FAIL', f'Exception: {str(e)}')
 
+    # ========== PHARMACY IMPORT VERIFICATION TESTS ==========
+    
+    def test_pharmacy_count_38_plus(self):
+        """Test 1: GET /api/pharmacies - Vérifier qu'il y a maintenant au moins 38 pharmacies"""
+        try:
+            response = self.session.get(f"{BASE_URL}/pharmacies", timeout=15)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    count = len(data)
+                    if count >= 38:
+                        self.log_result('/pharmacies (count >=38)', 'GET', 'PASS', 
+                                      f'Pharmacy count verification successful: {count} pharmacies found (>= 38 required)', 
+                                      {'total_count': count})
+                    else:
+                        self.log_result('/pharmacies (count >=38)', 'GET', 'FAIL', 
+                                      f'Insufficient pharmacies: {count} found (< 38 required)')
+                else:
+                    self.log_result('/pharmacies (count >=38)', 'GET', 'FAIL', f'Expected list, got: {type(data)}')
+            else:
+                self.log_result('/pharmacies (count >=38)', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/pharmacies (count >=38)', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_imported_pharmacies_on_duty(self):
+        """Test 2: Vérifier que les pharmacies importées ont on_duty = true (car elles ont des duty_days)"""
+        try:
+            response = self.session.get(f"{BASE_URL}/pharmacies", timeout=15)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    imported_pharmacies = [p for p in data if p.get('is_imported', False)]
+                    
+                    if not imported_pharmacies:
+                        self.log_result('/pharmacies (imported on_duty)', 'GET', 'FAIL', 
+                                      'No imported pharmacies found (is_imported=true)')
+                        return
+                    
+                    on_duty_count = 0
+                    total_imported = len(imported_pharmacies)
+                    
+                    for pharmacy in imported_pharmacies:
+                        if pharmacy.get('on_duty', False):
+                            on_duty_count += 1
+                    
+                    if on_duty_count > 0:
+                        self.log_result('/pharmacies (imported on_duty)', 'GET', 'PASS', 
+                                      f'Imported pharmacies on_duty verification: {on_duty_count}/{total_imported} imported pharmacies have on_duty=true', 
+                                      {'imported_count': total_imported, 'on_duty_count': on_duty_count})
+                    else:
+                        self.log_result('/pharmacies (imported on_duty)', 'GET', 'FAIL', 
+                                      f'No imported pharmacies have on_duty=true ({total_imported} imported pharmacies found)')
+                else:
+                    self.log_result('/pharmacies (imported on_duty)', 'GET', 'FAIL', f'Expected list, got: {type(data)}')
+            else:
+                self.log_result('/pharmacies (imported on_duty)', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/pharmacies (imported on_duty)', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_search_abobo(self):
+        """Test 3: Tester la recherche avec GET /api/cities-communes/search?q=ABOBO"""
+        try:
+            response = self.session.get(f"{BASE_URL}/cities-communes/search?q=ABOBO", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, dict) and 'results' in data and 'query' in data:
+                    results = data['results']
+                    query = data['query']
+                    
+                    if isinstance(results, list) and query == 'ABOBO':
+                        # Check if ABOBO is found in results
+                        abobo_found = False
+                        for result in results:
+                            if isinstance(result, dict) and result.get('name', '').upper() == 'ABOBO':
+                                abobo_found = True
+                                break
+                        
+                        if abobo_found:
+                            self.log_result('/cities-communes/search?q=ABOBO', 'GET', 'PASS', 
+                                          f'ABOBO search successful: Found ABOBO in {len(results)} results', 
+                                          {'query': query, 'results_count': len(results), 'abobo_found': True})
+                        else:
+                            self.log_result('/cities-communes/search?q=ABOBO', 'GET', 'FAIL', 
+                                          f'ABOBO not found in search results ({len(results)} results returned)')
+                    else:
+                        self.log_result('/cities-communes/search?q=ABOBO', 'GET', 'FAIL', 
+                                      f'Invalid response structure - results: {type(results)}, query: {query}')
+                else:
+                    self.log_result('/cities-communes/search?q=ABOBO', 'GET', 'FAIL', 
+                                  f'Missing results or query field in response: {data}')
+            else:
+                self.log_result('/cities-communes/search?q=ABOBO', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/cities-communes/search?q=ABOBO', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_new_cities_present(self):
+        """Test 4: Tester GET /api/cities pour voir si les nouvelles villes sont présentes"""
+        try:
+            response = self.session.get(f"{BASE_URL}/cities", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, dict) and 'cities' in data:
+                    cities = data['cities']
+                    if isinstance(cities, list):
+                        target_cities = ['ABOBO', 'ADJAME', 'ANYAMA']
+                        found_cities = []
+                        
+                        for target in target_cities:
+                            for city in cities:
+                                if city.upper() == target:
+                                    found_cities.append(target)
+                                    break
+                        
+                        if found_cities:
+                            self.log_result('/cities (new cities)', 'GET', 'PASS', 
+                                          f'New cities verification: {len(found_cities)}/{len(target_cities)} target cities found: {found_cities}', 
+                                          {'total_cities': len(cities), 'found_cities': found_cities, 'target_cities': target_cities})
+                        else:
+                            self.log_result('/cities (new cities)', 'GET', 'FAIL', 
+                                          f'No target cities found. Available cities: {cities[:10]}...')
+                    else:
+                        self.log_result('/cities (new cities)', 'GET', 'FAIL', f'cities field is not a list: {type(cities)}')
+                else:
+                    self.log_result('/cities (new cities)', 'GET', 'FAIL', f'Missing cities field in response: {data}')
+            else:
+                self.log_result('/cities (new cities)', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/cities (new cities)', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_specific_pharmacy_present(self):
+        """Test 5: Vérifier qu'une pharmacie spécifique comme "PHCIE LA VIERGE DU SIGNE" est présente"""
+        try:
+            response = self.session.get(f"{BASE_URL}/pharmacies", timeout=15)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    target_pharmacy = "PHCIE LA VIERGE DU SIGNE"
+                    found_pharmacy = None
+                    
+                    for pharmacy in data:
+                        name = pharmacy.get('name', '')
+                        if target_pharmacy.upper() in name.upper():
+                            found_pharmacy = pharmacy
+                            break
+                    
+                    if found_pharmacy:
+                        self.log_result('/pharmacies (specific pharmacy)', 'GET', 'PASS', 
+                                      f'Specific pharmacy found: {found_pharmacy.get("name")} in {found_pharmacy.get("city")}, {found_pharmacy.get("commune")}', 
+                                      {'pharmacy_name': found_pharmacy.get('name'), 
+                                       'city': found_pharmacy.get('city'),
+                                       'commune': found_pharmacy.get('commune'),
+                                       'on_duty': found_pharmacy.get('on_duty'),
+                                       'is_imported': found_pharmacy.get('is_imported')})
+                    else:
+                        # Show sample of available pharmacies for debugging
+                        sample_names = [p.get('name', 'Unknown') for p in data[:10]]
+                        self.log_result('/pharmacies (specific pharmacy)', 'GET', 'FAIL', 
+                                      f'Specific pharmacy "{target_pharmacy}" not found. Sample pharmacies: {sample_names}')
+                else:
+                    self.log_result('/pharmacies (specific pharmacy)', 'GET', 'FAIL', f'Expected list, got: {type(data)}')
+            else:
+                self.log_result('/pharmacies (specific pharmacy)', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/pharmacies (specific pharmacy)', 'GET', 'FAIL', f'Exception: {str(e)}')
+
+    def test_pharmacy_data_structure(self):
+        """Test 6: Vérifier que les données sont correctement structurées avec les champs requis"""
+        try:
+            response = self.session.get(f"{BASE_URL}/pharmacies", timeout=15)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list) and data:
+                    required_fields = ['name', 'address', 'city', 'commune', 'phone', 'duty_days', 'on_duty', 'is_imported']
+                    
+                    # Check structure on first 5 pharmacies
+                    sample_size = min(5, len(data))
+                    structure_valid = True
+                    missing_fields_summary = {}
+                    
+                    for i, pharmacy in enumerate(data[:sample_size]):
+                        missing_fields = []
+                        for field in required_fields:
+                            if field not in pharmacy:
+                                missing_fields.append(field)
+                        
+                        if missing_fields:
+                            structure_valid = False
+                            for field in missing_fields:
+                                missing_fields_summary[field] = missing_fields_summary.get(field, 0) + 1
+                    
+                    if structure_valid:
+                        self.log_result('/pharmacies (data structure)', 'GET', 'PASS', 
+                                      f'Data structure verification successful: All required fields present in sample of {sample_size} pharmacies', 
+                                      {'sample_size': sample_size, 'required_fields': required_fields})
+                    else:
+                        self.log_result('/pharmacies (data structure)', 'GET', 'FAIL', 
+                                      f'Data structure incomplete: Missing fields in sample - {missing_fields_summary}')
+                else:
+                    self.log_result('/pharmacies (data structure)', 'GET', 'FAIL', 
+                                  f'No pharmacies available for structure verification')
+            else:
+                self.log_result('/pharmacies (data structure)', 'GET', 'FAIL', 
+                              f'Status {response.status_code}: {response.text}')
+        except Exception as e:
+            self.log_result('/pharmacies (data structure)', 'GET', 'FAIL', f'Exception: {str(e)}')
+
     def run_all_tests(self):
         """Run comprehensive backend regression test suite"""
         print("🚀 Starting Comprehensive Backend Regression Test for Allô Services CI")
