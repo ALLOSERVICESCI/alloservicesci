@@ -884,7 +884,7 @@ async def search_cities_communes(q: str = Query(..., min_length=1)):
 
 # ---------- DATA IMPORT ----------
 @api.post('/pharmacies/bulk-import')
-async def bulk_import_pharmacies(pharmacies_data: list):
+async def bulk_import_pharmacies(pharmacies_data: List[Dict[str, Any]]):
     """Importe en masse des données de pharmacies"""
     try:
         imported_count = 0
