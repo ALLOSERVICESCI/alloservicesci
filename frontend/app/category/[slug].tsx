@@ -48,6 +48,9 @@ export default function CategoryPage() {
   const [communeChosen, setCommuneChosen] = useState(false);
   const [userSanteItems, setUserSanteItems] = useState<any[]>([]);
 
+  // État pour le pull-to-refresh
+  const [refreshing, setRefreshing] = useState(false);
+
   // Hook pour les villes et communes (API)
   const { searchResults: communeResults, searchCitiesCommunes: searchCommunes, loading: communeSearchLoading } = useCitiesCommunes();
 
