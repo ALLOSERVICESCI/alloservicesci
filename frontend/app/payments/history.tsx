@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: Platform.select({ ios: 50, android: 20, default: 20 }),
+    paddingTop: Platform.OS === 'ios' ? 50 : 20,
   },
   header: {
     flexDirection: 'row',
