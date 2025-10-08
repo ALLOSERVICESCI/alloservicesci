@@ -882,6 +882,41 @@ async def search_cities_communes(q: str = Query(..., min_length=1)):
         logger.error(f"Erreur lors de la recherche: {e}")
         raise HTTPException(status_code=500, detail="Erreur lors de la recherche")
 
+# ---------- DATA IMPORT ----------
+@api.post('/pharmacies/bulk-import')
+async def bulk_import_pharmacies(pharmacies_data: list):
+    """Importe en masse des données de pharmacies"""
+    try:
+        imported_count = 0
+        for pharmacy_data in pharmacies_data:
+            # Vérifier si la pharmacie existe déjà (par nom et ville)
+            existing = await db.pharmacies.find_one({
+                'name': pharmacy_data['name'],
+                'city': pharmacy_data['city']
+            })
+            
+            if not existing:
+                # Nettoyer et formater les données
+                pharmacy_doc = {
+                    'name': pharmacy_data['name'],
+                    'address': pharmacy_data['address'],
+                    'city': pharmacy_data['city'],
+                    'commune': pharmacy_data.get('commune'),
+                    'phone': pharmacy_data.get('phone'),
+                    'duty_days': pharmacy_data.get('duty_days', []),
+                    'on_duty': len(pharmacy_data.get('duty_days', [])) > 0,
+                    'created_at': datetime.utcnow(),
+                    'is_imported': True,
+                }
+                
+                await db.pharmacies.insert_one(pharmacy_doc)
+                imported_count += 1
+        
+        return {"message": f"{imported_count} pharmacies importées avec succès"}
+    except Exception as e:
+        logger.error(f"Erreur lors de l'import des pharmacies: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de l'import")
+
 
 # Mount API
 app.include_router(api)
