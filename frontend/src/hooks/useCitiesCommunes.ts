@@ -46,7 +46,7 @@ export function useCitiesCommunes(): UseCitiesCommunesReturn {
     try {
       setLoading(true);
       setError(null);
-      const url = city ? `/communes?city=${encodeURIComponent(city)}` : '/communes';
+      const url = city ? `/api/communes?city=${encodeURIComponent(city)}` : '/api/communes';
       const response = await apiFetch(url);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
