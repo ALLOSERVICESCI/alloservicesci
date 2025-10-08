@@ -138,6 +138,7 @@ export default function PaymentHistory() {
           contentContainerStyle={{ paddingVertical: 12 }}
         />
       )}
+      </View>
     </View>
   );
 }
