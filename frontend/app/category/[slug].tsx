@@ -131,6 +131,37 @@ export default function CategoryPage() {
     setEduUIHidden(false);
   };
 
+  // Fonction de rafraîchissement pour pull-to-refresh
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      // Recharger les données selon la section actuelle
+      if (s === 'sante') {
+        // Recharger les établissements santé utilisateur
+        const raw = await AsyncStorage.getItem('sante_user_items');
+        if (raw) {
+          const arr = JSON.parse(raw);
+          const now = Date.now();
+          const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+          const validItems = arr.filter((it: any) => {
+            return (now - it.createdAt) < SEVEN_DAYS_MS;
+          });
+          if (validItems.length !== arr.length) {
+            await AsyncStorage.setItem('sante_user_items', JSON.stringify(validItems));
+          }
+          setUserSanteItems(validItems);
+        }
+      }
+      
+      // Attendre un moment pour l'UX
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Erreur lors du rafraîchissement:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [s]);
+
   // Communes par ville
   const communesByCity: Record<string, string[]> = {
     'Abidjan': [
