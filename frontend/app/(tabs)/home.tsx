@@ -133,19 +133,32 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (!textW || marqueeItems.length === 0) return;
+    if (!textW || !marqueeW || marqueeItems.length === 0) return;
     cancelAnimation(marqueeX);
-    const speed = Platform.OS === 'web' ? 50 : 60; // px/s (web légèrement plus lent = animation plus fluide)
-    const distance = textW; // with double-buffer, shift by exactly one text width
-    const duration = (distance / speed) * 1000;
-    marqueeX.value = 0;
-    marqueeX.value = withRepeat(
-      withTiming(-distance, { duration, easing: REEasing.linear }),
-      -1, // infinite
-      false, // do not reverse
-    );
+    
+    const speed = Platform.OS === 'web' ? 50 : 60; // px/s
+    const totalDistance = textW + marqueeW; // Distance pour que le texte sorte complètement
+    const duration = (totalDistance / speed) * 1000;
+    const pauseDuration = 1000; // Pause de 1 seconde avant le titre suivant
+    
+    const runSingleTitle = () => {
+      marqueeX.value = marqueeW; // Commencer par la droite (invisible)
+      marqueeX.value = withTiming(-textW, { 
+        duration, 
+        easing: REEasing.linear 
+      }, (finished) => {
+        if (finished) {
+          // Passer au titre suivant après une pause
+          setTimeout(() => {
+            runOnJS(setCurrentIndex)((prevIndex) => (prevIndex + 1) % marqueeItems.length);
+          }, pauseDuration);
+        }
+      });
+    };
+
+    runSingleTitle();
     return () => { cancelAnimation(marqueeX); };
-  }, [textW, marqueeItems]);
+  }, [textW, marqueeW, currentIndex, marqueeItems.length]);
 
   const onRefresh = async () => {
     try {
