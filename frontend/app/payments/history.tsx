@@ -111,8 +111,10 @@ export default function PaymentHistory() {
         <View style={{ width: 24 }} />
       </View>
 
-      {/* Logo au-dessus du brand et du titre */}
-      <View style={styles.logoWrap}>
+      {/* Contenu principal */}
+      <View style={styles.content}>
+        {/* Logo au-dessus du brand et du titre */}
+        <View style={styles.logoWrap}>
         <View style={styles.logoContainer}>
           <Image source={APP_ICON} style={styles.logo} />
         </View>
