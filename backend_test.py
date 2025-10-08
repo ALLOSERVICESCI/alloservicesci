@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 """
-Test général du backend FastAPI exposé sous le préfixe /api
-Couverture demandée selon review request:
-1) Disponibilité & CORS
-2) Endpoints connus  
-3) Génération DOCX
-4) Robustesse
-5) Performance
+Backend Test Suite for Pharmacy Import Verification
+Tests the imported pharmacies data according to review request requirements.
+
+Also includes comprehensive backend testing for FastAPI endpoints.
 """
 
 import requests
