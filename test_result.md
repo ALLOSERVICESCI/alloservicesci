@@ -449,6 +449,18 @@ backend:
         agent: "testing"
         comment: "✅ COMPREHENSIVE BACKEND REGRESSION COMPLETED - GET /api/health/facilities endpoints confirmed working in full backend regression test suite. All filter combinations tested successfully: 1) City filter (Abidjan): 200 + 17 facilities (>=10 ✅) with correct JSON structure, 2) Commune filter (Cocody): 200 + 5 facilities (>=3 ✅) all matching commune, 3) Near location filter (CHU Angré coordinates): 200 + 1 facility within 5km. Health facilities seeding working correctly with comprehensive data. All 18/18 backend tests PASSED (100% success rate)."
 
+  - task: "Vérification des pharmacies importées - Test que les pharmacies importées sont bien présentes dans la base de données"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ PHARMACY IMPORT VERIFICATION COMPLETED - ALL REQUIREMENTS MET! Comprehensive testing confirms complete success: 1) ✅ PHARMACY COUNT: 38 pharmacies found (>= 38 required), 2) ✅ IMPORTED PHARMACIES ON_DUTY: 38/38 imported pharmacies have on_duty=true (computed from duty_days), 3) ✅ ABOBO SEARCH: ABOBO found in search results via GET /api/cities-communes/search?q=ABOBO (2 results returned), 4) ✅ NEW CITIES PRESENT: All 3 target cities found - ABOBO, ADJAME, ANYAMA via GET /api/cities, 5) ✅ SPECIFIC PHARMACY: 'PHCIE LA VIERGE DU SIGNE' found in ABOBO, NGUESSANKOI, 6) ✅ DATA STRUCTURE: All required fields present (name, address, city, commune, phone, duty_days, on_duty, is_imported) in sample verification. SUCCESS RATE: 6/6 tests PASSED (100%). The pharmacy import functionality is working correctly with proper data structure, search capabilities, and on_duty computation based on duty_days arrays."
+
 frontend:
   - task: "FRONTEND E2E: Paiement CinetPay via Premium & Profil (web & mobile), fallback alerte si 4xx"
     implemented: true
