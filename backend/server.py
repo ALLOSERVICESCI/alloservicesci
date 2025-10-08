@@ -917,6 +917,16 @@ async def bulk_import_pharmacies(pharmacies_data: List[Dict[str, Any]]):
         logger.error(f"Erreur lors de l'import des pharmacies: {e}")
         raise HTTPException(status_code=500, detail="Erreur lors de l'import")
 
+@api.delete('/pharmacies/clear-all')
+async def clear_all_pharmacies():
+    """Supprime toutes les pharmacies de la base de données"""
+    try:
+        result = await db.pharmacies.delete_many({})
+        return {"message": f"{result.deleted_count} pharmacies supprimées"}
+    except Exception as e:
+        logger.error(f"Erreur lors de la suppression des pharmacies: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la suppression")
+
 
 # Mount API
 app.include_router(api)
