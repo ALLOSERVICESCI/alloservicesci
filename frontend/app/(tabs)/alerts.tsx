@@ -149,8 +149,7 @@ export default function Alerts() {
             )}
           </View>
         )}
-        onRefresh={fetchAlerts}
-        refreshing={loading}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
       />
 
