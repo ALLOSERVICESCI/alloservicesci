@@ -194,6 +194,12 @@ const translations: Record<LangKey, Dict> = {
     success: 'Succès',
     warning: 'Avertissement',
     info: 'Information',
+    
+    // Specific pharmacy UI
+    cityOrCommune: 'Ville ou Commune',
+    communesOrQuartiers: 'Communes ou quartiers',
+    searchCityPlaceholder: 'Rechercher une ville ou commune...',
+    addPharmacy: 'Ajouter une pharmacie',
   },
   en: {
     brand: 'Allô Services CI',
