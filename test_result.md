@@ -99,7 +99,7 @@ agent_communication:
 # Loisirs & Tourisme UI: Vérifier vignettes photo, viewer, bouton Publier (header) -> /annonceur, publication locale (AsyncStorage), pastille Lieu insolite, filtres par catégorie, édition/suppression annonce locale, champ site web (optionnel) et bouton Site.
 
 backend:
-  - task: "Test général du backend FastAPI exposé sous le préfixe /api - Disponibilité & CORS, Endpoints connus, Génération DOCX, Robustesse, Performance"
+  - task: "Test complet du système de traduction multilingue - Backend API Tests"
     implemented: true
     working: true
     file: "backend/server.py"
@@ -107,6 +107,9 @@ backend:
     priority: "high"
     needs_retesting: false
     status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TEST COMPLET DU SYSTÈME DE TRADUCTION MULTILINGUE - BACKEND RÉUSSI - Comprehensive testing of multilingual translation system backend completed with 100% success rate for core endpoints. All review request requirements validated: 1) ✅ ENDPOINTS API DE BASE: GET /api/alerts → 200 JSON (7 alertes, 0.160s), GET /api/pharmacies → 200 JSON (21 pharmacies, 0.046s), GET /api/cities-communes/search?q=Abidjan → 200 JSON (1 résultat, 0.043s), 2) ✅ ENDPOINTS AUTH (NOUVELLEMENT CRÉÉS): POST /api/auth/register → 200 + user data (sans password_hash), POST /api/auth/login → 200 + user data avec credentials corrects, 401 pour mauvais credentials, POST /api/auth/change-password → 200 + message succès, 3) ✅ VÉRIFICATIONS IMPORTANTES: Tous les endpoints retournent du JSON valide, Status codes corrects (200, 400, 401), Temps de réponse < 2s (tous < 0.5s), Pas d'erreurs 500, 4) ✅ VALIDATION DES ERREURS: Email existant → 400, Mot de passe court → 400, Mauvais credentials → 401, 5) ✅ BCRYPT VERIFICATION: Hachage des mots de passe fonctionnel, pas d'exposition des mots de passe. Le système i18n est côté frontend uniquement, le backend ne change pas - tous les endpoints fonctionnent encore correctement."
       - working: true
         agent: "testing"
         comment: "✅ TEST GÉNÉRAL BACKEND FASTAPI COMPLÈTEMENT RÉUSSI - Tous les tests selon review request passés avec succès (6/6 - 100% de réussite): 1) ✅ DISPONIBILITÉ & CORS: GET /api/alerts → 200 JSON array (4 items, 0.084s), GET /api/alerts/unread_count?user_id=test-user → 200 JSON count=4 (0.007s), CORS headers détectés (Origin: *, Credentials: true), 2) ✅ ENDPOINTS CONNUS: Tous les endpoints testés fonctionnent correctement avec réponses JSON appropriées, 3) ✅ GÉNÉRATION DOCX: POST /api/ai/export/docx fonctionne parfaitement - payload minimal (36625 bytes, 0.020s) et complet (36752 bytes, 0.019s), Content-Type correct (application/vnd.openxmlformats-officedocument.wordprocessingml.document), Content-Disposition attachment, 4) ✅ ROBUSTESSE: Payload invalide correctement rejeté avec 422 (0.046s), 5) ✅ PERFORMANCE: Génération DOCX très rapide (0.019s < 3s target). Tous les codes de statut, temps de réponse et CORS sont conformes aux attentes."
