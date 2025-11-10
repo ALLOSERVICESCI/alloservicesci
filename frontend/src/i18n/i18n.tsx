@@ -157,7 +157,7 @@ const translations: Record<LangKey, Dict> = {
     premiumFeature_jobs: 'Offres d\'emplois et opportunités',
     premiumFeature_services: 'Démarches et services publics',
     premiumFeature_utilities: 'Services utiles du quotidien',
-    premiumFeature_agriculture: 'Infos et services pour l'agriculture',
+    premiumFeature_agriculture: 'Infos et services pour l\'agriculture',
     premiumFeature_leisure: 'Loisirs et tourisme à proximité',
     premiumFeature_transport: 'Transports et itinéraires',
 
