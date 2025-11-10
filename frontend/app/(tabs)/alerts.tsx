@@ -159,7 +159,7 @@ export default function Alerts() {
           <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setPreviewUri(null)}>
             <Image source={{ uri: previewUri || '' }} style={styles.modalImage} resizeMode="contain" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.modalClose} onPress={() => setPreviewUri(null)} accessibilityRole="button" accessibilityLabel="Fermer l'aperçu">
+          <TouchableOpacity style={styles.modalClose} onPress={() => setPreviewUri(null)} accessibilityRole="button" accessibilityLabel={t('close')}>
             <Ionicons name="close" size={28} color="#fff" />
           </TouchableOpacity>
         </View>
