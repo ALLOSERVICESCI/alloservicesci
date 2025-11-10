@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 # Base URL from frontend environment
-BASE_URL = "https://civ-services-enhance.preview.emergentagent.com/api"
+BASE_URL = "https://ivoire-mobile.preview.emergentagent.com/api"
 
 class BackendRegressionTester:
     def __init__(self):

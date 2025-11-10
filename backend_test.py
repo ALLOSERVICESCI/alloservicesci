@@ -11,7 +11,7 @@ import os
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://civ-services-enhance.preview.emergentagent.com/api"
+BACKEND_URL = "https://ivoire-mobile.preview.emergentagent.com/api"
 
 def log_test(test_name, status, details=""):
     """Log des résultats de test"""
