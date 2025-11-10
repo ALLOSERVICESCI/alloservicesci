@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import * as ImagePicker from 'expo-image-picker';
+import { useI18n } from '../../src/i18n/i18n';
 
 // Liste des communes de Côte d'Ivoire
 const CI_COMMUNES = [
