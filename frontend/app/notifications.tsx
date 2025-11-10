@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useI18n } from '../src/i18n/i18n';
 
 export default function Notifications() {
+  const { t } = useI18n();
+  
   return (
     <View style={styles.container}>
       {/* Header avec bouton retour */}
@@ -11,14 +14,14 @@ export default function Notifications() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="chevron-back" size={24} color="#0A7C3A" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Centre de notifications</Text>
+        <Text style={styles.headerTitle}>{t('notifCenter')}</Text>
         <View style={{ width: 24 }} />
       </View>
 
       {/* Contenu */}
       <View style={styles.content}>
-        <Text style={styles.title}>Centre de notifications</Text>
-        <Text style={styles.subtitle}>Gérez vos notifications ici</Text>
+        <Text style={styles.title}>{t('notifCenter')}</Text>
+        <Text style={styles.subtitle}>{t('noNotifications')}</Text>
       </View>
     </View>
   );
