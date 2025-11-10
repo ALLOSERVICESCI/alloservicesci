@@ -154,7 +154,7 @@ const translations: Record<LangKey, Dict> = {
     // Premium feature descriptions
     premiumFeature_exams: 'Accès rapide aux examens et concours',
     premiumFeature_education: 'Ressources et informations éducatives',
-    premiumFeature_jobs: 'Offres d'emplois et opportunités',
+    premiumFeature_jobs: 'Offres d\'emplois et opportunités',
     premiumFeature_services: 'Démarches et services publics',
     premiumFeature_utilities: 'Services utiles du quotidien',
     premiumFeature_agriculture: 'Infos et services pour l'agriculture',
