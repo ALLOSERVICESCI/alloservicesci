@@ -331,7 +331,7 @@ export default function Pharmacies() {
 
           {/* Barre de recherche ville/commune */}
           <View style={styles.searchBlock}>
-            <Text style={styles.selectLabel}>Ville ou Commune</Text>
+            <Text style={styles.selectLabel}>{t('cityOrCommune')}</Text>
             <View style={[styles.searchRow, nearMe && styles.searchRowDisabled]}
               pointerEvents={nearMe ? 'none' : 'auto'}>
               <Ionicons name="search-outline" size={18} color={nearMe ? '#999' : '#666'} style={{ marginRight: 8 }} />
@@ -343,7 +343,7 @@ export default function Pharmacies() {
                     setShowSuggestions(true);
                   }
                 }}
-                placeholder="Rechercher une ville ou commune..."
+                placeholder={t('searchCityPlaceholder')}
                 placeholderTextColor={nearMe ? '#CCC' : '#999'}
                 style={styles.searchInputFlex}
                 autoCapitalize="none"
