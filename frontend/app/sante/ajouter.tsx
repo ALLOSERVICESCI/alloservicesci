@@ -49,6 +49,7 @@ const SPECIALITES = [
 
 export default function AjouterEtablissement() {
   const router = useRouter();
+  const { t } = useI18n();
   
   // Switch Professionnel
   const [isPro, setIsPro] = useState(false);
