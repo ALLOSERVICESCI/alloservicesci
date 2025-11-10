@@ -106,7 +106,7 @@ export default function AjouterEtablissement() {
       }
     } catch (e) {
       console.error('Erreur sélection photo:', e);
-      Alert.alert('Erreur', 'Impossible de sélectionner la photo.');
+      Alert.alert(t('error'), t('unableToSelectPhoto'));
     }
   };
 
@@ -114,45 +114,45 @@ export default function AjouterEtablissement() {
     // Validations Professionnel
     if (isPro) {
       if (!nomAnnonceur.trim()) {
-        Alert.alert('Nom requis', 'Veuillez saisir votre nom.');
+        Alert.alert(t('nameRequired'), t('enterYourName'));
         return;
       }
       if (!fonctionAnnonceur.trim()) {
-        Alert.alert('Fonction requise', 'Veuillez préciser votre fonction.');
+        Alert.alert(t('functionRequired'), t('specifyFunction'));
         return;
       }
       if (!emailAnnonceur.trim()) {
-        Alert.alert('Email requis', 'Veuillez saisir votre email.');
+        Alert.alert(t('emailRequired'), t('enterYourEmail'));
         return;
       }
     }
     
     // Validations Établissement (communes)
     if (!nomEtablissement.trim()) {
-      Alert.alert('Nom requis', 'Veuillez saisir le nom de l\'établissement.');
+      Alert.alert(t('facilityNameRequired'), t('enterFacilityName'));
       return;
     }
     if (!typeEtablissement) {
-      Alert.alert('Type requis', 'Veuillez sélectionner le type d\'établissement.');
+      Alert.alert(t('typeRequired'), t('selectFacilityType'));
       return;
     }
     if (!commune) {
-      Alert.alert('Localité requise', 'Veuillez choisir une localité.');
+      Alert.alert(t('localityRequired'), t('chooseLocality'));
       return;
     }
     
     // Validations spécifiques Pro
     if (isPro) {
       if (!numeroAgrement.trim()) {
-        Alert.alert('N° d\'agrément requis', 'Veuillez saisir le numéro d\'agrément.');
+        Alert.alert(t('approvalNumberRequired'), t('enterApprovalNumber'));
         return;
       }
       if (!telephoneStandard.trim()) {
-        Alert.alert('Téléphone Standard requis', 'Veuillez saisir le numéro du standard.');
+        Alert.alert(t('standardPhoneRequired'), t('enterStandardPhone'));
         return;
       }
       if (!emailEtablissement.trim()) {
-        Alert.alert('Email requis', 'Veuillez saisir l\'email de l\'établissement.');
+        Alert.alert(t('emailRequired'), t('enterYourEmail'));
         return;
       }
     }
