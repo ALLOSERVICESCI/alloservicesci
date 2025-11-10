@@ -197,7 +197,7 @@ export default function AjouterEtablissement() {
       router.replace('/category/sante');
     } catch (e) {
       console.error('[Santé] Erreur sauvegarde:', e);
-      Alert.alert('Erreur', "Impossible d'enregistrer l'établissement. Réessayez.");
+      Alert.alert(t('error'), t('unableToPublishFacility'));
     }
   };
 
