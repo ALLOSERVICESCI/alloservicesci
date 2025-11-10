@@ -251,11 +251,11 @@ export default function Pharmacies() {
               <TouchableOpacity 
                 onPress={() => router.push('/pharmacies/ajouter')} 
                 accessibilityRole="button" 
-                accessibilityLabel="Ajouter une pharmacie"
+                accessibilityLabel={t('addPharmacy')}
                 style={styles.addBtnHeader}
               >
                 <Ionicons name="add-circle-outline" size={20} color="#fff" />
-                <Text style={styles.addBtnHeaderText}>Ajouter</Text>
+                <Text style={styles.addBtnHeaderText}>{t('add')}</Text>
               </TouchableOpacity>
             </View>
           </View>
