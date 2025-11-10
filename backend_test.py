@@ -20,57 +20,160 @@ from datetime import datetime
 BACKEND_URL = "https://ivoire-mobile.preview.emergentagent.com/api"
 TIMEOUT = 10
 
-def log_test(test_name, status, details=""):
-    """Log des résultats de test"""
-    timestamp = datetime.now().strftime("%H:%M:%S")
-    status_symbol = "✅" if status else "❌"
-    print(f"[{timestamp}] {status_symbol} {test_name}")
-    if details:
-        print(f"    {details}")
-    print()
-
-def test_auth_register():
-    """Test 1: POST /api/auth/register - Test d'inscription avec un nouveau utilisateur"""
-    print("=== TEST 1: POST /api/auth/register ===")
-    
-    url = f"{BACKEND_URL}/auth/register"
-    payload = {
-        "first_name": "John",
-        "last_name": "Doe", 
-        "email": "john.doe@test.ci",
-        "password": "motdepasse123"
-    }
-    
-    try:
-        response = requests.post(url, json=payload, timeout=10)
+class BackendTester:
+    def __init__(self):
+        self.test_results = []
+        self.user_id = None
+        self.test_email = f"test.multilingue.{int(time.time())}@example.ci"
+        self.test_password = "motdepasse123"
+        self.passed_tests = 0
+        self.failed_tests = 0
         
-        if response.status_code == 200:
-            data = response.json()
-            # Vérifier que les données utilisateur sont retournées sans password_hash
-            if 'id' in data and 'email' in data and 'password_hash' not in data:
-                log_test("Inscription utilisateur", True, f"Utilisateur créé avec ID: {data['id']}")
-                return data['id'], payload['email']  # Retourner l'ID et email pour les tests suivants
-            else:
-                log_test("Inscription utilisateur", False, f"Structure de réponse incorrecte: {data}")
-                return None, None
-        elif response.status_code == 400:
-            # Utilisateur existe déjà - essayer avec un email différent
-            payload['email'] = f"john.doe.{datetime.now().strftime('%H%M%S')}@test.ci"
-            response = requests.post(url, json=payload, timeout=10)
-            if response.status_code == 200:
-                data = response.json()
-                log_test("Inscription utilisateur (email alternatif)", True, f"Utilisateur créé avec ID: {data['id']}")
-                return data['id'], payload['email']
-            else:
-                log_test("Inscription utilisateur", False, f"Erreur après changement d'email: {response.status_code} - {response.text}")
-                return None, None
+    def log_test(self, test_name: str, success: bool, details: str, response_time: float = 0):
+        """Log test result"""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        status = "✅ PASS" if success else "❌ FAIL"
+        self.test_results.append({
+            'test': test_name,
+            'success': success,
+            'details': details,
+            'response_time': response_time
+        })
+        if success:
+            self.passed_tests += 1
         else:
-            log_test("Inscription utilisateur", False, f"Status code: {response.status_code} - {response.text}")
-            return None, None
+            self.failed_tests += 1
+        print(f"[{timestamp}] {status} {test_name}: {details} ({response_time:.3f}s)")
+        
+    def make_request(self, method: str, endpoint: str, data=None, params=None):
+        """Make HTTP request and return response, success, time"""
+        url = f"{BACKEND_URL}{endpoint}"
+        start_time = time.time()
+        
+        try:
+            if method.upper() == 'GET':
+                response = requests.get(url, params=params, timeout=TIMEOUT)
+            elif method.upper() == 'POST':
+                response = requests.post(url, json=data, params=params, timeout=TIMEOUT)
+            elif method.upper() == 'PATCH':
+                response = requests.patch(url, json=data, params=params, timeout=TIMEOUT)
+            else:
+                raise ValueError(f"Unsupported method: {method}")
+                
+            response_time = time.time() - start_time
+            return response, True, response_time
             
-    except Exception as e:
-        log_test("Inscription utilisateur", False, f"Exception: {str(e)}")
-        return None, None
+        except Exception as e:
+            response_time = time.time() - start_time
+            return None, False, response_time
+            
+    def verify_json_response(self, response) -> bool:
+        """Verify response is valid JSON"""
+        try:
+            response.json()
+            return True
+        except:
+            return False
+            
+    def verify_cors_headers(self, response) -> bool:
+        """Verify CORS headers are present"""
+        cors_headers = [
+            'Access-Control-Allow-Origin',
+            'Access-Control-Allow-Credentials'
+        ]
+        return any(header in response.headers for header in cors_headers)
+        
+    def test_basic_endpoints(self):
+        """Test basic API endpoints according to review request"""
+        print("\n=== TESTS ENDPOINTS API DE BASE ===")
+        
+        # Test GET /api/alerts - Vérifier que les alertes sont récupérables
+        response, success, response_time = self.make_request('GET', '/alerts')
+        if success and response:
+            json_valid = self.verify_json_response(response)
+            cors_present = self.verify_cors_headers(response)
+            status_ok = response.status_code == 200
+            time_ok = response_time < 2.0
+            
+            if status_ok and json_valid and time_ok:
+                try:
+                    data = response.json()
+                    alert_count = len(data) if isinstance(data, list) else 0
+                    self.log_test(
+                        "GET /api/alerts",
+                        True,
+                        f"200 OK, JSON valide, {alert_count} alertes, CORS: {cors_present}",
+                        response_time
+                    )
+                except:
+                    self.log_test("GET /api/alerts", False, f"Status {response.status_code}, JSON invalide", response_time)
+            else:
+                issues = []
+                if not status_ok: issues.append(f"Status {response.status_code}")
+                if not json_valid: issues.append("JSON invalide")
+                if not time_ok: issues.append(f"Temps {response_time:.3f}s > 2s")
+                self.log_test("GET /api/alerts", False, ", ".join(issues), response_time)
+        else:
+            self.log_test("GET /api/alerts", False, "Erreur de connexion", response_time)
+            
+        # Test GET /api/pharmacies - Vérifier liste pharmacies
+        response, success, response_time = self.make_request('GET', '/pharmacies')
+        if success and response:
+            json_valid = self.verify_json_response(response)
+            cors_present = self.verify_cors_headers(response)
+            status_ok = response.status_code == 200
+            time_ok = response_time < 2.0
+            
+            if status_ok and json_valid and time_ok:
+                try:
+                    data = response.json()
+                    pharmacy_count = len(data) if isinstance(data, list) else 0
+                    self.log_test(
+                        "GET /api/pharmacies",
+                        True,
+                        f"200 OK, JSON valide, {pharmacy_count} pharmacies, CORS: {cors_present}",
+                        response_time
+                    )
+                except:
+                    self.log_test("GET /api/pharmacies", False, f"Status {response.status_code}, JSON invalide", response_time)
+            else:
+                issues = []
+                if not status_ok: issues.append(f"Status {response.status_code}")
+                if not json_valid: issues.append("JSON invalide")
+                if not time_ok: issues.append(f"Temps {response_time:.3f}s > 2s")
+                self.log_test("GET /api/pharmacies", False, ", ".join(issues), response_time)
+        else:
+            self.log_test("GET /api/pharmacies", False, "Erreur de connexion", response_time)
+            
+        # Test GET /api/cities-communes/search?q=Abidjan - Vérifier recherche localités
+        response, success, response_time = self.make_request('GET', '/cities-communes/search', params={'q': 'Abidjan'})
+        if success and response:
+            json_valid = self.verify_json_response(response)
+            cors_present = self.verify_cors_headers(response)
+            status_ok = response.status_code == 200
+            time_ok = response_time < 2.0
+            
+            if status_ok and json_valid and time_ok:
+                try:
+                    data = response.json()
+                    results = data.get('results', []) if isinstance(data, dict) else []
+                    result_count = len(results)
+                    self.log_test(
+                        "GET /api/cities-communes/search?q=Abidjan",
+                        True,
+                        f"200 OK, JSON valide, {result_count} résultats, CORS: {cors_present}",
+                        response_time
+                    )
+                except:
+                    self.log_test("GET /api/cities-communes/search?q=Abidjan", False, f"Status {response.status_code}, JSON invalide", response_time)
+            else:
+                issues = []
+                if not status_ok: issues.append(f"Status {response.status_code}")
+                if not json_valid: issues.append("JSON invalide")
+                if not time_ok: issues.append(f"Temps {response_time:.3f}s > 2s")
+                self.log_test("GET /api/cities-communes/search?q=Abidjan", False, ", ".join(issues), response_time)
+        else:
+            self.log_test("GET /api/cities-communes/search?q=Abidjan", False, "Erreur de connexion", response_time)
 
 def test_auth_login(email="john.doe@test.ci", password="motdepasse123"):
     """Test 2: POST /api/auth/login - Test de connexion avec l'utilisateur créé"""
