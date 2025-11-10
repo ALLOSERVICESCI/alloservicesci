@@ -19,6 +19,7 @@ const JOURS_SEMAINE = [
 ];
 
 export default function AjouterPharmacie() {
+  const { t } = useI18n();
   const [nom, setNom] = useState('');
   const [adresse, setAdresse] = useState('');
   const [ville, setVille] = useState('');
