@@ -6,9 +6,11 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { apiFetch } from '../../src/utils/api';
 import { useNotificationsCenter } from '../../src/context/NotificationsContext';
+import { useI18n } from '../../src/i18n/i18n';
 
 export default function NewAlert() {
   const router = useRouter();
+  const { t } = useI18n();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [city, setCity] = useState('Abidjan');
@@ -18,7 +20,7 @@ export default function NewAlert() {
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') { Alert.alert('Permission', "Autorisez l'accès à vos photos"); return; }
+    if (status !== 'granted') { Alert.alert(t('permission'), t('allowPhotoAccess')); return; }
     const result = await ImagePicker.launchImageLibraryAsync({ base64: true, quality: 0.6, allowsMultipleSelection: false });
     if (!result.canceled && result.assets && result.assets[0]?.base64) {
       setImagesBase64(prev => [...prev, `data:${result.assets[0].mimeType || 'image/jpeg'};base64,${result.assets[0].base64}`].slice(0, 3));
@@ -26,7 +28,7 @@ export default function NewAlert() {
   };
 
   const onSubmit = async () => {
-    if (!title || !description) { Alert.alert('Champs requis', 'Titre et description sont requis'); return; }
+    if (!title || !description) { Alert.alert(t('requiredFields'), t('titleAndDescRequired')); return; }
     setLoading(true);
     try {
       const res = await apiFetch('/api/alerts', {
@@ -34,8 +36,8 @@ export default function NewAlert() {
         body: JSON.stringify({ title, description, type: 'other', city, images_base64: imagesBase64 })
       });
       const json = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(json.detail || 'Erreur');
-      Alert.alert('Alerte publiée', 'Une notification a été envoyée.');
+      if (!res.ok) throw new Error(json.detail || t('error'));
+      Alert.alert(t('alertPublished'), t('notificationSent'));
       // Ajouter dans le centre de notifications local
       await addLocal({ title, body: description, data: { city } });
       setTitle(''); setDescription(''); setImagesBase64([]);
@@ -43,7 +45,7 @@ export default function NewAlert() {
       try { await AsyncStorage.setItem('home_snack', 'ALERT_PUBLISHED'); } catch {}
       setTimeout(() => router.replace('/(tabs)/alerts'), 150);
     } catch (e: any) {
-      Alert.alert('Erreur', e.message || 'Impossible de publier');
+      Alert.alert(t('error'), e.message || t('unableToPublish'));
     } finally { setLoading(false); }
   };
 
