@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCitiesCommunes } from '../../src/hooks/useCitiesCommunes';
 import { apiFetch } from '../../src/utils/api';
+import { useI18n } from '../../src/i18n/i18n';
 
 // Jours de la semaine
 const JOURS_SEMAINE = [
