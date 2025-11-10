@@ -65,6 +65,7 @@ class BackendTester:
             
         except Exception as e:
             response_time = time.time() - start_time
+            print(f"Request error: {str(e)}")
             return None, False, response_time
             
     def verify_json_response(self, response) -> bool:
