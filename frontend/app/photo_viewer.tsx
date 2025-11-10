@@ -9,6 +9,7 @@ const { width } = Dimensions.get('window');
 export default function PhotoViewer() {
   const router = useRouter();
   const params = useLocalSearchParams();
+  const { t } = useI18n();
   const [photos, setPhotos] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
   const ref = useRef<FlatList<string>>(null);
