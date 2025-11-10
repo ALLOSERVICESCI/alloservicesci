@@ -339,168 +339,213 @@ class BackendTester:
         else:
             self.log_test("POST /api/auth/change-password", False, "Pas d'ID utilisateur disponible", 0)
 
-def test_change_password(user_id):
-    """Test 3: POST /api/auth/change-password - Test de changement de mot de passe"""
-    print("=== TEST 3: POST /api/auth/change-password ===")
-    
-    if not user_id:
-        log_test("Changement de mot de passe", False, "Pas d'ID utilisateur disponible")
-        return False
-    
-    url = f"{BACKEND_URL}/auth/change-password?user_id={user_id}"
-    payload = {
-        "current_password": "motdepasse123",
-        "new_password": "nouveaumotdepasse456"
-    }
-    
-    try:
-        response = requests.post(url, json=payload, timeout=10)
+    def test_error_validation(self):
+        """Test error cases for validation (400, 401 status codes)"""
+        print("\n=== TESTS VALIDATION DES ERREURS ===")
         
-        if response.status_code == 200:
-            data = response.json()
-            if 'message' in data:
-                log_test("Changement de mot de passe", True, f"Message: {data['message']}")
-                return True
-            else:
-                log_test("Changement de mot de passe", False, f"Structure de réponse incorrecte: {data}")
-                return False
-        else:
-            log_test("Changement de mot de passe", False, f"Status code: {response.status_code} - {response.text}")
-            return False
+        # Test register with existing email (should return 400)
+        if self.test_email:
+            duplicate_data = {
+                "first_name": "Test",
+                "last_name": "Duplicate",
+                "email": self.test_email,
+                "password": "motdepasse123"
+            }
             
-    except Exception as e:
-        log_test("Changement de mot de passe", False, f"Exception: {str(e)}")
-        return False
-
-def test_validation_errors():
-    """Test 4: Validation des erreurs"""
-    print("=== TEST 4: Validation des erreurs ===")
-    
-    # Test inscription avec email déjà existant
-    url_register = f"{BACKEND_URL}/auth/register"
-    payload_existing = {
-        "first_name": "John",
-        "last_name": "Doe",
-        "email": "john.doe@test.ci",  # Email déjà utilisé
-        "password": "motdepasse123"
-    }
-    
-    try:
-        response = requests.post(url_register, json=payload_existing, timeout=10)
-        if response.status_code == 400:
-            log_test("Inscription avec email existant", True, "Erreur 400 retournée comme attendu")
-        else:
-            log_test("Inscription avec email existant", False, f"Status code attendu: 400, reçu: {response.status_code}")
-    except Exception as e:
-        log_test("Inscription avec email existant", False, f"Exception: {str(e)}")
-    
-    # Test mot de passe trop court
-    payload_short_password = {
-        "first_name": "Test",
-        "last_name": "User",
-        "email": "test.short@test.ci",
-        "password": "123"  # Moins de 8 caractères
-    }
-    
-    try:
-        response = requests.post(url_register, json=payload_short_password, timeout=10)
-        if response.status_code == 400:
-            log_test("Mot de passe trop court", True, "Erreur 400 retournée comme attendu")
-        else:
-            log_test("Mot de passe trop court", False, f"Status code attendu: 400, reçu: {response.status_code}")
-    except Exception as e:
-        log_test("Mot de passe trop court", False, f"Exception: {str(e)}")
-    
-    # Test login avec mauvais credentials
-    url_login = f"{BACKEND_URL}/auth/login"
-    payload_bad_login = {
-        "email": "inexistant@test.ci",
-        "password": "motdepasse123"
-    }
-    
-    try:
-        response = requests.post(url_login, json=payload_bad_login, timeout=10)
-        if response.status_code == 401:
-            log_test("Login avec mauvais credentials", True, "Erreur 401 retournée comme attendu")
-        else:
-            log_test("Login avec mauvais credentials", False, f"Status code attendu: 401, reçu: {response.status_code}")
-    except Exception as e:
-        log_test("Login avec mauvais credentials", False, f"Exception: {str(e)}")
-
-def test_bcrypt_functionality():
-    """Test 5: Vérifier que bcrypt fonctionne bien pour le hachage des mots de passe"""
-    print("=== TEST 5: Vérification bcrypt ===")
-    
-    # Créer un utilisateur et vérifier que le mot de passe est bien haché en base
-    # Note: On ne peut pas accéder directement à la base depuis ce test,
-    # mais on peut vérifier indirectement via les endpoints
-    
-    url_register = f"{BACKEND_URL}/auth/register"
-    test_email = f"bcrypt.test.{datetime.now().strftime('%H%M%S')}@test.ci"
-    payload = {
-        "first_name": "Bcrypt",
-        "last_name": "Test",
-        "email": test_email,
-        "password": "test_bcrypt_123"
-    }
-    
-    try:
-        # Créer l'utilisateur
-        response = requests.post(url_register, json=payload, timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            # Vérifier que le password_hash n'est pas retourné dans la réponse
-            if 'password_hash' not in data and 'password' not in data:
-                log_test("Bcrypt - Mot de passe non exposé", True, "Le mot de passe haché n'est pas retourné dans la réponse")
-                
-                # Tester la connexion pour vérifier que le hachage fonctionne
-                url_login = f"{BACKEND_URL}/auth/login"
-                login_payload = {
-                    "email": test_email,
-                    "password": "test_bcrypt_123"
-                }
-                
-                login_response = requests.post(url_login, json=login_payload, timeout=10)
-                if login_response.status_code == 200:
-                    log_test("Bcrypt - Vérification du hash", True, "La connexion fonctionne, le hachage bcrypt est opérationnel")
+            response, success, response_time = self.make_request('POST', '/auth/register', data=duplicate_data)
+            if success and response:
+                if response.status_code == 400:
+                    self.log_test(
+                        "POST /api/auth/register (email existant)",
+                        True,
+                        "400 Bad Request comme attendu",
+                        response_time
+                    )
                 else:
-                    log_test("Bcrypt - Vérification du hash", False, f"Échec de connexion: {login_response.status_code}")
+                    self.log_test(
+                        "POST /api/auth/register (email existant)",
+                        False,
+                        f"Status {response.status_code}, attendu 400",
+                        response_time
+                    )
             else:
-                log_test("Bcrypt - Mot de passe non exposé", False, "Le mot de passe ou son hash est exposé dans la réponse")
+                self.log_test("POST /api/auth/register (email existant)", False, "Erreur de connexion", response_time)
+                
+        # Test register with short password (should return 400)
+        short_password_data = {
+            "first_name": "Test",
+            "last_name": "Short",
+            "email": f"test.short.{int(time.time())}@example.ci",
+            "password": "123"  # Too short
+        }
+        
+        response, success, response_time = self.make_request('POST', '/auth/register', data=short_password_data)
+        if success and response:
+            if response.status_code == 400:
+                self.log_test(
+                    "POST /api/auth/register (mot de passe court)",
+                    True,
+                    "400 Bad Request comme attendu",
+                    response_time
+                )
+            else:
+                self.log_test(
+                    "POST /api/auth/register (mot de passe court)",
+                    False,
+                    f"Status {response.status_code}, attendu 400",
+                    response_time
+                )
         else:
-            log_test("Bcrypt - Création utilisateur test", False, f"Échec création utilisateur: {response.status_code}")
+            self.log_test("POST /api/auth/register (mot de passe court)", False, "Erreur de connexion", response_time)
             
-    except Exception as e:
-        log_test("Bcrypt - Test général", False, f"Exception: {str(e)}")
+        # Test login with non-existent email (should return 401)
+        bad_login_data = {
+            "email": f"inexistant.{int(time.time())}@test.ci",
+            "password": "motdepasse123"
+        }
+        
+        response, success, response_time = self.make_request('POST', '/auth/login', data=bad_login_data)
+        if success and response:
+            if response.status_code == 401:
+                self.log_test(
+                    "POST /api/auth/login (email inexistant)",
+                    True,
+                    "401 Unauthorized comme attendu",
+                    response_time
+                )
+            else:
+                self.log_test(
+                    "POST /api/auth/login (email inexistant)",
+                    False,
+                    f"Status {response.status_code}, attendu 401",
+                    response_time
+                )
+        else:
+            self.log_test("POST /api/auth/login (email inexistant)", False, "Erreur de connexion", response_time)
+            
+    def test_bcrypt_verification(self):
+        """Test bcrypt password hashing functionality"""
+        print("\n=== TESTS VÉRIFICATION BCRYPT ===")
+        
+        # Create a test user and verify bcrypt functionality
+        test_email = f"bcrypt.test.{int(time.time())}.{os.getpid()}@example.ci"
+        register_data = {
+            "first_name": "Bcrypt",
+            "last_name": "Test",
+            "email": test_email,
+            "password": "test_bcrypt_123"
+        }
+        
+        response, success, response_time = self.make_request('POST', '/auth/register', data=register_data)
+        if success and response:
+            if response.status_code == 200:
+                try:
+                    data = response.json()
+                    # Verify password_hash is not exposed in response
+                    no_password_exposed = 'password_hash' not in data and 'password' not in data
+                    self.log_test(
+                        "Bcrypt - Mot de passe non exposé",
+                        no_password_exposed,
+                        "Le mot de passe haché n'est pas retourné dans la réponse" if no_password_exposed else "SÉCURITÉ: Mot de passe exposé!",
+                        response_time
+                    )
+                    
+                    # Test login to verify bcrypt verification works
+                    login_data = {
+                        "email": test_email,
+                        "password": "test_bcrypt_123"
+                    }
+                    
+                    login_response, login_success, login_time = self.make_request('POST', '/auth/login', data=login_data)
+                    if login_success and login_response and login_response.status_code == 200:
+                        self.log_test(
+                            "Bcrypt - Vérification du hash",
+                            True,
+                            "La connexion fonctionne, le hachage bcrypt est opérationnel",
+                            login_time
+                        )
+                    else:
+                        self.log_test(
+                            "Bcrypt - Vérification du hash",
+                            False,
+                            f"Échec de connexion: {login_response.status_code if login_response else 'Erreur connexion'}",
+                            login_time
+                        )
+                except:
+                    self.log_test("Bcrypt - Analyse réponse", False, "Erreur lors de l'analyse de la réponse", response_time)
+            else:
+                self.log_test("Bcrypt - Création utilisateur test", False, f"Échec création utilisateur: {response.status_code}", response_time)
+        else:
+            self.log_test("Bcrypt - Test général", False, "Erreur de connexion", response_time)
+            
+    def run_all_tests(self):
+        """Run all tests according to review request"""
+        print("🚀 TEST COMPLET DU SYSTÈME DE TRADUCTION MULTILINGUE - BACKEND")
+        print("=" * 70)
+        print(f"Backend URL: {BACKEND_URL}")
+        print(f"Timeout: {TIMEOUT}s")
+        print("Objectif: Vérifier que le backend et les endpoints API fonctionnent correctement")
+        print("Note: Le système i18n est côté frontend uniquement, le backend ne change pas")
+        
+        start_time = time.time()
+        
+        # Run test suites according to review request
+        self.test_basic_endpoints()
+        self.test_auth_endpoints()
+        self.test_error_validation()
+        self.test_bcrypt_verification()
+        
+        total_time = time.time() - start_time
+        
+        # Summary
+        print(f"\n=== RÉSUMÉ DES TESTS ===")
+        total_tests = len(self.test_results)
+        success_rate = (self.passed_tests / total_tests * 100) if total_tests > 0 else 0
+        
+        print(f"Total des tests: {total_tests}")
+        print(f"✅ Réussis: {self.passed_tests}")
+        print(f"❌ Échoués: {self.failed_tests}")
+        print(f"⏱️ Temps total: {total_time:.3f}s")
+        print(f"📊 Taux de réussite: {success_rate:.1f}%")
+        
+        # Failed tests details
+        if self.failed_tests > 0:
+            print(f"\n=== TESTS ÉCHOUÉS ===")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"❌ {result['test']}: {result['details']}")
+                    
+        # Performance analysis
+        slow_tests = [r for r in self.test_results if r['response_time'] > 1.0]
+        if slow_tests:
+            print(f"\n=== TESTS LENTS (>1s) ===")
+            for result in slow_tests:
+                print(f"⚠️ {result['test']}: {result['response_time']:.3f}s")
+                
+        # Final verdict
+        if self.failed_tests == 0:
+            print(f"\n🎉 TOUS LES TESTS SONT PASSÉS!")
+            print("✅ Le backend est prêt pour le système multilingue.")
+            print("✅ Tous les endpoints retournent du JSON valide")
+            print("✅ Status codes corrects (200, 400, 401)")
+            print("✅ CORS headers présents")
+            print("✅ Temps de réponse < 2s")
+            print("✅ Pas d'erreurs 500")
+        else:
+            print(f"\n⚠️ CERTAINS TESTS ONT ÉCHOUÉ.")
+            print("Vérifiez les détails ci-dessus avant de procéder.")
+                
+        return self.failed_tests == 0
 
 def main():
     """Fonction principale pour exécuter tous les tests"""
-    print("🔐 TESTS DES ENDPOINTS D'AUTHENTIFICATION")
-    print("=" * 50)
-    print(f"Backend URL: {BACKEND_URL}")
-    print()
+    tester = BackendTester()
+    success = tester.run_all_tests()
     
-    # Test 1: Inscription
-    user_id, test_email = test_auth_register()
-    
-    # Utiliser l'email retourné par l'inscription ou un email par défaut
-    if not test_email:
-        test_email = "john.doe@test.ci"
-    
-    # Test 2: Connexion
-    user_id = test_auth_login(test_email) or user_id
-    
-    # Test 3: Changement de mot de passe
-    test_change_password(user_id)
-    
-    # Test 4: Validation des erreurs
-    test_validation_errors()
-    
-    # Test 5: Vérification bcrypt
-    test_bcrypt_functionality()
-    
-    print("=" * 50)
-    print("🏁 TESTS TERMINÉS")
+    if success:
+        sys.exit(0)
+    else:
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
