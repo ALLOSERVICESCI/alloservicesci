@@ -272,7 +272,7 @@ export default function Pharmacies() {
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDutyPress} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={[styles.chip, onDuty ? styles.chipOnDuty : styles.chipInactive]} accessible accessibilityLabel="chipOnDuty">
             <Ionicons name="location-outline" size={18} color={onDuty ? '#0A7C3A' : '#666'} style={{ marginRight: 8 }} />
-            <Text style={onDuty ? styles.chipTextOn : styles.chipTextInactive}>Communes ou quartiers</Text>
+            <Text style={onDuty ? styles.chipTextOn : styles.chipTextInactive}>{t('communesOrQuartiers')}</Text>
           </TouchableOpacity>
         </View>
 
