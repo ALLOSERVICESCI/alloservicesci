@@ -53,10 +53,10 @@ export default function PhotoViewer() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerRow}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
+        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel={t('back')}>
           <Ionicons name="chevron-back" size={22} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Photos</Text>
+        <Text style={styles.headerTitle}>{t('photos')}</Text>
         <Text style={styles.counter}>{photos.length > 0 ? `${index + 1}/${photos.length}` : ''}</Text>
       </View>
 
