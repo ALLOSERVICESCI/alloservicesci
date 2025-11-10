@@ -200,6 +200,19 @@ const translations: Record<LangKey, Dict> = {
     communesOrQuartiers: 'Communes ou quartiers',
     searchCityPlaceholder: 'Rechercher une ville ou commune...',
     addPharmacy: 'Ajouter une pharmacie',
+    
+    // Alert form
+    newAlertTitle: 'Nouvelle alerte',
+    title: 'Titre',
+    description: 'Description',
+    addImage: 'Ajouter une image',
+    imagesAdded: 'image(s) ajoutée(s)',
+    alertPublished: 'Alerte publiée',
+    notificationSent: 'Une notification a été envoyée.',
+    unableToPublish: 'Impossible de publier',
+    titleAndDescRequired: 'Titre et description sont requis',
+    permission: 'Permission',
+    allowPhotoAccess: 'Autorisez l\'accès à vos photos',
   },
   en: {
     brand: 'Allô Services CI',
