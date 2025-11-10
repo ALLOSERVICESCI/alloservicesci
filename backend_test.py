@@ -1,17 +1,24 @@
 #!/usr/bin/env python3
 """
-Test des nouveaux endpoints d'authentification
-Teste les endpoints POST /api/auth/register, POST /api/auth/login, POST /api/auth/change-password
+Test complet du système de traduction multilingue - Backend API Tests
+Objectif: Vérifier que le backend et les endpoints API fonctionnent correctement pour supporter le système multilingue.
+
+Tests à effectuer selon la review request:
+1. Endpoints API de base: GET /api/alerts, GET /api/pharmacies, GET /api/cities-communes/search?q=Abidjan
+2. Endpoints Auth (nouvellement créés): POST /api/register, POST /api/login, POST /api/change-password
+3. Vérifications: JSON valide, Status codes corrects (200, 400, 401), CORS headers, Temps < 2s, Pas d'erreurs 500
 """
 
 import requests
 import json
 import sys
 import os
+import time
 from datetime import datetime
 
 # Configuration
 BACKEND_URL = "https://ivoire-mobile.preview.emergentagent.com/api"
+TIMEOUT = 10
 
 def log_test(test_name, status, details=""):
     """Log des résultats de test"""
