@@ -89,7 +89,7 @@ export default function AjouterEtablissement() {
     try {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('Permission refusée', 'Nous avons besoin de la permission pour accéder à vos photos.');
+        Alert.alert(t('permissionDenied'), t('needPhotoPermission'));
         return;
       }
 
