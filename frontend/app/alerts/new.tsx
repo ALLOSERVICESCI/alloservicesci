@@ -53,18 +53,18 @@ export default function NewAlert() {
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
+          <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel={t('back')}>
             <Ionicons name="chevron-back" size={24} color="#0A7C3A" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.title}>Nouvelle alerte</Text>
-        <TextInput placeholder="Titre" value={title} onChangeText={setTitle} style={styles.input} />
-        <TextInput placeholder="Description" value={description} onChangeText={setDescription} style={[styles.input, { height: 100 }]} multiline />
+        <Text style={styles.title}>{t('newAlertTitle')}</Text>
+        <TextInput placeholder={t('title')} value={title} onChangeText={setTitle} style={styles.input} />
+        <TextInput placeholder={t('description')} value={description} onChangeText={setDescription} style={[styles.input, { height: 100 }]} multiline />
         {/* Zone 'Type (flood, ...)' supprimée volontairement */}
-        <TextInput placeholder="Ville" value={city} onChangeText={setCity} style={styles.input} />
-        <TouchableOpacity onPress={pickImage} style={styles.secondary}><Text style={styles.secondaryText}>Ajouter une image</Text></TouchableOpacity>
-        <Text style={{ marginTop: 8, color: '#666' }}>{imagesBase64.length} image(s) ajoutée(s)</Text>
-        <TouchableOpacity disabled={loading} onPress={onSubmit} style={styles.btn}><Text style={styles.btnText}>{loading ? '...' : 'Publier'}</Text></TouchableOpacity>
+        <TextInput placeholder={t('city')} value={city} onChangeText={setCity} style={styles.input} />
+        <TouchableOpacity onPress={pickImage} style={styles.secondary}><Text style={styles.secondaryText}>{t('addImage')}</Text></TouchableOpacity>
+        <Text style={{ marginTop: 8, color: '#666' }}>{imagesBase64.length} {t('imagesAdded')}</Text>
+        <TouchableOpacity disabled={loading} onPress={onSubmit} style={styles.btn}><Text style={styles.btnText}>{loading ? '...' : t('publish')}</Text></TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );
