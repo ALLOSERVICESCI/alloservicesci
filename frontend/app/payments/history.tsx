@@ -80,7 +80,7 @@ export default function PaymentHistory() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="chevron-back" size={24} color="#0A7C3A" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Historique de paiement</Text>
+        <Text style={styles.headerTitle}>{t('paymentHistory')}</Text>
         <View style={{ width: 24 }} />
       </View>
 
