@@ -25,13 +25,8 @@
       "edgeToEdgeEnabled": true,
       "permissions": [
         "POST_NOTIFICATIONS",
-        "SCHEDULE_EXACT_ALARM",
-        "POST_NOTIFICATIONS",
         "SCHEDULE_EXACT_ALARM"
-      ],
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-2907045266767377~3776400961"
-      }
+      ]
     },
     "web": {
       "bundler": "metro",
