@@ -214,6 +214,8 @@ async def register_user(payload: UserCreate):
     del doc['password']  # Supprimer le mot de passe en clair
     doc['created_at'] = datetime.utcnow()
     doc['is_premium'] = False
+    # Période d'essai de 5 jours
+    doc['trial_expires_at'] = datetime.utcnow() + timedelta(days=5)
     
     # Insérer en base
     res = await db.users.insert_one(doc)
