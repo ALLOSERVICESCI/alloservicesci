@@ -74,13 +74,21 @@ export default function Register() {
 
       const userData = await response.json();
       
+      // Sauvegarder l'utilisateur dans AsyncStorage pour connexion automatique
+      await AsyncStorage.setItem('auth_user', JSON.stringify(userData));
+      
+      console.log('[Register] User registered and logged in:', userData);
+      
       Alert.alert(
         'Inscription réussie !', 
-        'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.',
+        'Votre compte a été créé avec succès. Redirection vers l\'application...',
         [
           {
-            text: 'Se connecter',
-            onPress: () => router.replace('/auth/login')
+            text: 'OK',
+            onPress: () => {
+              // Recharger la page pour que AuthContext récupère l'utilisateur
+              router.replace('/(tabs)/home');
+            }
           }
         ]
       );
