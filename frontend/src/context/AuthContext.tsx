@@ -111,6 +111,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {}
   };
 
+  const refreshUser = async () => {
+    if (!user?.id) return;
+    try {
+      // Récupérer l'access level depuis le backend
+      const res = await apiFetch(`/api/users/${user.id}/access-level`);
+      if (res.ok) {
+        const accessData = await res.json();
+        const updatedUser: User = {
+          ...user,
+          is_premium: accessData.is_premium,
+          access_level: accessData.access_level,
+          days_remaining: accessData.days_remaining,
+          trial_end_date: accessData.trial_end_date,
+          premium_expires_at: accessData.expires_at,
+        };
+        setUser(updatedUser);
+        await AsyncStorage.setItem('auth_user', JSON.stringify(updatedUser));
+      }
+    } catch (e) {
+      console.error('Error refreshing user:', e);
+    }
+  };
+
   const updateProfile = async (input: Partial<User>) => {
     if (!user?.id) throw new Error('Not logged in');
     let updated: Partial<User> = {};
