@@ -347,19 +347,25 @@ export default function LoisirsTourisme() {
     return (
       <View style={styles.card}>
         {isLocal ? (
-          <View style={styles.localActionsRow}>
-            <TouchableOpacity onPress={async () => {
-              try {
-                const raw = await AsyncStorage.getItem('loisirs_user_items');
-                const arr = raw ? JSON.parse(raw) : [];
-                const next = arr.filter((x: any) => x.id !== item?.id);
-                await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(next));
-                setUserItems(next.map((x: any) => ({ ...x, __local: true })));
-              } catch {}
-            }}>
-              <Text style={[styles.localActionText, { color: '#D32F2F' }]}>Supprimer</Text>
-            </TouchableOpacity>
-          </View>
+          <>
+            <View style={styles.localBadge}>
+              <Ionicons name="home" size={14} color="#0A7C3A" />
+              <Text style={styles.localBadgeText}>Annonce locale</Text>
+            </View>
+            <View style={styles.localActionsRow}>
+              <TouchableOpacity onPress={async () => {
+                try {
+                  const raw = await AsyncStorage.getItem('loisirs_user_items');
+                  const arr = raw ? JSON.parse(raw) : [];
+                  const next = arr.filter((x: any) => x.id !== item?.id);
+                  await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(next));
+                  setUserItems(next.map((x: any) => ({ ...x, __local: true })));
+                } catch {}
+              }}>
+                <Text style={[styles.localActionText, { color: '#D32F2F' }]}>Supprimer</Text>
+              </TouchableOpacity>
+            </View>
+          </>
         ) : null}
         {photos && photos.length > 0 ? (
           <PhotoCarousel
