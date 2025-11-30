@@ -203,7 +203,8 @@ export default function AjouterEtablissement() {
   };
 
   return (
-    <View style={styles.container}>
+    <PremiumGuard category="sante">
+      <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.push('/category/sante')} style={styles.iconBtn}>
