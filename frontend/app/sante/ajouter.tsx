@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import * as ImagePicker from 'expo-image-picker';
 import { useI18n } from '../../src/i18n/i18n';
+import PremiumGuard from '../../src/components/PremiumGuard';
 
 // Liste des communes de Côte d'Ivoire
 const CI_COMMUNES = [
