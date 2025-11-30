@@ -3016,8 +3016,13 @@ export default function CategoryPage() {
         />
       )}
     </View>
-  );
-}
+    );
+  }
+
+  // Pour toutes les autres catégories, appliquer PremiumGuard
+  return (
+    <PremiumGuard category={sKey}>
+      <View style={styles.container}>
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FAFAF8' },
