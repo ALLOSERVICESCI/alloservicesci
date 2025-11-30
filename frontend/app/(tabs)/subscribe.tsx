@@ -410,6 +410,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   
+  featureIconImg: {
+    width: 64,
+    height: 64,
+    marginBottom: 8,
+    resizeMode: 'contain',
+    borderRadius: 12,
+  },
+  
   featureTitle: {
     fontSize: 14,
     fontWeight: '600',
