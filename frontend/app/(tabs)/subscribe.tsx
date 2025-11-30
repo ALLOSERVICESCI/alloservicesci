@@ -216,12 +216,8 @@ export default function Subscribe() {
                 ) : feature.slug === 'transport' ? (
                   <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/b0h611zz_Background_transport.png' }} style={styles.featureIconImg} />
                 ) : (
-                  <Text style={styles.featureIcon}>{feature.icon}</Text>
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={styles.featureIconImg} />
                 )}
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                {feature.description ? (
-                  <Text style={styles.featureDescription}>{feature.description}</Text>
-                ) : null}
               </View>
             ))}
           </View>
