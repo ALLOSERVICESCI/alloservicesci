@@ -1,7 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { NativeAd as GoogleNativeAd, AdBadge, AdChoicesView, HeadlineView, TaglineView, AdvertiserView, StarRatingView, ImageView, IconView, CallToActionView, PriceView } from 'react-native-google-mobile-ads';
 import { useAuth } from '../context/AuthContext';
+
+// Import conditionnel : AdMob n'existe que sur mobile
+let GoogleNativeAd: any, AdBadge: any, AdChoicesView: any, HeadlineView: any, TaglineView: any, 
+    AdvertiserView: any, StarRatingView: any, ImageView: any, IconView: any, CallToActionView: any, PriceView: any;
+
+if (Platform.OS !== 'web') {
+  const AdMobComponents = require('react-native-google-mobile-ads');
+  GoogleNativeAd = AdMobComponents.NativeAd;
+  AdBadge = AdMobComponents.AdBadge;
+  AdChoicesView = AdMobComponents.AdChoicesView;
+  HeadlineView = AdMobComponents.HeadlineView;
+  TaglineView = AdMobComponents.TaglineView;
+  AdvertiserView = AdMobComponents.AdvertiserView;
+  StarRatingView = AdMobComponents.StarRatingView;
+  ImageView = AdMobComponents.ImageView;
+  IconView = AdMobComponents.IconView;
+  CallToActionView = AdMobComponents.CallToActionView;
+  PriceView = AdMobComponents.PriceView;
+}
 
 interface NativeAdProps {
   category?: string;
