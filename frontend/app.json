@@ -14,7 +14,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "ci.alloservices.mobile"
+      "bundleIdentifier": "ci.alloservices.mobile",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-2907045266767377~3776400961"
+      }
     },
     "android": {
       "package": "ci.alloservices.mobile",
