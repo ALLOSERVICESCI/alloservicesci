@@ -52,7 +52,8 @@
           "backgroundColor": "#FFFFFF"
         }
       ],
-      "expo-notifications"
+      "expo-notifications",
+      "react-native-google-mobile-ads"
     ],
     "experiments": {
       "typedRoutes": true
