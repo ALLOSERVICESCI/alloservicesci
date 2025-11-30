@@ -2879,12 +2879,19 @@ export default function CategoryPage() {
         />
       ) : sKey === 'education' ? (
         <FlatList
-          data={displayMode === 'communes' ? (mode === 'commune' ? eduFiltered : []) : eduFiltered}
-          keyExtractor={(item: any, idx: number) => (item?.id ? String(item.id) : `edu-${idx}`)}
+          data={injectAds(displayMode === 'communes' ? (mode === 'commune' ? eduFiltered : []) : eduFiltered, user?.access_level === 'premium')}
+          keyExtractor={(item: any, idx: number) => item?.__isAd ? `ad-${idx}` : (item?.id ? String(item.id) : `edu-${idx}`)}
           contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
-          renderItem={({ item: facility }: any) => (
+          renderItem={({ item: facility, index }: any) => {
+            // Si c'est une publicité
+            if (facility?.__isAd) {
+              return <NativeAd category={s} position={index} />;
+            }
+            
+            // Sinon, rendu normal
+            return (
             <View style={styles.facilityCard}>
               <View style={styles.facilityHeader}>
                 <Text style={styles.facilityName}>{facility.name}</Text>
