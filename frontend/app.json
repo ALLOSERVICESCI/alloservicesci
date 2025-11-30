@@ -46,14 +46,15 @@
           "backgroundColor": "#FFFFFF"
         }
       ],
-      "expo-notifications",
-      [
-        "react-native-google-mobile-ads",
-        {
-          "androidAppId": "ca-app-pub-2907045266767377~3776400961",
-          "iosAppId": "ca-app-pub-2907045266767377~3776400961"
-        }
-      ]
+      "expo-notifications"
+      // TEMPORAIREMENT DÉSACTIVÉ POUR BUILD - RÉACTIVER APRÈS
+      // [
+      //   "react-native-google-mobile-ads",
+      //   {
+      //     "androidAppId": "ca-app-pub-2907045266767377~3776400961",
+      //     "iosAppId": "ca-app-pub-2907045266767377~3776400961"
+      //   }
+      // ]
     ],
     "experiments": {
       "typedRoutes": true
