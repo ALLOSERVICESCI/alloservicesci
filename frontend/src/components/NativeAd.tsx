@@ -88,6 +88,11 @@ const NativeAd: React.FC<NativeAdProps> = ({
     return null;
   }
 
+  // Sur web, ne rien afficher (AdMob ne fonctionne que sur mobile)
+  if (Platform.OS === 'web') {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <GoogleNativeAd
