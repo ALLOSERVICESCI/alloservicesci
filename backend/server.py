@@ -298,13 +298,28 @@ async def check_subscription(user_id: str):
     user = await db.users.find_one({'_id': uid})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    
+    # Vérifier d'abord s'il y a un abonnement premium payé
     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
     active = False
     expires_at = None
+    is_trial = False
+    
     if sub and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow():
+        # Abonnement premium actif
         active = True
         expires_at = sub['expires_at']
-    return {"is_premium": active, "expires_at": expires_at}
+    elif user.get('trial_expires_at') and user['trial_expires_at'] > datetime.utcnow():
+        # Période d'essai active
+        active = True
+        expires_at = user['trial_expires_at']
+        is_trial = True
+    
+    return {
+        "is_premium": active, 
+        "expires_at": expires_at,
+        "is_trial": is_trial
+    }
 
 async def _is_user_premium(uid: ObjectId) -> bool:
     sub = await db.subscriptions.find_one({'user_id': uid, 'status': {'$in': ['paid','active']}}, sort=[('expires_at', -1)])
