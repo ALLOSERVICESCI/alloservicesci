@@ -389,7 +389,8 @@ const styles = StyleSheet.create({
   featuresGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: GAP,
+    gap: 8,
+    justifyContent: 'flex-start',
   },
   
   featureTile: {
