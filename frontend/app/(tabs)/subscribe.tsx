@@ -42,25 +42,38 @@ export default function Subscribe() {
       router.push('/auth/register');
       return;
     }
+    
+    console.log('[Payment] Starting payment for user:', user.id);
     setLoading(true);
+    
     try {
+      const payload = { user_id: user.id, amount_fcfa: 1200 };
+      console.log('[Payment] Sending payload:', payload);
+      
       const res = await apiFetch('/api/payments/cinetpay/initiate', {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.id, amount_fcfa: 1200 })
+        body: JSON.stringify(payload)
       });
+      
+      console.log('[Payment] Response status:', res.status);
       const json: any = await res.json().catch(() => ({}));
+      console.log('[Payment] Response data:', json);
       
       if (res.ok && json.payment_url && json.transaction_id) {
+        console.log('[Payment] Success! Opening WebView with URL:', json.payment_url);
         setPaymentUrl(json.payment_url);
         setTransactionId(json.transaction_id);
         setShowWebView(true);
         // Démarrer le polling du statut
         startPolling(json.transaction_id);
       } else {
-        Alert.alert(t('error'), json?.detail ? String(json.detail) : `Erreur HTTP ${res.status}`);
+        const errorMsg = json?.detail ? String(json.detail) : `Erreur HTTP ${res.status}`;
+        console.error('[Payment] Error:', errorMsg);
+        Alert.alert(t('error'), errorMsg);
       }
     } catch (e: any) {
+      console.error('[Payment] Exception:', e);
       Alert.alert(t('error'), e?.message || t('network'));
     } finally {
       setLoading(false);
