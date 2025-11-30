@@ -8,7 +8,7 @@
     "icon": "./assets/icons/icons/icon.png",
     "scheme": "allo-services-ci",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "notification": {
       "color": "#0A7C3A"
     },
