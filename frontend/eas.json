@@ -20,6 +20,7 @@
     },
     "production": {
       "channel": "production",
+      "node": "20.19.4",
       "env": {
         "EXPO_PUBLIC_BACKEND_URL": "https://digital-ivoire.preview.emergentagent.com"
       }
