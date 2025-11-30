@@ -50,6 +50,8 @@ export default function Annonceur() {
   const [description, setDescription] = useState('');
   const [rating, setRating] = useState<number>(0);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [lat, setLat] = useState('');
+  const [lng, setLng] = useState('');
 
   const suggestions = useMemo(() => {
     const q = communeQuery.trim().toLowerCase();
