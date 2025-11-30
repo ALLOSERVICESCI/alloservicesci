@@ -3026,6 +3026,7 @@ export default function CategoryPage() {
       {renderContent()}
     </PremiumGuard>
   );
+}
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FAFAF8' },
