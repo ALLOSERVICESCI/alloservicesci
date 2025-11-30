@@ -191,7 +191,33 @@ export default function Subscribe() {
           <View style={styles.featuresGrid}>
             {premiumFeatures.map((feature) => (
               <View key={feature.key} style={styles.featureTile}>
-                <Text style={styles.featureIcon}>{feature.icon}</Text>
+                {feature.slug === 'urgence' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pebxk9na_Background_urgence.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'sante' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/bh94qk6w_Background_sante.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'alerts' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/y128jlhy_Background_alertes.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'pharmacies' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/i203vtyq_background_pharmacie.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'agriculture' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/pv9ygk7l_Background_agriculture.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'education' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/2v9vzn0s_Background_education.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'emplois' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/vnkjuu6i_Background_emplois.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'examens_concours' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/tzpsx5td_Background_examen.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'loisirs_tourisme' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/26f9vvri_Background_loisir.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'services_publics' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/d40242y4_Background_services_publics.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'services_utiles' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_74996fed-469a-4770-ac1c-e84e14d54bce/artifacts/b46yu9eu_services_utiles.png' }} style={styles.featureIconImg} />
+                ) : feature.slug === 'transport' ? (
+                  <Image source={{ uri: 'https://customer-assets.emergentagent.com/job_allo-services-2/artifacts/b0h611zz_Background_transport.png' }} style={styles.featureIconImg} />
+                ) : (
+                  <Text style={styles.featureIcon}>{feature.icon}</Text>
+                )}
                 <Text style={styles.featureTitle}>{feature.title}</Text>
                 {feature.description ? (
                   <Text style={styles.featureDescription}>{feature.description}</Text>
