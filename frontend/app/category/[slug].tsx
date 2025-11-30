@@ -2927,7 +2927,8 @@ export default function CategoryPage() {
                 )}
               </View>
             </View>
-          )}
+            );
+          }}
           ListHeaderComponent={
             <View>
               {eduUIHidden && (
