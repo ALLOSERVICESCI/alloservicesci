@@ -2151,10 +2151,8 @@ export default function CategoryPage() {
     });
   }, [categoryData, utilesQuery]);
 
-  // Si c'est la catégorie "urgence", pas de restriction Premium
-  if (sKey === 'urgence') {
-    return (
-      <View style={styles.container}>
+  const renderContent = () => (
+    <View style={styles.container}>
       {/* En-tête avec image */}
 
       {sKey === 'urgence' ? (
