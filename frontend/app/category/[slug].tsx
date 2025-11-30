@@ -2828,8 +2828,8 @@ export default function CategoryPage() {
         </ScrollView>
       ) : sKey === 'services_utiles' ? (
         <FlatList
-          data={utilesQuery ? utilesFiltered : (Array.isArray(data) ? data : [])}
-          keyExtractor={(_, idx) => `utiles-${idx}`}
+          data={injectAds(utilesQuery ? utilesFiltered : (Array.isArray(data) ? data : []), user?.access_level === 'premium')}
+          keyExtractor={(item, idx) => item?.__isAd ? `ad-${idx}` : `utiles-${idx}`}
           contentContainerStyle={{ paddingTop: padTop + 20, paddingHorizontal: 16, paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
           renderItem={renderContentItem}
