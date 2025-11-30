@@ -9,7 +9,8 @@ import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
 import { useAuth } from '../../src/context/AuthContext';
 import { useCitiesCommunes } from '../../src/hooks/useCitiesCommunes';
 import PremiumGuard from '../../src/components/PremiumGuard';
-import NativeAd from '../../src/components/NativeAd';
+// TEMPORAIREMENT DÉSACTIVÉ - Réactiver après build
+// import NativeAd from '../../src/components/NativeAd';
 
 const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' };
 const eduHeaderHeight = 250; // Header Education (fixe)
