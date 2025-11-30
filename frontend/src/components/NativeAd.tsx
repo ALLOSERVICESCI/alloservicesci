@@ -1,25 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import { useAuth } from '../context/AuthContext';
+import React from 'react';
 
-// Import conditionnel : AdMob n'existe que sur mobile
-let GoogleNativeAd: any, AdBadge: any, AdChoicesView: any, HeadlineView: any, TaglineView: any, 
-    AdvertiserView: any, StarRatingView: any, ImageView: any, IconView: any, CallToActionView: any, PriceView: any;
-
-if (Platform.OS !== 'web') {
-  const AdMobComponents = require('react-native-google-mobile-ads');
-  GoogleNativeAd = AdMobComponents.NativeAd;
-  AdBadge = AdMobComponents.AdBadge;
-  AdChoicesView = AdMobComponents.AdChoicesView;
-  HeadlineView = AdMobComponents.HeadlineView;
-  TaglineView = AdMobComponents.TaglineView;
-  AdvertiserView = AdMobComponents.AdvertiserView;
-  StarRatingView = AdMobComponents.StarRatingView;
-  ImageView = AdMobComponents.ImageView;
-  IconView = AdMobComponents.IconView;
-  CallToActionView = AdMobComponents.CallToActionView;
-  PriceView = AdMobComponents.PriceView;
-}
+// TODO: Réintégrer AdMob une fois le build de base fonctionnel
+// AdMob temporairement désactivé pour résoudre les problèmes de compatibilité Expo SDK 54
 
 interface NativeAdProps {
   category?: string;
