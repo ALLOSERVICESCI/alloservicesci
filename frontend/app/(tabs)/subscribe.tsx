@@ -451,17 +451,81 @@ const styles = StyleSheet.create({
   },
   
   paymentMethod: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#FFF',
     paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
+    paddingVertical: 10,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#E0E0E0',
+    gap: 8,
+  },
+  
+  paymentOrange: {
+    borderColor: '#FF6600',
+    borderWidth: 1.5,
+  },
+  
+  paymentMTN: {
+    borderColor: '#FFCC00',
+    borderWidth: 1.5,
+  },
+  
+  paymentMoov: {
+    borderColor: '#0066CC',
+    borderWidth: 1.5,
+  },
+  
+  paymentWave: {
+    borderColor: '#00D09C',
+    borderWidth: 1.5,
+  },
+  
+  paymentCard: {
+    borderColor: '#4A5568',
+    borderWidth: 1.5,
+  },
+  
+  paymentIconCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  paymentIconMTN: {
+    backgroundColor: '#FFCC00',
+  },
+  
+  paymentIconMoov: {
+    backgroundColor: '#0066CC',
+  },
+  
+  paymentIconWave: {
+    backgroundColor: '#E6F9F5',
+  },
+  
+  paymentIconText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#FF6600',
+  },
+  
+  paymentIconTextMTN: {
+    color: '#000',
+  },
+  
+  paymentIconTextMoov: {
+    color: '#FFF',
   },
   
   paymentMethodText: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#333',
+    fontWeight: '500',
   },
   
   subscribeButton: {
