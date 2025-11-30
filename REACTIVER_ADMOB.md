@@ -188,7 +188,7 @@ Puis dans `eas.json`, ajoutez :
     "production": {
       "channel": "production",
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://service-finder-ci.preview.emergentagent.com"
+        "EXPO_PUBLIC_BACKEND_URL": "https://services-ci.preview.emergentagent.com"
       },
       "prebuildCommand": "bash eas-build-pre-install.sh"
     }
