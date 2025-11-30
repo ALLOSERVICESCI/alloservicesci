@@ -30,6 +30,7 @@ type AuthContextType = {
   updateProfile: (input: Partial<User>) => Promise<User>;
   logout: () => Promise<void>;
   refreshUserData?: () => Promise<void>;
+  refreshUser?: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
