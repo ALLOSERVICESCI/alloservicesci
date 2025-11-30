@@ -172,7 +172,8 @@ export default function AjouterPharmacie() {
   };
 
   return (
-    <View style={styles.container}>
+    <PremiumGuard category="pharmacies">
+      <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
