@@ -2043,9 +2043,10 @@ export default function CategoryPage() {
 
   const renderContentItem = ({ item, index }: { item: any; index: number }) => {
     // Si c'est une publicité, on la rend directement
-    if (item?.__isAd) {
-      return <NativeAd category={s} position={index} />;
-    }
+    // TEMPORAIREMENT DÉSACTIVÉ - Réactiver après build
+    // if (item?.__isAd) {
+    //   return <NativeAd category={s} position={index} />;
+    // }
 
     const title: string = item?.title || item?.name || '';
     const summary: string | undefined = item?.summary || item?.description;
