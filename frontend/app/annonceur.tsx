@@ -305,6 +305,33 @@ export default function Annonceur() {
         <Text style={styles.label}>Site web (optionnel)</Text>
         <TextInput style={styles.input} keyboardType="url" placeholder="Ex: www.monsite.ci" value={website} onChangeText={setWebsite} placeholderTextColor="#9AA3AF" />
 
+        {/* Géolocalisation manuelle (optionnel) */}
+        <Text style={styles.label}>Géolocalisation (optionnel - pour activer l'Itinéraire)</Text>
+        <View style={{ gap: 12 }}>
+          <View>
+            <Text style={styles.sublabel}>Latitude</Text>
+            <TextInput 
+              style={styles.input} 
+              keyboardType="decimal-pad" 
+              placeholder="Ex: 5.3600" 
+              value={lat} 
+              onChangeText={setLat} 
+              placeholderTextColor="#9AA3AF" 
+            />
+          </View>
+          <View>
+            <Text style={styles.sublabel}>Longitude</Text>
+            <TextInput 
+              style={styles.input} 
+              keyboardType="decimal-pad" 
+              placeholder="Ex: -4.0083" 
+              value={lng} 
+              onChangeText={setLng} 
+              placeholderTextColor="#9AA3AF" 
+            />
+          </View>
+        </View>
+
         {/* Description */}
         <Text style={styles.label}>Description</Text>
         <TextInput
