@@ -30,6 +30,8 @@ type NewAnnonce = {
   photos?: string[]; // base64
   rating?: number; // 1..5
   createdAt?: number; // timestamp
+  lat?: number; // latitude (optionnel, pour activer Itinéraire)
+  lng?: number; // longitude (optionnel, pour activer Itinéraire)
 };
 
 export default function Annonceur() {
