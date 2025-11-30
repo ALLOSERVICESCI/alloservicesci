@@ -14,6 +14,24 @@ import NativeAd from '../../src/components/NativeAd';
 const COMMON_HEADER = { uri: 'https://customer-assets.emergent.sh/alloscici/home/header_pharmacies.png' };
 const eduHeaderHeight = 250; // Header Education (fixe)
 
+// Helper pour injecter des publicités dans un tableau de données
+function injectAds(data: any[], isPremium: boolean = false): any[] {
+  if (!data || data.length === 0) return data;
+  
+  const frequency = isPremium ? 10 : 5; // 1 pub tous les 10 pour Premium, 5 pour Basic
+  const result: any[] = [];
+  
+  data.forEach((item, index) => {
+    result.push(item);
+    // Injecter une publicité tous les X éléments
+    if ((index + 1) % frequency === 0 && index < data.length - 1) {
+      result.push({ __isAd: true, __adIndex: index + 1 });
+    }
+  });
+  
+  return result;
+}
+
 export default function CategoryPage() {
   const { slug } = useLocalSearchParams();
   const s = Array.isArray(slug) ? slug[0] : (slug || 'urgence');
