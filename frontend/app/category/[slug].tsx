@@ -3014,13 +3014,18 @@ export default function CategoryPage() {
         />
       )}
     </View>
-    );
+  );
+
+  // Wrapper conditionnel : Urgence sans PremiumGuard, autres avec PremiumGuard
+  if (sKey === 'urgence') {
+    return renderContent();
   }
 
-  // Pour toutes les autres catégories, appliquer PremiumGuard
   return (
     <PremiumGuard category={sKey}>
-      <View style={styles.container}>
+      {renderContent()}
+    </PremiumGuard>
+  );
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FAFAF8' },
