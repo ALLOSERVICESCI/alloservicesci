@@ -393,29 +393,29 @@ const styles = StyleSheet.create({
   },
   
   featureTile: {
-    width: TILE_WIDTH,
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-    padding: 16,
+    width: 136,
+    height: 140,
+    backgroundColor: 'transparent',
+    borderRadius: 16,
+    marginRight: 12,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    justifyContent: 'center',
+    padding: 0,
+    borderWidth: 0,
+    borderColor: 'transparent',
   },
   
   featureIcon: {
-    fontSize: 32,
-    marginBottom: 8,
+    fontSize: 64,
+    marginBottom: 0,
   },
   
   featureIconImg: {
-    width: 64,
-    height: 64,
-    marginBottom: 8,
+    width: 128,
+    height: 128,
+    marginBottom: 0,
     resizeMode: 'contain',
-    borderRadius: 12,
+    borderRadius: 22,
   },
   
   featureTitle: {
