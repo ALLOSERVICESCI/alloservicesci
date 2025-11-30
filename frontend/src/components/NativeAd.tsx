@@ -24,8 +24,37 @@ const NativeAd: React.FC<NativeAdProps> = ({
   const { user } = useAuth();
   const [shouldDisplay, setShouldDisplay] = useState(false);
 
-  // ID du bloc d'annonce
-  const adUnitId = process.env.EXPO_PUBLIC_ADMOB_NATIVE_AD_UNIT_ID || 'ca-app-pub-2907045266767377/6740765218';
+  // ID du bloc d'annonce selon la catégorie
+  const getAdUnitId = () => {
+    switch (category) {
+      case 'sante':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_SANTE || 'ca-app-pub-2907045266767377/6195514891';
+      case 'alerts':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_ALERTS || 'ca-app-pub-2907045266767377/9943188212';
+      case 'pharmacies':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_PHARMACIES || 'ca-app-pub-2907045266767377/4114601871';
+      case 'education':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_EDUCATION || 'ca-app-pub-2907045266767377/8754337427';
+      case 'examens_concours':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_EXAMENS || 'ca-app-pub-2907045266767377/7317024874';
+      case 'services_publics':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_SERVICES_PUBLICS || 'ca-app-pub-2907045266767377/8550215497';
+      case 'emplois':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_EMPLOIS || 'ca-app-pub-2907045266767377/8901569283';
+      case 'services_utiles':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_SERVICES_UTILES || 'ca-app-pub-2907045266767377/8562765739';
+      case 'agriculture':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_AGRICULTURE || 'ca-app-pub-2907045266767377/3264554634';
+      case 'loisirs_tourisme':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_LOISIRS || 'ca-app-pub-2907045266767377/2064698190';
+      case 'transport':
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_TRANSPORT || 'ca-app-pub-2907045266767377/8438534856';
+      default:
+        return process.env.EXPO_PUBLIC_ADMOB_NATIVE_ACCUEIL || 'ca-app-pub-2907045266767377/6740765218';
+    }
+  };
+
+  const adUnitId = getAdUnitId();
 
   useEffect(() => {
     // Déterminer si on doit afficher la pub en fonction du statut Premium
