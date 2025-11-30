@@ -2888,9 +2888,10 @@ export default function CategoryPage() {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A7C3A" colors={["#0A7C3A"]} />}
           renderItem={({ item: facility, index }: any) => {
             // Si c'est une publicité
-            if (facility?.__isAd) {
-              return <NativeAd category={s} position={index} />;
-            }
+            // TEMPORAIREMENT DÉSACTIVÉ - Réactiver après build
+            // if (facility?.__isAd) {
+            //   return <NativeAd category={s} position={index} />;
+            // }
             
             // Sinon, rendu normal
             return (
