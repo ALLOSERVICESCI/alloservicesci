@@ -15,7 +15,4 @@ config.maxWorkers = 2;
 // Configuration pour les extensions spécifiques à la plateforme
 config.resolver.sourceExts = [...config.resolver.sourceExts, 'web.tsx', 'web.ts', 'web.jsx', 'web.js'];
 
-// Workaround for React Native 0.79.5 package exports compatibility
-config.resolver.unstable_enablePackageExports = false;
-
 module.exports = config;
