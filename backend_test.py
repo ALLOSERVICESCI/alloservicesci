@@ -17,7 +17,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://ivoire-mobile.preview.emergentagent.com/api"
+BACKEND_URL = "https://digital-ivoire.preview.emergentagent.com/api"
 TIMEOUT = 10
 
 class BackendTester:
