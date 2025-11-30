@@ -38,10 +38,5 @@
         "track": "production"
       }
     }
-  },
-  
-    "preview": {
-      "channel": "preview"
-    }
   }
 }
