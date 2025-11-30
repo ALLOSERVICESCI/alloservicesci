@@ -433,6 +433,7 @@ export default function AjouterPharmacie() {
         <View style={{ height: 40 }} />
       </ScrollView>
     </View>
+    </PremiumGuard>
   );
 }
 
