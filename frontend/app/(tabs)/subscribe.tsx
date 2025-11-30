@@ -180,7 +180,7 @@ export default function Subscribe() {
           ) : (
             <View style={styles.priceBox}>
               <Text style={styles.priceAmount}>1200 FCFA</Text>
-              <Text style={styles.pricePeriod}>/ {t('year', 'an')}</Text>
+              <Text style={styles.pricePeriod}>/ an</Text>
             </View>
           )}
         </LinearGradient>
