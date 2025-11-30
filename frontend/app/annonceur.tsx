@@ -386,6 +386,7 @@ const styles = StyleSheet.create({
   headerTitle: { fontSize: 18, fontWeight: '400', color: '#111' },
 
   label: { color: '#111', fontWeight: '400', marginTop: 12, marginBottom: 6 },
+  sublabel: { color: '#666', fontSize: 14, fontWeight: '400', marginTop: 8, marginBottom: 4 },
 
   proSwitchRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 16, marginBottom: 8, paddingVertical: 12, paddingHorizontal: 16, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0' },
   proLabel: { fontSize: 16, fontWeight: '400', color: '#111' },
