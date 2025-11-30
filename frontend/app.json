@@ -46,7 +46,14 @@
           "backgroundColor": "#FFFFFF"
         }
       ],
-      "expo-notifications"
+      "expo-notifications",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-2907045266767377~1234567890",
+          "iosAppId": "ca-app-pub-2907045266767377~0987654321"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
