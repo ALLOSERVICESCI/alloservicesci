@@ -366,6 +366,196 @@ async def cinetpay_initiate(payload: PaymentInitInput):
         logger.exception("CinetPay init error")
         raise HTTPException(status_code=500, detail=str(e))
 
+@api.post("/payments/cinetpay/webhook")
+async def cinetpay_webhook(request: Request):
+    """
+    CinetPay webhook pour notification de paiement.
+    Appelé par CinetPay quand le paiement est complété.
+    """
+    try:
+        body = await request.json()
+        transaction_id = body.get('cpm_trans_id')
+        status = body.get('cpm_result')  # '00' = succès
+        
+        if not transaction_id:
+            return {"status": "error", "message": "Missing transaction_id"}
+        
+        # Récupérer la transaction
+        tr = await db.transactions.find_one({'transaction_id': transaction_id})
+        if not tr:
+            return {"status": "error", "message": "Transaction not found"}
+        
+        # Vérifier le statut
+        if status == '00':  # Paiement réussi
+            # Mettre à jour la transaction
+            await db.transactions.update_one(
+                {'transaction_id': transaction_id},
+                {'$set': {
+                    'status': 'SUCCESS',
+                    'payment_date': datetime.utcnow(),
+                    'cinetpay_data': body
+                }}
+            )
+            
+            # Activer Premium pour l'utilisateur (1 an)
+            user_id = tr['user_id']
+            expires_at = datetime.utcnow() + timedelta(days=365)
+            
+            await db.subscriptions.update_one(
+                {'user_id': user_id},
+                {'$set': {
+                    'status': 'active',
+                    'plan': 'premium_annual',
+                    'price': 1200,
+                    'currency': 'XOF',
+                    'started_at': datetime.utcnow(),
+                    'expires_at': expires_at,
+                    'transaction_id': transaction_id,
+                    'updated_at': datetime.utcnow()
+                }},
+                upsert=True
+            )
+            
+            logger.info(f"Premium activated for user {user_id} until {expires_at}")
+            return {"status": "success", "message": "Premium activated"}
+        else:
+            # Paiement échoué
+            await db.transactions.update_one(
+                {'transaction_id': transaction_id},
+                {'$set': {
+                    'status': 'FAILED',
+                    'failure_reason': body.get('cpm_error_message', 'Unknown'),
+                    'cinetpay_data': body
+                }}
+            )
+            return {"status": "failed", "message": "Payment failed"}
+            
+    except Exception as e:
+        logger.exception("Webhook error")
+        return {"status": "error", "message": str(e)}
+
+@api.get("/payments/cinetpay/return")
+async def cinetpay_return(transaction_id: str = Query(...)):
+    """
+    Page de retour après paiement CinetPay.
+    L'utilisateur est redirigé ici depuis la page de paiement.
+    """
+    try:
+        tr = await db.transactions.find_one({'transaction_id': transaction_id})
+        if not tr:
+            return {"status": "error", "message": "Transaction not found"}
+        
+        # Retourner le statut actuel
+        return {
+            "transaction_id": transaction_id,
+            "status": tr.get('status', 'UNKNOWN'),
+            "message": "Payment processed. Please return to the app."
+        }
+    except Exception as e:
+        logger.exception("Return endpoint error")
+        return {"status": "error", "message": str(e)}
+
+@api.get("/payments/status/{transaction_id}")
+async def payment_status(transaction_id: str = Path(...)):
+    """
+    Vérifier le statut d'une transaction de paiement.
+    Utilisé par le frontend pour polling après paiement.
+    """
+    try:
+        tr = await db.transactions.find_one({'transaction_id': transaction_id})
+        if not tr:
+            raise HTTPException(status_code=404, detail="Transaction not found")
+        
+        status = tr.get('status', 'UNKNOWN')
+        
+        # Si succès, vérifier que Premium est bien activé
+        if status == 'SUCCESS':
+            user_id = tr['user_id']
+            sub = await db.subscriptions.find_one({'user_id': user_id})
+            is_active = sub and sub.get('status') == 'active' and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow()
+            
+            return {
+                "transaction_id": transaction_id,
+                "status": status,
+                "premium_activated": is_active,
+                "expires_at": sub.get('expires_at').isoformat() if sub and sub.get('expires_at') else None
+            }
+        
+        return {
+            "transaction_id": transaction_id,
+            "status": status,
+            "premium_activated": False
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Status check error")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api.get("/users/{user_id}/access-level")
+async def get_user_access_level(user_id: str = Path(...)):
+    """
+    Retourne le niveau d'accès de l'utilisateur:
+    - 'premium': Utilisateur Premium (accès complet)
+    - 'trial': Période d'essai active (5 jours, accès complet)
+    - 'limited': Période d'essai terminée (accès limité à Urgence)
+    """
+    try:
+        uid = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+    
+    # Vérifier Premium
+    sub = await db.subscriptions.find_one({'user_id': uid})
+    is_premium = sub and sub.get('status') == 'active' and sub.get('expires_at') and sub['expires_at'] > datetime.utcnow()
+    
+    if is_premium:
+        return {
+            "access_level": "premium",
+            "is_premium": True,
+            "expires_at": sub['expires_at'].isoformat(),
+            "days_remaining": None,
+            "allowed_categories": "all"
+        }
+    
+    # Vérifier période d'essai
+    user = await db.users.find_one({'_id': uid})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Calculer trial_end_date si pas déjà fait
+    account_created_at = user.get('account_created_at') or user.get('created_at') or datetime.utcnow()
+    trial_end_date = account_created_at + timedelta(days=5)
+    
+    # Mettre à jour l'utilisateur avec trial_end_date si nécessaire
+    if not user.get('trial_end_date'):
+        await db.users.update_one(
+            {'_id': uid},
+            {'$set': {'trial_end_date': trial_end_date, 'account_created_at': account_created_at}}
+        )
+    
+    now = datetime.utcnow()
+    
+    if now < trial_end_date:
+        # Période d'essai active
+        days_remaining = (trial_end_date - now).days
+        return {
+            "access_level": "trial",
+            "is_premium": False,
+            "trial_end_date": trial_end_date.isoformat(),
+            "days_remaining": days_remaining,
+            "allowed_categories": "all"
+        }
+    else:
+        # Période d'essai terminée - accès limité
+        return {
+            "access_level": "limited",
+            "is_premium": False,
+            "trial_end_date": trial_end_date.isoformat(),
+            "days_remaining": 0,
+            "allowed_categories": ["urgence"]
+        }
+
 # ---------- PHARMACIES ----------
 @api.get('/pharmacies')
 async def list_pharmacies(
