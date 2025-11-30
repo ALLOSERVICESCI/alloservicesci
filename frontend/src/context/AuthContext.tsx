@@ -16,6 +16,11 @@ export type User = {
   avatar?: string; // base64 without data: prefix
   pseudo?: string;
   show_pseudo?: boolean;
+  is_premium?: boolean;
+  access_level?: 'premium' | 'trial' | 'limited';
+  trial_end_date?: string;
+  days_remaining?: number;
+  premium_expires_at?: string;
 };
 
 type AuthContextType = {
