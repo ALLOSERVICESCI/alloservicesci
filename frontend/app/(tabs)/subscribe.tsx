@@ -205,20 +205,35 @@ export default function Subscribe() {
         <View style={styles.paymentMethodsSection}>
           <Text style={styles.sectionTitle}>Méthodes de paiement</Text>
           <View style={styles.paymentMethods}>
-            <View style={styles.paymentMethod}>
-              <Text style={styles.paymentMethodText}>🟠 Orange Money</Text>
+            <View style={[styles.paymentMethod, styles.paymentOrange]}>
+              <View style={styles.paymentIconCircle}>
+                <Text style={styles.paymentIconText}>OM</Text>
+              </View>
+              <Text style={styles.paymentMethodText}>Orange Money</Text>
             </View>
-            <View style={styles.paymentMethod}>
-              <Text style={styles.paymentMethodText}>🟡 MTN Mobile Money</Text>
+            <View style={[styles.paymentMethod, styles.paymentMTN]}>
+              <View style={[styles.paymentIconCircle, styles.paymentIconMTN]}>
+                <Text style={[styles.paymentIconText, styles.paymentIconTextMTN]}>MTN</Text>
+              </View>
+              <Text style={styles.paymentMethodText}>MTN Mobile Money</Text>
             </View>
-            <View style={styles.paymentMethod}>
-              <Text style={styles.paymentMethodText}>🔵 Moov Money</Text>
+            <View style={[styles.paymentMethod, styles.paymentMoov]}>
+              <View style={[styles.paymentIconCircle, styles.paymentIconMoov]}>
+                <Text style={[styles.paymentIconText, styles.paymentIconTextMoov]}>M</Text>
+              </View>
+              <Text style={styles.paymentMethodText}>Moov Money</Text>
             </View>
-            <View style={styles.paymentMethod}>
-              <Text style={styles.paymentMethodText}>💳 Carte Bancaire</Text>
+            <View style={[styles.paymentMethod, styles.paymentWave]}>
+              <View style={[styles.paymentIconCircle, styles.paymentIconWave]}>
+                <Ionicons name="water" size={16} color="#00D09C" />
+              </View>
+              <Text style={styles.paymentMethodText}>Wave</Text>
             </View>
-            <View style={styles.paymentMethod}>
-              <Text style={styles.paymentMethodText}>🌊 Wave</Text>
+            <View style={[styles.paymentMethod, styles.paymentCard]}>
+              <View style={styles.paymentIconCircle}>
+                <Ionicons name="card" size={16} color="#4A5568" />
+              </View>
+              <Text style={styles.paymentMethodText}>Carte Bancaire</Text>
             </View>
           </View>
         </View>
