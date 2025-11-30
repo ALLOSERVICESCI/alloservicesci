@@ -128,6 +128,10 @@ export default function Annonceur() {
 
     const id = `usr-${Date.now()}-${Math.floor(Math.random()*100000)}`;
 
+    // Parse lat/lng si fournis
+    const parsedLat = lat.trim() ? parseFloat(lat.trim()) : undefined;
+    const parsedLng = lng.trim() ? parseFloat(lng.trim()) : undefined;
+
     const item: NewAnnonce = {
       id,
       __local: true,
@@ -144,6 +148,8 @@ export default function Annonceur() {
       photos: photos.length ? photos : undefined,
       rating: rating && rating > 0 ? rating : undefined,
       createdAt: Date.now(), // Timestamp de création pour expiration après 7 jours
+      lat: parsedLat && !isNaN(parsedLat) ? parsedLat : undefined,
+      lng: parsedLng && !isNaN(parsedLng) ? parsedLng : undefined,
     };
 
     try {
