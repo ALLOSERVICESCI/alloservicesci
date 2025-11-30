@@ -159,7 +159,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await AsyncStorage.removeItem('auth_user');
   };
 
-  const value = useMemo(() => ({ user, expoPushToken, register, updateProfile, logout, refreshUserData }), [user, expoPushToken]);
+  const value = useMemo(() => ({ user, expoPushToken, register, updateProfile, logout, refreshUserData, refreshUser }), [user, expoPushToken]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
