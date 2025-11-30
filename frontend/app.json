@@ -62,9 +62,7 @@
         "projectId": "4c033a1c-647d-45c9-b9bf-c790e3adcf1e"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
       "enabled": true,
       "checkAutomatically": "ON_LOAD",
