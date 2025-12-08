@@ -32,7 +32,7 @@ const FALLBACK_LOISIRS = loisirsData.map((item) => ({
 // Ancienne définition statique supprimée - maintenant utilise les données JSON
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_smartcommunity-2/artifacts/x28hv0dw_loisirst_bg.png' };
-const CAT_FILTERS = ['Tous', 'Hôtel', 'Résidence', 'Loisir', 'Plage', 'Site incontournable'] as const;
+const CAT_FILTERS = ['Tous', 'Hôtel', 'Résidence', 'Loisir', 'Plage', 'Site incontournable'];
 
 // Communes d'Abidjan + villes clés CI
 const ABJ_COMMUNES = [
