@@ -1,13 +1,18 @@
-import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, FlatList, TouchableOpacity, Platform, Linking, TextInput, RefreshControl, ScrollView, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useFocusEffect } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import * as Location from 'expo-location';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
-const loisirsData = require('../../src/data/loisirs_tourisme.json');
+import React, { useMemo, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Linking,
+  Alert,
+} from "react-native";
+
+// ⚠️ adapte le chemin selon ton projet
+const rawData = require("../../src/data/loisirs_tourisme.json");
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
