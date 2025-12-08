@@ -221,12 +221,12 @@ export default function LoisirsTourisme() {
     Linking.openURL(`tel:${clean}`);
   };
 
-  const openWebsite = (website?, source) => {
+  const openWebsite = (website, source) => {
     const w = website || source;
     if (!w) return; const url = w.startsWith('http') ? w : `https://${w}`; Linking.openURL(url);
   };
 
-  const openMaps = (lat?, lng?, label) => {
+  const openMaps = (lat, lng, label) => {
     if (lat == null || lng == null) return;
     const query = encodeURIComponent(label || 'Itinéraire');
     const url = Platform.select({
