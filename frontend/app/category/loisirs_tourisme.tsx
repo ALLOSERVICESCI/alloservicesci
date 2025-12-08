@@ -189,11 +189,6 @@ const LoisirsTourismeScreen: React.FC = () => {
       {/* Header avec image de fond */}
       <View style={styles.headerWrapper}>
         <ImageBackground source={HEADER_BG} style={styles.headerImage} resizeMode="cover">
-          <LinearGradient
-            colors={["rgba(15,23,42,0.7)", "rgba(15,23,42,0.5)", "rgba(15,23,42,0.3)"]}
-            style={StyleSheet.absoluteFillObject}
-          />
-          
           {/* Bouton Retour en haut à gauche */}
           <TouchableOpacity
             style={styles.backButton}
