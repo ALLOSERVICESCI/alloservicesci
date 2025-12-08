@@ -196,13 +196,9 @@ const LoisirsTourismeScreen: React.FC = () => {
 
       {/* Filtres */}
       <Text style={styles.sectionTitle}>Catégories</Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chipRow}
-      >
+      <View style={styles.chipRowWrap}>
         {categories.map(renderCategorieChip)}
-      </ScrollView>
+      </View>
 
       {/* Liste */}
       <FlatList
