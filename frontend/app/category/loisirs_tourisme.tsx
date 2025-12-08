@@ -316,11 +316,11 @@ export default function LoisirsTourisme() {
 
   const renderItem = ({ item }) => {
     const title = item?.title || item?.name || '';
-    const summary | undefined = item?.summary || item?.description;
-    const commune | undefined = item?.commune;
-    const website | undefined = item?.website;
-    const source | undefined = item?.source || item?.site;
-    const phone | undefined = item?.phone;
+    const summary = item?.summary || item?.description;
+    const commune = item?.commune;
+    const website = item?.website;
+    const source = item?.source || item?.site;
+    const phone = item?.phone;
     const lat | undefined = item?.lat;
     const lng | undefined = item?.lng;
     const photos[] | undefined = item?.photos;
