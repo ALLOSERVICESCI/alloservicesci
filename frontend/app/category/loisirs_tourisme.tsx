@@ -12,7 +12,7 @@ const loisirsData = require('../../src/data/loisirs_tourisme.json');
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // Type definition for LoisirItem
-// interface LoisirItem { id?; __local?: boolean; title; summary?; description?; commune?; tag?; phone?; website?; source?; lat?: number; lng?: number; photos?[]; rating?: number; createdAt?: number; }
+// interface LoisirItem { id?; __local?: boolean; title; summary?; description?; commune?; tag?; phone?; website?; source?; lat?; lng?; photos?[]; rating?; createdAt?; }
 
 // Mapper les données importées vers le format attendu
 const FALLBACK_LOISIRS = loisirsData.map((item) => ({
@@ -170,8 +170,8 @@ export default function LoisirsTourisme() {
   }, [loadUserItems]);
 
   // Utils distance
-  const toRad = (x: number) => (x * Math.PI) / 180;
-  const distKm = (a: {lat: number, lng: number}, b: {lat: number, lng: number}) => {
+  const toRad = (x) => (x * Math.PI) / 180;
+  const distKm = (a: {lat, lng}, b: {lat, lng}) => {
     const R = 6371; // km
     const dLat = toRad(b.lat - a.lat);
     const dLng = toRad(b.lng - a.lng);
@@ -226,7 +226,7 @@ export default function LoisirsTourisme() {
     if (!w) return; const url = w.startsWith('http') ? w : `https://${w}`; Linking.openURL(url);
   };
 
-  const openMaps = (lat?: number, lng?: number, label?) => {
+  const openMaps = (lat?, lng?, label?) => {
     if (lat == null || lng == null) return;
     const query = encodeURIComponent(label || 'Itinéraire');
     const url = Platform.select({
@@ -237,7 +237,7 @@ export default function LoisirsTourisme() {
     Linking.openURL(url);
   };
 
-  const RatingRow = ({ value }: { value?: number }) => {
+  const RatingRow = ({ value }: { value? }) => {
     if (!value || value <= 0) return null;
     return (
       <View style={styles.ratingRow}>
@@ -249,7 +249,7 @@ export default function LoisirsTourisme() {
   };
 
   // Composant Carrousel pour les photos
-  const PhotoCarousel = ({ photos, onPhotoPress }: { photos[]; onPhotoPress: (index: number) => void }) => {
+  const PhotoCarousel = ({ photos, onPhotoPress }: { photos[]; onPhotoPress: (index) => void }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const scrollViewRef = useRef<ScrollView>(null);
     const CARD_WIDTH = SCREEN_WIDTH - 32; // Padding de la carte
@@ -321,10 +321,10 @@ export default function LoisirsTourisme() {
     const website | undefined = item?.website;
     const source | undefined = item?.source || item?.site;
     const phone | undefined = item?.phone;
-    const lat: number | undefined = item?.lat;
-    const lng: number | undefined = item?.lng;
+    const lat | undefined = item?.lat;
+    const lng | undefined = item?.lng;
     const photos[] | undefined = item?.photos;
-    const rating: number | undefined = item?.rating;
+    const rating | undefined = item?.rating;
     const isLocal: boolean = !!item?.__local;
 
     return (
