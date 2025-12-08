@@ -401,7 +401,7 @@ export default function LoisirsTourisme() {
       {/* Header visuel */}
       <View style={styles.headerWrapper}>
         <ImageBackground source={HEADER_BG} style={styles.header} resizeMode="cover">
-          <LinearGradient colors={["rgba(0,0,0,0.45)", "rgba(0,0,0,0.2)", "rgba(0,0,0,0)"]} style={StyleSheet.absoluteFillObject as any} />
+          <LinearGradient colors={["rgba(0,0,0,0.45)", "rgba(0,0,0,0.2)", "rgba(0,0,0,0)"]} style={StyleSheet.absoluteFillObject} />
           <View style={styles.headerTopRow}>
             <TouchableOpacity onPress={() => router.replace('/(tabs)/home')} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Retour">
               <Ionicons name="chevron-back" size={22} color="#fff" />
