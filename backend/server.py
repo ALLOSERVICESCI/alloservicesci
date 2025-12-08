@@ -1229,6 +1229,192 @@ async def clear_all_pharmacies():
         raise HTTPException(status_code=500, detail="Erreur lors de la suppression")
 
 
+# ==================== NOTIFICATIONS PUSH ====================
+
+class PushTokenRegister(BaseModel):
+    token: str
+    user_id: Optional[str] = None
+    platform: str  # 'ios' or 'android'
+    city: Optional[str] = None
+
+class NotificationSend(BaseModel):
+    title: str
+    body: str
+    data: Optional[Dict[str, Any]] = None
+    user_ids: Optional[List[str]] = None  # Si None, envoie à tous
+    cities: Optional[List[str]] = None  # Filtrer par ville
+    sound: Optional[str] = 'default'
+    badge: Optional[int] = None
+
+@api.post('/notifications/register')
+async def register_push_token(payload: PushTokenRegister):
+    """Enregistre un token push Expo pour un utilisateur"""
+    try:
+        # Vérifier si le token existe déjà
+        existing = await db.push_tokens.find_one({"token": payload.token})
+        
+        now = datetime.utcnow()
+        token_doc = {
+            "token": payload.token,
+            "user_id": payload.user_id,
+            "platform": payload.platform,
+            "city": payload.city,
+            "updated_at": now,
+            "active": True
+        }
+        
+        if existing:
+            # Mettre à jour le token existant
+            await db.push_tokens.update_one(
+                {"token": payload.token},
+                {"$set": token_doc}
+            )
+            return {"message": "Token mis à jour", "token_id": str(existing["_id"])}
+        else:
+            # Créer un nouveau token
+            token_doc["created_at"] = now
+            result = await db.push_tokens.insert_one(token_doc)
+            return {"message": "Token enregistré", "token_id": str(result.inserted_id)}
+    except Exception as e:
+        logger.error(f"Erreur lors de l'enregistrement du token: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de l'enregistrement du token")
+
+@api.post('/notifications/send')
+async def send_push_notification(payload: NotificationSend):
+    """Envoie une notification push via Expo Push Service"""
+    try:
+        # Construire la requête de filtrage
+        query = {"active": True}
+        if payload.user_ids:
+            query["user_id"] = {"$in": payload.user_ids}
+        if payload.cities:
+            query["city"] = {"$in": payload.cities}
+        
+        # Récupérer tous les tokens correspondants
+        tokens_cursor = db.push_tokens.find(query)
+        tokens = await tokens_cursor.to_list(length=10000)
+        
+        if not tokens:
+            return {"message": "Aucun destinataire trouvé", "sent": 0}
+        
+        # Préparer les messages Expo
+        expo_messages = []
+        for token_doc in tokens:
+            message = {
+                "to": token_doc["token"],
+                "sound": payload.sound,
+                "title": payload.title,
+                "body": payload.body,
+                "data": payload.data or {},
+            }
+            if payload.badge is not None:
+                message["badge"] = payload.badge
+            expo_messages.append(message)
+        
+        # Envoyer par batch de 100 (limite Expo)
+        sent_count = 0
+        failed_tokens = []
+        
+        for i in range(0, len(expo_messages), 100):
+            batch = expo_messages[i:i+100]
+            try:
+                response = requests.post(
+                    'https://exp.host/--/api/v2/push/send',
+                    json=batch,
+                    headers={
+                        'Accept': 'application/json',
+                        'Accept-Encoding': 'gzip, deflate',
+                        'Content-Type': 'application/json',
+                    },
+                    timeout=10
+                )
+                
+                if response.status_code == 200:
+                    result = response.json()
+                    # Vérifier les erreurs individuelles
+                    if 'data' in result:
+                        for idx, item in enumerate(result['data']):
+                            if item.get('status') == 'error':
+                                error_type = item.get('details', {}).get('error')
+                                if error_type in ['DeviceNotRegistered', 'InvalidCredentials']:
+                                    # Marquer le token comme inactif
+                                    token_to_disable = batch[idx]['to']
+                                    failed_tokens.append(token_to_disable)
+                            else:
+                                sent_count += 1
+                else:
+                    logger.error(f"Expo push error: {response.status_code} - {response.text}")
+            except Exception as e:
+                logger.error(f"Erreur lors de l'envoi du batch: {e}")
+        
+        # Désactiver les tokens invalides
+        if failed_tokens:
+            await db.push_tokens.update_many(
+                {"token": {"$in": failed_tokens}},
+                {"$set": {"active": False, "deactivated_at": datetime.utcnow()}}
+            )
+        
+        return {
+            "message": "Notifications envoyées",
+            "sent": sent_count,
+            "failed": len(failed_tokens),
+            "total_tokens": len(tokens)
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors de l'envoi des notifications: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de l'envoi des notifications")
+
+@api.get('/notifications/tokens/stats')
+async def get_push_tokens_stats():
+    """Statistiques sur les tokens push enregistrés"""
+    try:
+        total = await db.push_tokens.count_documents({})
+        active = await db.push_tokens.count_documents({"active": True})
+        
+        # Par plateforme
+        platforms = await db.push_tokens.aggregate([
+            {"$match": {"active": True}},
+            {"$group": {"_id": "$platform", "count": {"$sum": 1}}}
+        ]).to_list(length=10)
+        
+        # Par ville
+        cities = await db.push_tokens.aggregate([
+            {"$match": {"active": True, "city": {"$ne": None}}},
+            {"$group": {"_id": "$city", "count": {"$sum": 1}}},
+            {"$sort": {"count": -1}},
+            {"$limit": 10}
+        ]).to_list(length=10)
+        
+        return {
+            "total_tokens": total,
+            "active_tokens": active,
+            "inactive_tokens": total - active,
+            "by_platform": {p["_id"]: p["count"] for p in platforms},
+            "top_cities": [{city["_id"]: city["count"]} for city in cities]
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération des stats: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la récupération des statistiques")
+
+@api.delete('/notifications/tokens/{token}')
+async def delete_push_token(token: str):
+    """Supprime ou désactive un token push"""
+    try:
+        result = await db.push_tokens.update_one(
+            {"token": token},
+            {"$set": {"active": False, "deactivated_at": datetime.utcnow()}}
+        )
+        if result.modified_count > 0:
+            return {"message": "Token désactivé"}
+        else:
+            raise HTTPException(status_code=404, detail="Token non trouvé")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Erreur lors de la suppression du token: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la suppression du token")
+
+
 # Mount API
 app.include_router(api)
 
