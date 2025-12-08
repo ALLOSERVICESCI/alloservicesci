@@ -17,7 +17,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://services-ci.preview.emergentagent.com/api"
+BACKEND_URL = "https://alloservices-build.preview.emergentagent.com/api"
 TIMEOUT = 10
 
 class BackendTester:
