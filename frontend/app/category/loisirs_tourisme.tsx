@@ -41,7 +41,7 @@ const ABJ_COMMUNES = [
   'Grand-Bassam','Assinie','Yamoussoukro','Bouaké','San-Pedro','Korhogo','Daloa','Man','Gagnoa','Jacqueville','Grand-Lahou','Sassandra'
 ];
 
-type Mode = 'nearby' | 'communes';
+// type Mode = 'nearby' | 'communes';
 
 export default function LoisirsTourisme() {
   const router = useRouter();
