@@ -428,7 +428,7 @@ export default function LoisirsTourisme() {
       <View
         style={[ styles.headerShadow,
           Platform.select({
-            web: { boxShadow: '0 20px 36px rgba(0,0,0,0.30)' } as any,
+            web: { boxShadow: '0 20px 36px rgba(0,0,0,0.30)' },
             ios: { shadowColor: '#000', shadowOpacity: 0.4, shadowRadius: 16, shadowOffset: { width: 0, height: 16 } },
             android: { elevation: 16 },
           }),
