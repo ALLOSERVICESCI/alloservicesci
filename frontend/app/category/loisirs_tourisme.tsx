@@ -114,7 +114,7 @@ export default function LoisirsTourisme() {
       // Filtrer les annonces expirées (>7 jours = 7 * 24 * 60 * 60 * 1000 ms)
       const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
       const now = Date.now();
-      const validItems = (Array.isArray(arr) ? arr : []).filter((it: any) => {
+      const validItems = (Array.isArray(arr) ? arr : []).filter((it) => {
         // Si pas de createdAt, on garde l'annonce (rétrocompatibilité)
         if (!it.createdAt) return true;
         // Sinon, on vérifie si elle a moins de 7 jours
