@@ -24,15 +24,18 @@ const FALLBACK_LOISIRS = loisirsData.map((item) => ({
   tag: item.categorie === 'hotel' ? 'Hôtel' : 
        item.categorie === 'residence' ? 'Résidence' :
        item.categorie === 'loisir' ? 'Loisir' :
+       item.categorie === 'nature' ? 'Nature' :
        item.categorie === 'site_incontournable' ? 'Site incontournable' :
        item.categorie === 'plage' ? 'Plage' : item.categorie,
+  phone: item.telephone || '',
+  website: item.site_web || '',
+  source: item.maps_localisation || '',
   photos: item.photos || [],
+  __maps_itineraire: item.maps_itineraire || '',
 }));
 
-// Ancienne définition statique supprimée - maintenant utilise les données JSON
-
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_smartcommunity-2/artifacts/x28hv0dw_loisirst_bg.png' };
-const CAT_FILTERS = ['Tous', 'Hôtel', 'Résidence', 'Loisir', 'Plage', 'Site incontournable'];
+const CAT_FILTERS = ['Tous', 'Hôtel', 'Résidence', 'Loisir', 'Nature', 'Plage', 'Site incontournable'];
 
 // Communes d'Abidjan + villes clés CI
 const ABJ_COMMUNES = [
