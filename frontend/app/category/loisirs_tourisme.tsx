@@ -15,7 +15,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 // interface LoisirItem { id?: string; __local?: boolean; title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; website?: string; source?: string; lat?: number; lng?: number; photos?: string[]; rating?: number; createdAt?: number; }
 
 // Mapper les données importées vers le format attendu
-const FALLBACK_LOISIRS: LoisirItem[] = loisirsData.map((item: any) => ({
+const FALLBACK_LOISIRS = loisirsData.map((item) => ({
   id: item.id?.toString(),
   title: item.nom,
   summary: item.description_courte,
