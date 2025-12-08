@@ -321,10 +321,10 @@ export default function LoisirsTourisme() {
     const website = item?.website;
     const source = item?.source || item?.site;
     const phone = item?.phone;
-    const lat | undefined = item?.lat;
-    const lng | undefined = item?.lng;
-    const photos[] | undefined = item?.photos;
-    const rating | undefined = item?.rating;
+    const lat = item?.lat;
+    const lng = item?.lng;
+    const photos = item?.photos;
+    const rating = item?.rating;
     const isLocal = !!item?.__local;
 
     return (
