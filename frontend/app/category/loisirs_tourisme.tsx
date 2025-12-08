@@ -11,7 +11,23 @@ const loisirsData = require('../../src/data/loisirs_tourisme.json');
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-type LoisirItem = { id?: string; __local?: boolean; title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; website?: string; source?: string; lat?: number; lng?: number; photos?: string[]; rating?: number; createdAt?: number };
+interface LoisirItem { 
+  id?: string; 
+  __local?: boolean; 
+  title: string; 
+  summary?: string; 
+  description?: string; 
+  commune?: string; 
+  tag?: string; 
+  phone?: string; 
+  website?: string; 
+  source?: string; 
+  lat?: number; 
+  lng?: number; 
+  photos?: string[]; 
+  rating?: number; 
+  createdAt?: number;
+}
 
 // Mapper les données importées vers le format attendu
 const FALLBACK_LOISIRS: LoisirItem[] = loisirsData.map((item: any) => ({
