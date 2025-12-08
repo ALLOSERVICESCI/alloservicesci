@@ -185,7 +185,7 @@ export default function LoisirsTourisme() {
 
   // Filtrage
   const data = useMemo(() => {
-    let list[] = [...userItems, ...rawData];
+    let list = [...userItems, ...rawData];
 
     if (categoryFilter) {
       list = list.filter((it) => {
