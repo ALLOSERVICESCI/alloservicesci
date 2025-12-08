@@ -237,7 +237,7 @@ export default function LoisirsTourisme() {
     Linking.openURL(url);
   };
 
-  const RatingRow = ({ value }: { value? }) => {
+  const RatingRow = ({ value }) => {
     if (!value || value <= 0) return null;
     return (
       <View style={styles.ratingRow}>
