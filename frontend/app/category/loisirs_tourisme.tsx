@@ -314,7 +314,7 @@ export default function LoisirsTourisme() {
     );
   };
 
-  const renderItem = ({ item }: { item }) => {
+  const renderItem = ({ item }) => {
     const title = item?.title || item?.name || '';
     const summary | undefined = item?.summary || item?.description;
     const commune | undefined = item?.commune;
