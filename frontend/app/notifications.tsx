@@ -103,7 +103,7 @@ export default function Notifications() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F8F9FA',
     paddingTop: Platform.select({ ios: 50, android: 20, default: 20 }),
   },
   header: {
@@ -124,21 +124,79 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#0A7C3A',
   },
-  content: {
+  clearBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  clearText: {
+    fontSize: 14,
+    color: '#FF6B6B',
+    fontWeight: '600',
+  },
+  emptyContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0A7C3A',
+    marginTop: 16,
+    textAlign: 'center',
+  },
+  emptySubtitle: {
+    fontSize: 14,
+    color: '#999',
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  listContainer: {
     padding: 16,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#0A7C3A',
-    textAlign: 'center',
-    marginTop: 20,
+  notifCard: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  subtitle: {
+  notifIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#E8F5E9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  notifContent: {
+    flex: 1,
+  },
+  notifTitle: {
     fontSize: 16,
+    fontWeight: '700',
+    color: '#1A1A1A',
+    marginBottom: 4,
+  },
+  notifBody: {
+    fontSize: 14,
     color: '#666',
-    textAlign: 'center',
-    marginTop: 8,
+    marginBottom: 6,
+    lineHeight: 20,
+  },
+  notifTime: {
+    fontSize: 12,
+    color: '#999',
+  },
+  deleteBtn: {
+    padding: 4,
+    justifyContent: 'center',
   },
 });
