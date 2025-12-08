@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   },
   backButton: {
     position: "absolute",
@@ -284,13 +284,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 10,
   },
   headerBottom: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
     paddingHorizontal: 16,
-    paddingBottom: 16,
+    paddingBottom: 20,
   },
   headerTitleContainer: {
     flex: 1,
