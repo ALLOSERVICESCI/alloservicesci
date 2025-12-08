@@ -248,6 +248,12 @@ const styles = StyleSheet.create({
   chipRow: {
     paddingBottom: 8,
   },
+  chipRowWrap: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    paddingBottom: 12,
+  },
   chip: {
     paddingHorizontal: 14,
     paddingVertical: 8,
