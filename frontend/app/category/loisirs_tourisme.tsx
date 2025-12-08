@@ -466,7 +466,7 @@ export default function LoisirsTourisme() {
             {/* Filtres par catégorie (toutes visibles, wrap) */}
             <View style={styles.catWrapRow}>
               {CAT_FILTERS.map((c) => (
-                <TouchableOpacity key={c} onPress={() => setCategoryFilter(c === 'Tous' ? null : (c as any))} style={[styles.catChip, (categoryFilter === null && c === 'Tous') || categoryFilter === c ? styles.catChipActive : null]}>
+                <TouchableOpacity key={c} onPress={() => setCategoryFilter(c === 'Tous' ? null : c)} style={[styles.catChip, (categoryFilter === null && c === 'Tous') || categoryFilter === c ? styles.catChipActive : null]}>
                   <Text style={[(categoryFilter === null && c === 'Tous') || categoryFilter === c ? styles.catChipTextActive : styles.catChipText]}>{c}</Text>
                 </TouchableOpacity>
               ))}
