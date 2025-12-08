@@ -215,7 +215,7 @@ export default function LoisirsTourisme() {
     return list;
   }, [rawData, userItems, selectedCommune, mode, coords, categoryFilter]);
 
-  const openPhone = (phone?) => {
+  const openPhone = (phone) => {
     const clean = (phone || '').replace(/\s+/g, '');
     if (!clean) return;
     Linking.openURL(`tel:${clean}`);
