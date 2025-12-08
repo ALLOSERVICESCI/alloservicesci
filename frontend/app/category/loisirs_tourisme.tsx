@@ -233,7 +233,7 @@ export default function LoisirsTourisme() {
       ios: `http://maps.apple.com/?ll=${lat},${lng}&q=${query}`,
       android: `geo:${lat},${lng}?q=${lat},${lng}(${query})`,
       default: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
-    }) as string;
+    });
     Linking.openURL(url);
   };
 
