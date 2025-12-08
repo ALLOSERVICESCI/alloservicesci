@@ -130,7 +130,7 @@ export default function LoisirsTourisme() {
         console.log('[Loisirs] Nettoyage effectué:', arr.length - validItems.length, 'annonces expirées supprimées');
       }
       
-      const normalized = validItems.map((it: any) => ({ ...it, __local: true }));
+      const normalized = validItems.map((it) => ({ ...it, __local: true }));
       console.log('[Loisirs] Items normalisés:', normalized.length);
       setUserItems(normalized);
     } catch (e) {
