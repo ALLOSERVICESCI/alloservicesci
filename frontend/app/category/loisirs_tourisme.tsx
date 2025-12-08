@@ -33,7 +33,7 @@ const FALLBACK_LOISIRS: LoisirItem[] = loisirsData.map((item: any) => ({
   // Abidjan & environs
 
 const HEADER_BG = { uri: 'https://customer-assets.emergentagent.com/job_smartcommunity-2/artifacts/x28hv0dw_loisirst_bg.png' };
-const CAT_FILTERS = ['Tous', 'Hôtel', 'Restaurant', 'Plage', 'Site touristique', 'Base de loisir', 'Lieux insolites', 'Airbnb'] as const;
+const CAT_FILTERS = ['Tous', 'Hôtel', 'Résidence', 'Loisir', 'Plage', 'Site incontournable'] as const;
 
 // Communes d'Abidjan + villes clés CI
 const ABJ_COMMUNES = [
