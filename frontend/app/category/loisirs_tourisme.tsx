@@ -12,7 +12,7 @@ const loisirsData = require('../../src/data/loisirs_tourisme.json');
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // Type definition for LoisirItem
-// interface LoisirItem { id?: string; __local?: boolean; title: string; summary?: string; description?: string; commune?: string; tag?: string; phone?: string; website?: string; source?: string; lat?: number; lng?: number; photos?: string[]; rating?: number; createdAt?: number; }
+// interface LoisirItem { id?; __local?: boolean; title; summary?; description?; commune?; tag?; phone?; website?; source?; lat?: number; lng?: number; photos?[]; rating?: number; createdAt?: number; }
 
 // Mapper les données importées vers le format attendu
 const FALLBACK_LOISIRS = loisirsData.map((item) => ({
@@ -215,18 +215,18 @@ export default function LoisirsTourisme() {
     return list;
   }, [rawData, userItems, selectedCommune, mode, coords, categoryFilter]);
 
-  const openPhone = (phone?: string) => {
+  const openPhone = (phone?) => {
     const clean = (phone || '').replace(/\s+/g, '');
     if (!clean) return;
     Linking.openURL(`tel:${clean}`);
   };
 
-  const openWebsite = (website?: string, source?: string) => {
+  const openWebsite = (website?, source?) => {
     const w = website || source;
     if (!w) return; const url = w.startsWith('http') ? w : `https://${w}`; Linking.openURL(url);
   };
 
-  const openMaps = (lat?: number, lng?: number, label?: string) => {
+  const openMaps = (lat?: number, lng?: number, label?) => {
     if (lat == null || lng == null) return;
     const query = encodeURIComponent(label || 'Itinéraire');
     const url = Platform.select({
@@ -249,7 +249,7 @@ export default function LoisirsTourisme() {
   };
 
   // Composant Carrousel pour les photos
-  const PhotoCarousel = ({ photos, onPhotoPress }: { photos: string[]; onPhotoPress: (index: number) => void }) => {
+  const PhotoCarousel = ({ photos, onPhotoPress }: { photos[]; onPhotoPress: (index: number) => void }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const scrollViewRef = useRef<ScrollView>(null);
     const CARD_WIDTH = SCREEN_WIDTH - 32; // Padding de la carte
@@ -315,15 +315,15 @@ export default function LoisirsTourisme() {
   };
 
   const renderItem = ({ item }: { item }) => {
-    const title: string = item?.title || item?.name || '';
-    const summary: string | undefined = item?.summary || item?.description;
-    const commune: string | undefined = item?.commune;
-    const website: string | undefined = item?.website;
-    const source: string | undefined = item?.source || item?.site;
-    const phone: string | undefined = item?.phone;
+    const title = item?.title || item?.name || '';
+    const summary | undefined = item?.summary || item?.description;
+    const commune | undefined = item?.commune;
+    const website | undefined = item?.website;
+    const source | undefined = item?.source || item?.site;
+    const phone | undefined = item?.phone;
     const lat: number | undefined = item?.lat;
     const lng: number | undefined = item?.lng;
-    const photos: string[] | undefined = item?.photos;
+    const photos[] | undefined = item?.photos;
     const rating: number | undefined = item?.rating;
     const isLocal: boolean = !!item?.__local;
 
@@ -517,7 +517,7 @@ export default function LoisirsTourisme() {
   );
 }
 
-function ModeCapsule({ label, active, onPress, color, icon }: { label: string; active?: boolean; onPress: () => void; color: string; icon }) {
+function ModeCapsule({ label, active, onPress, color, icon }: { label; active?: boolean; onPress: () => void; color; icon }) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.modeCapsule, active ? { backgroundColor: color } : { backgroundColor: '#FFFFFF', borderColor: '#E1E6ED', borderWidth: 1 }, Platform.select({ web: { boxShadow: active ? '0 6px 16px rgba(0,0,0,0.12)' : 'none' } as any, ios: { shadowColor: '#000', shadowOpacity: active ? 0.12 : 0, shadowRadius: 8, shadowOffset: { width: 0, height: 6 } }, android: { elevation: active ? 4 : 0 } })]} accessibilityRole="button" accessibilityLabel={label}>
       <Ionicons name={icon} size={16} color={active ? '#fff' : color} />
