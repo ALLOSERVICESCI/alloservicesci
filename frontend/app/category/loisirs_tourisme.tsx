@@ -251,7 +251,7 @@ export default function LoisirsTourisme() {
   // Composant Carrousel pour les photos
   const PhotoCarousel = ({ photos, onPhotoPress }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const scrollViewRef = useRef<ScrollView>(null);
+    const scrollViewRef = useRef(null);
     const CARD_WIDTH = SCREEN_WIDTH - 32; // Padding de la carte
     const IMAGE_WIDTH = CARD_WIDTH - 32; // Padding interne
 
