@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONTENT_BY_CATEGORY } from '../../src/utils/categoryContent';
+import loisirsData from '../../src/data/loisirs_tourisme.json';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
