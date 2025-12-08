@@ -101,7 +101,7 @@ export default function LoisirsTourisme() {
   }, []);
 
   // Annonces utilisateur (stockées localement)
-  const [userItems, setUserItems] = useState<LoisirItem[]>([]);
+  const [userItems, setUserItems] = useState([]);
 
   const loadUserItems = useCallback(async () => {
     try {
