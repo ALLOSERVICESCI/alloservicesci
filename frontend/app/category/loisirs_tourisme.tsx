@@ -89,7 +89,7 @@ export default function LoisirsTourisme() {
   const [selectedCommune, setSelectedCommune] = useState<string | null>(null);
   const communeSuggestions = useMemo(() => {
     const q = communeQuery.trim().toLowerCase();
-    if (!q) return [] as string[];
+    if (!q) return [];
     return ABJ_COMMUNES.filter(c => c.toLowerCase().includes(q)).slice(0, 8);
   }, [communeQuery]);
 
