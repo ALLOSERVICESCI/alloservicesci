@@ -185,10 +185,10 @@ export default function LoisirsTourisme() {
 
   // Filtrage
   const data = useMemo(() => {
-    let list: any[] = [...userItems, ...rawData];
+    let list[] = [...userItems, ...rawData];
 
     if (categoryFilter) {
-      list = list.filter((it: any) => {
+      list = list.filter((it) => {
         const t = it?.tag || '';
         if (categoryFilter === 'Lieux insolites') {
           return t === 'Lieux insolites' || t === 'Lieu insolite';
@@ -198,18 +198,18 @@ export default function LoisirsTourisme() {
     }
 
     if (selectedCommune) {
-      list = list.filter((it: any) => (it?.commune || '').toLowerCase() === selectedCommune.toLowerCase());
+      list = list.filter((it) => (it?.commune || '').toLowerCase() === selectedCommune.toLowerCase());
     }
 
     if (mode === 'nearby' && coords) {
-      const withDist = list.map((it: any) => {
+      const withDist = list.map((it) => {
         const lat = Number(it?.lat);
         const lng = Number(it?.lng);
         const hasCoords = !isNaN(lat) && !isNaN(lng);
         const d = hasCoords ? distKm(coords, { lat, lng }) : 999999;
         return { ...it, _d: d };
       });
-      return withDist.filter((x: any) => x._d <= 50).sort((a: any, b: any) => a._d - b._d);
+      return withDist.filter((x) => x._d <= 50).sort((a, b) => a._d - b._d);
     }
 
     return list;
@@ -255,7 +255,7 @@ export default function LoisirsTourisme() {
     const CARD_WIDTH = SCREEN_WIDTH - 32; // Padding de la carte
     const IMAGE_WIDTH = CARD_WIDTH - 32; // Padding interne
 
-    const handleScroll = (event: any) => {
+    const handleScroll = (event) => {
       const contentOffsetX = event.nativeEvent.contentOffset.x;
       const index = Math.round(contentOffsetX / IMAGE_WIDTH);
       setCurrentIndex(index);
@@ -314,7 +314,7 @@ export default function LoisirsTourisme() {
     );
   };
 
-  const renderItem = ({ item }: { item: any }) => {
+  const renderItem = ({ item }: { item }) => {
     const title: string = item?.title || item?.name || '';
     const summary: string | undefined = item?.summary || item?.description;
     const commune: string | undefined = item?.commune;
@@ -340,9 +340,9 @@ export default function LoisirsTourisme() {
                 try {
                   const raw = await AsyncStorage.getItem('loisirs_user_items');
                   const arr = raw ? JSON.parse(raw) : [];
-                  const next = arr.filter((x: any) => x.id !== item?.id);
+                  const next = arr.filter((x) => x.id !== item?.id);
                   await AsyncStorage.setItem('loisirs_user_items', JSON.stringify(next));
-                  setUserItems(next.map((x: any) => ({ ...x, __local: true })));
+                  setUserItems(next.map((x) => ({ ...x, __local: true })));
                 } catch {}
               }}>
                 <Text style={[styles.localActionText, { color: '#D32F2F' }]}>Supprimer</Text>
@@ -517,7 +517,7 @@ export default function LoisirsTourisme() {
   );
 }
 
-function ModeCapsule({ label, active, onPress, color, icon }: { label: string; active?: boolean; onPress: () => void; color: string; icon: any }) {
+function ModeCapsule({ label, active, onPress, color, icon }: { label: string; active?: boolean; onPress: () => void; color: string; icon }) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.modeCapsule, active ? { backgroundColor: color } : { backgroundColor: '#FFFFFF', borderColor: '#E1E6ED', borderWidth: 1 }, Platform.select({ web: { boxShadow: active ? '0 6px 16px rgba(0,0,0,0.12)' : 'none' } as any, ios: { shadowColor: '#000', shadowOpacity: active ? 0.12 : 0, shadowRadius: 8, shadowOffset: { width: 0, height: 6 } }, android: { elevation: active ? 4 : 0 } })]} accessibilityRole="button" accessibilityLabel={label}>
       <Ionicons name={icon} size={16} color={active ? '#fff' : color} />
