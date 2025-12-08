@@ -1,16 +1,20 @@
 [
   {
     "id": 1,
-    "nom": "Noom Hotel Abidjan Plateau",
+    "nom": "Noom Hôtel Abidjan Plateau",
     "categorie": "hotel",
-    "type": "hotel_haut_de_gamme",
+    "type": "hotel_5_etoiles",
     "ville": "Abidjan",
     "region": "Abidjan",
     "quartier": "Plateau",
-    "description_courte": "Hôtel moderne en bord de lagune, très apprécié pour les séjours business.",
-    "description_longue": "Noom Hotel Abidjan Plateau est un hôtel 4-5 étoiles en bord de lagune avec piscine, rooftop bar et chambres modernes. Idéal pour les voyageurs d'affaires et les séjours urbains au cœur du quartier administratif.",
-    "image_hint": "Façade de Noom Abidjan avec piscine et vue sur la lagune au coucher du soleil.",
-    "tags": ["business", "vue_lagune", "centre_ville"]
+    "description_courte": "Hôtel 5★ moderne avec rooftop et piscine à débordement.",
+    "description_longue": "Hôtel haut de gamme situé au Plateau, avec vue sur la lagune, piscine à débordement, rooftop, restaurant et salles de conférences.",
+    "image_hint": "noom hotel abidjan plateau lagune rooftop",
+    "tags": ["business", "luxe", "rooftop", "piscine"],
+    "telephone": "+22520000800",
+    "site_web": "https://www.mangalis.com/hotels/noom-hotel-abidjan-plateau/",
+    "maps_localisation": "https://www.google.com/maps?q=Noom+Hotel+Abidjan+Plateau",
+    "maps_itineraire": "https://www.google.com/maps/dir/?api=1&destination=Noom+Hotel+Abidjan+Plateau"
   },
   {
     "id": 2,
