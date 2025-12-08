@@ -45,9 +45,9 @@ const ABJ_COMMUNES = [
 
 export default function LoisirsTourisme() {
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>('communes');
-  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
-  const [locError, setLocError] = useState<string | null>(null);
+  const [mode, setMode] = useState('communes');
+  const [coords, setCoords] = useState(null);
+  const [locError, setLocError] = useState(null);
 
   // Filtres
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
