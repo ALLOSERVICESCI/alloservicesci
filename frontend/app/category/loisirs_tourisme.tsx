@@ -249,7 +249,7 @@ export default function LoisirsTourisme() {
   };
 
   // Composant Carrousel pour les photos
-  const PhotoCarousel = ({ photos, onPhotoPress }: { photos[]; onPhotoPress: (index) => void }) => {
+  const PhotoCarousel = ({ photos, onPhotoPress }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const scrollViewRef = useRef<ScrollView>(null);
     const CARD_WIDTH = SCREEN_WIDTH - 32; // Padding de la carte
