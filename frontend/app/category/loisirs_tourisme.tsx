@@ -95,9 +95,9 @@ export default function LoisirsTourisme() {
 
   // Données Loisirs & Tourisme (lecture seule)
   const rawData = useMemo(() => {
-    const raw = CONTENT_BY_CATEGORY?.loisirs_tourisme as any[] | undefined;
-    if (Array.isArray(raw) && raw.length > 0) return raw as any;
-    return FALLBACK_LOISIRS as any;
+    const raw = CONTENT_BY_CATEGORY?.loisirs_tourisme;
+    if (Array.isArray(raw) && raw.length > 0) return raw;
+    return FALLBACK_LOISIRS;
   }, []);
 
   // Annonces utilisateur (stockées localement)
