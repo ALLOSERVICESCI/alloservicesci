@@ -12,7 +12,7 @@ const loisirsData = require('../../src/data/loisirs_tourisme.json');
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // Type definition for LoisirItem
-// interface LoisirItem { id?; __local?; title; summary?; description?; commune?; tag?; phone?; website?; source?; lat?; lng?; photos?[]; rating?; createdAt?; }
+// interface LoisirItem { id; __local; title; summary; description; commune; tag; phone; website; source; lat; lng; photos?[]; rating; createdAt; }
 
 // Mapper les données importées vers le format attendu
 const FALLBACK_LOISIRS = loisirsData.map((item) => ({
@@ -517,7 +517,7 @@ export default function LoisirsTourisme() {
   );
 }
 
-function ModeCapsule({ label, active, onPress, color, icon }: { label; active?; onPress: () => void; color; icon }) {
+function ModeCapsule({ label, active, onPress, color, icon }: { label; active; onPress: () => void; color; icon }) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.modeCapsule, active ? { backgroundColor: color } : { backgroundColor: '#FFFFFF', borderColor: '#E1E6ED', borderWidth: 1 }, Platform.select({ web: { boxShadow: active ? '0 6px 16px rgba(0,0,0,0.12)' : 'none' } as any, ios: { shadowColor: '#000', shadowOpacity: active ? 0.12 : 0, shadowRadius: 8, shadowOffset: { width: 0, height: 6 } }, android: { elevation: active ? 4 : 0 } })]} accessibilityRole="button" accessibilityLabel={label}>
       <Ionicons name={icon} size={16} color={active ? '#fff' : color} />
