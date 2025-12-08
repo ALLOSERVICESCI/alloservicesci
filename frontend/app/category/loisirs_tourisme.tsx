@@ -9,10 +9,15 @@ import {
   ScrollView,
   Linking,
   Alert,
+  ImageBackground,
+  Platform,
 } from "react-native";
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
-// ⚠️ adapte le chemin selon ton projet
 const rawData = require("../../src/data/loisirs_tourisme.json");
+const HEADER_BG = { uri: "https://customer-assets.emergentagent.com/job_smartcommunity-2/artifacts/x28hv0dw_loisirst_bg.png" };
 
 type LieuLoisir = {
   id: number;
@@ -33,6 +38,7 @@ type LieuLoisir = {
 };
 
 const LoisirsTourismeScreen: React.FC = () => {
+  const router = useRouter();
   const [selectedCategorie, setSelectedCategorie] = useState<string>("tous");
   const [search, setSearch] = useState<string>("");
 
@@ -100,7 +106,6 @@ const LoisirsTourismeScreen: React.FC = () => {
   const renderItem = ({ item }: { item: LieuLoisir }) => {
     return (
       <View style={styles.card}>
-        {/* Placeholder d'image – tu pourras le remplacer par une vraie Image plus tard */}
         <View style={styles.imagePlaceholder}>
           <Text style={styles.imagePlaceholderText}>
             {item.ville || item.categorie}
@@ -127,7 +132,6 @@ const LoisirsTourismeScreen: React.FC = () => {
             {item.description_courte}
           </Text>
 
-          {/* Tags */}
           {item.tags && item.tags.length > 0 && (
             <View style={styles.tagsRow}>
               {item.tags.slice(0, 4).map((tag) => (
@@ -138,7 +142,6 @@ const LoisirsTourismeScreen: React.FC = () => {
             </View>
           )}
 
-          {/* Ligne de boutons actions (Appeler, Site web, Carte, Itinéraire) */}
           <View style={styles.actionsRow}>
             {item.telephone ? (
               <TouchableOpacity
@@ -183,8 +186,43 @@ const LoisirsTourismeScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      {/* Header avec image de fond */}
+      <View style={styles.headerWrapper}>
+        <ImageBackground source={HEADER_BG} style={styles.headerImage} resizeMode="cover">
+          <LinearGradient
+            colors={["rgba(15,23,42,0.7)", "rgba(15,23,42,0.5)", "rgba(15,23,42,0.3)"]}
+            style={StyleSheet.absoluteFillObject}
+          />
+          
+          {/* Bouton Retour en haut à gauche */}
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => router.push("/(tabs)/home")}
+          >
+            <Ionicons name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+
+          {/* Titre et bouton Publier en bas */}
+          <View style={styles.headerBottom}>
+            <View style={styles.headerTitleContainer}>
+              <Text style={styles.headerTitle}>Loisirs & Tourisme</Text>
+              <Text style={styles.headerSubtitle}>Découvrez les meilleurs lieux</Text>
+            </View>
+            
+            <TouchableOpacity
+              style={styles.publishButton}
+              onPress={() => router.push("/publish_loisir")}
+            >
+              <Ionicons name="add-circle" size={20} color="#F97316" />
+              <Text style={styles.publishButtonText}>Publier</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+      </View>
+
       {/* Recherche */}
       <View style={styles.searchContainer}>
+        <Ionicons name="search" size={18} color="#9CA3AF" style={styles.searchIcon} />
         <TextInput
           placeholder="Rechercher un lieu, une plage, un hôtel..."
           placeholderTextColor="#9CA3AF"
@@ -225,16 +263,77 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0F172A",
+  },
+  headerWrapper: {
+    height: 200,
+    width: "100%",
+  },
+  headerImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    justifyContent: "space-between",
+  },
+  backButton: {
+    position: "absolute",
+    top: Platform.OS === "ios" ? 50 : 40,
+    left: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerBottom: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
     paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingBottom: 16,
+  },
+  headerTitleContainer: {
+    flex: 1,
+  },
+  headerTitle: {
+    color: "#fff",
+    fontSize: 24,
+    fontWeight: "800",
+    marginBottom: 4,
+  },
+  headerSubtitle: {
+    color: "#E5E7EB",
+    fontSize: 14,
+  },
+  publishButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.95)",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 999,
+    gap: 6,
+  },
+  publishButtonText: {
+    color: "#F97316",
+    fontSize: 14,
+    fontWeight: "700",
   },
   searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 16,
+    marginTop: 16,
     marginBottom: 12,
-  },
-  searchInput: {
     backgroundColor: "#1E293B",
     borderRadius: 999,
     paddingHorizontal: 16,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
     paddingVertical: 10,
     color: "#F9FAFB",
     fontSize: 14,
@@ -244,15 +343,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     marginBottom: 8,
-  },
-  chipRow: {
-    paddingBottom: 8,
+    marginHorizontal: 16,
   },
   chipRowWrap: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 8,
     paddingBottom: 12,
+    paddingHorizontal: 16,
   },
   chip: {
     paddingHorizontal: 14,
@@ -260,7 +358,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     borderWidth: 1,
     borderColor: "#475569",
-    marginRight: 8,
     backgroundColor: "transparent",
   },
   chipActive: {
@@ -276,6 +373,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   listContent: {
+    paddingHorizontal: 16,
     paddingVertical: 8,
     paddingBottom: 32,
   },
