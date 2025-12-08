@@ -171,7 +171,7 @@ export default function LoisirsTourisme() {
 
   // Utils distance
   const toRad = (x) => (x * Math.PI) / 180;
-  const distKm = (a: {lat, lng}, b: {lat, lng}) => {
+  const distKm = (a, b) => {
     const R = 6371; // km
     const dLat = toRad(b.lat - a.lat);
     const dLng = toRad(b.lng - a.lng);
